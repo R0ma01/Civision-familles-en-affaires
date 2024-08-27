@@ -9,11 +9,12 @@ export async function middleware(request) {
     }
 
     const token = request.cookies.get('token')?.value || '';
+    const adminToken = request.cookies.get('adminToken')?.value || '';
 
     try {
         // Check for admin route
         if (request.nextUrl.pathname.startsWith(PagePaths.ADMIN)) {
-            const isAdminValid = await verifyAdminToken(token);
+            const isAdminValid = await verifyAdminToken(adminToken);
             if (!isAdminValid) {
                 console.log('Redirecting to login due to invalid admin token');
                 return NextResponse.redirect(

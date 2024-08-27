@@ -6,7 +6,6 @@ import {
 import axios, { AxiosResponse } from 'axios';
 import { useRouter } from 'next/navigation';
 import { UserType } from '@/components/enums/user-type-enum';
-import { decodeToken } from './token-utils';
 
 type Router = ReturnType<typeof useRouter>;
 
@@ -37,6 +36,7 @@ const submitForm = async (
         if (status === 200) {
             if (route === 'login') {
                 localStorage.setItem('token', data.token || '');
+                localStorage.setItem('adminToken', data.adminToken || '');
 
                 const userType = data.admin ? UserType.ADMIN : UserType.USER;
                 setUser(userType); // Set the user type
