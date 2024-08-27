@@ -11,9 +11,16 @@ export default function Thematiques() {
     const { pagesData, pageLoading, pageError } = useGlobalPageStore();
     const [pages, setPages] = useState<PageContent[]>([]);
 
-    const setMapStyle = useMapStore((state) => state.setMapStyle);
+    const { mapType, setMapStyle } = useMapStore((state) => ({
+        mapType: state.mapType,
+        setMapStyle: state.setMapStyle,
+    }));
 
-    setMapStyle(true);
+    useEffect(() => {
+        if (!mapType) {
+            setMapStyle(true);
+        }
+    }, [mapType, setMapStyle]);
 
     useEffect(() => {
         if (pages.length === 0 && pagesData) {
@@ -31,22 +38,16 @@ export default function Thematiques() {
             </h1>
             <div className="justify-center flex flex-wrap w-[80%]">
                 {pages.length > 0 ? (
-                    pages.map((card, index) => (
-                        <>
-                            {card.visible ? (
+                    pages.map(
+                        (card, index) =>
+                            card.visible && (
                                 <ThemeCard
-                                    index={
-                                        constants.theme_card_id +
-                                        index.toString()
-                                    }
-                                    key={index}
+                                    key={`${constants.theme_card_id}-${index}`}
+                                    index={`${constants.theme_card_id}-${index}`}
                                     page={card}
                                 />
-                            ) : (
-                                ''
-                            )}
-                        </>
-                    ))
+                            ),
+                    )
                 ) : (
                     <p>Loading...</p>
                 )}

@@ -41,7 +41,6 @@ const Dashboard = ({ children }: DashboardProps) => {
             }
 
             if (fournisseurData.length === 0) {
-                console.log('dfemkofe');
                 await fetchFournisseurData();
             }
         }
@@ -55,6 +54,7 @@ const Dashboard = ({ children }: DashboardProps) => {
         pageLoading,
         fetchData,
         fetchPageData,
+        fetchFournisseurData,
     ]);
 
     return (

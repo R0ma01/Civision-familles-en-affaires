@@ -17,7 +17,6 @@ const useMapStore = create<GlobalMapStoreProps>((set) => ({
     },
     mapType: true,
     setMapStyle: (type: boolean) => {
-        console.log('set');
         set({ mapType: type });
     },
     point: null,

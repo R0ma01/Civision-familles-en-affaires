@@ -7,7 +7,12 @@ export async function POST() {
             { status: 200 },
         );
 
-        localStorage.removeItem('adminToken');
+        response.cookies.set('adminToken', '', {
+            httpOnly: true,
+            secure: process.env.NODE_ENV === 'production',
+            maxAge: -1, // Set the maxAge to -1 to expire the cookie immediately
+            path: '/',
+        });
 
         response.cookies.set('token', '', {
             httpOnly: true,
