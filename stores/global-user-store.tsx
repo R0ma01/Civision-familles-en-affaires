@@ -17,6 +17,7 @@ const useGlobalUserStore = create(
             (set) => ({
                 user: UserType.VISITOR,
                 setUser: (user: UserType) => {
+                    console.log(user);
                     set({ user });
                 },
                 tutorials: [],

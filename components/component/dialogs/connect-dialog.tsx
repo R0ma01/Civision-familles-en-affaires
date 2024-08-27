@@ -18,7 +18,7 @@ import {
 } from '@/components/interface/auth/connect-dialog';
 import { Language } from '@/components/enums/language';
 import Modal from '@/components/component/modal/modal';
-import { useUser } from '@/context/user-context';
+
 import useGlobalUserStore from '@/stores/global-user-store';
 //import { useGlobalUserStore } from '@/stores/global-user-store';
 

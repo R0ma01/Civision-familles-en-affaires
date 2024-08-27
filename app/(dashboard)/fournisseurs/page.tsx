@@ -10,7 +10,7 @@ import Button from '@/components/component/buttons/button';
 import { AddFournisseurDialog } from '@/components/component/dialogs/add-fournisseur-dialog';
 import { ButtonType } from '@/components/enums/button-type-enum';
 import { AdminSVG } from '@/components/component/svg-icons/svg-icons';
-import { useUser } from '@/context/user-context';
+import useGlobalUserStore from '@/stores/global-user-store';
 import { UserType } from '@/components/enums/user-type-enum';
 
 function Fournisseurs() {
@@ -20,7 +20,9 @@ function Fournisseurs() {
 
     const [editDialogOpen, setEditDialogOpen] = useState<boolean>(false);
 
-    const { user } = useUser();
+    const { user } = useGlobalUserStore((state: any) => ({
+        user: state.user,
+    }));
 
     useEffect(() => {
         if (mapType) {

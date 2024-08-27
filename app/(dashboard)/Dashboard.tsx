@@ -2,7 +2,6 @@
 import React, { useEffect } from 'react';
 import Carte from '@/components/component/carte/Carte';
 import Sidebar from '@/components/component/sidebar/sidebar';
-import { UserProvider } from '@/context/user-context';
 import useGlobalDataStore from '@/stores/global-data-store';
 import useGlobalPageStore from '@/stores/global-page-store';
 import MobileWarningPopup from '@/components/component/mobile-popup/mobile-popup';
@@ -59,7 +58,7 @@ const Dashboard = ({ children }: DashboardProps) => {
     ]);
 
     return (
-        <UserProvider>
+        <>
             <MobileWarningPopup />
             <div className="relative h-screen overflow-hidden">
                 {loading || pageLoading ? (
@@ -78,7 +77,7 @@ const Dashboard = ({ children }: DashboardProps) => {
                     </>
                 )}
             </div>
-        </UserProvider>
+        </>
     );
 };
 

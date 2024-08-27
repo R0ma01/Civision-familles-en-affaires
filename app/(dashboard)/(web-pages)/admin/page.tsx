@@ -1,8 +1,8 @@
 'use client';
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 import PageContentContainer from '@/components/component/page-content-container/page-content-container';
 import ThemeCard from '@/components/component/theme-card/theme-card';
-import { useUser } from '@/context/user-context';
+import useGlobalUserStore from '@/stores/global-user-store';
 import { UserType } from '@/components/enums/user-type-enum';
 import PageEditDialog from '@/components/component/dialogs/edit-page-dialog';
 import PageDeleteDialog from '@/components/component/dialogs/delete-page-dialog';
@@ -25,7 +25,9 @@ const newPage: PageContent = {
 export default function Admin() {
     const { pagesData, pageLoading, pageError, refreshPageData } =
         useGlobalPageStore();
-    const { user } = useUser();
+    const { user } = useGlobalUserStore((state: any) => ({
+        user: state.user,
+    }));
 
     const { mapType, setMapStyle } = useMapStore((state) => {
         return { mapType: state.mapType, setMapStyle: state.setMapStyle };
