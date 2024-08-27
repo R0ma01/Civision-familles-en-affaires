@@ -33,8 +33,6 @@ const ConnectDialog: React.FC<ConnectDialogProps> = ({
         setLoginTutorials: state.setLoginTutorials,
         setUser: state.setUser,
     }));
-    //const { setUser, setLoginTutorials } = useGlobalUserStore();
-    //const { setUser, setLoginTutorials } = useUser(); // Get the setUser function
 
     useEffect(() => {
         const handleEsc = (event: any) => {

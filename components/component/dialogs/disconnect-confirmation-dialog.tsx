@@ -5,9 +5,16 @@ import { PagePaths } from '@/components/enums/page-paths-enum';
 import axios from 'axios';
 import DisconnectDialogProps from '@/components/interface/auth/disconnect-confirmation-dialog';
 import Modal from '@/components/component/modal/modal';
+import useGlobalUserStore from '@/stores/global-user-store';
+import { UserType } from '@/components/enums/user-type-enum';
 
 const DisconnectDialog: React.FC<DisconnectDialogProps> = ({ closeDialog }) => {
     const router = useRouter();
+
+    const { setUser, setLoginTutorials } = useGlobalUserStore((state: any) => ({
+        setUser: state.setUser,
+        setLoginTutorials: state.setLoginTutorials,
+    }));
 
     useEffect(() => {
         const handleEsc = (event: any) => {
@@ -29,6 +36,8 @@ const DisconnectDialog: React.FC<DisconnectDialogProps> = ({ closeDialog }) => {
             const response = await axios.post(`/api/auth/logout`, {});
 
             if (response.status === 200) {
+                setUser(UserType.VISITOR);
+                setLoginTutorials([]);
                 router.push(PagePaths.HOME);
                 closeDialog();
             } else {

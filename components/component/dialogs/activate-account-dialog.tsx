@@ -11,11 +11,17 @@ import FormStatusType from '@/components/interface/auth/form-status-type';
 import Modal from '@/components/component//modal/modal';
 import Button from '@/components/component/buttons/button';
 import { ButtonType } from '@/components/enums/button-type-enum';
-import { useUser } from '@/context/user-context';
+import useGlobalUserStore from '@/stores/global-user-store';
 
 const ActivateAccountDialog: React.FC<ActivateAccountProps> = ({ token }) => {
     const [status, setStatus] = useState<FormStatusType>({});
-    const { setUser, updateCompletedTutorials } = useUser();
+
+    const { setUser, updateCompletedTutorials } = useGlobalUserStore(
+        (state: any) => ({
+            setUser: state.setUser,
+            updateCompletedTutorials: state.updateCompletedTutorials,
+        }),
+    );
 
     const { lang } = useDataStore();
     const t = authTranslations[lang as Language];
