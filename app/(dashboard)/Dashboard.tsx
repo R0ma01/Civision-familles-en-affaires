@@ -58,9 +58,6 @@ const Dashboard = ({ children }: DashboardProps) => {
         fetchPageData,
     ]);
 
-    // if (loading || pageLoading) return <div>Loading...</div>;
-    // if (error || pageError) return <div>Error: {error || pageError}</div>;
-
     return (
         <UserProvider>
             <MobileWarningPopup />

@@ -4,7 +4,7 @@ import { closeDatabase, connectToDatabase } from '@/utils/auth-mongoDB-utils';
 import { validationTranslations } from '@/constants/translations/auth';
 import { generateAdminToken, generateToken } from '@/utils/token-utils';
 
-const { NEXT_PUBLIC_ADMIN_ID } = process.env;
+const { ADMIN_ID } = process.env;
 
 export async function POST(req) {
     try {
@@ -34,7 +34,7 @@ export async function POST(req) {
         const token = generateToken({ userId: user._id }, '24h');
         let adminToken = null;
 
-        if (user._id == NEXT_PUBLIC_ADMIN_ID) {
+        if (user._id == ADMIN_ID) {
             adminToken = generateAdminToken({ userId: user._id }, '24h');
         }
 
@@ -45,7 +45,7 @@ export async function POST(req) {
             {
                 message: t.loginSuccess,
                 token: token,
-                admin: user._id == NEXT_PUBLIC_ADMIN_ID,
+                admin: user._id == ADMIN_ID,
                 tutorials: user.tutorials,
             },
             { status: 200 },

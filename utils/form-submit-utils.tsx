@@ -40,6 +40,7 @@ const submitForm = async (
 
                 const userType = data.admin ? UserType.ADMIN : UserType.USER;
                 setUser(userType); // Set the user type
+
                 if (setTutorials && data.tutorials) {
                     setTutorials(data.tutorials);
                 }

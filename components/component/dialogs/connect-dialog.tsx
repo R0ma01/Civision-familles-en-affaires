@@ -19,6 +19,7 @@ import {
 import { Language } from '@/components/enums/language';
 import Modal from '@/components/component/modal/modal';
 import { useUser } from '@/context/user-context';
+//import { useGlobalUserStore } from '@/stores/global-user-store';
 
 const ConnectDialog: React.FC<ConnectDialogProps> = ({
     onForgotPasswordClick,
@@ -27,6 +28,7 @@ const ConnectDialog: React.FC<ConnectDialogProps> = ({
     const { lang } = useDataStore();
     const t = authTranslations[lang as Language];
     const router = useRouter();
+    //const { setUser, setLoginTutorials } = useGlobalUserStore();
     const { setUser, setLoginTutorials } = useUser(); // Get the setUser function
 
     useEffect(() => {

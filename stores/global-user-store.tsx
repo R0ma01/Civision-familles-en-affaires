@@ -1,4 +1,5 @@
 import { UserType } from '@/components/enums/user-type-enum';
+import { UserHttpRequestService } from '@/services/user-http-request-service';
 import { create } from 'zustand';
 
 interface GlobalState {
@@ -9,18 +10,19 @@ interface GlobalState {
     updateCompletedTutorials: (tutorials: boolean[]) => void;
 }
 
-const useGlobalPageStore = create<GlobalState>((set, get) => ({
+const useGlobalUserStore = create<GlobalState>((set) => ({
     user: UserType.VISITOR,
     setUser: (user: UserType) => {
         set({ user });
     },
     tutorials: [],
-    setLoginTutorials: (tutorials: boolean[]) => {
+    setLoginTutorials: async (tutorials: boolean[]) => {
         set({ tutorials });
     },
-    updateCompletedTutorials: (tutorial: boolean[]) => {
-        return;
+    updateCompletedTutorials: async (tutorials: boolean[]) => {
+        set({ tutorials });
+        await UserHttpRequestService.updateTutorials(tutorials);
     },
 }));
 
-export default useGlobalPageStore;
+export default useGlobalUserStore;
