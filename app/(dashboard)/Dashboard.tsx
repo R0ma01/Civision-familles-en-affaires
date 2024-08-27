@@ -58,20 +58,28 @@ const Dashboard = ({ children }: DashboardProps) => {
         fetchPageData,
     ]);
 
-    if (loading || pageLoading) return <div>Loading...</div>;
-    if (error || pageError) return <div>Error: {error || pageError}</div>;
+    // if (loading || pageLoading) return <div>Loading...</div>;
+    // if (error || pageError) return <div>Error: {error || pageError}</div>;
 
     return (
         <UserProvider>
             <MobileWarningPopup />
             <div className="relative h-screen overflow-hidden">
-                <div className="fixed top-0 left-0 w-full h-full">
-                    <Carte />
-                </div>
-                <div className="flex h-full">
-                    <Sidebar />
-                    {children}
-                </div>
+                {loading || pageLoading ? (
+                    <div>Loading...</div>
+                ) : error || pageError ? (
+                    <div>Error: {error || pageError}</div>
+                ) : (
+                    <>
+                        <div className="fixed top-0 left-0 w-full h-full">
+                            <Carte />
+                        </div>
+                        <div className="flex h-full">
+                            <Sidebar />
+                            {children}
+                        </div>
+                    </>
+                )}
             </div>
         </UserProvider>
     );
