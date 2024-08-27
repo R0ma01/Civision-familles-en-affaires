@@ -76,8 +76,8 @@ const LandingPage = () => {
                                     adaptation numérique et interactive de
                                     <em>
                                         {' '}
-                                        L`&apos;`Album de familles et certaines
-                                        données de l`&apos;`Indice
+                                        L&apos;Album de familles et certaines
+                                        données de l&apos;Indice
                                         entrepreneuriale 2023.
                                     </em>
                                 </h4>
@@ -88,17 +88,17 @@ const LandingPage = () => {
                                     vibrant au patrimoine québécois, une
                                     véritable source de fierté, mettant en
                                     lumière les entreprises familiales qui
-                                    façonnent l`&apos;`histoire et la culture de
+                                    façonnent l&apos;histoire et la culture de
                                     notre province. Grâce à son interface
                                     conviviale et ses fonctionnalités avancées,
                                     notre application permet aux utilisateurs de
                                     découvrir ces entreprises remarquables,
-                                    d`&apos;`explorer leur histoire unique et de
+                                    d&apos;explorer leur histoire unique et de
                                     mener leurs propres investigations.
                                     Rejoignez-nous dans cette aventure
                                     captivante pour célébrer et soutenir
-                                    l`&apos;`esprit d`&apos;`entreprise familial
-                                    qui anime le Québec !{' '}
+                                    l&apos;esprit d&apos;entreprise familial qui
+                                    anime le Québec !{' '}
                                 </h4>
                             </div>
                         </div>

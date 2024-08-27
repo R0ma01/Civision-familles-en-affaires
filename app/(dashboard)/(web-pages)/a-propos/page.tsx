@@ -26,24 +26,22 @@ export default function APropos() {
                             <h2 className="text-2xl text-gray-700">
                                 Bienvenue sur la nouvelle plateforme de Familles
                                 en affaires, une adaptation numérique et
-                                interactive de <i>L`&apos;`Album de familles</i>
-                                .
+                                interactive de <i>L&apos;Album de familles</i>.
                             </h2>
                             <p className="text-lg leading-relaxed text-justify text-gray-600">
                                 Cette plateforme représente un hommage vibrant
                                 au patrimoine québécois, une véritable source de
                                 fierté, mettant en lumière les entreprises
-                                familiales qui façonnent l`&apos;`histoire et la
+                                familiales qui façonnent l&apos;histoire et la
                                 culture de notre province. Grâce à son interface
                                 conviviale et ses fonctionnalités avancées,
                                 notre application permet aux utilisateurs de
                                 découvrir ces entreprises remarquables,
-                                d`&apos;`explorer leur histoire unique et de
-                                mener leurs propres investigations.
-                                Rejoignez-nous dans cette aventure captivante
-                                pour célébrer et soutenir l`&apos;`esprit
-                                d`&apos;`entreprise familial qui anime le Québec
-                                !
+                                d&apos;explorer leur histoire unique et de mener
+                                leurs propres investigations. Rejoignez-nous
+                                dans cette aventure captivante pour célébrer et
+                                soutenir l&apos;esprit d&apos;entreprise
+                                familial qui anime le Québec !
                             </p>
                         </div>
                         <div className="space-y-5">
@@ -152,8 +150,8 @@ export default function APropos() {
                                     Équipe de communication et logistique
                                 </h3>
                                 <p className="text-lg text-gray-700 mb-4">
-                                    Un grand merci à l`&apos;`équipe de
-                                    communication et logistique qui s`&apos;`est
+                                    Un grand merci à l&apos;équipe de
+                                    communication et logistique qui s&apos;est
                                     chargé du lancement et des médias :
                                 </p>
                                 <ul className="list-disc list-inside pl-4 text-lg text-gray-700">
@@ -182,7 +180,7 @@ export default function APropos() {
                                     Montréal
                                 </h3>
                                 <p className="text-lg text-gray-700 mb-4">
-                                    Merci aux membres de l`&apos;`équipe de la
+                                    Merci aux membres de l&apos;équipe de la
                                     base entrepreneuriale HEC Montréal pour leur
                                     collaboration et leur soutien :
                                 </p>
@@ -237,7 +235,7 @@ export default function APropos() {
                                     <ul className="list-disc list-inside pl-4 text-lg text-gray-700 mt-4">
                                         <li>
                                             Rina Marchand, du Réseau Mentorat et
-                                            autrice de l`&apos;`Indice
+                                            autrice de l&apos;Indice
                                             entrepreneurial québécois, pour ses
                                             conseils
                                         </li>
@@ -255,11 +253,11 @@ export default function APropos() {
                                             diversité et gouvernance
                                         </li>
                                         <li>
-                                            Serge Beauchemin, d`&apos;`Alias
-                                            entrepreneur-e pour l`&apos;`accès à
+                                            Serge Beauchemin, d&apos;Alias
+                                            entrepreneur-e pour l&apos;accès à
                                             la base de données de la recherche
-                                            sur l`&apos;`entrepreneuriat face à
-                                            la COVID-19
+                                            sur l&apos;entrepreneuriat face à la
+                                            COVID-19
                                         </li>
                                     </ul>
                                     <div className="w-[500px] flex flex-col items-center justify-evenly">
@@ -337,7 +335,7 @@ export default function APropos() {
                                 Avant-propos
                             </h1>
                             <h2 className="text-2xl text-gray-700">
-                                Pourquoi faire une enquête comme l`&apos;`{' '}
+                                Pourquoi faire une enquête comme l&apos;{' '}
                                 <i>Album de familles</i>?
                             </h2>
                             <p className="text-lg leading-relaxed text-justify text-gray-600">
@@ -531,7 +529,7 @@ export default function APropos() {
                                 <div className="text-lg text-gray-700 flex flex-row justify-evenly">
                                     <p>
                                         Un merci spécial à Olivier de Richoufftz
-                                        pour l`&apos;`accès à la base de données
+                                        pour l&apos;accès à la base de données
                                         de la Fondation des familles
                                         entrepreneuriales (BFF).{' '}
                                     </p>
@@ -556,21 +554,21 @@ export default function APropos() {
                                         />
                                     </span>
                                     <p>
-                                        Merci à l`&apos;`équipe de la firme de
+                                        Merci à l&apos;équipe de la firme de
                                         recherche CROP pour la collecte des
                                         données et la réalisation de
-                                        l`&apos;`étude sommaire des résultats.{' '}
+                                        l&apos;étude sommaire des résultats.{' '}
                                     </p>
                                 </div>
                             </div>
                             <div className="bg-[#f6f2eef4] p-6 rounded-lg shadow-lg">
                                 <h3 className="text-2xl font-medium text-[#1c305c] mb-3">
-                                    L`&apos;`Application
+                                    L&apos;Application
                                 </h3>
                                 <div className="text-lg text-gray-700 flex flex-col justify-evenly">
                                     <p>
                                         Cette application à été développée par
-                                        l`&apos;`équipe de Civision.{' '}
+                                        l&apos;équipe de Civision.{' '}
                                     </p>
                                     <span className="text-[#1c305c] font-semibold flex justify-center items-center p-4">
                                         <Image
