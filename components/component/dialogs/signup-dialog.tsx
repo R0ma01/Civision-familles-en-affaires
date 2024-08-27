@@ -11,7 +11,7 @@ import { Language } from '@/components/enums/language';
 import Modal from '@/components/component/modal/modal';
 import Button from '@/components/component/buttons/button';
 import { PagePaths } from '@/components/enums/page-paths-enum';
-import { useUser } from '@/context/user-context';
+import useGlobalUserStore from '@/stores/global-user-store';
 
 const INITIAL_VALUES = {
     firstName: '',
@@ -26,7 +26,9 @@ const SignupDialog: React.FC = () => {
     const { signupValidationSchema } = authValidationSchemas();
     const { lang } = useDataStore();
     const t = authTranslations[lang as Language];
-    const { setUser } = useUser();
+    const { setUser } = useGlobalUserStore((state: any) => ({
+        setUser: state.setUser,
+    }));
 
     const router = useRouter();
 
