@@ -12,15 +12,15 @@ import { ButtonType } from '@/components/enums/button-type-enum';
 
 const LandingPage = () => {
     return (
-        <div className="relative h-screen overflow-auto lg:overflow-hidden xl:overflow-hidden">
-            <div className="flex h-full relative">
+        <div className="h-screen overflow-x-hidden overflow-y-auto md:overflow-hidden lg:overflow-hidden">
+            <div className="flex h-full">
                 {/* Sidebar */}
                 <Sidebar />
 
                 <div className="relative h-screen w-screen">
                     {/* Logo Component */}
                     <div
-                        className="absolute inset-0 w-full top-36 hidden lg:block"
+                        className="absolute inset-0 w-full top-36 hidden md:block"
                         style={{
                             transform: 'scale(1.2) translateX(200px)',
                         }}
@@ -28,14 +28,14 @@ const LandingPage = () => {
                         <RotatingLogo />
                     </div>
                     {/* Content Overlay */}
-                    <div className="absolute top-8 left-10 z-10 p-4 md:p-8 lg:p-12">
+                    <div className="absolute top-8 left-10 z-10 p-4">
                         {/* Your text and other content here */}
-                        <h1 className="text-5xl font-bold mb-7 text-[#262626]">
+                        <h1 className="text-xl md:text-3xl lg:text-5xl font-bold mb-7 text-[#262626]">
                             Découvrez les{' '}
                         </h1>
                         <div className="flex items-center">
                             {/* Wrap h1 and underline image in a container */}
-                            <h1 className="text-6xl font-bold mb-7 text-[#262626]">
+                            <h1 className="text-2xl md:text-4xl lg:text-6xl font-bold mb-7 text-[#262626]">
                                 entreprises familiales
                                 <Image
                                     src={Sun}
@@ -44,7 +44,7 @@ const LandingPage = () => {
                                 />
                             </h1>
                         </div>
-                        <h1 className="text-5xl font-bold mb-4 text-[#262626]">
+                        <h1 className="text-xl md:text-3xl lg:text-5xl font-bold mb-4 text-[#262626]">
                             du Québec
                         </h1>
 
@@ -58,7 +58,7 @@ const LandingPage = () => {
                             <div className="w-[50%] pr-2 flex items-center">
                                 <Link href={PagePaths.THEMATIQUES}>
                                     <Button buttonType={ButtonType.PULSE}>
-                                        <span className="text-lg text-[#000000]  transition-duration-300">
+                                        <span className="text-xs md:text-md lg:text-lg text-[#000000] transition-duration-300">
                                             <span className="mr-1">
                                                 {' '}
                                                 Explorez &#8594;
@@ -68,8 +68,8 @@ const LandingPage = () => {
                                 </Link>
                             </div>
                         </div>
-                        <div className="text-sm mt-12 ml-1">
-                            <div className="w-[500px] lg:w-[700px] xl:w-[900px] mb-2">
+                        <div className="text-xs md:text-sm lg:text-sm mt-12 ml-1 flex flex-col">
+                            <div className="w-[400px] md:w-[550px] lg:w-[700px] mb-2">
                                 <h4>
                                     <strong>Bienvenue</strong> sur la nouvelle
                                     plateforme de Familles en affaires, une
@@ -82,7 +82,7 @@ const LandingPage = () => {
                                     </em>
                                 </h4>
                             </div>
-                            <div className="mb-4 text-sm w-[500px] lg:w-[700px] xl:w-[900px]">
+                            <div className="mb-4 text-xs md:text-sm lg:text-sm w-[400px] md:w-[550px] lg:w-[700px]">
                                 <h4>
                                     Cette plateforme représente un hommage
                                     vibrant au patrimoine québécois, une
