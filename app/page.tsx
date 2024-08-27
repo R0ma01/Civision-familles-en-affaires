@@ -107,19 +107,19 @@ const LandingPage = () => {
                         <Image
                             src="/images/fea-full-logo.png"
                             width={100}
-                            height={200}
+                            height={100}
                             alt="logo-FEA"
                         />
                         <Image
                             src="/images/Logos-civision.png"
                             width={100}
-                            height={200}
+                            height={100}
                             alt="logo-FEA"
                         />
                         <Image
                             src="/images/logo-meie.jpg"
                             width={100}
-                            height={200}
+                            height={100}
                             alt="logo-FEA"
                         />
                     </div>
