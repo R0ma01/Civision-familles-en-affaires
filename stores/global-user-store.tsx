@@ -1,6 +1,7 @@
 import { UserType } from '@/components/enums/user-type-enum';
 import { UserHttpRequestService } from '@/services/user-http-request-service';
 import { create } from 'zustand';
+import { persist, devtools } from 'zustand/middleware';
 
 interface GlobalState {
     user: UserType;
@@ -10,19 +11,28 @@ interface GlobalState {
     updateCompletedTutorials: (tutorials: boolean[]) => void;
 }
 
-const useGlobalUserStore = create<GlobalState>((set) => ({
-    user: UserType.VISITOR,
-    setUser: (user: UserType) => {
-        set({ user });
-    },
-    tutorials: [],
-    setLoginTutorials: async (tutorials: boolean[]) => {
-        set({ tutorials });
-    },
-    updateCompletedTutorials: async (tutorials: boolean[]) => {
-        set({ tutorials });
-        await UserHttpRequestService.updateTutorials(tutorials);
-    },
-}));
+const useGlobalUserStore = create(
+    devtools(
+        persist(
+            (set) => ({
+                user: UserType.VISITOR,
+                setUser: (user: UserType) => {
+                    set({ user });
+                },
+                tutorials: [],
+                setLoginTutorials: async (tutorials: boolean[]) => {
+                    set({ tutorials });
+                },
+                updateCompletedTutorials: async (tutorials: boolean[]) => {
+                    set({ tutorials });
+                    await UserHttpRequestService.updateTutorials(tutorials);
+                },
+            }),
+            {
+                name: 'global-user-store', // unique name for local storage
+            },
+        ),
+    ),
+);
 
 export default useGlobalUserStore;

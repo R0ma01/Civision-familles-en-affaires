@@ -20,7 +20,8 @@ import {
     FournisseurSVG,
 } from '@/components/component/svg-icons/svg-icons';
 
-import { useUser } from '@/context/user-context'; // Adjust the path as necessary
+//import { useUser } from '@/context/user-context'; // Adjust the path as necessary
+import useGlobalUserStore from '@/stores/global-user-store';
 
 enum hoverColor {
     green = 'green',
@@ -30,7 +31,10 @@ enum hoverColor {
 }
 
 const Sidebar: React.FC = () => {
-    const { user, setUser } = useUser();
+    const { user, setUser } = useGlobalUserStore((state: any) => ({
+        user: state.user,
+        setUser: state.setUser,
+    }));
     const [isDisconnectDialogOpen, setIsDisconnectDialogOpen] = useState(false);
 
     const openDisconnectDialog = (e: any) => {

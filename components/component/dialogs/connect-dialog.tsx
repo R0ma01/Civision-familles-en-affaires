@@ -19,6 +19,7 @@ import {
 import { Language } from '@/components/enums/language';
 import Modal from '@/components/component/modal/modal';
 import { useUser } from '@/context/user-context';
+import useGlobalUserStore from '@/stores/global-user-store';
 //import { useGlobalUserStore } from '@/stores/global-user-store';
 
 const ConnectDialog: React.FC<ConnectDialogProps> = ({
@@ -28,8 +29,12 @@ const ConnectDialog: React.FC<ConnectDialogProps> = ({
     const { lang } = useDataStore();
     const t = authTranslations[lang as Language];
     const router = useRouter();
+    const { setLoginTutorials, setUser } = useGlobalUserStore((state: any) => ({
+        setLoginTutorials: state.setLoginTutorials,
+        setUser: state.setUser,
+    }));
     //const { setUser, setLoginTutorials } = useGlobalUserStore();
-    const { setUser, setLoginTutorials } = useUser(); // Get the setUser function
+    //const { setUser, setLoginTutorials } = useUser(); // Get the setUser function
 
     useEffect(() => {
         const handleEsc = (event: any) => {
