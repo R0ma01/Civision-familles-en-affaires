@@ -33,4 +33,18 @@ const colors = {
     black2: '#292a2f', // Raisin Black
 };
 
-export { logoPalette, chartPalette, colors };
+const mapColors = {
+    colorValue1: '#c7eeff',
+    colorValue5: '#afd8ed',
+    colorValue15: '#98c2dc',
+    colorValue30: '#83accb',
+    colorValue50: '#6e96ba',
+    colorValue100: '#5b81a9',
+    colorValue250: '#496d98',
+    colorValue500: '#395887',
+    colorValue1000: '#294476',
+    colorValue1500: '#1a3165',
+    colorValue2000: '#0b1f54',
+    colorValue3000: '#000c42',
+};
+export { logoPalette, chartPalette, colors, mapColors };

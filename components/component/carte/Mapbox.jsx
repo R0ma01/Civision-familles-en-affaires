@@ -15,9 +15,12 @@ const MapBox = () => {
     const { point } = useMapStore();
     const mapContainerRef = useRef(null);
     const mapRef = useRef(null);
-    const { studyFilteredData } = useGlobalDataStore((state) => ({
-        studyFilteredData: state.studyFilteredData,
-    }));
+    const { studyFilteredData, repertoireFilteredData } = useGlobalDataStore(
+        (state) => ({
+            studyFilteredData: state.studyFilteredData,
+            repertoireFilteredData: state.repertoireFilteredData,
+        }),
+    );
 
     const { filteredFournisseurData } = useGlobalFournisseursStore((state) => ({
         filteredFournisseurData: state.filteredFournisseurData,
@@ -57,10 +60,8 @@ const MapBox = () => {
                     studyFilteredData,
                     isDarkMode,
                     hoveredStateId,
+                    repertoireFilteredData,
                 );
-                // Add Quebec region boundaries source
-
-                // Change cursor on cluster hover
             });
         }
 
