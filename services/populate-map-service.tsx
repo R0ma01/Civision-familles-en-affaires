@@ -93,23 +93,25 @@ function convertData(compagnies: CompanyInfo[]) {
 
 function convertRepertoireData(compagnies: RepertoireData[]) {
     const features = compagnies
-        .map((compagnie: RepertoireData) => {
-            if (compagnie.COORD) {
-                return {
-                    type: 'Feature',
-                    geometry: {
-                        type: 'Point',
-                        coordinates: compagnie.COORD,
-                    },
-                    properties: {
-                        weight: 0.5,
-                        // nom_entreprise: compagnie.nom_entreprise,
-                        // secteur_activite: compagnie.secteur_activite,
-                        // taille_entreprise: compagnie.taille_entreprise,
-                        // annee_fondation: compagnie.annee_fondation,
-                        // adresse: compagnie.adresse,
-                    },
-                };
+        .flatMap((compagnie: RepertoireData) => {
+            if (compagnie.COORD && compagnie.NOM_ASSUJ) {
+                return compagnie.NOM_ASSUJ.map((nom) => {
+                    return {
+                        type: 'Feature',
+                        geometry: {
+                            type: 'Point',
+                            coordinates: compagnie.COORD,
+                        },
+                        properties: {
+                            weight: 0.5,
+                            nom_entreprise: nom,
+                            // secteur_activite: compagnie.secteur_activite,
+                            // taille_entreprise: compagnie.taille_entreprise,
+                            // annee_fondation: compagnie.annee_fondation,
+                            // adresse: compagnie.adresse,
+                        },
+                    };
+                });
             }
             return null;
         })
@@ -117,7 +119,7 @@ function convertRepertoireData(compagnies: RepertoireData[]) {
 
     return {
         type: 'FeatureCollection',
-        features: features,
+        features: features.flat(), // Flatten the array of arrays
     };
 }
 

@@ -8,7 +8,10 @@ export async function GET() {
         const collection = db.collection(MongoDBPaths.REGISTRE_QC);
 
         const result = await collection
-            .find({ ENT_FAM: { $exists: true } }, { projection: { COORD: 1 } })
+            .find(
+                { ENT_FAM: { $exists: true } },
+                { projection: { COORD: 1, NOM_ASSUJ: 1 } },
+            )
             .toArray();
 
         if (!result) {

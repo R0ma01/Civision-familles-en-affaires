@@ -29,7 +29,6 @@ const useGlobalDataStore = create(
 
                         const responseRepertoire =
                             await GraphDataHttpRequestService.getAllRepertoireData();
-
                         set({
                             studyCompanyData: responseStudy,
                             studyFilteredData: responseStudy,

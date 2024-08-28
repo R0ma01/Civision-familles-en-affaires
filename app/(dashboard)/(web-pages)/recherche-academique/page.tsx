@@ -6,7 +6,6 @@ import useMapStore from '@/stores/global-map-store';
 import DataCardContent from '@/components/interface/data-card-content';
 import { DataCardType } from '@/components/enums/data-card-type-enum';
 import DataCard from '@/components/component/data-card/data-card';
-import { GraphBoxType } from '@/components/enums/graph-box-enum';
 import DataCardContainer from '@/components/component/data-card/data-card-container';
 import { ChercheurDropdownItem } from '@/components/interface/chercheur-drop-down-content';
 import { MapType } from '@/components/enums/map-type-enum';
