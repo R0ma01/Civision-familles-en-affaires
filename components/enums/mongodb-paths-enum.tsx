@@ -4,4 +4,5 @@ export enum MongoDBPaths {
     COLLECTION_USERS = 'users_v2',
     FOURNISSEURS = 'fournisseurs-v1',
     DATABASE = 'familles-en-affaires',
+    REGISTRE_QC = 'registraireQC',
 }

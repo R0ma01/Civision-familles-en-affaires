@@ -31,13 +31,17 @@ const GraphBox: React.FC<GraphBoxProps> = ({
     content,
     chartSize = ChartSize.MEDIUM,
 }) => {
-    const { filteredData, companyData, setFilteredData, loading } =
-        useGlobalDataStore((state: any) => ({
-            filteredData: state.filteredData,
-            companyData: state.companyData,
-            setFilteredData: state.setFilteredData,
-            loading: state.loading,
-        }));
+    const {
+        studyFilteredData,
+        studyCompanyData,
+        setStudyFilteredData,
+        loading,
+    } = useGlobalDataStore((state: any) => ({
+        studyFilteredData: state.studyFilteredData,
+        studyCompanyData: state.studyCompanyData,
+        setStudyFilteredData: state.setStudyFilteredData,
+        loading: state.loading,
+    }));
     const [chartData, setChartData] = useState<ChartContent | null>(null);
 
     const { filterData, setFilter, getFilter } = useGlobalFilterStore();
@@ -51,10 +55,10 @@ const GraphBox: React.FC<GraphBoxProps> = ({
             setFilter(dataField, entry.name);
         }
         setFrozen(true);
-        const newData = companyData.filter((company: CompanyInfo) =>
+        const newData = studyCompanyData.filter((company: CompanyInfo) =>
             filterPredicate(filterData, company),
         );
-        setFilteredData(newData);
+        setStudyFilteredData(newData);
     }
 
     useEffect(() => {
@@ -67,7 +71,7 @@ const GraphBox: React.FC<GraphBoxProps> = ({
                 case GraphBoxType.DOUGHNUT:
                     const doughnutData = useDoughnutChartAnalysis(
                         content.donnes,
-                        filteredData,
+                        studyFilteredData,
                     );
                     setChartData(doughnutData);
                     break;
@@ -75,28 +79,28 @@ const GraphBox: React.FC<GraphBoxProps> = ({
                     const doubleHorizontalData =
                         doubleHorizontalBarChartAnalysis(
                             content.donnes,
-                            filteredData,
+                            studyFilteredData,
                         );
                     setChartData(doubleHorizontalData);
                     break;
                 case GraphBoxType.HORIZONTAL_BARCHART:
                     const horizontalData = useDoughnutChartAnalysis(
                         content.donnes,
-                        filteredData,
+                        studyFilteredData,
                     );
                     setChartData(horizontalData);
                     break;
                 case GraphBoxType.VERTICAL_BARCHART:
                     const verticalData = useDoughnutChartAnalysis(
                         content.donnes,
-                        filteredData,
+                        studyFilteredData,
                     );
                     setChartData(verticalData);
                     break;
                 case GraphBoxType.STACKED_BARCHART:
                     const stackedData = useStackedBarChartAnalysis(
                         content.donnes,
-                        filteredData,
+                        studyFilteredData,
                     );
                     setChartData(stackedData);
                     break;
@@ -113,7 +117,7 @@ const GraphBox: React.FC<GraphBoxProps> = ({
 
         filterChartData();
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [content, filteredData]);
+    }, [content, studyFilteredData]);
 
     if (loading) {
         return (

@@ -12,14 +12,19 @@ interface DashboardProps {
 }
 
 const Dashboard = ({ children }: DashboardProps) => {
-    const { companyData, fetchData, loading, error } = useGlobalDataStore(
-        (state: any) => ({
-            companyData: state.companyData,
-            fetchData: state.fetchData,
-            loading: state.loading,
-            error: state.error,
-        }),
-    );
+    const {
+        studyCompanyData,
+        repertoireCompanyData,
+        fetchData,
+        loading,
+        error,
+    } = useGlobalDataStore((state: any) => ({
+        studyCompanyData: state.studyCompanyData,
+        repertoireCompanyData: state.repertoireCompanyData,
+        fetchData: state.fetchData,
+        loading: state.loading,
+        error: state.error,
+    }));
 
     const { pagesData, fetchPageData, pageLoading, pageError } =
         useGlobalPageStore();
@@ -32,7 +37,11 @@ const Dashboard = ({ children }: DashboardProps) => {
 
     useEffect(() => {
         async function fetchAll() {
-            if (companyData.length === 0 && !loading) {
+            if (
+                studyCompanyData.length === 0 &&
+                repertoireCompanyData.length === 0 &&
+                !loading
+            ) {
                 await fetchData();
             }
 
@@ -48,7 +57,8 @@ const Dashboard = ({ children }: DashboardProps) => {
         fetchAll();
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [
-        companyData.length,
+        studyCompanyData.length,
+        repertoireCompanyData.length,
         loading,
         pagesData,
         pageLoading,

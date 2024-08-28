@@ -1,11 +1,11 @@
 import { NextResponse } from 'next/server';
-import { connectToDatabase } from '@/utils/mongodb';
+import { connectToDatabaseStudy } from '@/utils/mongodb';
 import { ObjectId } from 'mongodb'; // Import ObjectId
 import { MongoDBPaths } from '@/components/enums/mongodb-paths-enum';
 
 export async function DELETE(req: Request) {
     try {
-        const db = (await connectToDatabase()).db;
+        const db = (await connectToDatabaseStudy()).db;
         const collection = db.collection(MongoDBPaths.COLLECTION_PAGES);
         const url = new URL(req.url!);
         const id = url.searchParams.get('_id');

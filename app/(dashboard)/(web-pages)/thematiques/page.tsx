@@ -6,21 +6,22 @@ import useGlobalPageStore from '@/stores/global-page-store';
 import PageContent from '@/components/interface/page-content';
 import constants from '@/constants/constants';
 import useMapStore from '@/stores/global-map-store';
+import { MapType } from '@/components/enums/map-type-enum';
 
 export default function Thematiques() {
     const { pagesData, pageLoading, pageError } = useGlobalPageStore();
     const [pages, setPages] = useState<PageContent[]>([]);
 
-    const { mapType, setMapStyle } = useMapStore((state) => ({
-        mapType: state.mapType,
-        setMapStyle: state.setMapStyle,
-    }));
+    const { mapType, setMapStyle } = useMapStore((state) => {
+        return { mapType: state.mapType, setMapStyle: state.setMapStyle };
+    });
 
     useEffect(() => {
-        if (!mapType) {
-            setMapStyle(true);
+        if (mapType !== MapType.PAGE_INFORMATION) {
+            setMapStyle(MapType.PAGE_INFORMATION);
         }
-    }, [mapType, setMapStyle]);
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [mapType]);
 
     useEffect(() => {
         if (pages.length === 0 && pagesData) {

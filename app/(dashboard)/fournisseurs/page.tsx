@@ -12,24 +12,26 @@ import { ButtonType } from '@/components/enums/button-type-enum';
 import { AdminSVG } from '@/components/component/svg-icons/svg-icons';
 import useGlobalUserStore from '@/stores/global-user-store';
 import { UserType } from '@/components/enums/user-type-enum';
+import { MapType } from '@/components/enums/map-type-enum';
 
 function Fournisseurs() {
-    const { mapType, setMapStyle } = useMapStore((state) => {
-        return { mapType: state.mapType, setMapStyle: state.setMapStyle };
-    });
-
     const [editDialogOpen, setEditDialogOpen] = useState<boolean>(false);
 
     const { user } = useGlobalUserStore((state: any) => ({
         user: state.user,
     }));
 
+    const { mapType, setMapStyle } = useMapStore((state) => ({
+        setMapStyle: state.setMapStyle,
+        mapType: state.mapType,
+    }));
+
     useEffect(() => {
-        if (mapType) {
-            setMapStyle(false);
+        if (mapType !== MapType.FOURNISSEURS) {
+            setMapStyle(MapType.FOURNISSEURS);
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [mapType]);
+    }, [mapType, setMapStyle]);
 
     const content1: DataCardContent = {
         title: 'Liste des Fournisseurs',

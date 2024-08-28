@@ -1,13 +1,15 @@
 import { NextResponse } from 'next/server';
-import { connectToDatabase } from '@/utils/mongodb';
+import { connectToDatabaseRepertoire } from '@/utils/mongodb';
 import { MongoDBPaths } from '@/components/enums/mongodb-paths-enum';
 
 export async function GET() {
     try {
-        const db = (await connectToDatabase()).db;
-        const collection = db.collection(MongoDBPaths.COLLECTION_DATA);
+        const db = (await connectToDatabaseRepertoire()).db;
+        const collection = db.collection(MongoDBPaths.REGISTRE_QC);
 
-        const result = await collection.find({}).toArray();
+        const result = await collection
+            .find({ ENT_FAM: { $exists: true } }, { projection: { COORD: 1 } })
+            .toArray();
 
         if (!result) {
             return NextResponse.json(

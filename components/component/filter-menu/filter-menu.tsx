@@ -29,10 +29,10 @@ const FilterMenu: React.FC<FilterMenuProps> = ({
     const [isOpen, setIsOpen] = useState<boolean>(false);
     const [selectedTab, setSelectedTab] = useState<string>('general');
     const { filterData, setFilter } = useGlobalFilterStore();
-    const { companyData, setFilteredData } = useGlobalDataStore(
+    const { studyCompanyData, setStudyFilteredData } = useGlobalDataStore(
         (state: any) => ({
-            companyData: state.companyData,
-            setFilteredData: state.setFilteredData,
+            studyCompanyData: state.companyData,
+            setStudyFilteredData: state.setStudyFilteredData,
         }),
     );
     const [visible, setVisible] = useState<boolean>(true);
@@ -49,10 +49,10 @@ const FilterMenu: React.FC<FilterMenuProps> = ({
 
     function handleChange(field: MainDataFields, newFieldValue: any) {
         setFilter(field, newFieldValue);
-        const filtered = companyData.filter((company: CompanyInfo) =>
+        const filtered = studyCompanyData.filter((company: CompanyInfo) =>
             filterPredicate(filterData, company),
         );
-        setFilteredData(filtered);
+        setStudyFilteredData(filtered);
     }
 
     const zoomIn = () => {

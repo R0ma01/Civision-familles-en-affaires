@@ -6,8 +6,8 @@ import { useEffect, useState } from 'react';
 import useMapStore from '@/stores/global-map-store';
 
 function SearchBox() {
-    const { filteredData } = useGlobalDataStore((state: any) => ({
-        filteredData: state.filteredData,
+    const { studyFilteredData } = useGlobalDataStore((state: any) => ({
+        studyFilteredData: state.studyFilteredData,
     }));
     const [searchTerm, setSearchTerm] = useState<string>('');
     const [tableData, setTableData] = useState<CompanyInfo[]>([]);
@@ -90,7 +90,7 @@ function SearchBox() {
     };
 
     function filterSearchParams() {
-        const newData = filteredData.filter(filterPredicate);
+        const newData = studyFilteredData.filter(filterPredicate);
 
         setTableData(sortAlphabetically(newData));
     }
@@ -127,7 +127,7 @@ function SearchBox() {
     useEffect(() => {
         filterSearchParams();
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [searchTerm, filteredData]);
+    }, [searchTerm, studyFilteredData]);
 
     return (
         <div

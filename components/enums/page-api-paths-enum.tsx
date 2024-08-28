@@ -4,7 +4,8 @@ export enum APIPaths {
     PAGE_DELETE = '/api/page/delete',
     PAGE_GET_ONE = '/api/page/get',
     PAGE_GET_ALL = '/api/page/getAll',
-    GRAPH_GET_ALL = '/api/graph/getAll',
+    GRAPH_GET_ALL_STUDY = '/api/graph/getAllStudy',
+    GRAPH_GET_ALL_REPERTOIRE = '/api/graph/getAllRepertoire',
     USER_UPDATE_TUTORIALS = '/api/user/updateTutorials',
     FOURNISSEURS_GET_ALL = '/api/fournisseurs/getAll',
 }

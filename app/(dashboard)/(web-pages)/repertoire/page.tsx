@@ -6,13 +6,23 @@ import { GraphBoxType } from '@/components/enums/graph-box-enum';
 import { MainDataFields } from '@/components/enums/data-types-enum';
 import RepertoirePageTutorial from '@/components/component/tutorials/repertoire-page-tutorial';
 import useMapStore from '@/stores/global-map-store';
+import { MapType } from '@/components/enums/map-type-enum';
+import { useEffect } from 'react';
 
 function Repertoire() {
     const tour = RepertoirePageTutorial();
 
-    const setMapStyle = useMapStore((state) => state.setMapStyle);
+    const { mapType, setMapStyle } = useMapStore((state) => ({
+        setMapStyle: state.setMapStyle,
+        mapType: state.mapType,
+    }));
 
-    setMapStyle(true);
+    useEffect(() => {
+        if (mapType !== MapType.REPERTOIRE) {
+            setMapStyle(MapType.REPERTOIRE);
+        }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [mapType, setMapStyle]);
 
     // async function customComplete() {
     //     const replacement = [true, ...tutorials.splice(1)];

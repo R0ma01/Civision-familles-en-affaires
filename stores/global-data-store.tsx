@@ -1,4 +1,5 @@
 import { CompanyInfo } from '@/components/interface/company';
+import { RepertoireData } from '@/components/interface/repertoire-data';
 import { GraphDataHttpRequestService } from '@/services/data-http-request-service';
 import { create } from 'zustand';
 import { devtools, persist } from 'zustand/middleware';
@@ -7,22 +8,33 @@ const useGlobalDataStore = create(
     devtools(
         persist(
             (set, get) => ({
-                companyData: [],
-                filteredData: [],
+                studyCompanyData: [],
+                studyFilteredData: [],
+                repertoireCompanyData: [],
+                repertoireFilteredData: [],
                 loading: false,
                 error: null,
                 dataFetched: false,
-                setFilteredData: (fData: CompanyInfo[]) =>
-                    set({ filteredData: fData }),
+                setStudyFilteredData: (fData: CompanyInfo[]) =>
+                    set({ studyFilteredData: fData }),
+                setRepertoireFilteredData: (fData: RepertoireData[]) =>
+                    set({ repertoirefilteredData: fData }),
                 fetchData: async () => {
                     if ((get() as any).dataFetched) return;
+
                     set({ loading: true, error: null });
                     try {
-                        const response =
-                            await GraphDataHttpRequestService.getAll();
+                        const responseStudy =
+                            await GraphDataHttpRequestService.getAllStudyData();
+
+                        const responseRepertoire =
+                            await GraphDataHttpRequestService.getAllRepertoireData();
+
                         set({
-                            companyData: response,
-                            filteredData: response,
+                            studyCompanyData: responseStudy,
+                            studyFilteredData: responseStudy,
+                            repertoireCompanyData: responseRepertoire,
+                            repertoireFilteredData: responseRepertoire,
                             loading: false,
                             dataFetched: true,
                         });

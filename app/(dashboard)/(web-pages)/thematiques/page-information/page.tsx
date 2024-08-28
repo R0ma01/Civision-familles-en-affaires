@@ -6,6 +6,7 @@ import DataCard from '@/components/component/data-card/data-card';
 import useGlobalPageStore from '@/stores/global-page-store';
 import PageContent from '@/components/interface/page-content';
 import useMapStore from '@/stores/global-map-store';
+import { MapType } from '@/components/enums/map-type-enum';
 
 function PageContentComponent() {
     const [page, setPage] = useState<PageContent | undefined>(undefined);
@@ -17,8 +18,8 @@ function PageContentComponent() {
     });
 
     useEffect(() => {
-        if (!mapType) {
-            setMapStyle(true);
+        if (mapType !== MapType.PAGE_INFORMATION) {
+            setMapStyle(MapType.PAGE_INFORMATION);
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [mapType]);

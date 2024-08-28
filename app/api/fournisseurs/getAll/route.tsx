@@ -1,10 +1,10 @@
 import { NextResponse } from 'next/server';
-import { connectToDatabase } from '@/utils/mongodb';
+import { connectToDatabaseStudy } from '@/utils/mongodb';
 import { MongoDBPaths } from '@/components/enums/mongodb-paths-enum';
 
 export async function GET() {
     try {
-        const db = (await connectToDatabase()).db;
+        const db = (await connectToDatabaseStudy()).db;
         const collection = db.collection(MongoDBPaths.FOURNISSEURS);
 
         const result = await collection.find({}).toArray();

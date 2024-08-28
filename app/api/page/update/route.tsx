@@ -1,12 +1,12 @@
 import { NextResponse } from 'next/server';
-import { connectToDatabase } from '@/utils/mongodb';
+import { connectToDatabaseStudy } from '@/utils/mongodb';
 import { ObjectId } from 'mongodb';
 import { MongoDBPaths } from '@/components/enums/mongodb-paths-enum';
 
 export async function PATCH(req: Request) {
     try {
         // Connect to the database
-        const db = (await connectToDatabase()).db;
+        const db = (await connectToDatabaseStudy()).db;
         const collection = db.collection(MongoDBPaths.COLLECTION_PAGES);
 
         // Parse the request body as JSON
