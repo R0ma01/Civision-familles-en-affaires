@@ -10,7 +10,12 @@ export async function GET() {
         const result = await collection
             .find(
                 { ENT_FAM: { $exists: true } },
-                { projection: { COORD: 1, NOM_ASSUJ: 1 } },
+                {
+                    projection: {
+                        COORD: 1,
+                        NOM_ASSUJ: 1,
+                    },
+                },
             )
             .toArray();
 

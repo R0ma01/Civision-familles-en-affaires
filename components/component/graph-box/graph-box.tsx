@@ -19,8 +19,12 @@ import { ChartSize } from '@/components/enums/chart-size-enum';
 import { MainDataFields } from '@/components/enums/data-types-enum';
 import useGlobalFilterStore from '@/stores/global-filter-store';
 import { filterPredicate } from '@/services/filtering-service';
-import { ChartData } from '@/components/interface/chart-data';
+import {
+    ChartData,
+    ChartDataMultipleFileds,
+} from '@/components/interface/chart-data';
 import { CompanyInfo } from '@/components/interface/company';
+import { GraphDataHttpRequestService } from '@/services/data-http-request-service';
 
 interface GraphBoxProps {
     content: GraphBoxContent;
@@ -42,8 +46,7 @@ const GraphBox: React.FC<GraphBoxProps> = ({
         setStudyFilteredData: state.setStudyFilteredData,
         loading: state.loading,
     }));
-    const [chartData, setChartData] = useState<ChartContent | null>(null);
-
+    const [chartContent, setChartContent] = useState<ChartContent | null>(null);
     const { filterData, setFilter, getFilter } = useGlobalFilterStore();
     const [frozen, setFrozen] = useState<boolean>(false);
 
@@ -61,6 +64,46 @@ const GraphBox: React.FC<GraphBoxProps> = ({
         setStudyFilteredData(newData);
     }
 
+    const [chartData, setChartData] = useState<
+        ChartData[] | ChartDataMultipleFileds[]
+    >([]);
+
+    async function fetchMultiple(donnes: MainDataFields[]) {
+        const result = await GraphDataHttpRequestService.getChartData(
+            donnes[0],
+        );
+        const tempResult: ChartDataMultipleFileds[] = [
+            {
+                name: 'groupe1',
+                value1: 1,
+                value2: 3,
+            },
+            {
+                name: 'groupe2',
+                value1: 1,
+                value2: 3,
+            },
+        ];
+        setChartData(tempResult);
+    }
+
+    async function fetch(donnes: MainDataFields) {
+        const result = await GraphDataHttpRequestService.getChartData(donnes);
+        setChartData(result);
+    }
+
+    useEffect(() => {
+        if (
+            content.graphType === GraphBoxType.DOUGHNUT ||
+            content.graphType === GraphBoxType.VERTICAL_BARCHART ||
+            content.graphType === GraphBoxType.HORIZONTAL_BARCHART
+        ) {
+            fetch(content.donnes[0]);
+        } else {
+            fetchMultiple(content.donnes);
+        }
+    }, [content]);
+
     useEffect(() => {
         const filterChartData = () => {
             if (frozen) {
@@ -68,56 +111,57 @@ const GraphBox: React.FC<GraphBoxProps> = ({
                 return;
             }
             switch (content.graphType) {
-                case GraphBoxType.DOUGHNUT:
-                    const doughnutData = useDoughnutChartAnalysis(
-                        content.donnes,
-                        studyFilteredData,
-                    );
-                    setChartData(doughnutData);
-                    break;
-                case GraphBoxType.DOUBLE_HORIZONTAL_BARCHART:
-                    const doubleHorizontalData =
-                        doubleHorizontalBarChartAnalysis(
-                            content.donnes,
-                            studyFilteredData,
-                        );
-                    setChartData(doubleHorizontalData);
-                    break;
                 case GraphBoxType.HORIZONTAL_BARCHART:
-                    const horizontalData = useDoughnutChartAnalysis(
-                        content.donnes,
-                        studyFilteredData,
-                    );
-                    setChartData(horizontalData);
-                    break;
+
                 case GraphBoxType.VERTICAL_BARCHART:
-                    const verticalData = useDoughnutChartAnalysis(
-                        content.donnes,
-                        studyFilteredData,
-                    );
-                    setChartData(verticalData);
-                    break;
+
+                case GraphBoxType.DOUGHNUT:
+                // const tempChartData: ChartContent = {
+                //     donnees: content.donnes,
+                //     data: chartData,
+                //     totalData: 1000,
+                // };
+
+                // setChartContent(tempChartData);
+                // break;
+                case GraphBoxType.DOUBLE_HORIZONTAL_BARCHART:
+                // const doubleHorizontalData =
+                //     doubleHorizontalBarChartAnalysis(
+                //         content.donnes,
+                //         studyFilteredData,
+                //     );
+                // setChartContent(doubleHorizontalData);
+                // break;
+
                 case GraphBoxType.STACKED_BARCHART:
-                    const stackedData = useStackedBarChartAnalysis(
-                        content.donnes,
-                        studyFilteredData,
-                    );
-                    setChartData(stackedData);
-                    break;
+                // const stackedData = useStackedBarChartAnalysis(
+                //     content.donnes,
+                //     studyFilteredData,
+                // );
+                // setChartContent(stackedData);
+                // break;
                 default:
-                    const emptyContent: ChartContent = {
-                        donnees: [MainDataFields.ANNEE_FONDATION],
-                        data: [],
-                        totalData: 0,
+                    // const emptyContent: ChartContent = {
+                    //     donnees: [MainDataFields.ANNEE_FONDATION],
+                    //     data: [],
+                    //     totalData: 0,
+                    // };
+                    // setChartContent(emptyContent);
+                    // break;
+                    const tempChartData: ChartContent = {
+                        donnees: content.donnes,
+                        data: chartData,
+                        totalData: 1000,
                     };
-                    setChartData(emptyContent);
+
+                    setChartContent(tempChartData);
                     break;
             }
         };
 
         filterChartData();
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [content, studyFilteredData]);
+    }, [content, studyFilteredData, chartData]);
 
     if (loading) {
         return (
@@ -127,7 +171,7 @@ const GraphBox: React.FC<GraphBoxProps> = ({
         );
     }
 
-    if (!chartData) {
+    if (!chartContent) {
         return (
             <div className="py-8 px-8 pointer-events-auto">
                 <p>No data available or an error occurred.</p>
@@ -139,14 +183,14 @@ const GraphBox: React.FC<GraphBoxProps> = ({
         case GraphBoxType.DOUBLE_HORIZONTAL_BARCHART:
             return (
                 <DoubleHorizontalChart
-                    chartContent={chartData}
+                    chartContent={chartContent}
                     chartSize={chartSize}
                 />
             );
         case GraphBoxType.DOUGHNUT:
             return (
                 <Doughnut
-                    chartContent={chartData}
+                    chartContent={chartContent}
                     chartSize={chartSize}
                     filterData={filterNewData}
                 />
@@ -154,7 +198,7 @@ const GraphBox: React.FC<GraphBoxProps> = ({
         case GraphBoxType.HORIZONTAL_BARCHART:
             return (
                 <HorizontalBarChart
-                    chartContent={chartData}
+                    chartContent={chartContent}
                     chartSize={chartSize}
                     filterData={filterNewData}
                 />
@@ -162,7 +206,7 @@ const GraphBox: React.FC<GraphBoxProps> = ({
         case GraphBoxType.VERTICAL_BARCHART:
             return (
                 <VerticalBarChart
-                    chartContent={chartData}
+                    chartContent={chartContent}
                     chartSize={chartSize}
                     filterData={filterNewData}
                 />
@@ -170,7 +214,7 @@ const GraphBox: React.FC<GraphBoxProps> = ({
         case GraphBoxType.STACKED_BARCHART:
             return (
                 <StackedBarChart
-                    chartContent={chartData}
+                    chartContent={chartContent}
                     chartSize={chartSize}
                 />
             );

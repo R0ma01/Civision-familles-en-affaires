@@ -105,7 +105,7 @@ function convertRepertoireData(compagnies: RepertoireData[]) {
                         properties: {
                             weight: 0.5,
                             nom_entreprise: nom,
-                            // secteur_activite: compagnie.secteur_activite,
+                            description: compagnie.DESC_ACT_ECON_ASSUJ,
                             // taille_entreprise: compagnie.taille_entreprise,
                             // annee_fondation: compagnie.annee_fondation,
                             // adresse: compagnie.adresse,
@@ -523,25 +523,23 @@ export function populateMapLayers(
                     },
                 });
 
-                // Popup for unclustered points
-                // mapRef.current.on('click', 'unclustered-point', (e: any) => {
-                //     const coordinates =
-                //         e.features[0].geometry.coordinates.slice();
-                //     const properties = e.features[0].properties;
+                //Popup for unclustered points
+                mapRef.current.on('click', 'unclustered-point', (e: any) => {
+                    const coordinates =
+                        e.features[0].geometry.coordinates.slice();
+                    const properties = e.features[0].properties;
 
-                //     new mapboxgl.Popup()
-                //         .setLngLat(coordinates)
-                //         .setHTML(
-                //             `
-                //     <strong>${properties.nom_entreprise}</strong><br>
-                //     Secteur d'activité: ${properties.secteur_activite}<br>
-                //     Taille de l'entreprise: ${properties.taille_entreprise}<br>
-                //     Année de fondation: ${properties.annee_fondation}<br>
-                //     Adresse: ${properties.adresse}
-                // `,
-                //         )
-                //         .addTo(mapRef.current);
-                // });
+                    new mapboxgl.Popup()
+                        .setLngLat(coordinates)
+                        .setHTML(
+                            `
+                    <strong>${properties.nom_entreprise}</strong><br>
+                    Secteur d'activité: ${properties.description}<br>
+                  
+                `,
+                        )
+                        .addTo(mapRef.current);
+                });
 
                 // Zoom into clusters on click
                 mapRef.current.on('click', 'clusters', (e: any) => {

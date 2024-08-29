@@ -37,6 +37,7 @@ const Doughnut: React.FC<DoughnutChartProps> = ({
 
     useEffect(() => {
         setChartData(chartContent.data);
+        console.log(chartContent);
     }, [chartContent.data]);
 
     const width = chartSize === ChartSize.SMALL ? chartSize : chartSize + 100;

@@ -1,5 +1,5 @@
 import { ChartSize } from '@/components/enums/chart-size-enum';
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import {
     BarChart,
     Bar,
@@ -10,6 +10,10 @@ import {
 } from 'recharts';
 import { chartPalette } from '@/constants/color-palet';
 import { ChartContent } from '@/components/interface/chart-content';
+import {
+    ChartData,
+    ChartDataMultipleFileds,
+} from '@/components/interface/chart-data';
 
 interface SimpleDoubleHorizontalBarChartProps {
     chartContent: ChartContent;
@@ -41,11 +45,18 @@ const CustomYAxisLabel = (props: any) => {
 const DoubleHorizontalBarChart: React.FC<
     SimpleDoubleHorizontalBarChartProps
 > = ({ chartContent, chartSize = ChartSize.SMALL }) => {
+    const [chartData, setChartData] = useState<
+        ChartData[] | ChartDataMultipleFileds[] | undefined
+    >(undefined);
+
+    useEffect(() => {
+        setChartData(chartContent.data);
+    }, [chartContent]);
     // Check chartSize and set default values if needed
     return (
         <div className="dark:text-white">
             <ResponsiveContainer width={chartSize} height={chartSize}>
-                <BarChart layout="vertical" data={chartContent.data}>
+                <BarChart layout="vertical" data={chartData}>
                     <XAxis
                         type="number"
                         stroke="currentColor"
@@ -54,7 +65,7 @@ const DoubleHorizontalBarChart: React.FC<
                     <YAxis
                         dataKey="name"
                         type="category"
-                        width={chartSize / chartContent.data.length}
+                        width={70}
                         tick={<CustomYAxisLabel fill="currentColor" />}
                         stroke="currentColor"
                     />

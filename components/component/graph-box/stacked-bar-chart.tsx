@@ -1,5 +1,5 @@
 import { ChartSize } from '@/components/enums/chart-size-enum';
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import {
     BarChart,
     Bar,
@@ -11,6 +11,11 @@ import {
 } from 'recharts';
 import { chartPalette } from '@/constants/color-palet';
 import { ChartContent } from '@/components/interface/chart-content';
+import { context } from '@react-three/fiber';
+import {
+    ChartData,
+    ChartDataMultipleFileds,
+} from '@/components/interface/chart-data';
 
 interface StackedBarChartProps {
     chartContent: ChartContent;
@@ -22,12 +27,20 @@ const StackedBarChart: React.FC<StackedBarChartProps> = ({
     chartSize = ChartSize.SMALL,
 }) => {
     console.log(chartContent);
+    const [chartData, setChartData] = useState<
+        ChartData[] | ChartDataMultipleFileds[] | undefined
+    >(undefined);
+
+    useEffect(() => {
+        setChartData(chartContent.data);
+    }, [chartContent]);
+
     return (
         <div
             className={`dark:text-white ${chartSize === ChartSize.SMALL ? 'text-sm' : 'text-base'}`}
         >
             <ResponsiveContainer width={chartSize} height={chartSize}>
-                <BarChart data={chartContent.data}>
+                <BarChart data={chartData}>
                     <XAxis
                         dataKey="name"
                         stroke="currentColor"
@@ -59,16 +72,21 @@ const StackedBarChart: React.FC<StackedBarChartProps> = ({
                             </span>
                         )}
                     />
-                    {Object.keys(chartContent.data[0])
-                        .filter((key) => key !== 'name')
-                        .map((key, index) => (
-                            <Bar
-                                key={key}
-                                dataKey={key}
-                                stackId={key}
-                                fill={chartPalette[index % chartPalette.length]}
-                            />
-                        ))}
+                    {chartData &&
+                        Object.keys(chartData[0])
+                            .filter((key) => key !== 'name')
+                            .map((key, index) => (
+                                <Bar
+                                    key={key}
+                                    dataKey={key}
+                                    stackId={key}
+                                    fill={
+                                        chartPalette[
+                                            index % chartPalette.length
+                                        ]
+                                    }
+                                />
+                            ))}
                 </BarChart>
             </ResponsiveContainer>
         </div>
