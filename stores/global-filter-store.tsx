@@ -1,13 +1,13 @@
 import { create } from 'zustand';
+import { produce } from 'immer';
 
-import * as filters from '@/components/enums/filter-enum';
 import { CompanyInfo } from '@/components/interface/company';
 import { MainDataFields } from '@/components/enums/data-types-enum';
 
 interface GlobalState {
     filterData: CompanyInfo;
-    setFilter: (filterName: any, filterValue: any) => void;
-    getFilter: (filterName: MainDataFields) => any;
+    setFilter: (filterName: MainDataFields | string, filterValue: any) => void;
+    getFilter: (filterName: MainDataFields | string) => any;
 }
 
 const useGlobalFilterStore = create<GlobalState>((set, get) => ({
@@ -63,41 +63,46 @@ const useGlobalFilterStore = create<GlobalState>((set, get) => ({
         taille_entreprise: 'toutes',
     },
 
-    setFilter: (filter: any, newValue: any) => {
-        const currentFilters = get().filterData;
+    setFilter: (filterPath, newValue) => {
+        set((state) => {
+            const updatedFilters = updateFilter(
+                state.filterData,
+                filterPath,
+                newValue,
+            );
 
-        const updatedFilters = updateFilter(currentFilters, filter, newValue);
-
-        set({ filterData: updatedFilters });
+            return { filterData: updatedFilters };
+        });
     },
 
-    getFilter(filterName) {
-        const filters: any = get().filterData;
-        const filterPathDecomp = filterName.split(' ');
-        if (filterPathDecomp.length === 1) {
-            return filters[filterPathDecomp[0]];
-        } else if (filterPathDecomp.length === 2) {
-            return filters[filterPathDecomp[0]][filterPathDecomp[1]];
-        } else if (filterPathDecomp.length === 3) {
-            return filters[filterPathDecomp[0]][filterPathDecomp[1]][
-                filterPathDecomp[2]
-            ];
-        }
-        return '';
+    getFilter(filterPath) {
+        const filters = get().filterData;
+        const result = retrieveFilter(filters, filterPath);
+
+        return result;
     },
 }));
 
-function updateFilter(filters: any, filterPath: string, newValue: any) {
-    const filterPathDecomp = filterPath.split(' ');
-    if (filterPathDecomp.length === 1) {
-        filters[filterPathDecomp[0]] = newValue;
-    } else if (filterPathDecomp.length === 2) {
-        filters[filterPathDecomp[0]][filterPathDecomp[1]] = newValue;
-    } else if (filterPathDecomp.length === 3) {
-        filters[filterPathDecomp[0]][filterPathDecomp[1]][filterPathDecomp[2]] =
-            newValue;
+function updateFilter(filters: CompanyInfo, filterPath: string, newValue: any) {
+    return produce(filters, (draft) => {
+        const keys = filterPath.split('.');
+        let current = draft as any;
+        for (let i = 0; i < keys.length - 1; i++) {
+            if (!current[keys[i]]) current[keys[i]] = {};
+            current = current[keys[i]];
+        }
+        current[keys[keys.length - 1]] = newValue;
+    });
+}
+
+function retrieveFilter(filters: CompanyInfo, filterPath: string) {
+    const keys = filterPath.split('.');
+    let current = filters as any;
+    for (let i = 0; i < keys.length; i++) {
+        if (!current[keys[i]]) return '';
+        current = current[keys[i]];
     }
-    return filters;
+    return current;
 }
 
 export default useGlobalFilterStore;

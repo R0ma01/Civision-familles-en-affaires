@@ -74,7 +74,10 @@ const DataCard: React.FC<DataCardProps> = ({ content, className }) => {
                     <DescriptionComponent>
                         {content.description}
                     </DescriptionComponent>
-                    <GraphBox content={content.graphData[0]} />
+                    <GraphBox
+                        content={content.graphData[0]}
+                        chartSize={ChartSize.LARGE}
+                    />
                 </DataCardDiv>
             );
 
@@ -85,7 +88,11 @@ const DataCard: React.FC<DataCardProps> = ({ content, className }) => {
                         {content.description}
                     </DescriptionComponent>
                     {content.graphData?.map((graph, index) => (
-                        <GraphBox key={index} content={graph} />
+                        <GraphBox
+                            key={index}
+                            content={graph}
+                            chartSize={ChartSize.LARGE}
+                        />
                     ))}
                 </DataCardDiv>
             );

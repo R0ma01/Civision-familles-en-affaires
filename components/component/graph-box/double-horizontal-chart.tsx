@@ -1,5 +1,5 @@
 import { ChartSize } from '@/components/enums/chart-size-enum';
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import {
     BarChart,
     Bar,
@@ -49,10 +49,46 @@ const DoubleHorizontalBarChart: React.FC<
         ChartData[] | ChartDataMultipleFileds[] | undefined
     >(undefined);
 
+    const originalOrder = useRef<
+        ChartData[] | ChartDataMultipleFileds[] | undefined
+    >(undefined);
+
     useEffect(() => {
-        setChartData(chartContent.data);
-    }, [chartContent]);
-    // Check chartSize and set default values if needed
+        if (chartContent.data.length > 0) {
+            if (!originalOrder.current) {
+                // Save the initial order on first render
+                originalOrder.current = chartContent.data;
+            } else {
+                // Reorder new data to match the original order
+                const updatedData = originalOrder.current.map(
+                    (originalItem) => {
+                        const newItem = chartContent.data.find(
+                            (newItem) => newItem.name === originalItem.name,
+                        );
+                        return newItem
+                            ? { ...originalItem, ...newItem } // Merge values from new data
+                            : { ...originalItem, value: 0 };
+                    },
+                );
+
+                // Add new items that were not in the original data
+                chartContent.data.forEach((newItem) => {
+                    if (
+                        !originalOrder.current!.some(
+                            (originalItem) =>
+                                originalItem.name === newItem.name,
+                        )
+                    ) {
+                        updatedData.push(newItem);
+                    }
+                });
+
+                setChartData(updatedData);
+                originalOrder.current = updatedData;
+            }
+        }
+    }, [chartContent.data]);
+
     return (
         <div className="dark:text-white">
             <ResponsiveContainer width={chartSize} height={chartSize}>
@@ -70,8 +106,9 @@ const DoubleHorizontalBarChart: React.FC<
                         stroke="currentColor"
                     />
                     <Tooltip />
-                    {chartContent.data.length > 0 &&
-                        Object.keys(chartContent.data[0])
+                    {chartData &&
+                        chartData.length > 0 &&
+                        Object.keys(chartData[0])
                             .filter((key) => key !== 'name') // Exclude the 'name' key
                             .map((key, index) => (
                                 <Bar

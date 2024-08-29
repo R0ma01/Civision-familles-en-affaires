@@ -1,5 +1,5 @@
 import { ChartSize } from '@/components/enums/chart-size-enum';
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import {
     BarChart,
     Bar,
@@ -11,7 +11,6 @@ import {
 } from 'recharts';
 import { chartPalette } from '@/constants/color-palet';
 import { ChartContent } from '@/components/interface/chart-content';
-import { context } from '@react-three/fiber';
 import {
     ChartData,
     ChartDataMultipleFileds,
@@ -26,18 +25,55 @@ const StackedBarChart: React.FC<StackedBarChartProps> = ({
     chartContent,
     chartSize = ChartSize.SMALL,
 }) => {
-    console.log(chartContent);
     const [chartData, setChartData] = useState<
         ChartData[] | ChartDataMultipleFileds[] | undefined
     >(undefined);
 
+    const originalOrder = useRef<
+        ChartData[] | ChartDataMultipleFileds[] | undefined
+    >(undefined);
+
     useEffect(() => {
-        setChartData(chartContent.data);
-    }, [chartContent]);
+        if (chartContent.data.length > 0) {
+            if (!originalOrder.current) {
+                // Save the initial order on first render
+                originalOrder.current = chartContent.data;
+            } else {
+                // Reorder new data to match the original order
+                const updatedData = originalOrder.current.map(
+                    (originalItem) => {
+                        const newItem = chartContent.data.find(
+                            (newItem) => newItem.name === originalItem.name,
+                        );
+                        return newItem
+                            ? { ...originalItem, ...newItem } // Merge values from new data
+                            : { ...originalItem, value: 0 };
+                    },
+                );
+
+                // Add new items that were not in the original data
+                chartContent.data.forEach((newItem) => {
+                    if (
+                        !originalOrder.current!.some(
+                            (originalItem) =>
+                                originalItem.name === newItem.name,
+                        )
+                    ) {
+                        updatedData.push(newItem);
+                    }
+                });
+
+                setChartData(updatedData);
+                originalOrder.current = updatedData;
+            }
+        }
+    }, [chartContent.data]);
 
     return (
         <div
-            className={`dark:text-white ${chartSize === ChartSize.SMALL ? 'text-sm' : 'text-base'}`}
+            className={`dark:text-white ${
+                chartSize === ChartSize.SMALL ? 'text-sm' : 'text-base'
+            }`}
         >
             <ResponsiveContainer width={chartSize} height={chartSize}>
                 <BarChart data={chartData}>
@@ -79,7 +115,7 @@ const StackedBarChart: React.FC<StackedBarChartProps> = ({
                                 <Bar
                                     key={key}
                                     dataKey={key}
-                                    stackId={key}
+                                    stackId="a"
                                     fill={
                                         chartPalette[
                                             index % chartPalette.length
@@ -87,6 +123,12 @@ const StackedBarChart: React.FC<StackedBarChartProps> = ({
                                     }
                                 />
                             ))}
+
+                    {!chartData && (
+                        <div>
+                            <p>Chargement ...</p>
+                        </div>
+                    )}
                 </BarChart>
             </ResponsiveContainer>
         </div>

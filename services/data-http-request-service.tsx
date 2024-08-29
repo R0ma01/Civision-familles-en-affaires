@@ -43,10 +43,11 @@ async function getAllRepertoireData(): Promise<RepertoireData[]> {
 
 async function getChartData(
     donnes: MainDataFields,
+    filters: CompanyInfo,
 ): Promise<ChartData[] | ChartDataMultipleFileds[]> {
     try {
         const response = await axios.get(APIPaths.GRAPH_GET_DATA, {
-            params: { donnes: donnes },
+            params: { donnes: donnes, filters: JSON.stringify(filters) },
         });
 
         return response.data.chartData;

@@ -1,16 +1,20 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import {
     ResponsiveContainer,
     PieChart,
     Pie,
     Cell,
     Tooltip,
-    Legend, // Import Legend
+    Legend,
 } from 'recharts';
 import { chartPalette } from '@/constants/color-palet';
 import { ChartSize } from '@/components/enums/chart-size-enum';
 import { ChartContent } from '@/components/interface/chart-content';
 import { MainDataFields } from '@/components/enums/data-types-enum';
+import {
+    ChartData,
+    ChartDataMultipleFileds,
+} from '@/components/interface/chart-data';
 
 interface DoughnutChartProps {
     chartContent: ChartContent;
@@ -25,7 +29,9 @@ const Doughnut: React.FC<DoughnutChartProps> = ({
     filterData = (entry: any) => {},
 }) => {
     const [activeSlice, setActiveSlice] = useState<string | null>(null);
-    const [chartData, setChartData] = useState(chartContent.data);
+    const originalOrder = useRef<
+        ChartData[] | ChartDataMultipleFileds[] | undefined
+    >(undefined);
 
     const radiusMap = {
         [ChartSize.SMALL]: { inner: '30%', outer: '70%' },
@@ -35,9 +41,44 @@ const Doughnut: React.FC<DoughnutChartProps> = ({
 
     const { inner, outer } = radiusMap[chartSize];
 
+    const [chartData, setChartData] = useState<
+        ChartData[] | ChartDataMultipleFileds[] | undefined
+    >(undefined);
+
     useEffect(() => {
-        setChartData(chartContent.data);
-        console.log(chartContent);
+        if (chartContent.data.length > 0) {
+            if (!originalOrder.current) {
+                // Save the initial order on first render
+                originalOrder.current = chartContent.data;
+            } else {
+                // Reorder new data to match the original order
+                const updatedData = originalOrder.current.map(
+                    (originalItem) => {
+                        const newItem = chartContent.data.find(
+                            (newItem) => newItem.name === originalItem.name,
+                        );
+                        return newItem
+                            ? { ...originalItem, value: newItem.value }
+                            : { ...originalItem, value: 0 };
+                    },
+                );
+
+                // Add new items that were not in the original data
+                chartContent.data.forEach((newItem: any) => {
+                    if (
+                        !originalOrder.current!.some(
+                            (originalItem) =>
+                                originalItem.name === newItem.name,
+                        )
+                    ) {
+                        updatedData.push(newItem);
+                    }
+                });
+
+                setChartData(updatedData);
+                originalOrder.current = updatedData;
+            }
+        }
     }, [chartContent.data]);
 
     const width = chartSize === ChartSize.SMALL ? chartSize : chartSize + 100;
@@ -57,15 +98,24 @@ const Doughnut: React.FC<DoughnutChartProps> = ({
                             setActiveSlice(activeSlice === name ? null : name)
                         }
                     >
-                        {chartData.map((entry, index) => (
-                            <Cell
-                                key={`cell-${index}`}
-                                fill={chartPalette[index % chartPalette.length]}
-                                onClick={() => {
-                                    filterData(chartContent.donnees[0], entry);
-                                }}
-                            />
-                        ))}
+                        {chartData &&
+                            chartData.map((entry, index) => (
+                                <Cell
+                                    key={`cell-${index}`}
+                                    fill={
+                                        chartPalette[
+                                            index % chartPalette.length
+                                        ]
+                                    }
+                                    onClick={() => {
+                                        filterData(
+                                            chartContent.donnees[0],
+                                            entry,
+                                        );
+                                    }}
+                                />
+                            ))}
+                        {!chartData && <div>Chargement...</div>}
                     </Pie>
                     <Tooltip />
                     <Legend
@@ -79,27 +129,25 @@ const Doughnut: React.FC<DoughnutChartProps> = ({
                         }}
                         iconSize={chartSize === ChartSize.SMALL ? 8 : 12}
                         formatter={(value) => {
-                            {
-                                return chartSize === ChartSize.SMALL ? (
-                                    <span
-                                        style={{
-                                            fontSize: '6px',
-                                            color: 'currentColor',
-                                        }}
-                                    >
-                                        {value}
-                                    </span>
-                                ) : (
-                                    <span
-                                        style={{
-                                            fontSize: '12px',
-                                            color: 'currentColor',
-                                        }}
-                                    >
-                                        {value}
-                                    </span>
-                                );
-                            }
+                            return chartSize === ChartSize.SMALL ? (
+                                <span
+                                    style={{
+                                        fontSize: '6px',
+                                        color: 'currentColor',
+                                    }}
+                                >
+                                    {value}
+                                </span>
+                            ) : (
+                                <span
+                                    style={{
+                                        fontSize: '12px',
+                                        color: 'currentColor',
+                                    }}
+                                >
+                                    {value}
+                                </span>
+                            );
                         }}
                     />
                 </PieChart>
