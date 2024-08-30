@@ -14,16 +14,16 @@ import { Field } from 'formik';
 import GraphBoxContent from '@/components/interface/graph-box-content';
 
 export default function test() {
-    const { mapType, setMapStyle } = useMapStore((state) => {
-        return { mapType: state.mapType, setMapStyle: state.setMapStyle };
-    });
+    // const { mapType, setMapStyle } = useMapStore((state) => {
+    //     return { mapType: state.mapType, setMapStyle: state.setMapStyle };
+    // });
 
-    useEffect(() => {
-        if (mapType !== MapType.PAGE_INFORMATION) {
-            setMapStyle(MapType.PAGE_INFORMATION);
-        }
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [mapType]);
+    // useEffect(() => {
+    //     if (mapType !== MapType.PAGE_INFORMATION) {
+    //         setMapStyle(MapType.PAGE_INFORMATION);
+    //     }
+    //     // eslint-disable-next-line react-hooks/exhaustive-deps
+    // }, [mapType]);
 
     return (
         <PageContentContainer className="h-screen overflow-y-auto relative flex items-center w-[100%]">
