@@ -8,7 +8,11 @@ export function usePageActions() {
     const [isDeleteDialogOpen, setDeleteDialogOpen] = useState(false);
     const [currentPage, setCurrentPage] = useState<PageContent | null>(null);
 
-    const { refreshPageData } = useGlobalPageStore();
+    const { refreshPageData } = useGlobalPageStore((state: any) => {
+        return {
+            refreshPageData: state.refreshPageData,
+        };
+    });
 
     const openEditDialog = (page: PageContent) => {
         setCurrentPage(page);
