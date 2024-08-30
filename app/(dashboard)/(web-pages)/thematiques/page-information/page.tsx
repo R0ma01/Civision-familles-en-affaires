@@ -7,15 +7,40 @@ import useGlobalPageStore from '@/stores/global-page-store';
 import PageContent from '@/components/interface/page-content';
 import useMapStore from '@/stores/global-map-store';
 import { MapType } from '@/components/enums/map-type-enum';
+import useGlobalDataStore from '@/stores/global-data-store';
 
 function PageContentComponent() {
     const [page, setPage] = useState<PageContent | undefined>(undefined);
     const searchParams = useSearchParams();
     const _id = searchParams.get('_id');
-    const { pagesData, pageLoading, pageError } = useGlobalPageStore();
+    const { pagesData, pageLoading, pageError } = useGlobalPageStore(
+        (state: any) => {
+            return {
+                pagesData: state.pagesData,
+                pageLoading: state.pageLoading,
+                pageError: state.pageError,
+            };
+        },
+    );
+
     const { mapType, setMapStyle } = useMapStore((state) => {
         return { mapType: state.mapType, setMapStyle: state.setMapStyle };
     });
+    const { studyCompanyData, fetchStudyData, loading, error } =
+        useGlobalDataStore((state: any) => ({
+            studyCompanyData: state.studyCompanyData,
+            fetchStudyData: state.fetchStudyData,
+            loading: state.loading,
+            error: state.error,
+        }));
+    useEffect(() => {
+        async function fetchData() {
+            await fetchStudyData();
+        }
+        if (studyCompanyData.length === 0 && !loading) {
+            fetchData();
+        }
+    }, [studyCompanyData, loading]);
 
     useEffect(() => {
         if (mapType !== MapType.PAGE_INFORMATION) {
@@ -26,12 +51,12 @@ function PageContentComponent() {
 
     useEffect(() => {
         if (!page && pagesData) {
-            setPage(pagesData.find((page) => page._id === _id));
+            setPage(pagesData.find((page: PageContent) => page._id === _id));
         }
     }, [page, pagesData, _id]);
 
-    if (pageLoading) return <div>Loading...</div>;
-    if (pageError) return <div>Error: {pageError}</div>;
+    if (pageLoading || loading) return <div>Loading...</div>;
+    if (pageError || error) return <div>Error: {pageError}</div>;
 
     return (
         <>

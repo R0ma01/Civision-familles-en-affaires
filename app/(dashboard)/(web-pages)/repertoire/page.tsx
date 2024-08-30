@@ -8,6 +8,7 @@ import RepertoirePageTutorial from '@/components/component/tutorials/repertoire-
 import useMapStore from '@/stores/global-map-store';
 import { MapType } from '@/components/enums/map-type-enum';
 import { useEffect } from 'react';
+import useGlobalDataStore from '@/stores/global-data-store';
 
 function Repertoire() {
     const tour = RepertoirePageTutorial();
@@ -16,6 +17,22 @@ function Repertoire() {
         setMapStyle: state.setMapStyle,
         mapType: state.mapType,
     }));
+
+    const { repertoireCompanyData, fetchRepertoireData, loading, error } =
+        useGlobalDataStore((state: any) => ({
+            repertoireCompanyData: state.repertoireCompanyData,
+            fetchRepertoireData: state.fetchRepertoireData,
+            loading: state.loading,
+            error: state.error,
+        }));
+    useEffect(() => {
+        async function fetchData() {
+            await fetchRepertoireData();
+        }
+        if (repertoireCompanyData.length === 0 && !loading) {
+            fetchData();
+        }
+    }, [repertoireCompanyData, loading]);
 
     useEffect(() => {
         if (mapType !== MapType.REPERTOIRE) {

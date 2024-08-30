@@ -14,6 +14,7 @@ import useGlobalPageStore from '@/stores/global-page-store';
 import { usePageActions } from './use-page-actions'; // Import the custom hook
 import useMapStore from '@/stores/global-map-store';
 import { MapType } from '@/components/enums/map-type-enum';
+import useGlobalDataStore from '@/stores/global-data-store';
 
 const newPage: PageContent = {
     title: 'Votre titre ICI',
@@ -25,10 +26,34 @@ const newPage: PageContent = {
 
 export default function Admin() {
     const { pagesData, pageLoading, pageError, refreshPageData } =
-        useGlobalPageStore();
+        useGlobalPageStore((state: any) => {
+            return {
+                pagesData: state.pagesData,
+                pageLoading: state.pageLoading,
+                pageError: state.pageError,
+                refreshPageData: state.refreshPageData,
+            };
+        });
+
     const { user } = useGlobalUserStore((state: any) => ({
         user: state.user,
     }));
+
+    const { studyCompanyData, fetchStudyData, loading, error } =
+        useGlobalDataStore((state: any) => ({
+            studyCompanyData: state.studyCompanyData,
+            fetchStudyData: state.fetchStudyData,
+            loading: state.loading,
+            error: state.error,
+        }));
+    useEffect(() => {
+        async function fetchData() {
+            await fetchStudyData();
+        }
+        if (studyCompanyData.length === 0 && !loading) {
+            fetchData();
+        }
+    }, [studyCompanyData, loading]);
 
     const { mapType, setMapStyle } = useMapStore((state) => ({
         setMapStyle: state.setMapStyle,
@@ -72,7 +97,7 @@ export default function Admin() {
             <div className="justify-center flex flex-col w-[80%] items-center">
                 <div className="justify-center flex flex-wrap">
                     {pagesData
-                        ? pagesData.map((page, index) => (
+                        ? pagesData.map((page: PageContent, index: number) => (
                               <ThemeCard
                                   index={index.toString()}
                                   key={page._id || page.title} // Ensure unique key

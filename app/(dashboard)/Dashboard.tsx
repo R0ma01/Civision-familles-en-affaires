@@ -44,14 +44,6 @@ const Dashboard = ({ children }: DashboardProps) => {
 
     useEffect(() => {
         async function fetchAll() {
-            if (
-                studyCompanyData.length === 0 &&
-                repertoireCompanyData.length === 0 &&
-                !loading
-            ) {
-                await fetchData();
-            }
-
             if (!pagesData && !pageLoading) {
                 await fetchPageData();
             }

@@ -19,7 +19,7 @@ const useGlobalDataStore = create(
                     set({ studyFilteredData: fData }),
                 setRepertoireFilteredData: (fData: RepertoireData[]) =>
                     set({ repertoirefilteredData: fData }),
-                fetchData: async () => {
+                fetchStudyData: async () => {
                     if ((get() as any).dataFetched) return;
 
                     set({ loading: true, error: null });
@@ -27,11 +27,24 @@ const useGlobalDataStore = create(
                         const responseStudy =
                             await GraphDataHttpRequestService.getAllStudyData();
 
-                        const responseRepertoire =
-                            await GraphDataHttpRequestService.getAllRepertoireData();
                         set({
                             studyCompanyData: responseStudy,
                             studyFilteredData: responseStudy,
+                            loading: false,
+                            dataFetched: true,
+                        });
+                    } catch (err: any) {
+                        set({ error: err.message, loading: false });
+                    }
+                },
+                fetchRepertoireData: async () => {
+                    if ((get() as any).dataFetched) return;
+
+                    set({ loading: true, error: null });
+                    try {
+                        const responseRepertoire =
+                            await GraphDataHttpRequestService.getAllRepertoireData();
+                        set({
                             repertoireCompanyData: responseRepertoire,
                             repertoireFilteredData: responseRepertoire,
                             loading: false,
