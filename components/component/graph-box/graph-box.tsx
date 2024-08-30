@@ -51,7 +51,7 @@ const GraphBox: React.FC<GraphBoxProps> = ({
     useEffect(() => {
         async function fetchMultiple(donnes: MainDataFields[]) {
             const result = await GraphDataHttpRequestService.getChartData(
-                donnes[0],
+                donnes,
                 filterData,
             );
             const tempResult: ChartDataMultipleFileds[] = [
@@ -69,7 +69,7 @@ const GraphBox: React.FC<GraphBoxProps> = ({
             setChartData(result ? result : tempResult);
         }
 
-        async function fetch(donnes: MainDataFields) {
+        async function fetch(donnes: MainDataFields[]) {
             const result = await GraphDataHttpRequestService.getChartData(
                 donnes,
                 filterData,
@@ -82,7 +82,7 @@ const GraphBox: React.FC<GraphBoxProps> = ({
             content.graphType === GraphBoxType.VERTICAL_BARCHART ||
             content.graphType === GraphBoxType.HORIZONTAL_BARCHART
         ) {
-            fetch(content.donnes[0]);
+            fetch(content.donnes);
         } else {
             fetchMultiple(content.donnes);
         }
@@ -91,7 +91,7 @@ const GraphBox: React.FC<GraphBoxProps> = ({
     useEffect(() => {
         async function fetchMultiple(donnes: MainDataFields[]) {
             const result = await GraphDataHttpRequestService.getChartData(
-                donnes[0],
+                donnes,
                 filterData,
             );
             const tempResult: ChartDataMultipleFileds[] = [
@@ -109,7 +109,7 @@ const GraphBox: React.FC<GraphBoxProps> = ({
             setChartData(result ? result : tempResult);
         }
 
-        async function fetch(donnes: MainDataFields) {
+        async function fetch(donnes: MainDataFields[]) {
             const result = await GraphDataHttpRequestService.getChartData(
                 donnes,
                 filterData,
@@ -122,7 +122,7 @@ const GraphBox: React.FC<GraphBoxProps> = ({
             content.graphType === GraphBoxType.VERTICAL_BARCHART ||
             content.graphType === GraphBoxType.HORIZONTAL_BARCHART
         ) {
-            fetch(content.donnes[0]);
+            fetch(content.donnes);
         } else {
             fetchMultiple(content.donnes);
         }

@@ -72,6 +72,26 @@ const VerticalBarChart: React.FC<VerticalBarChartProps> = ({
         }
     }, [chartContent.data]);
 
+    const CustomTooltip = ({ active, payload }: any) => {
+        if (active && payload && payload.length) {
+            return (
+                <div
+                    className="custom-tooltip"
+                    style={{
+                        cursor: 'pointer',
+                        background: 'white',
+                        color: 'black',
+                        padding: '5px',
+                        border: '1px solid #ccc',
+                    }}
+                >
+                    <p>{`${payload[0].payload.name} : ${payload[0].payload.value}`}</p>
+                </div>
+            );
+        }
+        return null;
+    };
+
     return (
         <div className="flex flex-col h-auto dark:text-white">
             <ResponsiveContainer width={chartSize} height={chartSize}>
@@ -107,7 +127,7 @@ const VerticalBarChart: React.FC<VerticalBarChartProps> = ({
                             />
                         </>
                     )}
-                    <Tooltip />
+                    <Tooltip content={<CustomTooltip />} />
                     <Bar
                         dataKey="value"
                         barSize={chartSize / (10 + chartContent.data.length)}

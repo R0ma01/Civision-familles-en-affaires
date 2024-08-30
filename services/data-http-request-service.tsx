@@ -42,12 +42,16 @@ async function getAllRepertoireData(): Promise<RepertoireData[]> {
 }
 
 async function getChartData(
-    donnes: MainDataFields,
+    donnes: MainDataFields[],
     filters: CompanyInfo,
 ): Promise<ChartData[] | ChartDataMultipleFileds[]> {
     try {
+        console.log('REQUEST DONNES' + donnes);
         const response = await axios.get(APIPaths.GRAPH_GET_DATA, {
-            params: { donnes: donnes, filters: JSON.stringify(filters) },
+            params: {
+                donnes: JSON.stringify(donnes),
+                filters: JSON.stringify(filters),
+            },
         });
 
         return response.data.chartData;
