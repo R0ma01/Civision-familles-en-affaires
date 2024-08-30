@@ -46,7 +46,6 @@ async function getChartData(
     filters: CompanyInfo,
 ): Promise<ChartData[] | ChartDataMultipleFileds[]> {
     try {
-        console.log('REQUEST DONNES' + donnes);
         const response = await axios.get(APIPaths.GRAPH_GET_DATA, {
             params: {
                 donnes: JSON.stringify(donnes),

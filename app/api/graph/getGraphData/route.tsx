@@ -2,8 +2,27 @@ import { NextResponse } from 'next/server';
 import { connectToDatabaseStudy } from '@/utils/mongodb';
 import { MongoDBPaths } from '@/components/enums/mongodb-paths-enum';
 import { CompanyInfo } from '@/components/interface/company';
+import { PossibleDataFileds } from '@/services/tableaux-taitement';
+import { MainDataFields } from '@/components/enums/data-types-enum';
+import { Collection } from 'mongodb';
 
-function generateAggregationQuery(field: string, filters: CompanyInfo) {
+// Define interfaces for the aggregation results
+interface AggregationResult {
+    name: string;
+    value: number;
+}
+
+interface DualFieldAggregationResult {
+    name: string;
+    count: number;
+    [field2: string]: string | number; // Adjusted to include number
+}
+
+function generateAggregationQuery(
+    field: string,
+    filters: CompanyInfo,
+    possibleValues: string[],
+) {
     const matchStage: any = {};
 
     for (const [key, value] of Object.entries(filters)) {
@@ -24,7 +43,7 @@ function generateAggregationQuery(field: string, filters: CompanyInfo) {
         }
     }
 
-    return [
+    const aggregationPipeline = [
         {
             $match: {
                 ...matchStage,
@@ -38,47 +57,48 @@ function generateAggregationQuery(field: string, filters: CompanyInfo) {
             },
         },
         {
-            $lookup: {
-                from: 'allPossibleValues',
-                let: { name: '$_id' },
-                pipeline: [
-                    {
-                        $match: {
-                            $expr: { $eq: ['$$name', '$_id'] },
-                        },
-                    },
-                ],
-                as: 'allValues',
-            },
-        },
-        {
-            $unwind: {
-                path: '$allValues',
-                preserveNullAndEmptyArrays: true,
-            },
-        },
-        {
-            $addFields: {
-                value: { $ifNull: ['$count', 0] },
-            },
-        },
-        {
             $project: {
                 _id: 0,
                 name: '$_id',
-                value: 1,
+                value: '$count',
             },
         },
-        {
-            $sort: { name: 1 },
-        },
     ];
+
+    return async (collection: any): Promise<AggregationResult[]> => {
+        const result = await collection
+            .aggregate(aggregationPipeline)
+            .toArray();
+        let resultMap = new Map<string, AggregationResult>(
+            result.map((item: AggregationResult) => {
+                if (Array.isArray(item.name)) {
+                    return [JSON.stringify(item.name), item];
+                }
+                return [item.name.toString(), item];
+            }),
+        );
+
+        if (Array.from(resultMap.keys())[0]?.includes('[')) {
+            resultMap = unclusterResultArrays(
+                Array.from(resultMap.entries()),
+                possibleValues,
+            );
+        }
+        // Ensure all possible values are in the result
+        return possibleValues.map((value) => {
+            return {
+                name: value,
+                value: resultMap.get(value)?.value || 0,
+            };
+        });
+    };
 }
 
 function generateDualFieldAggregationQuery(
     field1: string,
     field2: string,
     filters: CompanyInfo,
+    possibleValues: { [key: string]: string[] },
 ) {
     const matchStage: any = {};
 
@@ -103,7 +123,7 @@ function generateDualFieldAggregationQuery(
     matchStage[field1] = { $exists: true, $ne: null };
     matchStage[field2] = { $exists: true, $ne: null };
 
-    return [
+    const aggregationPipeline = [
         {
             $match: matchStage,
         },
@@ -117,43 +137,85 @@ function generateDualFieldAggregationQuery(
             },
         },
         {
-            $lookup: {
-                from: 'allPossibleValues',
-                let: { name: '$_id' },
-                pipeline: [
-                    {
-                        $match: {
-                            $expr: { $eq: ['$$name', '$_id'] },
-                        },
-                    },
-                ],
-                as: 'allValues',
-            },
-        },
-        {
-            $unwind: {
-                path: '$allValues',
-                preserveNullAndEmptyArrays: true,
-            },
-        },
-        {
-            $addFields: {
-                count: { $ifNull: ['$count', 0] },
-            },
-        },
-        {
             $project: {
                 _id: 0,
                 name: `$_id.${field1}`,
                 [field2]: `$_id.${field2}`,
-                count: 1,
+                count: '$count',
             },
         },
-        {
-            $sort: { name: 1 },
-        },
     ];
+
+    return async (collection: any): Promise<DualFieldAggregationResult[]> => {
+        const result = await collection
+            .aggregate(aggregationPipeline)
+            .toArray();
+        const resultMap = new Map<string, DualFieldAggregationResult>(
+            result.map((item: DualFieldAggregationResult) => [
+                `${item.name}-${item[field2]}`,
+                item,
+            ]),
+        );
+
+        // Ensure all possible combinations of values are in the result
+        return possibleValues[field1].flatMap((value1) =>
+            possibleValues[field2].map((value2) => ({
+                name: value1,
+                [field2]: value2,
+                count: resultMap.get(`${value1}-${value2}`)?.count || 0,
+            })),
+        );
+    };
 }
+
+function unclusterResultArrays(originalResult: any, possibleValues: any) {
+    const resultMap = new Map();
+    possibleValues.map((value: string) => {
+        resultMap.set(value, { name: value, value: 0 });
+    });
+
+    originalResult.map((item: any) => {
+        item[1].name.map((name: string) => {
+            let result = resultMap.get(name.toString());
+
+            result.value += item[1].value;
+            resultMap.set(name.toString(), result);
+        });
+    });
+
+    return resultMap;
+}
+
+// async function generateSimpleAggregationQuery(
+//     field: string,
+//     collection: Collection<any>,
+// ): Promise<AggregationResult[]> {
+//     // Define the aggregation pipeline
+//     const aggregationPipeline = [
+//         {
+//             $match: {
+//                 [field]: { $exists: true, $ne: null },
+//             },
+//         },
+//         {
+//             $group: {
+//                 _id: `$${field}`, // Group by the field value
+//                 count: { $sum: 1 }, // Count occurrences
+//             },
+//         },
+//         {
+//             $project: {
+//                 _id: 0, // Exclude _id from the output
+//                 name: '$_id', // Rename _id to name
+//                 count: 1, // Include the count
+//             },
+//         },
+//     ];
+
+//     // Execute the aggregation
+//     const result = await collection.aggregate(aggregationPipeline).toArray();
+//     return result;
+// }
 
 export async function GET(req: Request) {
     try {
@@ -170,8 +232,8 @@ export async function GET(req: Request) {
             );
         }
 
-        const donnesObj = JSON.parse(donnes);
-        const filtersObj = JSON.parse(filters);
+        const donnesObj: MainDataFields[] = JSON.parse(donnes);
+        const filtersObj: CompanyInfo = JSON.parse(filters);
 
         if (!donnesObj || !filtersObj) {
             return NextResponse.json(
@@ -180,20 +242,33 @@ export async function GET(req: Request) {
             );
         }
 
-        let mongoQuery;
+        let mongoQuery: (collection: any) => Promise<any[]>;
 
         if (donnesObj.length > 1) {
+            const tableau1 = PossibleDataFileds.get(donnesObj[0]) || [];
+            const tableau2 = PossibleDataFileds.get(donnesObj[1]) || [];
+            const dynamicObject = {
+                [donnesObj[0]]: tableau1,
+                [donnesObj[1]]: tableau2,
+            };
+
             mongoQuery = generateDualFieldAggregationQuery(
                 donnesObj[0],
                 donnesObj[1],
                 filtersObj,
+                dynamicObject,
             );
         } else {
-            mongoQuery = generateAggregationQuery(donnesObj[0], filtersObj);
+            const tableau = PossibleDataFileds.get(donnesObj[0]) || [];
+            mongoQuery = generateAggregationQuery(
+                donnesObj[0],
+                filtersObj,
+                tableau,
+            );
         }
 
-        const result = await collection.aggregate(mongoQuery).toArray();
-        console.log(result);
+        const result = await mongoQuery(collection);
+
         if (!result || result.length === 0) {
             return NextResponse.json(
                 { error: 'Data field not found' },
