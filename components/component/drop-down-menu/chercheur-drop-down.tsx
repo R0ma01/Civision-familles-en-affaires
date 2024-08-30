@@ -63,14 +63,14 @@ const dropdownStructure: ChercheurDropdownSection[] = [
                 label: "Niveau d'études des dirigeants",
                 selected: false,
                 graphType: GraphBoxType.DOUGHNUT,
-                donnees: [MainDataFields.DIRIGEANT_NIVEAU_ETUDES],
+                donnees: [MainDataFields.REPONDANT_NIVEAU_ETUDE],
             },
             {
                 label: "Niveau d'études des dirigeants en fonction de leur âge",
                 selected: false,
                 graphType: GraphBoxType.STACKED_BARCHART,
                 donnees: [
-                    MainDataFields.DIRIGEANT_NIVEAU_ETUDES,
+                    MainDataFields.REPONDANT_NIVEAU_ETUDE,
                     MainDataFields.DIRIGEANT_AGE,
                 ],
             },
@@ -79,7 +79,7 @@ const dropdownStructure: ChercheurDropdownSection[] = [
                 selected: false,
                 graphType: GraphBoxType.STACKED_BARCHART,
                 donnees: [
-                    MainDataFields.DIRIGEANT_NIVEAU_ETUDES,
+                    MainDataFields.REPONDANT_NIVEAU_ETUDE,
                     MainDataFields.DIRIGEANT_GENERATION,
                 ],
             },
@@ -98,13 +98,13 @@ const dropdownStructure: ChercheurDropdownSection[] = [
                 label: 'Nombre d’actionnaires dans l’entreprise',
                 selected: false,
                 graphType: GraphBoxType.HORIZONTAL_BARCHART,
-                donnees: [MainDataFields.ACTIONNAIRES], //TODO ADD FIELD
+                donnees: [MainDataFields.ACTIONNAIRES_NOMBRE], //TODO ADD FIELD
             },
             {
                 label: 'Type d’actionnaires externe à la famille',
                 selected: false,
                 graphType: GraphBoxType.VERTICAL_BARCHART,
-                donnees: [MainDataFields.ACTIONNAIRES],
+                donnees: [MainDataFields.ACTIONNAIRES_EXTERNE],
             },
             {
                 label: 'Revenus annuels des entreprises familiales',
@@ -130,13 +130,15 @@ const dropdownStructure: ChercheurDropdownSection[] = [
                 label: 'Structure de gouvernance des entreprises familiales',
                 selected: false,
                 graphType: GraphBoxType.VERTICAL_BARCHART,
-                donnees: [MainDataFields.GOUVERNANCE], //TODO ADD FIELD
+                donnees: [MainDataFields.GOUVERNANCE_STRUCTURES], //TODO ADD FIELD
             },
             {
                 label: "Types de personnes qui siègent au comité consultatif ou conseil d'administration",
                 selected: false,
                 graphType: GraphBoxType.VERTICAL_BARCHART,
-                donnees: [MainDataFields.GOUVERNANCE], // TODO ADD FIELD
+                donnees: [
+                    MainDataFields.GOUVERNANCE_CONSEIL_CONSULTATIF_COMPOSITION,
+                ], // TODO ADD FIELD
             },
         ],
     },
@@ -171,7 +173,7 @@ const dropdownStructure: ChercheurDropdownSection[] = [
                 selected: false,
                 graphType: GraphBoxType.DOUBLE_HORIZONTAL_BARCHART,
                 donnees: [
-                    MainDataFields.GOUVERNANCE,
+                    MainDataFields.GOUVERNANCE_STRUCTURES,
                     MainDataFields.DIRIGEANT_SEXE,
                 ],
             },
@@ -190,7 +192,7 @@ const dropdownStructure: ChercheurDropdownSection[] = [
                 graphType: GraphBoxType.DOUBLE_HORIZONTAL_BARCHART,
                 donnees: [
                     MainDataFields.DIRIGEANT_SEXE,
-                    MainDataFields.DIRIGEANT_NIVEAU_ETUDES,
+                    MainDataFields.REPONDANT_NIVEAU_ETUDE,
                 ],
             },
         ],
