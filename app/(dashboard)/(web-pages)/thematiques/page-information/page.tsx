@@ -8,6 +8,7 @@ import PageContent from '@/components/interface/page-content';
 import useMapStore from '@/stores/global-map-store';
 import { MapType } from '@/components/enums/map-type-enum';
 import useGlobalDataStore from '@/stores/global-data-store';
+import useGlobalFilterStore from '@/stores/global-filter-store';
 
 function PageContentComponent() {
     const [page, setPage] = useState<PageContent | undefined>(undefined);
@@ -23,6 +24,10 @@ function PageContentComponent() {
         },
     );
 
+    const { filterData } = useGlobalFilterStore((state: any) => ({
+        filterData: state.filterData,
+    }));
+
     const { mapType, setMapStyle } = useMapStore((state) => {
         return { mapType: state.mapType, setMapStyle: state.setMapStyle };
     });
@@ -33,14 +38,16 @@ function PageContentComponent() {
             loading: state.loading,
             error: state.error,
         }));
+
     useEffect(() => {
         async function fetchData() {
-            await fetchStudyData();
+            console.log('iam called');
+            await fetchStudyData(filterData);
         }
         if (studyCompanyData.length === 0 && !loading) {
             fetchData();
         }
-    }, [studyCompanyData, loading]);
+    }, [studyCompanyData, loading, filterData]);
 
     useEffect(() => {
         if (mapType !== MapType.PAGE_INFORMATION) {

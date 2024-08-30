@@ -32,12 +32,11 @@ const FilterMenu: React.FC<FilterMenuProps> = ({
         filterData: state.filterData,
         setFilter: state.setFilter,
     }));
-    const { studyCompanyData, setStudyFilteredData } = useGlobalDataStore(
-        (state: any) => ({
-            studyCompanyData: state.companyData,
-            setStudyFilteredData: state.setStudyFilteredData,
-        }),
-    );
+
+    const { fetchStudyData } = useGlobalDataStore((state: any) => ({
+        fetchStudyData: state.fetchStudyData,
+    }));
+
     const [visible, setVisible] = useState<boolean>(true);
     const { map } = useMapStore(); // Get map instance from global state
 
@@ -50,9 +49,11 @@ const FilterMenu: React.FC<FilterMenuProps> = ({
         toggleContentVisibility();
     };
 
-    function handleChange(field: MainDataFields, newFieldValue: any) {
+    async function handleChange(field: MainDataFields, newFieldValue: any) {
         setFilter(field, newFieldValue);
+        await fetchStudyData(filterData);
         console.log('bjfe');
+
         // const filtered = studyCompanyData.filter((company: CompanyInfo) =>
         //     filterPredicate(filterData, company),
         // );

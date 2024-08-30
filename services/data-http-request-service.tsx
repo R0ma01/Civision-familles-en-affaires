@@ -14,9 +14,15 @@ export const GraphDataHttpRequestService = {
     getChartData: getChartData,
 };
 
-async function getAllStudyData(): Promise<CompanyInfo[]> {
+async function getAllStudyData(
+    filterData: CompanyInfo,
+): Promise<CompanyInfo[]> {
     try {
-        const response = await axios.get(APIPaths.GRAPH_GET_ALL_STUDY);
+        console.log('I am called');
+        console.log(filterData);
+        const response = await axios.get(APIPaths.GRAPH_GET_ALL_STUDY, {
+            params: JSON.stringify(filterData),
+        });
         return response.data.pages;
     } catch (error: any) {
         console.error(

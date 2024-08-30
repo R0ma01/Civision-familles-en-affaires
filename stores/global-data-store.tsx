@@ -15,17 +15,19 @@ const useGlobalDataStore = create(
                 loading: false,
                 error: null,
                 dataFetched: false,
-                setStudyFilteredData: (fData: CompanyInfo[]) =>
-                    set({ studyFilteredData: fData }),
-                setRepertoireFilteredData: (fData: RepertoireData[]) =>
-                    set({ repertoirefilteredData: fData }),
-                fetchStudyData: async () => {
+
+                fetchStudyData: async (filterData: CompanyInfo) => {
+                    console.log('hello');
                     if ((get() as any).dataFetched) return;
 
                     set({ loading: true, error: null });
                     try {
+                        console.log('I am called');
+                        console.log(filterData);
                         const responseStudy =
-                            await GraphDataHttpRequestService.getAllStudyData();
+                            await GraphDataHttpRequestService.getAllStudyData(
+                                filterData,
+                            );
 
                         set({
                             studyCompanyData: responseStudy,
