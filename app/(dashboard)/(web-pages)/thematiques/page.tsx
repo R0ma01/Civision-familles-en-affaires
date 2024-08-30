@@ -9,7 +9,15 @@ import useMapStore from '@/stores/global-map-store';
 import { MapType } from '@/components/enums/map-type-enum';
 
 export default function Thematiques() {
-    const { pagesData, pageLoading, pageError } = useGlobalPageStore();
+    const { pagesData, pageLoading, pageError } = useGlobalPageStore(
+        (state: any) => {
+            return {
+                pagesData: state.pagesData,
+                pageLoading: state.pageLoading,
+                pageError: state.pageError,
+            };
+        },
+    );
     const [pages, setPages] = useState<PageContent[]>([]);
 
     const { mapType, setMapStyle } = useMapStore((state) => {

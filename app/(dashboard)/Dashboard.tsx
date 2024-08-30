@@ -26,8 +26,15 @@ const Dashboard = ({ children }: DashboardProps) => {
         error: state.error,
     }));
 
-    const { pagesData, fetchPageData, pageLoading, pageError } =
-        useGlobalPageStore();
+    const { pagesData, pageLoading, pageError, fetchPageData } =
+        useGlobalPageStore((state: any) => {
+            return {
+                pagesData: state.pagesData,
+                pageLoading: state.pageLoading,
+                pageError: state.pageError,
+                fetchPageData: state.fetchPageData,
+            };
+        });
 
     const { fournisseurData, fetchFournisseurData } =
         useGlobalFournisseursStore((state: any) => ({
