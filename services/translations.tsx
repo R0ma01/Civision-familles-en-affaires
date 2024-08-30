@@ -132,7 +132,7 @@ const keyValuePairs: [string, string][] = [
         MainDataFields.AUTRES_ENTREPRISES_AUTRES_MEMBRES_FAMILLE_RELATIONS_AFFAIRES,
         "Relation D'Affaires avec les autres Propriétaires d'Entreprises dans la Famille",
     ],
-    [MainDataFields.DIRIGEANT_NIVEAU_ETUDES, "Niveau d'Études du Dirigeant"],
+    // [MainDataFields.DIRIGEANT_NIVEAU_ETUDES, "Niveau d'Études du Dirigeant"],
     // [
     //     MainDataFields.DIRIGEANT,
     //      [
