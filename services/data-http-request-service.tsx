@@ -5,6 +5,7 @@ import {
     ChartDataMultipleFileds,
 } from '@/components/interface/chart-data';
 import { CompanyInfo } from '@/components/interface/company';
+import { PointData } from '@/components/interface/point-data';
 import { RepertoireData } from '@/components/interface/repertoire-data';
 import axios from 'axios';
 
@@ -12,6 +13,7 @@ export const GraphDataHttpRequestService = {
     getAllStudyData: getAllStudyData,
     getAllRepertoireData: getAllRepertoireData,
     getChartData: getChartData,
+    getEntrepriseInformation: getEntrepriseInformation,
 };
 
 async function getAllStudyData(): Promise<CompanyInfo[]> {
@@ -61,4 +63,22 @@ async function getChartData(
         );
     }
     return [];
+}
+
+async function getEntrepriseInformation(id: string): Promise<PointData> {
+    try {
+        const response = await axios.get(APIPaths.MAP_GET_ENTREPRISE, {
+            params: {
+                id: id,
+            },
+        });
+
+        return response.data.entreprise;
+    } catch (error: any) {
+        console.error(
+            'Error fetching entreprise:',
+            error.response?.data?.error || error.message,
+        );
+    }
+    return undefined as unknown as PointData;
 }

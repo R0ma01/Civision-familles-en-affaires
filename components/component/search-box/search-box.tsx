@@ -59,6 +59,7 @@ function SearchBox() {
     function flyToPoint(company: RepertoireData) {
         // Handling RepertoireData type or any other type-specific logic
         // Assuming similar properties to CompanyInfo
+        
         if (company.COORD) {
             setMapPoint({
                 type: 'Feature',
@@ -101,7 +102,7 @@ function SearchBox() {
                     >
                         <td className="px-2 py-2 text-small dark:text-white text-black">
                             {company.NOM_ASSUJ
-                                ? company.NOM_ASSUJ
+                                ? company.NOM_ASSUJ[0].toLowerCase()
                                 : 'Non Disponible'}
                         </td>
                         <td className="px-1 py-1 flex justify-end mr-3">

@@ -9,4 +9,5 @@ export enum APIPaths {
     USER_UPDATE_TUTORIALS = '/api/user/updateTutorials',
     FOURNISSEURS_GET_ALL = '/api/fournisseurs/getAll',
     GRAPH_GET_DATA = '/api/graph/getGraphData',
+    MAP_GET_ENTREPRISE = '/api/map/getEntreprise',
 }

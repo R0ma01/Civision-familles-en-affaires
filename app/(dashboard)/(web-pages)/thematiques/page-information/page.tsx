@@ -26,21 +26,6 @@ function PageContentComponent() {
     const { mapType, setMapStyle } = useMapStore((state) => {
         return { mapType: state.mapType, setMapStyle: state.setMapStyle };
     });
-    const { studyCompanyData, fetchStudyData, loading, error } =
-        useGlobalDataStore((state: any) => ({
-            studyCompanyData: state.studyCompanyData,
-            fetchStudyData: state.fetchStudyData,
-            loading: state.loading,
-            error: state.error,
-        }));
-    useEffect(() => {
-        async function fetchData() {
-            await fetchStudyData();
-        }
-        if (studyCompanyData.length === 0 && !loading) {
-            fetchData();
-        }
-    }, [studyCompanyData, loading]);
 
     useEffect(() => {
         if (mapType !== MapType.PAGE_INFORMATION) {
@@ -55,8 +40,8 @@ function PageContentComponent() {
         }
     }, [page, pagesData, _id]);
 
-    if (pageLoading || loading) return <div>Loading...</div>;
-    if (pageError || error) return <div>Error: {pageError}</div>;
+    if (pageLoading) return <div>Loading...</div>;
+    if (pageError) return <div>Error: {pageError}</div>;
 
     return (
         <>

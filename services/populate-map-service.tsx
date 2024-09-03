@@ -7,6 +7,7 @@ import mapboxgl from 'mapbox-gl';
 import { AuthMechanism } from 'mongodb';
 import { RepertoireData } from '@/components/interface/repertoire-data';
 import { mapColors } from '@/constants/color-palet';
+import { GraphDataHttpRequestService } from './data-http-request-service';
 
 function aggregateFournisseursByRegion(fournisseurs: Fournisseur[]) {
     const regionCounts: any = {};
@@ -103,8 +104,7 @@ function convertRepertoireData(compagnies: RepertoireData[]) {
                     },
                     properties: {
                         weight: 0.5,
-                        nom_entreprise: compagnie.NOM_ASSUJ,
-                        description: compagnie.DESC_ACT_ECON_ASSUJ,
+                        id: compagnie._id,
                         // taille_entreprise: compagnie.taille_entreprise,
                         // annee_fondation: compagnie.annee_fondation,
                         // adresse: compagnie.adresse,
@@ -522,22 +522,33 @@ export function populateMapLayers(
                 });
 
                 //Popup for unclustered points
-                mapRef.current.on('click', 'unclustered-point', (e: any) => {
-                    const coordinates =
-                        e.features[0].geometry.coordinates.slice();
-                    const properties = e.features[0].properties;
+                mapRef.current.on(
+                    'click',
+                    'unclustered-point',
+                    async (e: any) => {
+                        const coordinates =
+                            e.features[0].geometry.coordinates.slice();
+                        const properties = e.features[0].properties;
 
-                    new mapboxgl.Popup()
-                        .setLngLat(coordinates)
-                        .setHTML(
-                            `
-                    <strong>${properties.nom_entreprise}</strong><br>
-                    Secteur d'activité: ${properties.description}<br>
+                        const point =
+                            await GraphDataHttpRequestService.getEntrepriseInformation(
+                                properties.id,
+                            );
+
+                        new mapboxgl.Popup()
+                            .setLngLat(coordinates)
+                            .setHTML(
+                                `
+                    <strong>${point.nom_entrep}</strong><br>
+                    Secteur d'activité: ${point.secteur_activite}<br>
+                    Taille Entreprise: ${point.taille_entreprise}<br>
+                    Adresse: ${point.adresse}<br>
                   
                 `,
-                        )
-                        .addTo(mapRef.current);
-                });
+                            )
+                            .addTo(mapRef.current);
+                    },
+                );
 
                 // Zoom into clusters on click
                 mapRef.current.on('click', 'clusters', (e: any) => {

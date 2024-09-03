@@ -15,12 +15,6 @@ const MapBox = () => {
     const { point } = useMapStore();
     const mapContainerRef = useRef(null);
     const mapRef = useRef(null);
-    const { studyFilteredData, repertoireFilteredData } = useGlobalDataStore(
-        (state) => ({
-            studyFilteredData: state.studyFilteredData,
-            repertoireFilteredData: state.repertoireFilteredData,
-        }),
-    );
 
     const { filteredFournisseurData } = useGlobalFournisseursStore((state) => ({
         filteredFournisseurData: state.filteredFournisseurData,
@@ -39,23 +33,33 @@ const MapBox = () => {
             darkModeQuery.removeEventListener('change', handleDarkModeChange);
     }, []);
 
-    const { repertoireCompanyData, fetchRepertoireData, loading, error } =
+    const { repertoireCompanyData, studyFilteredData, studyCompanyData, repertoireFilteredData, fetchStudyData, fetchRepertoireData, loading, error } =
         useGlobalDataStore((state) => ({
             repertoireCompanyData: state.repertoireCompanyData,
             fetchRepertoireData: state.fetchRepertoireData,
+            fetchStudyData: state.fetchStudyData,
+            studyFilteredData: state.studyFilteredData,
+            repertoireFilteredData: state.repertoireFilteredData,
+            studyCompanyData: state.studyCompanyData,
             loading: state.loading,
             error: state.error,
         }));
 
     useEffect(() => {
-        async function fetchData() {
-            await fetchRepertoireData();
+        async function fetchRepData() {
+                        await fetchRepertoireData();
+        
+        }
+        async function fetchStudData() {
+                        await fetchStudyData();
         
         }
         if (mapType === MapType.REPERTOIRE && repertoireCompanyData.length === 0 && !loading) {
-            fetchData();
+            fetchRepData();
+        } else if (mapType === MapType.PAGE_INFORMATION && studyCompanyData.length === 0 && !loading) {
+            fetchStudData();
         }
-    }, [repertoireCompanyData, loading, mapType]);
+    }, [repertoireCompanyData, studyCompanyData, loading, mapType]);
 
 
     useEffect(() => {
