@@ -1,7 +1,7 @@
 import { NextResponse } from 'next/server';
 import { connectToDatabaseRepertoire } from '@/utils/mongodb';
 import { MongoDBPaths } from '@/components/enums/mongodb-paths-enum';
-import { PointData } from '@/components/interface/point-data';
+import { EntreprisePointData } from '@/components/interface/point-data';
 import { ObjectId } from 'mongodb';
 
 export async function GET(request: Request) {
@@ -45,10 +45,10 @@ export async function GET(request: Request) {
         }
 
         // Transform the document to PointData format
-        const entreprise: PointData = {
+        const entreprise: EntreprisePointData = {
             _id: document._id.toString(),
             coords: document.COORD,
-            nom_entrep: document.NOM_ASSUJ[0] || 'Non Disponible',
+            nom: document.NOM_ASSUJ[0] || 'Non Disponible',
             adresse:
                 `${document.ADR_DOMCL_LIGN1_ADR || ''} ${document.ADR_DOMCL_LIGN2_ADR || ''} ${document.ADR_DOMCL_LIGN4_ADR || ''}`.trim(),
             secteur_activite: document.DESC_ACT_ECON_ASSUJ || 'Non Disponible',

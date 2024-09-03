@@ -1,8 +1,25 @@
-export interface PointData {
+export interface EntreprisePointData {
     _id: string;
     coords: number[];
-    nom_entrep: string;
+    nom: string;
     adresse: string;
     secteur_activite: number;
     taille_entreprise: string;
+}
+
+export interface MapClusterPointData {
+    _id: string;
+    nom: string;
+    coords: number[];
+}
+
+export interface FournisseurPointData {
+    _id: string;
+    nom: string;
+    regions: string[];
+    secteurs: string[];
+    contact: {
+        email: string;
+        telephone: string;
+    };
 }

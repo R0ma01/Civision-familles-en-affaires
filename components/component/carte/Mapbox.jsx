@@ -113,11 +113,10 @@ const MapBox = () => {
                 .setLngLat(point.geometry.coordinates)
                 .setHTML(
                     `
-                    <strong>${point.properties.nom_entreprise}</strong><br>
+                     <strong>${point.properties.nom}</strong><br>
                     Secteur d'activité: ${point.properties.secteur_activite}<br>
-                    Taille de l'entreprise: ${point.properties.taille_entreprise}<br>
-                    Année de fondation: ${point.properties.annee_fondation}<br>
-                    Adresse: ${point.properties.adresse}
+                    Taille Entreprise: ${point.properties.taille_entreprise}<br>
+                    Adresse: ${point.properties.adresse}<br>
                 `,
                 )
                 .addTo(mapRef.current);

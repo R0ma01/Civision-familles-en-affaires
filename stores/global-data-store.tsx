@@ -1,4 +1,5 @@
 import { CompanyInfo } from '@/components/interface/company';
+import { MapClusterPointData } from '@/components/interface/point-data';
 import { RepertoireData } from '@/components/interface/repertoire-data';
 import { GraphDataHttpRequestService } from '@/services/data-http-request-service';
 import { create } from 'zustand';
@@ -18,7 +19,7 @@ const useGlobalDataStore = create(
                 repertoireDataFetched: false,
                 setStudyFilteredData: (fData: CompanyInfo[]) =>
                     set({ studyFilteredData: fData }),
-                setRepertoireFilteredData: (fData: RepertoireData[]) =>
+                setRepertoireFilteredData: (fData: MapClusterPointData[]) =>
                     set({ repertoirefilteredData: fData }),
                 fetchStudyData: async () => {
                     if ((get() as any).studyDataFetched) return;

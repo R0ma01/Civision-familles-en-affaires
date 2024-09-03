@@ -4,24 +4,25 @@ import constants from '@/constants/constants';
 import useGlobalDataStore from '@/stores/global-data-store';
 import { useEffect, useState } from 'react';
 import useMapStore from '@/stores/global-map-store';
-import { RepertoireData } from '@/components/interface/repertoire-data';
+
+import { MapClusterPointData } from '@/components/interface/point-data';
 
 function SearchBox() {
     const { repertoireFilteredData } = useGlobalDataStore((state: any) => ({
         repertoireFilteredData: state.repertoireFilteredData,
     }));
     const [searchTerm, setSearchTerm] = useState<string>('');
-    const [tableData, setTableData] = useState<RepertoireData[]>([]);
+    const [tableData, setTableData] = useState<MapClusterPointData[]>([]);
     const { setMapPoint } = useMapStore();
 
     function sortAlphabetically(
-        compagnies: RepertoireData[],
-    ): RepertoireData[] {
+        compagnies: MapClusterPointData[],
+    ): MapClusterPointData[] {
         return compagnies.sort((a, b) => {
-            if (!a.NOM_ASSUJ[0]) {
+            if (!a.nom) {
                 return 1;
             }
-            if (!b.NOM_ASSUJ[0]) {
+            if (!b.nom) {
                 return -1;
             }
 
@@ -32,8 +33,8 @@ function SearchBox() {
                     .replace(/[\u0300-\u036f]/g, '')
                     .toLowerCase();
 
-            const nameA = normalize(a.NOM_ASSUJ[0]);
-            const nameB = normalize(b.NOM_ASSUJ[0]);
+            const nameA = normalize(a.nom);
+            const nameB = normalize(b.nom);
 
             // Regular expression to check if the first character is a letter
             const isLetter = (name: string) => /^[a-zA-Z]/.test(name);
@@ -51,37 +52,18 @@ function SearchBox() {
     function handleSearchChange(e: React.ChangeEvent<HTMLInputElement>) {
         setSearchTerm(e.target.value);
     }
-
-    function isCompanyInfo(company: any): company is CompanyInfo {
-        return (company as CompanyInfo).coordonnees !== undefined;
-    }
-
-    function flyToPoint(company: RepertoireData) {
+    async function flyToPoint(company: MapClusterPointData) {
         // Handling RepertoireData type or any other type-specific logic
         // Assuming similar properties to CompanyInfo
-        
-        if (company.COORD) {
-            setMapPoint({
-                type: 'Feature',
-                geometry: {
-                    type: 'Point',
-                    coordinates: company.COORD,
-                },
-                properties: {
-                    weight: 0.5,
-                    nom_entreprise: company.NOM_ASSUJ,
 
-                    // Other properties relevant to RepertoireData
-                },
-            });
+        if (company.coords) {
+            await setMapPoint(company);
         }
     }
 
-    const filterPredicate = (company: RepertoireData) => {
-        return company.NOM_ASSUJ[0]
-            ? company.NOM_ASSUJ[0]
-                  .toLowerCase()
-                  .startsWith(searchTerm.toLowerCase(), 0)
+    const filterPredicate = (company: MapClusterPointData) => {
+        return company.nom
+            ? company.nom.toLowerCase().startsWith(searchTerm.toLowerCase(), 0)
             : false;
     };
 
@@ -92,17 +74,20 @@ function SearchBox() {
     }
 
     function populateTable() {
-        return tableData.map((company: RepertoireData, index) => {
-            if (company.NOM_ASSUJ)
+        return tableData.map((company: MapClusterPointData, index) => {
+            if (company.nom)
                 return (
                     <tr
                         key={index}
                         className={`border-b cursor-pointer `}
-                        onClick={() => flyToPoint(company)}
+                        onClick={async () => {
+                            console.log(company);
+                            await flyToPoint(company);
+                        }}
                     >
                         <td className="px-2 py-2 text-small dark:text-white text-black">
-                            {company.NOM_ASSUJ
-                                ? company.NOM_ASSUJ[0].toLowerCase()
+                            {company.nom
+                                ? company.nom.toLowerCase()
                                 : 'Non Disponible'}
                         </td>
                         <td className="px-1 py-1 flex justify-end mr-3">

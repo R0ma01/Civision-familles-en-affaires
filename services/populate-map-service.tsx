@@ -8,6 +8,7 @@ import { AuthMechanism } from 'mongodb';
 import { RepertoireData } from '@/components/interface/repertoire-data';
 import { mapColors } from '@/constants/color-palet';
 import { GraphDataHttpRequestService } from './data-http-request-service';
+import { MapClusterPointData } from '@/components/interface/point-data';
 
 function aggregateFournisseursByRegion(fournisseurs: Fournisseur[]) {
     const regionCounts: any = {};
@@ -92,15 +93,15 @@ function convertData(compagnies: CompanyInfo[]) {
     };
 }
 
-function convertRepertoireData(compagnies: RepertoireData[]) {
+function convertRepertoireData(compagnies: MapClusterPointData[]) {
     const features = compagnies
-        .flatMap((compagnie: RepertoireData) => {
-            if (compagnie.COORD && compagnie.NOM_ASSUJ) {
+        .flatMap((compagnie: MapClusterPointData) => {
+            if (compagnie.coords && compagnie.nom) {
                 return {
                     type: 'Feature',
                     geometry: {
                         type: 'Point',
-                        coordinates: compagnie.COORD,
+                        coordinates: compagnie.coords,
                     },
                     properties: {
                         weight: 0.5,
@@ -539,7 +540,7 @@ export function populateMapLayers(
                             .setLngLat(coordinates)
                             .setHTML(
                                 `
-                    <strong>${point.nom_entrep}</strong><br>
+                    <strong>${point.nom}</strong><br>
                     Secteur d'activité: ${point.secteur_activite}<br>
                     Taille Entreprise: ${point.taille_entreprise}<br>
                     Adresse: ${point.adresse}<br>

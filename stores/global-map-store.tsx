@@ -1,5 +1,12 @@
 import { MapType } from '@/components/enums/map-type-enum';
+import {
+    EntreprisePointData,
+    MapClusterPointData,
+} from '@/components/interface/point-data';
 import { create } from 'zustand';
+import GeoJSON from '@/components/interface/geo-json';
+
+import { GraphDataHttpRequestService } from '@/services/data-http-request-service';
 
 interface GlobalMapStoreProps {
     map: any;
@@ -7,7 +14,7 @@ interface GlobalMapStoreProps {
     mapType: MapType;
     setMapStyle: (type: MapType) => void;
     point: any;
-    setMapPoint: (point: any) => void;
+    setMapPoint: (point: MapClusterPointData) => void;
 }
 
 const useMapStore = create<GlobalMapStoreProps>((set) => ({
@@ -21,8 +28,32 @@ const useMapStore = create<GlobalMapStoreProps>((set) => ({
         set({ mapType: type });
     },
     point: null,
-    setMapPoint: (point: any) => {
-        set({ point });
+    setMapPoint: async (simplePoint: MapClusterPointData) => {
+        const point: EntreprisePointData =
+            await GraphDataHttpRequestService.getEntrepriseInformation(
+                simplePoint._id,
+            );
+
+        if (!point) {
+            return;
+        }
+        console.log(point);
+        const newJSONPoint = {
+            type: 'Feature',
+            geometry: {
+                type: 'Point',
+                coordinates: point.coords,
+            },
+            properties: {
+                weight: 0.5,
+                nom: point.nom,
+                secteur_activite: point.secteur_activite,
+                taille_entreprise: point.taille_entreprise,
+                adresse: point.adresse,
+            },
+        };
+
+        set({ point: newJSONPoint });
     },
 }));
 
