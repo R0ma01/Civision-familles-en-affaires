@@ -14,13 +14,14 @@ const useGlobalDataStore = create(
                 repertoireFilteredData: [],
                 loading: false,
                 error: null,
-                dataFetched: false,
+                studyDataFetched: false,
+                repertoireDataFetched: false,
                 setStudyFilteredData: (fData: CompanyInfo[]) =>
                     set({ studyFilteredData: fData }),
                 setRepertoireFilteredData: (fData: RepertoireData[]) =>
                     set({ repertoirefilteredData: fData }),
                 fetchStudyData: async () => {
-                    if ((get() as any).dataFetched) return;
+                    if ((get() as any).studyDataFetched) return;
 
                     set({ loading: true, error: null });
                     try {
@@ -31,24 +32,24 @@ const useGlobalDataStore = create(
                             studyCompanyData: responseStudy,
                             studyFilteredData: responseStudy,
                             loading: false,
-                            dataFetched: true,
+                            studyDataFetched: true,
                         });
                     } catch (err: any) {
                         set({ error: err.message, loading: false });
                     }
                 },
                 fetchRepertoireData: async () => {
-                    if ((get() as any).dataFetched) return;
-
+                    if ((get() as any).repertoireDataFetched) return;
                     set({ loading: true, error: null });
                     try {
                         const responseRepertoire =
                             await GraphDataHttpRequestService.getAllRepertoireData();
+
                         set({
                             repertoireCompanyData: responseRepertoire,
                             repertoireFilteredData: responseRepertoire,
                             loading: false,
-                            dataFetched: true,
+                            repertoireDataFetched: true,
                         });
                     } catch (err: any) {
                         set({ error: err.message, loading: false });

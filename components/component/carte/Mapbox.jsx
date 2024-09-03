@@ -4,7 +4,7 @@ import 'mapbox-gl/dist/mapbox-gl.css';
 import useGlobalDataStore from '@/stores/global-data-store';
 import useMapStore from '@/stores/global-map-store';
 import constants from '@/constants/constants';
-
+import { MapType } from '@/components/enums/map-type-enum';
 import useGlobalFournisseursStore from '@/stores/global-fournisseur-store';
 import { populateMapLayers } from '@/services/populate-map-service';
 
@@ -38,6 +38,25 @@ const MapBox = () => {
         return () =>
             darkModeQuery.removeEventListener('change', handleDarkModeChange);
     }, []);
+
+    const { repertoireCompanyData, fetchRepertoireData, loading, error } =
+        useGlobalDataStore((state) => ({
+            repertoireCompanyData: state.repertoireCompanyData,
+            fetchRepertoireData: state.fetchRepertoireData,
+            loading: state.loading,
+            error: state.error,
+        }));
+
+    useEffect(() => {
+        async function fetchData() {
+            await fetchRepertoireData();
+        
+        }
+        if (mapType === MapType.REPERTOIRE && repertoireCompanyData.length === 0 && !loading) {
+            fetchData();
+        }
+    }, [repertoireCompanyData, loading, mapType]);
+
 
     useEffect(() => {
         mapboxgl.accessToken = process.env.NEXT_PUBLIC_MAPBOX_ACCESS_TOKEN;

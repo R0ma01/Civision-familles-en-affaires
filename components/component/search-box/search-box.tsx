@@ -4,21 +4,24 @@ import constants from '@/constants/constants';
 import useGlobalDataStore from '@/stores/global-data-store';
 import { useEffect, useState } from 'react';
 import useMapStore from '@/stores/global-map-store';
+import { RepertoireData } from '@/components/interface/repertoire-data';
 
 function SearchBox() {
-    const { studyFilteredData } = useGlobalDataStore((state: any) => ({
-        studyFilteredData: state.studyFilteredData,
+    const { repertoireFilteredData } = useGlobalDataStore((state: any) => ({
+        repertoireFilteredData: state.repertoireFilteredData,
     }));
     const [searchTerm, setSearchTerm] = useState<string>('');
-    const [tableData, setTableData] = useState<CompanyInfo[]>([]);
+    const [tableData, setTableData] = useState<RepertoireData[]>([]);
     const { setMapPoint } = useMapStore();
 
-    function sortAlphabetically(compagnies: CompanyInfo[]): CompanyInfo[] {
+    function sortAlphabetically(
+        compagnies: RepertoireData[],
+    ): RepertoireData[] {
         return compagnies.sort((a, b) => {
-            if (!a.nom_entreprise) {
+            if (!a.NOM_ASSUJ[0]) {
                 return 1;
             }
-            if (!b.nom_entreprise) {
+            if (!b.NOM_ASSUJ[0]) {
                 return -1;
             }
 
@@ -29,8 +32,8 @@ function SearchBox() {
                     .replace(/[\u0300-\u036f]/g, '')
                     .toLowerCase();
 
-            const nameA = normalize(a.nom_entreprise);
-            const nameB = normalize(b.nom_entreprise);
+            const nameA = normalize(a.NOM_ASSUJ[0]);
+            const nameB = normalize(b.NOM_ASSUJ[0]);
 
             // Regular expression to check if the first character is a letter
             const isLetter = (name: string) => /^[a-zA-Z]/.test(name);
@@ -49,55 +52,47 @@ function SearchBox() {
         setSearchTerm(e.target.value);
     }
 
-    function flyToPoint(company: CompanyInfo) {
-        if (company.coordonnees?.longitude && company.coordonnees?.latitude) {
+    function isCompanyInfo(company: any): company is CompanyInfo {
+        return (company as CompanyInfo).coordonnees !== undefined;
+    }
+
+    function flyToPoint(company: RepertoireData) {
+        // Handling RepertoireData type or any other type-specific logic
+        // Assuming similar properties to CompanyInfo
+        if (company.COORD) {
             setMapPoint({
                 type: 'Feature',
                 geometry: {
                     type: 'Point',
-                    coordinates: [
-                        company.coordonnees.longitude, // Longitude first
-                        company.coordonnees.latitude, // Latitude second
-                    ],
+                    coordinates: company.COORD,
                 },
                 properties: {
                     weight: 0.5,
-                    nom_entreprise: company.nom_entreprise
-                        ? company.nom_entreprise
-                        : company.NEQ
-                          ? company.NEQ
-                          : 'Non Disponible',
-                    secteur_activite: company.secteur_activite
-                        ? company.secteur_activite
-                        : 'Non Disponible',
-                    taille_entreprise: company.taille_entreprise
-                        ? company.taille_entreprise
-                        : 'Non Disponible',
-                    annee_fondation: company.annee_fondation
-                        ? company.annee_fondation
-                        : 'Non Disponible',
+                    nom_entreprise: company.NOM_ASSUJ,
+
+                    // Other properties relevant to RepertoireData
                 },
             });
         }
     }
 
-    const filterPredicate = (company: CompanyInfo) => {
-        return company.nom_entreprise
-            ? company.nom_entreprise
+    const filterPredicate = (company: RepertoireData) => {
+        return company.NOM_ASSUJ[0]
+            ? company.NOM_ASSUJ[0]
                   .toLowerCase()
                   .startsWith(searchTerm.toLowerCase(), 0)
             : false;
     };
 
     function filterSearchParams() {
-        const newData = studyFilteredData.filter(filterPredicate);
+        const newData = repertoireFilteredData.filter(filterPredicate);
 
         setTableData(sortAlphabetically(newData));
     }
 
     function populateTable() {
-        return tableData.map((company: CompanyInfo, index) => {
-            if (company.nom_entreprise || company.NEQ)
+        return tableData.map((company: RepertoireData, index) => {
+            if (company.NOM_ASSUJ)
                 return (
                     <tr
                         key={index}
@@ -105,11 +100,9 @@ function SearchBox() {
                         onClick={() => flyToPoint(company)}
                     >
                         <td className="px-2 py-2 text-small dark:text-white text-black">
-                            {company.nom_entreprise
-                                ? company.nom_entreprise
-                                : company.NEQ
-                                  ? company.NEQ
-                                  : 'Non Disponible'}
+                            {company.NOM_ASSUJ
+                                ? company.NOM_ASSUJ
+                                : 'Non Disponible'}
                         </td>
                         <td className="px-1 py-1 flex justify-end mr-3">
                             <span
@@ -127,7 +120,7 @@ function SearchBox() {
     useEffect(() => {
         filterSearchParams();
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [searchTerm, studyFilteredData]);
+    }, [searchTerm, repertoireFilteredData]);
 
     return (
         <div

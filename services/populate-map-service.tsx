@@ -95,23 +95,21 @@ function convertRepertoireData(compagnies: RepertoireData[]) {
     const features = compagnies
         .flatMap((compagnie: RepertoireData) => {
             if (compagnie.COORD && compagnie.NOM_ASSUJ) {
-                return compagnie.NOM_ASSUJ.map((nom) => {
-                    return {
-                        type: 'Feature',
-                        geometry: {
-                            type: 'Point',
-                            coordinates: compagnie.COORD,
-                        },
-                        properties: {
-                            weight: 0.5,
-                            nom_entreprise: nom,
-                            description: compagnie.DESC_ACT_ECON_ASSUJ,
-                            // taille_entreprise: compagnie.taille_entreprise,
-                            // annee_fondation: compagnie.annee_fondation,
-                            // adresse: compagnie.adresse,
-                        },
-                    };
-                });
+                return {
+                    type: 'Feature',
+                    geometry: {
+                        type: 'Point',
+                        coordinates: compagnie.COORD,
+                    },
+                    properties: {
+                        weight: 0.5,
+                        nom_entreprise: compagnie.NOM_ASSUJ,
+                        description: compagnie.DESC_ACT_ECON_ASSUJ,
+                        // taille_entreprise: compagnie.taille_entreprise,
+                        // annee_fondation: compagnie.annee_fondation,
+                        // adresse: compagnie.adresse,
+                    },
+                };
             }
             return null;
         })
