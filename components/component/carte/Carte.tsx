@@ -48,19 +48,15 @@ export default function Carte() {
             mapType == MapType.PAGE_INFORMATION &&
             !loading
         ) {
-            console.log('study data');
             studyFetch();
-            console.log(studyData);
         }
 
         if (
-            !repertoireDataFetched &&
+            repertoireData.length === 0 &&
             mapType == MapType.REPERTOIRE &&
             !loading
         ) {
-            console.log('rep data');
             repertoireFetch();
-            console.log(repertoireData);
         }
     }, [
         studyData,
@@ -74,7 +70,6 @@ export default function Carte() {
     useEffect(() => {
         // update map reference
         mapRef.current = map;
-        console.log('i am called');
     }, [map]);
 
     return (
@@ -85,7 +80,7 @@ export default function Carte() {
             )}
             {loading && (
                 <div className="absolute top-0 left-[18%] w-full h-full flex justify-center items-center">
-                    <div className="loader-map"></div>
+                    <div className="loader-circle"></div>
                 </div>
             )}
             {mapType == MapType.REPERTOIRE && (

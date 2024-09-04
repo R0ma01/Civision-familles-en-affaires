@@ -129,7 +129,7 @@ body {
 .loader-circle {
     width: 50px;
     aspect-ratio: 1;
-    box-shadow: 0 0 0 3px #fff inset;
+    box-shadow: 0 0 0 3px #95C973 inset;
     border-radius: 50%;
     position: relative;
 }
@@ -161,33 +161,3 @@ body {
 }
 
 
-
-/* HTML: <div class="loader"></div> */
-.loader-map {
-    width: 40px;
-    aspect-ratio: 1;
-    position: relative;
-    transform: rotate(45deg);
-}
-
-.loader-map:before,
-.loader-map:after {
-    content: "";
-    position: absolute;
-    inset: 0;
-    border-radius: 50% 50% 0 50%;
-    background: #514b82;
-    -webkit-mask: radial-gradient(circle 10px at 50% 50%, #0000 94%, #000);
-}
-
-.loader-map:after {
-    animation: l6 1s infinite;
-    transform: perspective(300px) translateZ(0px)
-}
-
-@keyframes l6 {
-    to {
-        transform: perspective(300px) translateZ(150px);
-        opacity: 0
-    }
-}

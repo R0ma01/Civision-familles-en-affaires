@@ -9,88 +9,105 @@ interface ChloroplethProps {
 }
 
 const Chloropleth: React.FC<ChloroplethProps> = ({ data, dataField }) => {
-    const { map } = useMapStore((state: any) => ({
-        map: state.map,
-    }));
+    try {
+        const { map } = useMapStore((state: any) => ({
+            map: state.map,
+        }));
 
-    const [feature, setFeature] = useState<any>(null);
+        const [feature, setFeature] = useState<any>(null);
 
-    useEffect(() => {
-        if (!map) return;
+        useEffect(() => {
+            if (!map) return;
 
-        const newRegionCounts: Record<string, number> = {};
-        data.forEach((item: any) => {
-            newRegionCounts[item.region] = item.count;
-        });
+            const handleMapLoad = () => {
+                const newRegionCounts: Record<string, number> = {};
+                data.forEach((item: any) => {
+                    newRegionCounts[item.region] = item.count;
+                });
 
-        const newFeature = createRegionFeatures(
-            newRegionCounts,
-            quebec_regions,
-        );
-        setFeature(newFeature);
-    }, [data, map]);
+                const newFeature = createRegionFeatures(
+                    newRegionCounts,
+                    quebec_regions,
+                );
+                setFeature(newFeature);
+            };
 
-    useEffect(() => {
-        console.log(map);
-        if (!map || !feature) return;
-        console.log('map' + map.getSource('choropleth-source'));
-        // Check if source exists before removing
-        if (map.getSource('choropleth-source') !== undefined) {
-            if (map.getLayer('choropleth-layer')) {
-                map.removeLayer('choropleth-layer');
+            if (map.isStyleLoaded()) {
+                handleMapLoad();
+            } else {
+                map.on('load', handleMapLoad);
             }
-            if (map.getLayer('choropleth-outline-layer')) {
-                map.removeLayer('choropleth-outline-layer');
-            }
-            map.removeSource('choropleth-source');
-        }
 
-        map.addSource('choropleth-source', {
-            type: 'geojson',
-            data: feature,
-        });
-
-        // Add the fill layer for the regions
-        map.addLayer({
-            id: 'choropleth-layer',
-            type: 'fill',
-            source: 'choropleth-source',
-            paint: {
-                'fill-color': [
-                    'interpolate',
-                    ['linear'],
-                    ['get', dataField],
-                    ...choroplethColors,
-                ],
-                'fill-opacity': 0.45,
-            },
-        });
-
-        // Add the outline layer for the regions
-        map.addLayer({
-            id: 'choropleth-outline-layer',
-            type: 'line',
-            source: 'choropleth-source',
-            paint: {
-                'line-color': '#000', // Black outline color
-                'line-width': 0.5, // Width of the outline
-            },
-        });
-
-        return () => {
-            if (map.getSource('choropleth-source')) {
-                if (map.getLayer('choropleth-layer')) {
-                    map.removeLayer('choropleth-layer');
+            return () => {
+                if (map && handleMapLoad) {
+                    map.off('load', handleMapLoad);
                 }
-                if (map.getLayer('choropleth-outline-layer')) {
-                    map.removeLayer('choropleth-outline-layer');
-                }
-                map.removeSource('choropleth-source');
-            }
-        };
-    }, [map, feature, dataField]);
+            };
+        }, [data, map]);
 
-    return null;
+        useEffect(() => {
+            if (!map || !feature) return;
+
+            const source = map.getSource('chloropleth-source');
+            if (source) {
+                if (map.getLayer('chloropleth-layer')) {
+                    map.removeLayer('chloropleth-layer');
+                }
+                if (map.getLayer('chloropleth-outline-layer')) {
+                    map.removeLayer('chloropleth-outline-layer');
+                }
+                map.removeSource('chloropleth-source');
+            }
+
+            map.addSource('chloropleth-source', {
+                type: 'geojson',
+                data: feature,
+            });
+
+            // Add the fill layer for the regions
+            map.addLayer({
+                id: 'chloropleth-layer',
+                type: 'fill',
+                source: 'chloropleth-source',
+                paint: {
+                    'fill-color': [
+                        'interpolate',
+                        ['linear'],
+                        ['get', dataField],
+                        ...choroplethColors,
+                    ],
+                    'fill-opacity': 0.45,
+                },
+            });
+
+            // Add the outline layer for the regions
+            map.addLayer({
+                id: 'chloropleth-outline-layer',
+                type: 'line',
+                source: 'chloropleth-source',
+                paint: {
+                    'line-color': '#000', // Black outline color
+                    'line-width': 0.5, // Width of the outline
+                },
+            });
+
+            return () => {
+                if (map.getSource('chloropleth-source')) {
+                    if (map.getLayer('chloropleth-layer')) {
+                        map.removeLayer('chloropleth-layer');
+                    }
+                    if (map.getLayer('chloropleth-outline-layer')) {
+                        map.removeLayer('chloropleth-outline-layer');
+                    }
+                    map.removeSource('chloropleth-source');
+                }
+            };
+        }, [map, feature, dataField]);
+
+        return null;
+    } catch (e: any) {
+        console.error(e.message);
+    }
 };
 
 export default Chloropleth;

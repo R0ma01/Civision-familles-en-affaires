@@ -7,7 +7,6 @@ import mapboxgl from 'mapbox-gl';
 
 interface ClusterCloudProps {
     data: any[]; // GeoJSON data for regions
-   
 }
 
 const ClusterCloud: React.FC<ClusterCloudProps> = ({ data }) => {
@@ -19,16 +18,32 @@ const ClusterCloud: React.FC<ClusterCloudProps> = ({ data }) => {
 
     useEffect(() => {
         if (!map || !data.length) return;
+        function handleMapLoad() {
+            const convertedData = convertClusterData(data);
+            setClusterGeoJson(convertedData);
+        }
 
-        const convertedData = convertClusterData(data);
-        setClusterGeoJson(convertedData);
+        if (map.isStyleLoaded()) {
+            handleMapLoad();
+        } else {
+            map.on('load', handleMapLoad);
+        }
+
+        return () => {
+            if (map && handleMapLoad) {
+                map.off('load', handleMapLoad);
+            }
+        };
     }, [data, map]);
 
     useEffect(() => {
         if (!map || !clusterGeoJson) return;
 
-        // Check if source exists before removing
-        if (map.getSource('cluster-source')) {
+        // Safeguard to ensure map and methods are available
+        if (
+            typeof map.getSource === 'function' &&
+            map.getSource('cluster-source')
+        ) {
             if (map.getLayer('clusters')) {
                 map.removeLayer('clusters');
             }
@@ -46,8 +61,8 @@ const ClusterCloud: React.FC<ClusterCloudProps> = ({ data }) => {
             type: 'geojson',
             data: clusterGeoJson,
             cluster: true,
-            clusterMaxZoom: 14, // Adjust this value to control when clusters break apart
-            clusterRadius: 100, // Adjust this value for cluster size
+            clusterMaxZoom: 14,
+            clusterRadius: 100,
         });
 
         // Add cluster circles
@@ -159,7 +174,6 @@ const ClusterCloud: React.FC<ClusterCloudProps> = ({ data }) => {
                     Secteur d'activité: ${point.secteur_activite}<br>
                     Taille Entreprise: ${point.taille_entreprise}<br>
                     Adresse: ${point.adresse}<br>
-                  
                 `,
                 )
                 .addTo(map);
