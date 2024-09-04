@@ -8,8 +8,9 @@ import useMapStore from '@/stores/global-map-store';
 import { MapClusterPointData } from '@/components/interface/point-data';
 
 function SearchBox() {
-    const { repertoireFilteredData } = useGlobalDataStore((state: any) => ({
-        repertoireFilteredData: state.repertoireFilteredData,
+    const { repertoireData, loading } = useGlobalDataStore((state: any) => ({
+        repertoireData: state.repertoireData,
+        loading: state.loading,
     }));
     const [searchTerm, setSearchTerm] = useState<string>('');
     const [tableData, setTableData] = useState<MapClusterPointData[]>([]);
@@ -68,7 +69,7 @@ function SearchBox() {
     };
 
     function filterSearchParams() {
-        const newData = repertoireFilteredData.filter(filterPredicate);
+        const newData = repertoireData.filter(filterPredicate);
 
         setTableData(sortAlphabetically(newData));
     }
@@ -106,7 +107,7 @@ function SearchBox() {
     useEffect(() => {
         filterSearchParams();
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [searchTerm, repertoireFilteredData]);
+    }, [searchTerm, repertoireData]);
 
     return (
         <div
@@ -131,6 +132,11 @@ function SearchBox() {
                 className="overflow-y-auto"
                 style={{ maxHeight: '200px' }} // Ensure this is correctly sized to allow overflow
             >
+                {loading && (
+                    <div className="w-full h-32 flex justify-center items-center">
+                        <div className="loader-circle"></div>
+                    </div>
+                )}
                 <table id="liste_entreprises_table" className="min-w-full">
                     <tbody>{populateTable()}</tbody>
                 </table>

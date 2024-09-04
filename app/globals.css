@@ -123,3 +123,71 @@ body {
 .shepeard-modal {
     /* background-color: #d6dbdc !important; */
 }
+
+
+/* HTML: <div class="loader"></div> */
+.loader-circle {
+    width: 50px;
+    aspect-ratio: 1;
+    box-shadow: 0 0 0 3px #fff inset;
+    border-radius: 50%;
+    position: relative;
+}
+
+.loader-circle:before,
+.loader-circle:after {
+    content: "";
+    position: absolute;
+    top: 5px;
+    left: calc(50% - 12.5px);
+    box-shadow: inherit;
+    width: 25px;
+    aspect-ratio: 1;
+    border-radius: 50%;
+    transform-origin: 50% calc(100% - 5px);
+    animation: l7 1.5s linear infinite;
+}
+
+.loader-circle:after {
+    top: calc(100% + 2px);
+    transform-origin: 50% -27px;
+    animation-delay: -0.75s;
+}
+
+@keyframes l7 {
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+
+
+/* HTML: <div class="loader"></div> */
+.loader-map {
+    width: 40px;
+    aspect-ratio: 1;
+    position: relative;
+    transform: rotate(45deg);
+}
+
+.loader-map:before,
+.loader-map:after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    border-radius: 50% 50% 0 50%;
+    background: #514b82;
+    -webkit-mask: radial-gradient(circle 10px at 50% 50%, #0000 94%, #000);
+}
+
+.loader-map:after {
+    animation: l6 1s infinite;
+    transform: perspective(300px) translateZ(0px)
+}
+
+@keyframes l6 {
+    to {
+        transform: perspective(300px) translateZ(150px);
+        opacity: 0
+    }
+}

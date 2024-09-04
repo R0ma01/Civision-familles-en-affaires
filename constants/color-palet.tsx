@@ -47,4 +47,42 @@ const mapColors = {
     colorValue2000: '#0b1f54',
     colorValue3000: '#000c42',
 };
-export { logoPalette, chartPalette, colors, mapColors };
+
+const choroplethColors = [
+    0,
+    mapColors.colorValue1,
+    5,
+    mapColors.colorValue5,
+    10,
+    mapColors.colorValue15,
+    15,
+    mapColors.colorValue30,
+    20,
+    mapColors.colorValue50,
+    25,
+    mapColors.colorValue100,
+    30,
+    mapColors.colorValue250,
+    40,
+    mapColors.colorValue500,
+    50,
+    mapColors.colorValue1000,
+    70,
+    mapColors.colorValue1500,
+    80,
+    mapColors.colorValue3000,
+];
+
+const choroplethMapColors = {
+    low: '#f1eef6', // Lightest color for the lowest count
+    medium: '#bdc9e1', // Medium color for mid-range counts
+    high: '#023858', // Darkest color for the highest count
+};
+export {
+    logoPalette,
+    chartPalette,
+    colors,
+    mapColors,
+    choroplethMapColors,
+    choroplethColors,
+};

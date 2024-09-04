@@ -13,6 +13,11 @@ export interface MapClusterPointData {
     coords: number[];
 }
 
+export interface MapChloroplethePointData {
+    _id: string;
+    region: number;
+}
+
 export interface FournisseurPointData {
     _id: string;
     nom: string;

@@ -29,7 +29,7 @@
         "components/component/search-box/search-box.jsx",
         "middleware.js",
         "app/api/auth/activate-account/route.js",
-        "components/component/carte/Mapbox.jsx"
+        "components/component/carte/Mapbox.tsx"
     ],
     "exclude": ["node_modules"]
 }

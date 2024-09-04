@@ -5,8 +5,12 @@ import {
     ChartDataMultipleFileds,
 } from '@/components/interface/chart-data';
 import { CompanyInfo } from '@/components/interface/company';
-import { EntreprisePointData, MapClusterPointData } from '@/components/interface/point-data';
-import { RepertoireData } from '@/components/interface/repertoire-data';
+import {
+    EntreprisePointData,
+    MapChloroplethePointData,
+    MapClusterPointData,
+} from '@/components/interface/point-data';
+
 import axios from 'axios';
 
 export const GraphDataHttpRequestService = {
@@ -16,13 +20,22 @@ export const GraphDataHttpRequestService = {
     getEntrepriseInformation: getEntrepriseInformation,
 };
 
-async function getAllStudyData(): Promise<CompanyInfo[]> {
+async function getAllStudyData(
+    filters: CompanyInfo,
+): Promise<MapChloroplethePointData[]> {
     try {
-        const response = await axios.get(APIPaths.GRAPH_GET_ALL_STUDY);
-        return response.data.pages;
+        const response = await axios.get(APIPaths.GRAPH_GET_ALL_STUDY, {
+            params: {
+                filters: JSON.stringify(filters),
+            },
+        });
+
+        console.log(response);
+
+        return response.data.points;
     } catch (error: any) {
         console.error(
-            'Error fetching pages:',
+            'Error fetching points:',
             error.response?.data?.error || error.message,
         );
     }
@@ -36,7 +49,7 @@ async function getAllRepertoireData(): Promise<MapClusterPointData[]> {
         return response.data.points;
     } catch (error: any) {
         console.error(
-            'Error fetching pages:',
+            'Error fetching points:',
             error.response?.data?.error || error.message,
         );
     }

@@ -7,7 +7,6 @@ import useGlobalPageStore from '@/stores/global-page-store';
 import PageContent from '@/components/interface/page-content';
 import useMapStore from '@/stores/global-map-store';
 import { MapType } from '@/components/enums/map-type-enum';
-import useGlobalDataStore from '@/stores/global-data-store';
 
 function PageContentComponent() {
     const [page, setPage] = useState<PageContent | undefined>(undefined);

@@ -8,9 +8,13 @@ import RepertoirePageTutorial from '@/components/component/tutorials/repertoire-
 import useMapStore from '@/stores/global-map-store';
 import { MapType } from '@/components/enums/map-type-enum';
 import { useEffect } from 'react';
+import useGlobalDataStore from '@/stores/global-data-store';
+import useGlobalFilterStore from '@/stores/global-filter-store';
 
 function Repertoire() {
     const tour = RepertoirePageTutorial();
+
+    const filterData = useGlobalFilterStore((state: any) => state.filterData);
 
     const { mapType, setMapStyle } = useMapStore((state) => ({
         setMapStyle: state.setMapStyle,
@@ -23,6 +27,33 @@ function Repertoire() {
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [mapType, setMapStyle]);
+
+    // const {
+    //     repertoireData,
+
+    //     repertoireDataFetched,
+    //     fetchRepertoireData,
+    //     loading,
+    // } = useGlobalDataStore((state: any) => ({
+    //     repertoireData: state.repertoireData,
+
+    //     fetchRepertoireData: state.fetchRepertoireData,
+
+    //     repertoireDataFetched: state.repertoireDataFetched,
+    //     loading: state.loading,
+    // }));
+
+    // useEffect(() => {
+    //     async function repertoireFetch() {
+    //         await fetchRepertoireData(filterData);
+    //     }
+
+    //     if (!repertoireDataFetched && !loading) {
+    //         console.log('rep data');
+    //         repertoireFetch();
+    //         console.log(repertoireData);
+    //     }
+    // }, [repertoireData, repertoireDataFetched, fetchRepertoireData]);
 
     // async function customComplete() {
     //     const replacement = [true, ...tutorials.splice(1)];

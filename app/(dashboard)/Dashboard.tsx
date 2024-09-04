@@ -2,7 +2,6 @@
 import React, { useEffect } from 'react';
 import Carte from '@/components/component/carte/Carte';
 import Sidebar from '@/components/component/sidebar/sidebar';
-import useGlobalDataStore from '@/stores/global-data-store';
 import useGlobalPageStore from '@/stores/global-page-store';
 import MobileWarningPopup from '@/components/component/mobile-popup/mobile-popup';
 import useGlobalFournisseursStore from '@/stores/global-fournisseur-store';
@@ -12,20 +11,6 @@ interface DashboardProps {
 }
 
 const Dashboard = ({ children }: DashboardProps) => {
-    const {
-        studyCompanyData,
-        repertoireCompanyData,
-        fetchData,
-        loading,
-        error,
-    } = useGlobalDataStore((state: any) => ({
-        studyCompanyData: state.studyCompanyData,
-        repertoireCompanyData: state.repertoireCompanyData,
-        fetchData: state.fetchData,
-        loading: state.loading,
-        error: state.error,
-    }));
-
     const { pagesData, pageLoading, pageError, fetchPageData } =
         useGlobalPageStore((state: any) => {
             return {
@@ -55,25 +40,16 @@ const Dashboard = ({ children }: DashboardProps) => {
 
         fetchAll();
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [
-        studyCompanyData.length,
-        repertoireCompanyData.length,
-        loading,
-        pagesData,
-        pageLoading,
-        fetchData,
-        fetchPageData,
-        fetchFournisseurData,
-    ]);
+    }, [pagesData, pageLoading, fetchPageData, fetchFournisseurData]);
 
     return (
         <>
             <MobileWarningPopup />
             <div className="relative h-screen overflow-hidden">
-                {loading || pageLoading ? (
+                {pageLoading ? (
                     <div>Loading...</div>
-                ) : error || pageError ? (
-                    <div>Error: {error || pageError}</div>
+                ) : pageError ? (
+                    <div>Error: {pageError}</div>
                 ) : (
                     <>
                         <div className="fixed top-0 left-0 w-full h-full">
