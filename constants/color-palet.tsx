@@ -34,6 +34,7 @@ const colors = {
 };
 
 const mapColors = {
+    colorValue0: '#ffffff',
     colorValue1: '#c7eeff',
     colorValue5: '#afd8ed',
     colorValue15: '#98c2dc',
@@ -50,7 +51,7 @@ const mapColors = {
 
 const choroplethColors = [
     0,
-    mapColors.colorValue1,
+    mapColors.colorValue0,
     5,
     mapColors.colorValue5,
     10,
@@ -73,16 +74,39 @@ const choroplethColors = [
     mapColors.colorValue3000,
 ];
 
-const choroplethMapColors = {
-    low: '#f1eef6', // Lightest color for the lowest count
-    medium: '#bdc9e1', // Medium color for mid-range counts
-    high: '#023858', // Darkest color for the highest count
-};
+const clusterColors = [
+    mapColors.colorValue0,
+    0,
+    mapColors.colorValue1,
+    2,
+    mapColors.colorValue5,
+    5,
+    mapColors.colorValue15,
+    15,
+    mapColors.colorValue30,
+    50,
+    mapColors.colorValue50,
+    100,
+    mapColors.colorValue100,
+    250,
+    mapColors.colorValue250,
+    500,
+    mapColors.colorValue500,
+    1000,
+    mapColors.colorValue1000,
+    1500,
+    mapColors.colorValue1500,
+    2000,
+    mapColors.colorValue2000,
+    3000,
+    mapColors.colorValue3000,
+];
+
 export {
     logoPalette,
     chartPalette,
     colors,
     mapColors,
-    choroplethMapColors,
     choroplethColors,
+    clusterColors,
 };

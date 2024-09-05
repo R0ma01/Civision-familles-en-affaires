@@ -1,5 +1,6 @@
 import { CompanyInfo } from '@/components/interface/company';
 import { GraphDataHttpRequestService } from '@/services/data-http-request-service';
+import { FournisseursHttpRequestService } from '@/services/fournisseur-http-request-service';
 import { create } from 'zustand';
 import { devtools, persist } from 'zustand/middleware';
 
@@ -9,9 +10,11 @@ const useGlobalDataStore = create(
             (set, get) => ({
                 studyData: [],
                 repertoireData: [],
+                fournisseurData: [],
 
                 studyDataFetched: false,
                 repertoireDataFetched: false,
+                fournisseurDataFetched: false,
 
                 loading: false,
                 error: false,
@@ -54,6 +57,24 @@ const useGlobalDataStore = create(
                     }
                 },
 
+                fetchFournisseurData: async () => {
+                    if ((get() as any).fournisseurDataFetched) return;
+                    set({ loading: true, error: null });
+                    try {
+                        const responseFournisseur =
+                            await FournisseursHttpRequestService.getAll();
+                        console.log(responseFournisseur);
+                        set({
+                            fournisseurData: responseFournisseur,
+                            loading: false,
+                            fournisseurDataFetched: true,
+                        });
+                        console.log((get() as any).fournisseurData);
+                    } catch (err: any) {
+                        set({ error: err.message, loading: false });
+                    }
+                },
+
                 filterStudyData: () => {
                     if ((get() as any).studyDataFetched) {
                         set({ studyDataFetched: false });
@@ -63,6 +84,12 @@ const useGlobalDataStore = create(
                 filterRepertoireData: () => {
                     if ((get() as any).repertoireDataFetched) {
                         set({ repertoireDataFetched: false });
+                    }
+                },
+
+                filterFournisseurData: () => {
+                    if ((get() as any).fournisseurDataFetched) {
+                        set({ fournisseurDataFetched: false });
                     }
                 },
             }),

@@ -4,11 +4,14 @@ import Mapbox from '@/components/component/carte/Mapbox';
 import useGlobalDataStore from '@/stores/global-data-store';
 import useGlobalFilterStore from '@/stores/global-filter-store';
 import useMapStore from '@/stores/global-map-store';
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import Chloropleth from './Chloropleth';
 import ClusterCloud from './ClusterCloud';
 import Repertoire from '@/app/(dashboard)/(web-pages)/repertoire/page';
 import { MapType } from '@/components/enums/map-type-enum';
+import { Fournisseur } from '@/components/interface/fournisseur';
+import ColorLegend from './Color-Legend';
+import { choroplethColors, clusterColors } from '@/constants/color-palet';
 
 export default function Carte() {
     // global variables
@@ -16,22 +19,24 @@ export default function Carte() {
     const map = useMapStore((state) => state.map);
     const mapType = useMapStore((state) => state.mapType);
     const filterData = useGlobalFilterStore((state: any) => state.filterData);
-
+    const [fournisseurMapData, setFournisseurMapData] = useState<any>({});
     const {
         studyData,
         repertoireData,
+        fournisseurData,
         fetchStudyData,
-        studyDataFetched,
-        repertoireDataFetched,
         fetchRepertoireData,
+        fetchFournisseurData,
+        studyDataFetched,
         loading,
     } = useGlobalDataStore((state: any) => ({
         studyData: state.studyData,
         repertoireData: state.repertoireData,
+        fournisseurData: state.fournisseurData,
         fetchStudyData: state.fetchStudyData,
         fetchRepertoireData: state.fetchRepertoireData,
+        fetchFournisseurData: state.fetchFournisseurData,
         studyDataFetched: state.studyDataFetched,
-        repertoireDataFetched: state.repertoireDataFetched,
         loading: state.loading,
     }));
 
@@ -41,6 +46,10 @@ export default function Carte() {
         }
         async function repertoireFetch() {
             await fetchRepertoireData(filterData);
+        }
+
+        async function fournisseurFetch() {
+            await fetchFournisseurData();
         }
 
         if (
@@ -58,13 +67,22 @@ export default function Carte() {
         ) {
             repertoireFetch();
         }
+
+        if (
+            fournisseurData.length === 0 &&
+            mapType == MapType.FOURNISSEURS &&
+            !loading
+        ) {
+            fournisseurFetch();
+        }
     }, [
         studyData,
         repertoireData,
-        repertoireDataFetched,
         fetchRepertoireData,
         studyDataFetched,
         fetchStudyData,
+        fetchFournisseurData,
+        fournisseurData,
     ]);
 
     useEffect(() => {
@@ -72,11 +90,25 @@ export default function Carte() {
         mapRef.current = map;
     }, [map]);
 
+    useEffect(() => {
+        setFournisseurMapData(convertFournisseurData(fournisseurData));
+    }, [fournisseurData]);
+
     return (
         <div className={`relative h-full w-full z-40`}>
             <Mapbox />
             {mapType == MapType.PAGE_INFORMATION && (
-                <Chloropleth data={studyData} dataField="count"></Chloropleth>
+                <>
+                    <Chloropleth
+                        data={studyData}
+                        dataField="count"
+                    ></Chloropleth>
+                    <ColorLegend
+                        gradientValues={choroplethColors}
+                        className="absolute bottom-0 right-1 z-50"
+                        mapType={mapType}
+                    ></ColorLegend>
+                </>
             )}
             {loading && (
                 <div className="absolute top-0 left-[18%] w-full h-full flex justify-center items-center">
@@ -84,8 +116,51 @@ export default function Carte() {
                 </div>
             )}
             {mapType == MapType.REPERTOIRE && (
-                <ClusterCloud data={repertoireData}></ClusterCloud>
+                <>
+                    <ClusterCloud data={repertoireData}></ClusterCloud>
+                    <ColorLegend
+                        gradientValues={clusterColors}
+                        className="absolute bottom-0 right-1 z-50"
+                        mapType={mapType}
+                    ></ColorLegend>
+                </>
+            )}
+            {mapType == MapType.FOURNISSEURS && (
+                <>
+                    <Chloropleth
+                        data={fournisseurMapData}
+                        dataField="count"
+                    ></Chloropleth>
+                    <ColorLegend
+                        gradientValues={choroplethColors}
+                        className="absolute bottom-0 right-1 z-50"
+                        mapType={mapType}
+                    ></ColorLegend>
+                </>
             )}
         </div>
+    );
+}
+
+function convertFournisseurData(fournisseurs: Fournisseur[]) {
+    const secteurCount = fournisseurs.reduce(
+        (acc: any, fournisseur: Fournisseur) => {
+            fournisseur.secteurs_geographique.forEach((secteur) => {
+                if (!acc[secteur]) {
+                    acc[secteur] = 0;
+                }
+                acc[secteur] += 1;
+            });
+            return acc;
+        },
+        {},
+    );
+
+    // Convert the secteurCount object into an array of { secteur_geographique, count }
+    return Object.entries(secteurCount).map(
+        ([secteur_geographique, count]) => ({
+            region: secteur_geographique,
+            count,
+        }),
     );
 }

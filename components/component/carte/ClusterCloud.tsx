@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import useMapStore from '@/stores/global-map-store';
-import { choroplethColors, mapColors } from '@/constants/color-palet';
+import { clusterColors } from '@/constants/color-palet';
 import { MapClusterPointData } from '@/components/interface/point-data';
 import { GraphDataHttpRequestService } from '@/services/data-http-request-service';
 import mapboxgl from 'mapbox-gl';
@@ -75,29 +75,7 @@ const ClusterCloud: React.FC<ClusterCloudProps> = ({ data }) => {
                 'circle-color': [
                     'step',
                     ['get', 'point_count'],
-                    mapColors.colorValue1,
-                    1,
-                    mapColors.colorValue5,
-                    5,
-                    mapColors.colorValue15,
-                    15,
-                    mapColors.colorValue30,
-                    50,
-                    mapColors.colorValue50,
-                    100,
-                    mapColors.colorValue100,
-                    250,
-                    mapColors.colorValue250,
-                    500,
-                    mapColors.colorValue500,
-                    1000,
-                    mapColors.colorValue1000,
-                    1500,
-                    mapColors.colorValue1500,
-                    2000,
-                    mapColors.colorValue2000,
-                    3000,
-                    mapColors.colorValue3000,
+                    ...clusterColors,
                 ],
                 'circle-stroke-width': 0.5,
                 'circle-stroke-color': '#000',

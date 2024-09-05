@@ -2,6 +2,8 @@ import { useEffect, useState } from 'react';
 import useMapStore from '@/stores/global-map-store';
 import quebec_regions from '@/geojson/quebec_regions.json';
 import { choroplethColors } from '@/constants/color-palet';
+import { TableauxTraitementMap } from '@/services/tableaux-taitement';
+import { MainDataFields } from '@/components/enums/data-types-enum';
 
 interface ChloroplethProps {
     data: any[]; // GeoJSON data for regions
@@ -20,11 +22,11 @@ const Chloropleth: React.FC<ChloroplethProps> = ({ data, dataField }) => {
             if (!map) return;
 
             const handleMapLoad = () => {
-                const newRegionCounts: Record<string, number> = {};
+                const newRegionCounts: Record<string, number> =
+                    newRegionCount();
                 data.forEach((item: any) => {
                     newRegionCounts[item.region] = item.count;
                 });
-
                 const newFeature = createRegionFeatures(
                     newRegionCounts,
                     quebec_regions,
@@ -136,4 +138,12 @@ function createRegionFeatures(
         type: 'FeatureCollection',
         features: features,
     };
+}
+
+function newRegionCount() {
+    const regions = TableauxTraitementMap.get(MainDataFields.COORDONNES_REGION);
+    const newRegionCounts: Record<string, number> = {};
+    regions?.forEach((region) => (newRegionCounts[region] = 0));
+
+    return newRegionCounts;
 }
