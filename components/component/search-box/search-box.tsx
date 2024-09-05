@@ -80,7 +80,7 @@ function SearchBox() {
                 return (
                     <tr
                         key={index}
-                        className={`border-b cursor-pointer `}
+                        className={`border-b cursor-pointer hover:shadow-[0px_4px_10px_rgba(0,0,0,0.25)]`}
                         onClick={async () => {
                             console.log(company);
                             await flyToPoint(company);
@@ -112,9 +112,9 @@ function SearchBox() {
     return (
         <div
             id={constants.search_box_id}
-            className="flex flex-col pb-4 h-fit-content w-[500px] dark:bg-[#262626] bg-[#f5ebe0] bg-clip-padding backdrop-filter 
-    dark:bg-opacity-50 backdrop-blur bg-opacity-50 saturate-100 backdrop-contrast-100 border rounded-xl border-transparent 
-    shadow-3xl py-3 px-3 pointer-events-auto"
+            className="flex flex-col pb-4 h-fit-content w-[500px] backdrop-filter 
+    bg-opacity-0 saturate-100 border rounded-xl border-transparent 
+    py-3 px-3 pointer-events-auto"
         >
             <h2 className="text-smaller md:text-small dark:text-white text-black py-4">
                 Liste des entreprises familiales recensées au Québec

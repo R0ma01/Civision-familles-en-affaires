@@ -45,8 +45,12 @@ const GraphBox: React.FC<GraphBoxProps> = ({
     }
 
     const [chartData, setChartData] = useState<
-        ChartData[] | ChartDataMultipleFileds[]
+        (ChartData | ChartDataMultipleFileds)[]
     >([]);
+
+    const [nanData, setNanData] = useState<ChartData | ChartDataMultipleFileds>(
+        { name: 'NaN', value: 0 },
+    );
 
     useEffect(() => {
         async function fetchMultiple(donnes: MainDataFields[]) {
@@ -114,7 +118,14 @@ const GraphBox: React.FC<GraphBoxProps> = ({
                 donnes,
                 filterData,
             );
-            setChartData(result);
+            const nanResult = result.findIndex(
+                (item) => item.name.toString() === 'NaN',
+            );
+            const newResult = result.filter(
+                (item) => item.name.toString() !== 'NaN',
+            );
+            if (nanResult > -1) setNanData(result[nanResult]);
+            setChartData(newResult);
         }
 
         if (
@@ -171,41 +182,81 @@ const GraphBox: React.FC<GraphBoxProps> = ({
     switch (content.graphType) {
         case GraphBoxType.DOUBLE_HORIZONTAL_BARCHART:
             return (
-                <DoubleHorizontalChart
-                    chartContent={chartContent}
-                    chartSize={chartSize}
-                />
+                <>
+                    <DoubleHorizontalChart
+                        chartContent={chartContent}
+                        chartSize={chartSize}
+                    />{' '}
+                    <p className="text-red-600 text-left">
+                        *les {nanData.value} valeurs de {nanData.name} ne sont
+                        pas prises en compte ici
+                    </p>
+                </>
             );
         case GraphBoxType.DOUGHNUT:
             return (
-                <Doughnut
-                    chartContent={chartContent}
-                    chartSize={chartSize}
-                    filterData={filterNewData}
-                />
+                <>
+                    <div className="border border-black">
+                        <Doughnut
+                            chartContent={chartContent}
+                            chartSize={chartSize}
+                            filterData={filterNewData}
+                        />{' '}
+                    </div>
+                    <p className="text-red-600 text-left">
+                        *les {nanData.value} valeurs de {nanData.name} ne sont
+                        pas prises en compte ici
+                    </p>
+                </>
             );
         case GraphBoxType.HORIZONTAL_BARCHART:
             return (
-                <HorizontalBarChart
-                    chartContent={chartContent}
-                    chartSize={chartSize}
-                    filterData={filterNewData}
-                />
+                <>
+                    <div className="border border-black">
+                        <HorizontalBarChart
+                            chartContent={chartContent}
+                            chartSize={chartSize}
+                            filterData={filterNewData}
+                        />
+                    </div>{' '}
+                    <p className="text-red-600 text-left">
+                        *les {nanData.value} valeurs de {nanData.name} ne sont
+                        pas prises en compte ici
+                    </p>
+                </>
             );
         case GraphBoxType.VERTICAL_BARCHART:
             return (
-                <VerticalBarChart
-                    chartContent={chartContent}
-                    chartSize={chartSize}
-                    filterData={filterNewData}
-                />
+                <>
+                    <div className="border border-black">
+                        <VerticalBarChart
+                            chartContent={chartContent}
+                            chartSize={chartSize}
+                            filterData={filterNewData}
+                        />{' '}
+                    </div>
+                    <p className="text-red-600 text-left">
+                        *les {nanData.value} valeurs de {nanData.name} ne sont
+                        pas prises en compte ici
+                    </p>
+                </>
             );
         case GraphBoxType.STACKED_BARCHART:
             return (
-                <StackedBarChart
-                    chartContent={chartContent}
-                    chartSize={chartSize}
-                />
+                <>
+                    <div className="border border-black">
+                        {' '}
+                        <StackedBarChart
+                            chartContent={chartContent}
+                            chartSize={chartSize}
+                        />
+                    </div>
+
+                    <p className="text-red-600 text-left">
+                        *les {nanData.value} valeurs de {nanData.name} ne sont
+                        pas prises en compte ici
+                    </p>
+                </>
             );
         default:
             return (

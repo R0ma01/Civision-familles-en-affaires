@@ -113,9 +113,9 @@ function FournisseurListElement({
     return (
         <tr
             key={index}
-            className={`border-b hover:scale-105 flex items-center overflow-hidden cursor-pointer w-full relative transition-all ease-in-out duration-300 transform ${
+            className={`border-b hover:shadow-[0px_4px_10px_rgba(0,0,0,0.25)] flex items-center overflow-hidden cursor-pointer w-full relative transition-all ease-in-out duration-300 transform ${
                 isOpen ? 'h-24' : 'h-10'
-            }`}
+            }`} 
             onClick={() => setIsOpen(!isOpen)}
         >
             <td className="px-2 text-small dark:text-white text-black w-[30%] transition-all ease-in-out transform duration-300">

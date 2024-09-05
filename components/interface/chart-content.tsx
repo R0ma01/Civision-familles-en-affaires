@@ -3,7 +3,7 @@ import { ChartData, ChartDataMultipleFileds } from './chart-data';
 
 export interface ChartContent {
     donnees: MainDataFields[];
-    data: ChartData[] | ChartDataMultipleFileds[];
+    data: (ChartData | ChartDataMultipleFileds)[];
     totalData: number;
     median?: number;
     midPoint?: number;
