@@ -80,7 +80,7 @@ function SearchBox() {
                 return (
                     <tr
                         key={index}
-                        className={`border-b cursor-pointer hover:shadow-[0px_4px_10px_rgba(0,0,0,0.25)]`}
+                        className={`border-b dark:border-dark-map-gray cursor-pointer hover:shadow-[0px_1px_5px_rgba(0,0,0,0.25)] dark:hover:shadow-[0px_1px_5px_rgba(255,255,255,0.45)]`}
                         onClick={async () => {
                             console.log(company);
                             await flyToPoint(company);

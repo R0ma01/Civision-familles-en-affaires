@@ -12,14 +12,12 @@ interface DashboardProps {
 
 const Dashboard = ({ children }: DashboardProps) => {
     const { pagesData, pageLoading, pageError, fetchPageData } =
-        useGlobalPageStore((state: any) => {
-            return {
-                pagesData: state.pagesData,
-                pageLoading: state.pageLoading,
-                pageError: state.pageError,
-                fetchPageData: state.fetchPageData,
-            };
-        });
+        useGlobalPageStore((state: any) => ({
+            pagesData: state.pagesData,
+            pageLoading: state.pageLoading,
+            pageError: state.pageError,
+            fetchPageData: state.fetchPageData,
+        }));
 
     const { fournisseurData, fetchFournisseurData } =
         useGlobalFournisseursStore((state: any) => ({
@@ -39,8 +37,28 @@ const Dashboard = ({ children }: DashboardProps) => {
         }
 
         fetchAll();
-        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [pagesData, pageLoading, fetchPageData, fetchFournisseurData]);
+
+    useEffect(() => {
+        const handleBeforeUnload = (event: BeforeUnloadEvent) => {
+            // Detect if this is a refresh
+            if (!sessionStorage.getItem('isPageRefreshing')) {
+                // Clear Zustand store and cookies only on tab/window close
+                clearCookies();
+                clearZustandStore();
+            }
+            // Set flag in sessionStorage for refresh detection
+            sessionStorage.setItem('isPageRefreshing', 'true');
+        };
+
+        // Listen for the beforeunload event
+        window.addEventListener('beforeunload', handleBeforeUnload);
+
+        return () => {
+            // Clean up the event listener on component unmount
+            window.removeEventListener('beforeunload', handleBeforeUnload);
+        };
+    }, []);
 
     return (
         <>
@@ -67,3 +85,23 @@ const Dashboard = ({ children }: DashboardProps) => {
 };
 
 export default Dashboard;
+
+// Helper to clear cookies
+function clearCookies() {
+    const cookies = document.cookie.split(';');
+
+    for (let i = 0; i < cookies.length; i++) {
+        const cookie = cookies[i];
+        const eqPos = cookie.indexOf('=');
+        const name = eqPos > -1 ? cookie.substr(0, eqPos) : cookie;
+        document.cookie =
+            name + '=;expires=Thu, 01 Jan 1970 00:00:00 GMT;path=/';
+    }
+}
+
+function clearZustandStore() {
+    // Replace 'zustand_store_key' with the actual key used by Zustand in localStorage
+    localStorage.removeItem('global-data-store');
+    localStorage.removeItem('global-page-store');
+    localStorage.removeItem('global-user-store');
+}

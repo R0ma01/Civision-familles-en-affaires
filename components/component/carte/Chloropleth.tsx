@@ -51,7 +51,11 @@ const Chloropleth: React.FC<ChloroplethProps> = ({ data, dataField }) => {
             if (!map || !feature) return;
 
             const source = map.getSource('chloropleth-source');
-            if (source) {
+            if (!source) {
+                console.warn(
+                    "Source 'chloropleth-source' not found. Skipping update.",
+                );
+            } else {
                 if (map.getLayer('chloropleth-layer')) {
                     map.removeLayer('chloropleth-layer');
                 }
@@ -66,7 +70,6 @@ const Chloropleth: React.FC<ChloroplethProps> = ({ data, dataField }) => {
                 data: feature,
             });
 
-            // Add the fill layer for the regions
             map.addLayer({
                 id: 'chloropleth-layer',
                 type: 'fill',
@@ -82,14 +85,13 @@ const Chloropleth: React.FC<ChloroplethProps> = ({ data, dataField }) => {
                 },
             });
 
-            // Add the outline layer for the regions
             map.addLayer({
                 id: 'chloropleth-outline-layer',
                 type: 'line',
                 source: 'chloropleth-source',
                 paint: {
-                    'line-color': '#000', // Black outline color
-                    'line-width': 0.5, // Width of the outline
+                    'line-color': '#000',
+                    'line-width': 0.5,
                 },
             });
 

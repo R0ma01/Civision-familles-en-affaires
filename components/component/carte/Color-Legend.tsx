@@ -50,7 +50,7 @@ const ColorLegend = ({
     }
 
     return (
-        <div className={`legend-container flex ${className}`}>
+        <div className={`legend-container flex ${className} w-fit h-hit`}>
             {colors.map((color, index) => (
                 <div key={index} className={`flex flex-col ${blockWidth()}`}>
                     <div className="text-xs font-light dark:text-white text-center">

@@ -4,8 +4,6 @@ import {
     MapClusterPointData,
 } from '@/components/interface/point-data';
 import { create } from 'zustand';
-import GeoJSON from '@/components/interface/geo-json';
-
 import { GraphDataHttpRequestService } from '@/services/data-http-request-service';
 
 interface GlobalMapStoreProps {
