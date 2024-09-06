@@ -70,7 +70,7 @@ export default function Carte() {
             mapType == MapType.REPERTOIRE &&
             !loading
         ) {
-            console.log('i am called');
+            console.log('repertoire fetch');
             repertoireFetch();
         }
 
@@ -97,6 +97,9 @@ export default function Carte() {
     useEffect(() => {
         // update map reference
         mapRef.current = map;
+        console.log(studyData);
+        console.log(repertoireData);
+        console.log(fournisseurData);
     }, [map]);
 
     useEffect(() => {
