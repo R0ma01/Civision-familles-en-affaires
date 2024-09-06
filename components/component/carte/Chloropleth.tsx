@@ -11,109 +11,104 @@ interface ChloroplethProps {
 }
 
 const Chloropleth: React.FC<ChloroplethProps> = ({ data, dataField }) => {
-    try {
-        const { map } = useMapStore((state: any) => ({
-            map: state.map,
-        }));
+    const { map } = useMapStore((state: any) => ({
+        map: state.map,
+    }));
 
-        const [feature, setFeature] = useState<any>(null);
+    const [feature, setFeature] = useState<any>(null);
 
-        useEffect(() => {
-            if (!map) return;
+    useEffect(() => {
+        if (!map) return;
 
-            const handleMapLoad = () => {
-                const newRegionCounts: Record<string, number> =
-                    newRegionCount();
-                data.forEach((item: any) => {
-                    newRegionCounts[item.region] = item.count;
-                });
-                const newFeature = createRegionFeatures(
-                    newRegionCounts,
-                    quebec_regions,
-                );
-                setFeature(newFeature);
-            };
+        const handleMapLoad = () => {
+            const newRegionCounts: Record<string, number> = newRegionCount();
+            data.forEach((item: any) => {
+                newRegionCounts[item.region] = item.count;
+            });
+            const newFeature = createRegionFeatures(
+                newRegionCounts,
+                quebec_regions,
+            );
+            setFeature(newFeature);
+        };
 
-            if (map.isStyleLoaded()) {
-                handleMapLoad();
-            } else {
-                map.on('load', handleMapLoad);
+        if (map.isStyleLoaded()) {
+            handleMapLoad();
+        } else {
+            map.on('load', handleMapLoad);
+        }
+
+        return () => {
+            if (map && handleMapLoad) {
+                map.off('load', handleMapLoad);
             }
+        };
+    }, [data, map]);
 
-            return () => {
-                if (map && handleMapLoad) {
-                    map.off('load', handleMapLoad);
-                }
-            };
-        }, [data, map]);
+    useEffect(() => {
+        if (!map || !feature) return;
 
-        useEffect(() => {
-            if (!map || !feature) return;
-
-            const source = map.getSource('chloropleth-source');
-            if (!source) {
-                console.warn(
-                    "Source 'chloropleth-source' not found. Skipping update.",
-                );
-            } else {
-                if (map.getLayer('chloropleth-layer')) {
-                    map.removeLayer('chloropleth-layer');
-                }
-                if (map.getLayer('chloropleth-outline-layer')) {
-                    map.removeLayer('chloropleth-outline-layer');
-                }
-                map.removeSource('chloropleth-source');
+        const source = map.getSource('chloropleth-source');
+        if (!source) {
+            console.warn(
+                "Source 'chloropleth-source' not found. Skipping update.",
+            );
+        } else {
+            if (map.getLayer('chloropleth-layer')) {
+                map.removeLayer('chloropleth-layer');
             }
+            if (map.getLayer('chloropleth-outline-layer')) {
+                map.removeLayer('chloropleth-outline-layer');
+            }
+            map.removeSource('chloropleth-source');
+        }
 
-            map.addSource('chloropleth-source', {
-                type: 'geojson',
-                data: feature,
-            });
+        map.addSource('chloropleth-source', {
+            type: 'geojson',
+            data: feature,
+        });
 
-            map.addLayer({
-                id: 'chloropleth-layer',
-                type: 'fill',
-                source: 'chloropleth-source',
-                paint: {
-                    'fill-color': [
-                        'interpolate',
-                        ['linear'],
-                        ['get', dataField],
-                        ...choroplethColors,
-                    ],
-                    'fill-opacity': 0.45,
-                },
-            });
+        map.addLayer({
+            id: 'chloropleth-layer',
+            type: 'fill',
+            source: 'chloropleth-source',
+            paint: {
+                'fill-color': [
+                    'interpolate',
+                    ['linear'],
+                    ['get', dataField],
+                    ...choroplethColors,
+                ],
+                'fill-opacity': 0.45,
+            },
+        });
 
-            map.addLayer({
-                id: 'chloropleth-outline-layer',
-                type: 'line',
-                source: 'chloropleth-source',
-                paint: {
-                    'line-color': '#000',
-                    'line-width': 0.5,
-                },
-            });
+        map.addLayer({
+            id: 'chloropleth-outline-layer',
+            type: 'line',
+            source: 'chloropleth-source',
+            paint: {
+                'line-color': '#000',
+                'line-width': 0.5,
+            },
+        });
 
-            return () => {
-                if (map) {
-                    if (map.getSource('chloropleth-source')) {
-                        if (map.getLayer('chloropleth-layer')) {
-                            map.removeLayer('chloropleth-layer');
-                        }
-                        if (map.getLayer('chloropleth-outline-layer')) {
-                            map.removeLayer('chloropleth-outline-layer');
-                        }
-                        map.removeSource('chloropleth-source');
+        return () => {
+            if (map) {
+                if (map.getSource('chloropleth-source')) {
+                    if (map.getLayer('chloropleth-layer')) {
+                        map.removeLayer('chloropleth-layer');
                     }
+                    if (map.getLayer('chloropleth-outline-layer')) {
+                        map.removeLayer('chloropleth-outline-layer');
+                    }
+                    map.removeSource('chloropleth-source');
                 }
-            };
-        }, [map, feature, dataField]);
+            }
+        };
+    }, [map, feature, dataField]);
 
-        return null;
-    } catch (e: any) {
-        console.error(e.message);
-    }
+    return null;
 };
 
 export default Chloropleth;
