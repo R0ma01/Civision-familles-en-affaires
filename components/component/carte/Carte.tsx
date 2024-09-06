@@ -97,8 +97,11 @@ export default function Carte() {
     useEffect(() => {
         // update map reference
         mapRef.current = map;
+        console.log(studyDataFetched);
         console.log(studyData);
+        console.log(repertoireDataFetched);
         console.log(repertoireData);
+        console.log(fournisseurDataFetched);
         console.log(fournisseurData);
     }, [map]);
 
