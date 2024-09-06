@@ -21,9 +21,24 @@ function Repertoire() {
         mapType: state.mapType,
     }));
 
+    const { repertoireDataFetched, fetchRepertoireData, loading } =
+        useGlobalDataStore((state: any) => ({
+            repertoireDataFetched: state.repertoireDataFetched,
+            fetchRepertoireData: state.fetchRepertoireData,
+            loading: state.loading,
+        }));
+
     useEffect(() => {
+        async function fetch() {
+            await fetchRepertoireData(filterData);
+        }
+
         if (mapType !== MapType.REPERTOIRE) {
             setMapStyle(MapType.REPERTOIRE);
+        }
+
+        if (!repertoireDataFetched && !loading) {
+            fetch();
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [mapType, setMapStyle]);

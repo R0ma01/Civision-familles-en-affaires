@@ -61,7 +61,7 @@ export default function Carte() {
             mapType == MapType.PAGE_INFORMATION &&
             !loading
         ) {
-            console.log('i am called');
+            console.log('study fetch');
             studyFetch();
         }
 
