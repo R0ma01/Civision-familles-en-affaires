@@ -17,6 +17,7 @@ import { useFournisseurActions } from './use-fournisseur-actions';
 import { Fournisseur } from '@/components/interface/fournisseur';
 import DeleteItemDialog from '@/components/component/dialogs/delete-page-dialog';
 import ListeFournisseurs from '@/components/component/liste-fournisseurs/liste-fournisseurs';
+import useGlobalDataStore from '@/stores/global-data-store';
 
 function Fournisseurs() {
     const { user } = useGlobalUserStore((state: any) => ({
@@ -55,9 +56,24 @@ function Fournisseurs() {
         services_offerts: [],
     };
 
+    const { fournisseurDataFetched, fetchFournisseurData, loading } =
+        useGlobalDataStore((state: any) => ({
+            fournisseurDataFetched: state.fournisseurDataFetched,
+            fetchFournisseurData: state.fetchFournisseurData,
+            loading: state.loading,
+        }));
+
     useEffect(() => {
+        async function fetch() {
+            await fetchFournisseurData();
+        }
+
         if (mapType !== MapType.FOURNISSEURS) {
             setMapStyle(MapType.FOURNISSEURS);
+        }
+
+        if (!fournisseurDataFetched && !loading) {
+            fetch();
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [mapType, setMapStyle]);
