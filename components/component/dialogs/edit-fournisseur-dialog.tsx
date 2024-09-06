@@ -343,3 +343,4 @@ const DropDownSelector = React.forwardRef(
         );
     },
 );
+DropDownSelector.displayName = 'DropDownSelector';
