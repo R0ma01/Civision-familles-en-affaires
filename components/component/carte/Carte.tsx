@@ -66,7 +66,7 @@ export default function Carte() {
         }
 
         if (
-            !repertoireDataFetched &&
+            (!repertoireDataFetched || repertoireData.length === 0) &&
             mapType == MapType.REPERTOIRE &&
             !loading
         ) {
