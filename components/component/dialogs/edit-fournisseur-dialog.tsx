@@ -24,8 +24,10 @@ export function EditFournisseurDialog({
 }: EditFournisseurDialogProps) {
     const [secteursOptions, setSecteursOptions] = useState<
         SecteursGeographiques[]
-    >([]);
-    const [servicesOptions, setServicesOptions] = useState<ServiceOffert[]>([]);
+    >(fournisseur.secteurs_geographique);
+    const [servicesOptions, setServicesOptions] = useState<ServiceOffert[]>(
+        fournisseur.services_offerts,
+    );
     const [isSecteurDropdownVisible, setSecteurDropdownVisible] =
         useState(false);
     const [isServiceDropdownVisible, setServiceDropdownVisible] =
@@ -141,9 +143,6 @@ export function EditFournisseurDialog({
                 ref={dialogRef}
                 className="bg-white dark:bg-[#262626] p-2 rounded-lg shadow-2xl w-[80%] h-[95%] relative space-y-8 flex flex-row justify-evenly items-center"
             >
-                <div className="w-[40%] h-full flex justify-center items-center">
-                    <ListeFournisseurs></ListeFournisseurs>
-                </div>
                 <Formik
                     initialValues={initialFournisseurValues}
                     onSubmit={(values) => {

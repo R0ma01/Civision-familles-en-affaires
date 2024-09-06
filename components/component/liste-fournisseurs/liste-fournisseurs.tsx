@@ -7,14 +7,57 @@ import {
     SecteursGeographiques,
     ServiceOffert,
 } from '@/components/enums/fournisseur-filter-enum';
-export default function ListeFournisseurs() {
+import useGlobalUserStore from '@/stores/global-user-store';
+import {
+    EditSVG,
+    InvisibleSVG,
+    TrashSVG,
+    VisibleSVG,
+} from '../svg-icons/svg-icons';
+import { ButtonType } from '@/components/enums/button-type-enum';
+import Button from '../buttons/button';
+
+interface ListeFournisseurProps {
+    admin: boolean;
+    isEditDialogOpen: any;
+    isDeleteDialogOpen: any;
+    currentFournisseur: any;
+    openEditDialog: any;
+    closeEditDialog: any;
+    submitEditDialog: any;
+    openDeleteDialog: any;
+    closeDeleteDialog: any;
+    submitDeleteDialog: any;
+    toggleFournisseurVisibility: any;
+}
+
+export default function ListeFournisseurs({
+    admin = false,
+    isEditDialogOpen,
+    isDeleteDialogOpen,
+    currentFournisseur,
+    openEditDialog,
+    closeEditDialog,
+    submitEditDialog,
+    openDeleteDialog,
+    closeDeleteDialog,
+    submitDeleteDialog,
+    toggleFournisseurVisibility,
+}: ListeFournisseurProps) {
     const [fournisseurs, setFournisseurs] = useState<Fournisseur[]>([]);
 
-    const { fournisseurData } = useGlobalDataStore((state: any) => ({
+    const { fournisseurData, loading } = useGlobalDataStore((state: any) => ({
         fournisseurData: state.fournisseurData,
+        loading: state.loading,
     }));
 
     const [searchString, setSearchString] = useState<string>('');
+    const [searchSecteur, setSearchSecteur] = useState<
+        SecteursGeographiques | string
+    >('Toutes');
+    const [searchService, setSearchService] = useState<ServiceOffert | string>(
+        'Toutes',
+    );
 
     function sortAlphabetically(compagnies: Fournisseur[]): Fournisseur[] {
         return compagnies.sort((a, b) => {
@@ -48,12 +91,34 @@ export default function ListeFournisseurs() {
         });
     }
 
-    const filterPredicate = (company: Fournisseur) => {
-        return company.contact.lastName
-            ? company.contact.lastName
-                  .toLowerCase()
-                  .startsWith(searchString.toLowerCase(), 0)
-            : false;
+    const filterPredicate = (fournisseur: Fournisseur) => {
+        let returnValue = false;
+
+        if (
+            fournisseur.contact.lastName
+                .toLowerCase()
+                .startsWith(searchString.toLowerCase(), 0) ||
+            fournisseur.contact.firstName
+                .toLowerCase()
+                .startsWith(searchString.toLowerCase(), 0)
+        ) {
+            if (
+                searchSecteur === 'Toutes' ||
+                fournisseur.secteurs_geographique.includes(
+                    searchSecteur as unknown as SecteursGeographiques,
+                )
+            ) {
+                if (
+                    searchService === 'Toutes' ||
+                    fournisseur.services_offerts.includes(
+                        searchService as unknown as ServiceOffert,
+                    )
+                ) {
+                    returnValue = true;
+                }
+            }
+        }
+        return returnValue;
     };
 
     function filterSearchParams() {
@@ -65,7 +130,7 @@ export default function ListeFournisseurs() {
     useEffect(() => {
         filterSearchParams();
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [fournisseurData, searchString]);
+    }, [fournisseurData, searchString, searchSecteur, searchService]);
 
     function handleSearchChange(e: React.ChangeEvent<HTMLInputElement>) {
         setSearchString(e.target.value);
@@ -78,84 +143,167 @@ export default function ListeFournisseurs() {
                     key={index}
                     fournisseur={fournisseur}
                     index={index}
+                    admin={admin}
+                    onClickEdit={openEditDialog}
+                    onClickDelete={openDeleteDialog}
+                    onClickVisible={toggleFournisseurVisibility}
                 ></FournisseurListElement>
             );
         });
     }
+    console.log([...Object.values(SecteursGeographiques), 'toutes']);
     return (
-        <>
-            <div className="flex flex-col space-y-4 z-10 w-full">
-                <div className="flex flex-row items-center justify-evenly">
+        <div
+            className={`w-[500px] bg-[#fefefe] dark:bg-[#2a2a2a] dark:text-white backdrop-blur-md bg-opacity-50 shadow-3xl
+                    rounded-xl py-8 px-10 pointer-events-auto flex flex-col items-center h-auto space-y-6`}
+        >
+            {/* Search and Filters */}
+            <div className="flex flex-col w-full space-y-4">
+                <div className="flex flex-row items-center space-x-4 justify-between">
+                    {/* Search Input */}
                     <input
                         type="text"
                         placeholder="Rechercher..."
                         value={searchString}
                         onChange={handleSearchChange}
-                        className="mb-4 p-2 h-8 bg-transparent border border-logo-turquoise dark:border-logo-turquoise shadow-lg rounded cursor-pointer"
+                        className="w-full p-3 bg-white dark:bg-[#3a3a3a] border border-logo-turquoise dark:border-[#4fc3f7] 
+                               rounded-lg focus:outline-none focus:ring-2 focus:ring-logo-turquoise dark:focus:ring-[#4fc3f7] 
+                               shadow-sm transition ease-in-out duration-200"
                     />
+
+                    {/* Dropdown Filters */}
                     <div className="flex flex-col space-y-2">
+                        <p className="text-xs">Région</p>
                         <Dropdown
-                            options={Object.values(SecteursGeographiques)}
+                            options={[
+                                'Toutes',
+                                ...Object.values(SecteursGeographiques),
+                            ]}
+                            inputValue={searchSecteur}
+                            onChange={(value: any) => setSearchSecteur(value)}
+                            className="hover:border-logo-turquoise focus:ring-2"
                         />
-                        <Dropdown options={Object.values(ServiceOffert)} />
+                        <p className="text-xs">Service Offert</p>
+                        <Dropdown
+                            options={[
+                                'Toutes',
+                                ...Object.values(ServiceOffert),
+                            ]}
+                            inputValue={searchService}
+                            onChange={(value: any) => setSearchService(value)}
+                        />
                     </div>
                 </div>
-                <div className="overflow-y-auto overflow-x-hidden max-h-52">
-                    <table className="min-w-full max-w-full ">
-                        <tbody className="overflow-x-hidden max-w-full">
-                            {populateTable()}
-                        </tbody>
+            </div>
+
+            {/* Table with Suppliers */}
+            {!loading ? (
+                <div className="w-full overflow-y-auto max-h-72 rounded-md shadow-inner bg-white dark:bg-[#3a3a3a]">
+                    <table className="min-w-full">
+                        <tbody>{populateTable()}</tbody>
                     </table>
                 </div>
-            </div>
-        </>
+            ) : (
+                <div className="w-full h-32 flex justify-center items-center">
+                    <div className="loader-circle animate-spin w-8 h-8 border-t-4 border-b-4 border-logo-turquoise dark:border-[#4fc3f7] rounded-full"></div>
+                </div>
+            )}
+        </div>
     );
 }
 
 interface FournisseurListElementProps {
     fournisseur: Fournisseur;
     index: number;
+    admin: boolean;
+    onClickEdit: (fournisseur: Fournisseur) => void;
+    onClickDelete: (fournisseur: Fournisseur) => void;
+    onClickVisible: (fournisseur: Fournisseur) => void;
 }
 function FournisseurListElement({
     fournisseur,
     index,
+    admin = false,
+    onClickEdit,
+    onClickDelete,
+    onClickVisible,
 }: FournisseurListElementProps) {
     const [isOpen, setIsOpen] = useState<boolean>(false);
+
+    const handleRowClick = () => {
+        setIsOpen(!isOpen);
+    };
+
+    const handleButtonClick = (e: React.MouseEvent<HTMLButtonElement>) => {
+        e.stopPropagation();
+    };
 
     return (
         <tr
             key={index}
-            className={`border-b hover:shadow-[0px_4px_10px_rgba(0,0,0,0.25)] flex items-center overflow-hidden cursor-pointer w-full relative transition-all ease-in-out duration-300 transform ${
+            className={`border-b hover:shadow-[0px_4px_10px_rgba(0,0,0,0.25)] dark:hover:shadow-[0px_1px_5px_rgba(255,255,255,0.45)] flex items-center overflow-hidden cursor-pointer w-full relative transition-all ease-in-out duration-300 transform ${
                 isOpen ? 'h-24' : 'h-10'
-            }`}
-            onClick={() => setIsOpen(!isOpen)}
+            } group relative`}
+            onClick={handleRowClick}
         >
-            <td className="px-2 text-small dark:text-white text-black w-[30%] transition-all ease-in-out transform duration-300">
+            <td className="px-2 text-sm dark:text-white text-black w-[30%] transition-all ease-in-out transform duration-300">
                 {fournisseur.contact.lastName}
             </td>
             <td
-                className={`px-2 py-2 text-small dark:text-white text-black w-[30%] transition-all ease-in-out transform duration-300 max-w-[30%] text-wrap overflow-x-hidden overflow-y-auto max-h-20 ${
+                className={`px-2 py-2 text-xs dark:text-white text-black w-[30%] transition-all ease-in-out transform duration-300 max-w-[30%] text-wrap overflow-x-hidden overflow-y-auto max-h-20 ${
                     isOpen ? 'opacity-100 flex' : 'opacity-0 hidden'
                 }`}
             >
                 {fournisseur.secteurs_geographique.join(', ')}
             </td>
             <td
-                className={`px-2 py-2 text-small dark:text-white text-black w-[30%] transition-all ease-in-out transform duration-300 max-w-[30%] text-wrap overflow-x-hidden overflow-y-auto max-h-20 ${
+                className={`px-2 py-2 text-xs dark:text-white text-black w-[30%] transition-all ease-in-out transform duration-300 max-w-[30%] text-wrap overflow-x-hidden overflow-y-auto max-h-20 ${
                     isOpen ? 'opacity-100 flex' : 'opacity-0 hidden'
                 }`}
             >
                 {fournisseur.services_offerts.join(', ')}
             </td>
-            <td className="px-1 py-1 mr-3 absolute right-0 flex items-center h-full">
-                <span
-                    className={`bg-logo-turquoise dark:text-white text-black text-medium 
-                rounded-full w-5 h-5 flex items-center justify-center transition-transform duration-300`}
-                    style={{ transitionTimingFunction: 'ease-in-out' }}
-                >
-                    &gt;
-                </span>
-            </td>
+
+            <div className="flex-row justify-evenly w-fit mb-4 hidden group-hover:flex absolute right-0 top-0 z-50">
+                {admin && (
+                    <Button
+                        buttonType={ButtonType.ICON}
+                        onClick={(e) => {
+                            handleButtonClick(e);
+                            console.log('hello');
+                            onClickEdit(fournisseur);
+                        }}
+                    >
+                        <EditSVG className="hover:scale-105 hover:fill-black dark:hover:fill-white fill-gray-500 dark:fill-custom-grey"></EditSVG>
+                    </Button>
+                )}
+                {admin && (
+                    <Button
+                        buttonType={ButtonType.ICON}
+                        onClick={(e) => {
+                            handleButtonClick(e);
+                            onClickDelete(fournisseur);
+                        }}
+                    >
+                        <TrashSVG className="hover:scale-105 hover:fill-black dark:hover:fill-white fill-gray-500 dark:fill-custom-grey"></TrashSVG>
+                    </Button>
+                )}
+                {admin && (
+                    <Button
+                        buttonType={ButtonType.ICON}
+                        onClick={(e) => {
+                            handleButtonClick(e);
+                            onClickVisible(fournisseur);
+                        }}
+                    >
+                        {fournisseur.visible ? (
+                            <VisibleSVG className="hover:scale-105 hover:fill-black dark:hover:fill-white fill-gray-500 dark:fill-custom-grey"></VisibleSVG>
+                        ) : (
+                            <InvisibleSVG className="hover:scale-105 hover:fill-black dark:hover:fill-white fill-gray-500 dark:fill-custom-grey"></InvisibleSVG>
+                        )}
+                    </Button>
+                )}
+            </div>
         </tr>
     );
 }

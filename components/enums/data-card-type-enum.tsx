@@ -4,6 +4,5 @@ export enum DataCardType {
     MULTIPLE_GRAPH = 2,
     SEARCH = 3,
     SOLO_GRAPH = 4,
-    FOURNISSEURS = 5,
     CHERCHEUR_DROPDOWN = 6,
 }

@@ -16,8 +16,8 @@ export function useFournisseurActions() {
         };
     });
 
-    const openEditDialog = (page: Fournisseur) => {
-        setCurrentFournisseur(page);
+    const openEditDialog = (fournisseur: Fournisseur) => {
+        setCurrentFournisseur(fournisseur);
         setEditDialogOpen(true);
     };
 

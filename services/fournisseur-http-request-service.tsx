@@ -52,7 +52,7 @@ async function addOne(fournisseur: Fournisseur) {
 
 async function deleteOne(_id: string) {
     try {
-        const response = await axios.delete(APIPaths.PAGE_DELETE, {
+        const response = await axios.delete(APIPaths.FOURNISSEURS_DELETE_ONE, {
             params: { _id },
         });
     } catch (error: any) {

@@ -6,6 +6,7 @@ interface DropdownProps<T> {
     options: T[];
     onChange?: (value: T) => void;
     displayValue?: (value: T) => string; // Function to display the value
+    className?: string;
 }
 
 const Dropdown = <T,>({
@@ -18,6 +19,7 @@ const Dropdown = <T,>({
         }
         return value as string;
     },
+    className = '',
 }: DropdownProps<T>) => {
     const [selectedValue, setSelectedValue] = useState<T | undefined>(
         inputValue,
@@ -65,11 +67,13 @@ const Dropdown = <T,>({
             <button
                 ref={buttonRef}
                 onClick={toggleDropdown}
-                className="flex items-center justify-between w-40 px-2 py-1 bg-gray-100 border 
+                className={`flex items-center justify-between w-40 px-2 py-1 bg-gray-100 border max-h-8 h-8 
                 border-gray-300 rounded-lg shadow-sm hover:bg-gray-200 focus:outline-none focus:ring-2
-                 focus:ring-blue-500 focus:ring-opacity-50 text-xs dark:bg-gray-700 dark:text-white dark:hover:bg-black"
+                 focus:ring-blue-500 focus:ring-opacity-50 text-xs dark:bg-gray-700 dark:text-white dark:hover:bg-black ${className}`}
             >
-                <span>{displayValue(selectedValue ?? options[0])}</span>
+                <span className="overflow-hidden w-40 max-h-8">
+                    {displayValue(selectedValue ?? options[0])}
+                </span>
                 <svg
                     className={`w-4 h-4 transition-transform ${dropdownOpen ? 'rotate-180' : 'rotate-0'}`}
                     xmlns="http://www.w3.org/2000/svg"
@@ -92,6 +96,7 @@ const Dropdown = <T,>({
                 >
                     <ul className="py-1 max-h-64 overflow-y-auto dark:bg-gray-700">
                         {options.map((option: any) => {
+                            console.log(option);
                             return (
                                 <li
                                     key={option as unknown as string}

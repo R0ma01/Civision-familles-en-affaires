@@ -6,13 +6,19 @@ import SearchBox from '@/components/component/search-box/search-box';
 
 import ListeFournisseurs from '@/components/component/liste-fournisseurs/liste-fournisseurs';
 import StaticDropdown from '../drop-down-menu/chercheur-drop-down';
+import { UserType } from '@/components/enums/user-type-enum';
 
 interface DataCardProps {
     className?: string;
     content: DataCardContent;
+    admin?: boolean;
 }
 
-const DataCard: React.FC<DataCardProps> = ({ content, className }) => {
+const DataCard: React.FC<DataCardProps> = ({
+    content,
+    className,
+    admin = false,
+}) => {
     const [isCollapsed, setIsCollapsed] = useState(false);
 
     const DataCardDiv: React.FC<{
@@ -109,12 +115,7 @@ const DataCard: React.FC<DataCardProps> = ({ content, className }) => {
                 </DataCardDiv>
             );
 
-        case DataCardType.FOURNISSEURS:
-            return (
-                <DataCardDiv title={content.title}>
-                    <ListeFournisseurs />
-                </DataCardDiv>
-            );
+  
 
         case DataCardType.CHERCHEUR_DROPDOWN:
             return (

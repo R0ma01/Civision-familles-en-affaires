@@ -15,6 +15,8 @@ import { UserType } from '@/components/enums/user-type-enum';
 import { MapType } from '@/components/enums/map-type-enum';
 import { useFournisseurActions } from './use-fournisseur-actions';
 import { Fournisseur } from '@/components/interface/fournisseur';
+import DeleteItemDialog from '@/components/component/dialogs/delete-page-dialog';
+import ListeFournisseurs from '@/components/component/liste-fournisseurs/liste-fournisseurs';
 
 function Fournisseurs() {
     const { user } = useGlobalUserStore((state: any) => ({
@@ -60,13 +62,6 @@ function Fournisseurs() {
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [mapType, setMapStyle]);
 
-    const content1: DataCardContent = {
-        title: 'Liste des Fournisseurs',
-        description: '',
-        type: DataCardType.FOURNISSEURS,
-        graphData: [],
-    };
-
     function openDialog(e: any) {
         e.preventDefault();
         openEditDialog(emptyFournisseur as unknown as Fournisseur);
@@ -74,7 +69,7 @@ function Fournisseurs() {
 
     function closeDialog(e: any) {
         e.preventDefault();
-        openEditDialog(emptyFournisseur as unknown as Fournisseur);
+        closeEditDialog();
     }
 
     return (
@@ -87,7 +82,20 @@ function Fournisseurs() {
                 <h1 className="text-2xl tracking-wide text-black dark:text-white z-10 mt-12 mb-2 cursor-default">
                     Fournisseurs
                 </h1>
-                <DataCard content={content1} />
+                {/* <DataCard content={content1} admin={user === UserType.ADMIN} /> */}
+                <ListeFournisseurs
+                    admin={user === UserType.ADMIN}
+                    isEditDialogOpen={isEditDialogOpen}
+                    isDeleteDialogOpen={isDeleteDialogOpen}
+                    currentFournisseur={currentFournisseur}
+                    openEditDialog={openEditDialog}
+                    closeEditDialog={closeEditDialog}
+                    submitEditDialog={submitEditDialog}
+                    openDeleteDialog={openDeleteDialog}
+                    closeDeleteDialog={closeDeleteDialog}
+                    submitDeleteDialog={submitDeleteDialog}
+                    toggleFournisseurVisibility={toggleFournisseurVisibility}
+                ></ListeFournisseurs>
                 {user === UserType.ADMIN && (
                     <Button
                         buttonType={ButtonType.ICON}
@@ -97,11 +105,18 @@ function Fournisseurs() {
                         <AdminSVG className="w-full h-full"></AdminSVG>
                     </Button>
                 )}
-                {isEditDialogOpen && (
+                {isEditDialogOpen && currentFournisseur && (
                     <EditFournisseurDialog
                         closeDialog={closeDialog}
                         submitDialog={submitEditDialog}
-                        fournisseur={emptyFournisseur as unknown as Fournisseur}
+                        fournisseur={currentFournisseur}
+                    />
+                )}
+                {isDeleteDialogOpen && currentFournisseur && (
+                    <DeleteItemDialog
+                        closeDialog={closeDeleteDialog}
+                        submitDialog={submitDeleteDialog}
+                        deleteItem={currentFournisseur}
                     />
                 )}
             </PageContentContainer>

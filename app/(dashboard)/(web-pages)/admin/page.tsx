@@ -5,7 +5,7 @@ import ThemeCard from '@/components/component/theme-card/theme-card';
 import useGlobalUserStore from '@/stores/global-user-store';
 import { UserType } from '@/components/enums/user-type-enum';
 import PageEditDialog from '@/components/component/dialogs/edit-page-dialog';
-import PageDeleteDialog from '@/components/component/dialogs/delete-page-dialog';
+import DeleteItemDialog from '@/components/component/dialogs/delete-page-dialog';
 import { AddCircleSVG } from '@/components/component/svg-icons/svg-icons';
 import { ButtonType } from '@/components/enums/button-type-enum';
 import Button from '@/components/component/buttons/button';
@@ -111,10 +111,10 @@ export default function Admin() {
                 />
             )}
             {isDeleteDialogOpen && currentPage && (
-                <PageDeleteDialog
+                <DeleteItemDialog
                     closeDialog={closeDeleteDialog}
                     submitDialog={submitDeleteDialog}
-                    page={currentPage}
+                    deleteItem={currentPage}
                 />
             )}
         </PageContentContainer>
