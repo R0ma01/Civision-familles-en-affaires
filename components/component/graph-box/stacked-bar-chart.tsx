@@ -30,7 +30,7 @@ const StackedBarChart: React.FC<StackedBarChartProps> = ({
     >(undefined);
 
     const originalOrder = useRef<
-        ChartData[] | ChartDataMultipleFileds[] | undefined
+        (ChartData | ChartDataMultipleFileds)[] | undefined
     >(undefined);
 
     useEffect(() => {
