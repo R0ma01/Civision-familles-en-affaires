@@ -36,11 +36,17 @@ const VerticalBarChart: React.FC<VerticalBarChartProps> = ({
         ChartData[] | ChartDataMultipleFileds[] | undefined
     >(undefined);
 
+    const [size, setSize] = useState<ChartSize>(chartSize);
+
+    useEffect(() => {
+        setSize(chartSize);
+    }, [chartSize]);
+
     useEffect(() => {
         if (chartContent.data.length > 0) {
             if (!originalOrder.current) {
                 // Save the initial order on first render
-                originalOrder.current = chartContent.data;
+                originalOrder.current = chartContent.data as ChartData[];
             } else {
                 // Reorder new data to match the original order
                 const updatedData = originalOrder.current.map(
@@ -94,9 +100,9 @@ const VerticalBarChart: React.FC<VerticalBarChartProps> = ({
 
     return (
         <div className="flex flex-col h-auto dark:text-white">
-            <ResponsiveContainer width={chartSize} height={chartSize}>
+            <ResponsiveContainer width={size} height={size}>
                 <BarChart data={chartContent.data}>
-                    {chartSize === ChartSize.SMALL ? (
+                    {size === ChartSize.SMALL ? (
                         <>
                             <YAxis
                                 type="number"
@@ -130,7 +136,7 @@ const VerticalBarChart: React.FC<VerticalBarChartProps> = ({
                     <Tooltip content={<CustomTooltip />} />
                     <Bar
                         dataKey="value"
-                        barSize={chartSize / (10 + chartContent.data.length)}
+                        barSize={size / (10 + chartContent.data.length)}
                     >
                         {chartData &&
                             chartData.map((entry, index) => (
@@ -149,11 +155,7 @@ const VerticalBarChart: React.FC<VerticalBarChartProps> = ({
                                     }}
                                 />
                             ))}
-                        {!chartData && (
-                            <div>
-                                <p>Chargement ...</p>
-                            </div>
-                        )}
+                        {!chartData && <div className="loader-circle"></div>}
                     </Bar>
                 </BarChart>
             </ResponsiveContainer>

@@ -96,14 +96,16 @@ const Chloropleth: React.FC<ChloroplethProps> = ({ data, dataField }) => {
             });
 
             return () => {
-                if (map.getSource('chloropleth-source')) {
-                    if (map.getLayer('chloropleth-layer')) {
-                        map.removeLayer('chloropleth-layer');
+                if (map) {
+                    if (map.getSource('chloropleth-source')) {
+                        if (map.getLayer('chloropleth-layer')) {
+                            map.removeLayer('chloropleth-layer');
+                        }
+                        if (map.getLayer('chloropleth-outline-layer')) {
+                            map.removeLayer('chloropleth-outline-layer');
+                        }
+                        map.removeSource('chloropleth-source');
                     }
-                    if (map.getLayer('chloropleth-outline-layer')) {
-                        map.removeLayer('chloropleth-outline-layer');
-                    }
-                    map.removeSource('chloropleth-source');
                 }
             };
         }, [map, feature, dataField]);

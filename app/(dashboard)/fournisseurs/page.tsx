@@ -7,24 +7,51 @@ import DataCard from '@/components/component/data-card/data-card';
 import DataCardContent from '@/components/interface/data-card-content';
 import { DataCardType } from '@/components/enums/data-card-type-enum';
 import Button from '@/components/component/buttons/button';
-import { AddFournisseurDialog } from '@/components/component/dialogs/add-fournisseur-dialog';
+import { EditFournisseurDialog } from '@/components/component/dialogs/edit-fournisseur-dialog';
 import { ButtonType } from '@/components/enums/button-type-enum';
 import { AdminSVG } from '@/components/component/svg-icons/svg-icons';
 import useGlobalUserStore from '@/stores/global-user-store';
 import { UserType } from '@/components/enums/user-type-enum';
 import { MapType } from '@/components/enums/map-type-enum';
+import { useFournisseurActions } from './use-fournisseur-actions';
+import { Fournisseur } from '@/components/interface/fournisseur';
 
 function Fournisseurs() {
-    const [editDialogOpen, setEditDialogOpen] = useState<boolean>(false);
-
     const { user } = useGlobalUserStore((state: any) => ({
         user: state.user,
     }));
+
+    const {
+        isEditDialogOpen,
+        isDeleteDialogOpen,
+        currentFournisseur,
+        openEditDialog,
+        closeEditDialog,
+        submitEditDialog,
+        openDeleteDialog,
+        closeDeleteDialog,
+        submitDeleteDialog,
+        toggleFournisseurVisibility,
+    } = useFournisseurActions();
 
     const { mapType, setMapStyle } = useMapStore((state) => ({
         setMapStyle: state.setMapStyle,
         mapType: state.mapType,
     }));
+
+    const emptyFournisseur = {
+        contact: {
+            lastName: '',
+            firstName: '',
+            email: '',
+            cellPhone: '',
+            company: '',
+            title: '',
+            linkedin: '',
+        },
+        secteurs_geographique: [],
+        services_offerts: [],
+    };
 
     useEffect(() => {
         if (mapType !== MapType.FOURNISSEURS) {
@@ -42,16 +69,12 @@ function Fournisseurs() {
 
     function openDialog(e: any) {
         e.preventDefault();
-        setEditDialogOpen(true);
+        openEditDialog(emptyFournisseur as unknown as Fournisseur);
     }
 
     function closeDialog(e: any) {
         e.preventDefault();
-        setEditDialogOpen(false);
-    }
-
-    function handleSubmit() {
-        setEditDialogOpen(false);
+        openEditDialog(emptyFournisseur as unknown as Fournisseur);
     }
 
     return (
@@ -65,7 +88,7 @@ function Fournisseurs() {
                     Fournisseurs
                 </h1>
                 <DataCard content={content1} />
-                {user !== UserType.ADMIN && (
+                {user === UserType.ADMIN && (
                     <Button
                         buttonType={ButtonType.ICON}
                         onClick={openDialog}
@@ -74,10 +97,11 @@ function Fournisseurs() {
                         <AdminSVG className="w-full h-full"></AdminSVG>
                     </Button>
                 )}
-                {editDialogOpen && (
-                    <AddFournisseurDialog
-                        handleSubmit={handleSubmit}
+                {isEditDialogOpen && (
+                    <EditFournisseurDialog
                         closeDialog={closeDialog}
+                        submitDialog={submitEditDialog}
+                        fournisseur={emptyFournisseur as unknown as Fournisseur}
                     />
                 )}
             </PageContentContainer>

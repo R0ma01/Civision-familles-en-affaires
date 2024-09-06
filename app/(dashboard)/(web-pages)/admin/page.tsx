@@ -39,22 +39,6 @@ export default function Admin() {
         user: state.user,
     }));
 
-    const { studyCompanyData, fetchStudyData, loading, error } =
-        useGlobalDataStore((state: any) => ({
-            studyCompanyData: state.studyCompanyData,
-            fetchStudyData: state.fetchStudyData,
-            loading: state.loading,
-            error: state.error,
-        }));
-    useEffect(() => {
-        async function fetchData() {
-            await fetchStudyData();
-        }
-        if (studyCompanyData.length === 0 && !loading) {
-            fetchData();
-        }
-    }, [studyCompanyData, loading]);
-
     const { mapType, setMapStyle } = useMapStore((state) => ({
         setMapStyle: state.setMapStyle,
         mapType: state.mapType,

@@ -1,13 +1,12 @@
 import { APIPaths } from '@/components/enums/page-api-paths-enum';
 import { Fournisseur } from '@/components/interface/fournisseur';
 import axios from 'axios';
-import { DefaultLegendContent } from 'recharts';
 
 export const FournisseursHttpRequestService = {
     getAll: getAllData,
-    updateOne: updateOne,
-    addOne: addOne,
-    deleteOne: deleteOne,
+    update: updateOne,
+    insert: addOne,
+    delete: deleteOne,
 };
 
 async function getAllData(): Promise<Fournisseur[]> {
@@ -23,41 +22,43 @@ async function getAllData(): Promise<Fournisseur[]> {
     return [];
 }
 
-async function updateOne(): Promise<Fournisseur[]> {
+async function updateOne(fournisseur: Fournisseur) {
     try {
-        const response = await axios.get(APIPaths.FOURNISSEURS_GET_ALL);
-        return response.data.pages;
+        const response = await axios.patch(
+            APIPaths.FOURNISSEURS_UPDATE_ONE,
+            fournisseur,
+        );
     } catch (error: any) {
         console.error(
-            'Error fetching fournisseurs:',
-            error.response?.data?.error || error.message,
+            'Error updating fournisseur:',
+            error.response ? error.response.data : error.message,
         );
     }
-    return [];
 }
 
-async function addOne(): Promise<Fournisseur[]> {
+async function addOne(fournisseur: Fournisseur) {
     try {
-        const response = await axios.get(APIPaths.FOURNISSEURS_GET_ALL);
-        return response.data.pages;
+        const response = await axios.post(
+            APIPaths.FOURNISSEURS_ADD_ONE,
+            fournisseur,
+        );
     } catch (error: any) {
         console.error(
-            'Error fetching fournisseurs:',
-            error.response?.data?.error || error.message,
+            'Error inserting fournisseur:',
+            error.response ? error.response.data : error.message,
         );
     }
-    return [];
 }
 
-async function deleteOne(): Promise<Fournisseur[]> {
+async function deleteOne(_id: string) {
     try {
-        const response = await axios.get(APIPaths.FOURNISSEURS_GET_ALL);
-        return response.data.pages;
+        const response = await axios.delete(APIPaths.PAGE_DELETE, {
+            params: { _id },
+        });
     } catch (error: any) {
         console.error(
-            'Error fetching fournisseurs:',
+            'Error deleting fournisseur:',
             error.response?.data?.error || error.message,
         );
     }
-    return [];
 }

@@ -29,6 +29,7 @@ export default function Carte() {
         fetchFournisseurData,
         studyDataFetched,
         loading,
+        fournisseurDataFetched,
     } = useGlobalDataStore((state: any) => ({
         studyData: state.studyData,
         repertoireData: state.repertoireData,
@@ -37,6 +38,7 @@ export default function Carte() {
         fetchRepertoireData: state.fetchRepertoireData,
         fetchFournisseurData: state.fetchFournisseurData,
         studyDataFetched: state.studyDataFetched,
+        fournisseurDataFetched: state.fournisseurDataFetched,
         loading: state.loading,
     }));
 
@@ -69,10 +71,11 @@ export default function Carte() {
         }
 
         if (
-            fournisseurData.length === 0 &&
+            !fournisseurDataFetched &&
             mapType == MapType.FOURNISSEURS &&
             !loading
         ) {
+            console.log('i am called');
             fournisseurFetch();
         }
     }, [
@@ -82,6 +85,7 @@ export default function Carte() {
         studyDataFetched,
         fetchStudyData,
         fetchFournisseurData,
+        fournisseurDataFetched,
         fournisseurData,
     ]);
 

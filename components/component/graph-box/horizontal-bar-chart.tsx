@@ -1,5 +1,3 @@
-import { ChartSize } from '@/components/enums/chart-size-enum';
-import { ChartContent } from '@/components/interface/chart-content';
 import React, { useEffect, useState, useRef } from 'react';
 import {
     BarChart,
@@ -11,11 +9,13 @@ import {
     Cell,
 } from 'recharts';
 import { chartPalette } from '@/constants/color-palet';
-import { MainDataFields } from '@/components/enums/data-types-enum';
+import { ChartSize } from '@/components/enums/chart-size-enum';
+import { ChartContent } from '@/components/interface/chart-content';
 import {
     ChartData,
     ChartDataMultipleFileds,
 } from '@/components/interface/chart-data';
+import { MainDataFields } from '@/components/enums/data-types-enum';
 
 interface SimpleHorizontalBarChartProps {
     chartContent: ChartContent;
@@ -32,7 +32,6 @@ const CustomTooltip = ({ active, payload }: any) => {
                     cursor: 'pointer',
                     background: 'white',
                     color: 'black',
-                    padding: '5px',
                     border: '1px solid #ccc',
                 }}
             >
@@ -56,25 +55,40 @@ const HorizontalBarChart: React.FC<SimpleHorizontalBarChartProps> = ({
         ChartData[] | ChartDataMultipleFileds[] | undefined
     >(undefined);
 
+    const [size, setSize] = useState<ChartSize>(chartSize);
+
+    useEffect(() => {
+        setSize(chartSize);
+    }, [chartSize]);
+    const [yAxisWidth, setYAxisWidth] = useState<number>(40);
+
+    // Calculate dynamic height based on the number of data points
+    const calculateHeight = () => {
+        const dataLength = chartContent.data.length;
+        const baseHeight = size === ChartSize.SMALL ? 150 : 300;
+        const dynamicHeight =
+            size === ChartSize.SMALL
+                ? baseHeight // Fixed height for SMALL
+                : Math.max(baseHeight, dataLength * 40); // 30px per line for other sizes
+        return dynamicHeight;
+    };
+
     useEffect(() => {
         if (chartContent.data.length > 0) {
             if (!originalOrder.current) {
-                // Save the initial order on first render
-                originalOrder.current = chartContent.data;
+                originalOrder.current = chartContent.data as ChartData[];
             } else {
-                // Reorder new data to match the original order
                 const updatedData = originalOrder.current.map(
                     (originalItem) => {
                         const newItem = chartContent.data.find(
                             (newItem) => newItem.name === originalItem.name,
                         );
                         return newItem
-                            ? { ...originalItem, ...newItem } // Merge values from new data
+                            ? { ...originalItem, ...newItem }
                             : { ...originalItem, value: 0 };
                     },
                 );
 
-                // Add new items that were not in the original data
                 chartContent.data.forEach((newItem) => {
                     if (
                         !originalOrder.current!.some(
@@ -89,25 +103,31 @@ const HorizontalBarChart: React.FC<SimpleHorizontalBarChartProps> = ({
                 setChartData(updatedData);
                 originalOrder.current = updatedData;
             }
+
+            // Calculate the longest label's width and set the Y-axis width
+            const longestLabel = Math.max(
+                ...chartContent.data.map((item) => item.name.length),
+            );
+            const calculatedWidth = Math.min(longestLabel * 8, 150); // Adjust multiplier and max width as needed
+            setYAxisWidth(calculatedWidth);
         }
     }, [chartContent.data]);
 
     return (
         <div className="dark:text-white">
-            <ResponsiveContainer width={chartSize + 100} height={chartSize}>
+            <ResponsiveContainer width={size + 100} height={calculateHeight()}>
                 <BarChart layout="vertical" data={chartData}>
-                    {chartSize === ChartSize.SMALL ? (
+                    {size === ChartSize.SMALL ? (
                         <>
                             <XAxis
                                 type="number"
                                 fontSize={8}
-                                width={30}
                                 stroke="currentColor"
                             />
                             <YAxis
                                 dataKey="name"
                                 type="category"
-                                width={40}
+                                width={yAxisWidth}
                                 fontSize={8}
                                 stroke="currentColor"
                             />
@@ -122,7 +142,7 @@ const HorizontalBarChart: React.FC<SimpleHorizontalBarChartProps> = ({
                             <YAxis
                                 dataKey="name"
                                 type="category"
-                                width={150}
+                                width={yAxisWidth}
                                 fontSize={12}
                                 stroke="currentColor"
                             />
@@ -133,8 +153,15 @@ const HorizontalBarChart: React.FC<SimpleHorizontalBarChartProps> = ({
 
                     <Bar
                         dataKey="value"
-                        barSize={chartSize / (10 + chartContent.data.length)}
+                        barSize={
+                            size === ChartSize.SMALL
+                                ? 10
+                                : size === ChartSize.MEDIUM
+                                  ? 15
+                                  : 20
+                        }
                     >
+                        s
                         {chartData &&
                             chartData.map((entry, index) => (
                                 <Cell

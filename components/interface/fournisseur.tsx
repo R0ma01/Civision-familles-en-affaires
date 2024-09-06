@@ -4,14 +4,17 @@ import {
 } from '@/components/enums/fournisseur-filter-enum';
 
 export interface Fournisseur {
+    _id: string;
     contact: {
-        nom: string;
-        courriel: string;
-        telephone: number;
-        compagnie: string;
-        titre: string;
-        profil_linkedin: string;
+        lastName: string;
+        firstName: string;
+        email: string;
+        cellPhone: number;
+        company: string;
+        title: string;
+        linkedin: string;
     };
     secteurs_geographique: SecteursGeographiques[];
     services_offerts: ServiceOffert[];
+    visible: boolean;
 }

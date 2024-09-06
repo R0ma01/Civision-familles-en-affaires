@@ -1,23 +1,27 @@
 import { Fournisseur } from '@/components/interface/fournisseur';
+import useGlobalDataStore from '@/stores/global-data-store';
 import useGlobalFournisseursStore from '@/stores/global-fournisseur-store';
 import React, { useEffect, useState } from 'react';
+import Dropdown from '../drop-down-menu/drop-down-menu';
+import {
+    SecteursGeographiques,
+    ServiceOffert,
+} from '@/components/enums/fournisseur-filter-enum';
 export default function ListeFournisseurs() {
     const [fournisseurs, setFournisseurs] = useState<Fournisseur[]>([]);
 
-    const { filteredFournisseurData } = useGlobalFournisseursStore(
-        (state: any) => ({
-            filteredFournisseurData: state.filteredFournisseurData,
-        }),
-    );
+    const { fournisseurData } = useGlobalDataStore((state: any) => ({
+        fournisseurData: state.fournisseurData,
+    }));
 
     const [searchString, setSearchString] = useState<string>('');
 
     function sortAlphabetically(compagnies: Fournisseur[]): Fournisseur[] {
         return compagnies.sort((a, b) => {
-            if (!a.contact.nom) {
+            if (!a.contact.lastName) {
                 return 1;
             }
-            if (!b.contact.nom) {
+            if (!b.contact.lastName) {
                 return -1;
             }
 
@@ -28,8 +32,8 @@ export default function ListeFournisseurs() {
                     .replace(/[\u0300-\u036f]/g, '')
                     .toLowerCase();
 
-            const nameA = normalize(a.contact.nom);
-            const nameB = normalize(b.contact.nom);
+            const nameA = normalize(a.contact.lastName);
+            const nameB = normalize(b.contact.lastName);
 
             // Regular expression to check if the first character is a letter
             const isLetter = (name: string) => /^[a-zA-Z]/.test(name);
@@ -45,15 +49,15 @@ export default function ListeFournisseurs() {
     }
 
     const filterPredicate = (company: Fournisseur) => {
-        return company.contact.nom
-            ? company.contact.nom
+        return company.contact.lastName
+            ? company.contact.lastName
                   .toLowerCase()
                   .startsWith(searchString.toLowerCase(), 0)
             : false;
     };
 
     function filterSearchParams() {
-        const newData = filteredFournisseurData.filter(filterPredicate);
+        const newData = fournisseurData.filter(filterPredicate);
 
         setFournisseurs(sortAlphabetically(newData));
     }
@@ -61,7 +65,7 @@ export default function ListeFournisseurs() {
     useEffect(() => {
         filterSearchParams();
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [filteredFournisseurData, searchString]);
+    }, [fournisseurData, searchString]);
 
     function handleSearchChange(e: React.ChangeEvent<HTMLInputElement>) {
         setSearchString(e.target.value);
@@ -81,13 +85,21 @@ export default function ListeFournisseurs() {
     return (
         <>
             <div className="flex flex-col space-y-4 z-10 w-full">
-                <input
-                    type="text"
-                    placeholder="Rechercher..."
-                    value={searchString}
-                    onChange={handleSearchChange}
-                    className="mb-4 p-2 h-8 bg-transparent border border-logo-turquoise dark:border-logo-turquoise shadow-lg rounded cursor-pointer"
-                />
+                <div className="flex flex-row items-center justify-evenly">
+                    <input
+                        type="text"
+                        placeholder="Rechercher..."
+                        value={searchString}
+                        onChange={handleSearchChange}
+                        className="mb-4 p-2 h-8 bg-transparent border border-logo-turquoise dark:border-logo-turquoise shadow-lg rounded cursor-pointer"
+                    />
+                    <div className="flex flex-col space-y-2">
+                        <Dropdown
+                            options={Object.values(SecteursGeographiques)}
+                        />
+                        <Dropdown options={Object.values(ServiceOffert)} />
+                    </div>
+                </div>
                 <div className="overflow-y-auto overflow-x-hidden max-h-52">
                     <table className="min-w-full max-w-full ">
                         <tbody className="overflow-x-hidden max-w-full">
@@ -115,11 +127,11 @@ function FournisseurListElement({
             key={index}
             className={`border-b hover:shadow-[0px_4px_10px_rgba(0,0,0,0.25)] flex items-center overflow-hidden cursor-pointer w-full relative transition-all ease-in-out duration-300 transform ${
                 isOpen ? 'h-24' : 'h-10'
-            }`} 
+            }`}
             onClick={() => setIsOpen(!isOpen)}
         >
             <td className="px-2 text-small dark:text-white text-black w-[30%] transition-all ease-in-out transform duration-300">
-                {fournisseur.contact.nom}
+                {fournisseur.contact.lastName}
             </td>
             <td
                 className={`px-2 py-2 text-small dark:text-white text-black w-[30%] transition-all ease-in-out transform duration-300 max-w-[30%] text-wrap overflow-x-hidden overflow-y-auto max-h-20 ${
