@@ -50,7 +50,7 @@ const DoubleHorizontalBarChart: React.FC<
     >(undefined);
 
     const originalOrder = useRef<
-        ChartData[] | ChartDataMultipleFileds[] | undefined
+        (ChartData | ChartDataMultipleFileds)[] | undefined
     >(undefined);
 
     useEffect(() => {
