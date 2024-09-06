@@ -42,20 +42,6 @@ function Fournisseurs() {
         mapType: state.mapType,
     }));
 
-    const emptyFournisseur = {
-        contact: {
-            lastName: '',
-            firstName: '',
-            email: '',
-            cellPhone: '',
-            company: '',
-            title: '',
-            linkedin: '',
-        },
-        secteurs_geographique: [],
-        services_offerts: [],
-    };
-
     const { fournisseurDataFetched, fetchFournisseurData, loading } =
         useGlobalDataStore((state: any) => ({
             fournisseurDataFetched: state.fournisseurDataFetched,
@@ -78,16 +64,6 @@ function Fournisseurs() {
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [mapType, setMapStyle]);
 
-    function openDialog(e: any) {
-        e.preventDefault();
-        openEditDialog(emptyFournisseur as unknown as Fournisseur);
-    }
-
-    function closeDialog(e: any) {
-        e.preventDefault();
-        closeEditDialog();
-    }
-
     return (
         <>
             <PageContentContainer
@@ -101,29 +77,14 @@ function Fournisseurs() {
                 {/* <DataCard content={content1} admin={user === UserType.ADMIN} /> */}
                 <ListeFournisseurs
                     admin={user === UserType.ADMIN}
-                    isEditDialogOpen={isEditDialogOpen}
-                    isDeleteDialogOpen={isDeleteDialogOpen}
-                    currentFournisseur={currentFournisseur}
                     openEditDialog={openEditDialog}
-                    closeEditDialog={closeEditDialog}
-                    submitEditDialog={submitEditDialog}
                     openDeleteDialog={openDeleteDialog}
-                    closeDeleteDialog={closeDeleteDialog}
-                    submitDeleteDialog={submitDeleteDialog}
                     toggleFournisseurVisibility={toggleFournisseurVisibility}
                 ></ListeFournisseurs>
-                {user === UserType.ADMIN && (
-                    <Button
-                        buttonType={ButtonType.ICON}
-                        onClick={openDialog}
-                        className="w-20 h-20"
-                    >
-                        <AdminSVG className="w-full h-full"></AdminSVG>
-                    </Button>
-                )}
+
                 {isEditDialogOpen && currentFournisseur && (
                     <EditFournisseurDialog
-                        closeDialog={closeDialog}
+                        closeDialog={closeEditDialog}
                         submitDialog={submitEditDialog}
                         fournisseur={currentFournisseur}
                     />

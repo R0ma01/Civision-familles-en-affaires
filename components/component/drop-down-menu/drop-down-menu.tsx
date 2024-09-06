@@ -67,7 +67,7 @@ const Dropdown = <T,>({
             <button
                 ref={buttonRef}
                 onClick={toggleDropdown}
-                className={`flex items-center justify-between w-40 px-2 py-1 bg-gray-100 border max-h-8 h-8 
+                className={`flex items-center justify-between w-48 px-2 py-1 bg-gray-100 border max-h-8 h-8 
                 border-gray-300 rounded-lg shadow-sm hover:bg-gray-200 focus:outline-none focus:ring-2
                  focus:ring-blue-500 focus:ring-opacity-50 text-xs dark:bg-gray-700 dark:text-white dark:hover:bg-black ${className}`}
             >
