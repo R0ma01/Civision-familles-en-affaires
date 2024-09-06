@@ -30,6 +30,7 @@ export default function Carte() {
         studyDataFetched,
         loading,
         fournisseurDataFetched,
+        repertoireDataFetched,
     } = useGlobalDataStore((state: any) => ({
         studyData: state.studyData,
         repertoireData: state.repertoireData,
@@ -39,6 +40,7 @@ export default function Carte() {
         fetchFournisseurData: state.fetchFournisseurData,
         studyDataFetched: state.studyDataFetched,
         fournisseurDataFetched: state.fournisseurDataFetched,
+        repertoireDataFetched: state.repertoireDataFetched,
         loading: state.loading,
     }));
 
@@ -59,14 +61,16 @@ export default function Carte() {
             mapType == MapType.PAGE_INFORMATION &&
             !loading
         ) {
+            console.log('i am called');
             studyFetch();
         }
 
         if (
-            repertoireData.length === 0 &&
+            !repertoireDataFetched &&
             mapType == MapType.REPERTOIRE &&
             !loading
         ) {
+            console.log('i am called');
             repertoireFetch();
         }
 
@@ -87,6 +91,7 @@ export default function Carte() {
         fetchFournisseurData,
         fournisseurDataFetched,
         fournisseurData,
+        repertoireDataFetched,
     ]);
 
     useEffect(() => {
