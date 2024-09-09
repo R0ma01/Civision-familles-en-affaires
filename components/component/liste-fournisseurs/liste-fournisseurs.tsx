@@ -301,7 +301,9 @@ function FournisseurListElement({
                                     <p className="max-h-12 overflow-auto flex flex-col">
                                         {fournisseur.secteurs_geographique.map(
                                             (secteur: any) => {
-                                                return <p>{secteur}</p>;
+                                                return (
+                                                    <p key={index}>{secteur}</p>
+                                                );
                                             },
                                         )}
                                     </p>
@@ -311,7 +313,9 @@ function FournisseurListElement({
                                     <p className="max-h-12 overflow-auto flex flex-col">
                                         {fournisseur.services_offerts.map(
                                             (service: any) => {
-                                                return <p>{service}</p>;
+                                                return (
+                                                    <p key={index}>{service}</p>
+                                                );
                                             },
                                         )}
                                     </p>

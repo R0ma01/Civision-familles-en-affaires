@@ -97,7 +97,7 @@ const GraphBox: React.FC<GraphBoxProps> = ({ content, chartSize }) => {
         } else {
             fetchMultiple(content.donnes);
         }
-    }, [content]);
+    }, [content, filterData]);
 
     useEffect(() => {
         async function fetchMultiple(donnes: MainDataFields[]) {
@@ -144,7 +144,7 @@ const GraphBox: React.FC<GraphBoxProps> = ({ content, chartSize }) => {
         } else {
             fetchMultiple(content.donnes);
         }
-    }, [filterData]);
+    }, [filterData, content]);
 
     useEffect(() => {
         const filterChartData = () => {

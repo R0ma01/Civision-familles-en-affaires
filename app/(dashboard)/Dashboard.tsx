@@ -37,7 +37,13 @@ const Dashboard = ({ children }: DashboardProps) => {
         }
 
         fetchAll();
-    }, [pagesData, pageLoading, fetchPageData, fetchFournisseurData]);
+    }, [
+        pagesData,
+        pageLoading,
+        fetchPageData,
+        fetchFournisseurData,
+        fournisseurData,
+    ]);
 
     useEffect(() => {
         const handleBeforeUnload = (event: BeforeUnloadEvent) => {
