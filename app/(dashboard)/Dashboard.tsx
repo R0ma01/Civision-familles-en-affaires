@@ -42,13 +42,8 @@ const Dashboard = ({ children }: DashboardProps) => {
     useEffect(() => {
         const handleBeforeUnload = (event: BeforeUnloadEvent) => {
             // Detect if this is a refresh
-            if (!sessionStorage.getItem('isPageRefreshing')) {
-                // Clear Zustand store and cookies only on tab/window close
-                clearCookies();
-                clearZustandStore();
-            }
-            // Set flag in sessionStorage for refresh detection
-            sessionStorage.setItem('isPageRefreshing', 'true');
+            clearCookies();
+            clearZustandStore();
         };
 
         // Listen for the beforeunload event
@@ -77,6 +72,15 @@ const Dashboard = ({ children }: DashboardProps) => {
                             <Sidebar />
                             {children}
                         </div>
+                        {/* <button
+                            onClick={() => {
+                                clearCookies();
+                                clearZustandStore();
+                            }}
+                            className="absolute top-0 right-0"
+                        >
+                    
+                        </button> */}
                     </>
                 )}
             </div>
@@ -88,15 +92,8 @@ export default Dashboard;
 
 // Helper to clear cookies
 function clearCookies() {
-    const cookies = document.cookie.split(';');
-
-    for (let i = 0; i < cookies.length; i++) {
-        const cookie = cookies[i];
-        const eqPos = cookie.indexOf('=');
-        const name = eqPos > -1 ? cookie.substr(0, eqPos) : cookie;
-        document.cookie =
-            name + '=;expires=Thu, 01 Jan 1970 00:00:00 GMT;path=/';
-    }
+    localStorage.removeItem('token');
+    localStorage.removeItem('adminToken');
 }
 
 function clearZustandStore() {
