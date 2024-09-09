@@ -45,6 +45,11 @@ export default function Carte() {
     }));
 
     useEffect(() => {
+        // update map reference
+        mapRef.current = map;
+    }, [map]);
+
+    useEffect(() => {
         async function studyFetch() {
             await fetchStudyData(filterData);
         }
@@ -98,17 +103,6 @@ export default function Carte() {
     ]);
 
     useEffect(() => {
-        // update map reference
-        mapRef.current = map;
-        // console.log(studyDataFetched);
-        // console.log(studyData);
-        // console.log(repertoireDataFetched);
-        // console.log(repertoireData);
-        // console.log(fournisseurDataFetched);
-        // console.log(fournisseurData);
-    }, [map]);
-
-    useEffect(() => {
         setFournisseurMapData(convertFournisseurData(fournisseurData));
     }, [fournisseurData]);
 
@@ -118,6 +112,7 @@ export default function Carte() {
             {mapType == MapType.PAGE_INFORMATION && (
                 <>
                     <Chloropleth
+                        map={map}
                         data={studyData}
                         dataField="count"
                     ></Chloropleth>
@@ -135,7 +130,10 @@ export default function Carte() {
             )}
             {mapType == MapType.REPERTOIRE && (
                 <>
-                    <ClusterCloud data={repertoireData}></ClusterCloud>
+                    <ClusterCloud
+                        data={repertoireData}
+                        map={map}
+                    ></ClusterCloud>
                     <ColorLegend
                         gradientValues={clusterColors}
                         className="absolute bottom-0 right-1 z-50"
@@ -146,6 +144,7 @@ export default function Carte() {
             {mapType == MapType.FOURNISSEURS && (
                 <>
                     <Chloropleth
+                        map={map}
                         data={fournisseurMapData}
                         dataField="count"
                     ></Chloropleth>

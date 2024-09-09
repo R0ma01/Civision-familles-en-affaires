@@ -7,13 +7,10 @@ import mapboxgl from 'mapbox-gl';
 
 interface ClusterCloudProps {
     data: any[]; // GeoJSON data for regions
+    map: any;
 }
 
-const ClusterCloud: React.FC<ClusterCloudProps> = ({ data }) => {
-    const { map } = useMapStore((state: any) => ({
-        map: state.map,
-    }));
-
+const ClusterCloud: React.FC<ClusterCloudProps> = ({ data, map }) => {
     const [clusterGeoJson, setClusterGeoJson] = useState<any>(null);
 
     useEffect(() => {
@@ -37,7 +34,8 @@ const ClusterCloud: React.FC<ClusterCloudProps> = ({ data }) => {
     }, [data, map]);
 
     useEffect(() => {
-        if (!map || !clusterGeoJson) return;
+        if (!map) return;
+        if (!clusterGeoJson) return;
 
         // Safeguard to ensure map and methods are available
         if (
@@ -183,21 +181,6 @@ const ClusterCloud: React.FC<ClusterCloudProps> = ({ data }) => {
         map.on('mouseleave', 'clusters', () => {
             map.getCanvas().style.cursor = '';
         });
-
-        return () => {
-            if (map.getSource('cluster-source')) {
-                if (map.getLayer('clusters')) {
-                    map.removeLayer('clusters');
-                }
-                if (map.getLayer('cluster-count')) {
-                    map.removeLayer('cluster-count');
-                }
-                if (map.getLayer('unclustered-point')) {
-                    map.removeLayer('unclustered-point');
-                }
-                map.removeSource('cluster-source');
-            }
-        };
     }, [map, clusterGeoJson]);
 
     return null;

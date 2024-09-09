@@ -36,9 +36,9 @@ const DisconnectDialog: React.FC<DisconnectDialogProps> = ({ closeDialog }) => {
             const response = await axios.post(`/api/auth/logout`, {});
 
             if (response.status === 200) {
+                router.push(PagePaths.HOME);
                 setUser(UserType.VISITOR);
                 setLoginTutorials([]);
-                router.push(PagePaths.HOME);
                 closeDialog();
             } else {
                 console.error('Failed to log out');

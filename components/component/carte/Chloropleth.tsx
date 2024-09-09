@@ -8,13 +8,10 @@ import { MainDataFields } from '@/components/enums/data-types-enum';
 interface ChloroplethProps {
     data: any[]; // GeoJSON data for regions
     dataField: string; // Field in the GeoJSON properties to base the color on
+    map: any;
 }
 
-const Chloropleth: React.FC<ChloroplethProps> = ({ data, dataField }) => {
-    const { map } = useMapStore((state: any) => ({
-        map: state.map,
-    }));
-
+const Chloropleth: React.FC<ChloroplethProps> = ({ data, dataField, map }) => {
     const [feature, setFeature] = useState<any>(null);
 
     useEffect(() => {
@@ -92,20 +89,6 @@ const Chloropleth: React.FC<ChloroplethProps> = ({ data, dataField }) => {
                 'line-width': 0.5,
             },
         });
-
-        return () => {
-            if (map) {
-                if (map.getSource('chloropleth-source')) {
-                    if (map.getLayer('chloropleth-layer')) {
-                        map.removeLayer('chloropleth-layer');
-                    }
-                    if (map.getLayer('chloropleth-outline-layer')) {
-                        map.removeLayer('chloropleth-outline-layer');
-                    }
-                    map.removeSource('chloropleth-source');
-                }
-            }
-        };
     }, [map, feature, dataField]);
 
     return null;
