@@ -50,6 +50,7 @@ export default function Carte() {
     }, [map]);
 
     useEffect(() => {
+        console.log('hello');
         async function studyFetch() {
             await fetchStudyData(filterData);
         }
@@ -63,7 +64,7 @@ export default function Carte() {
 
         if (
             !studyDataFetched &&
-            mapType == MapType.PAGE_INFORMATION &&
+            mapType === MapType.PAGE_INFORMATION &&
             !loading
         ) {
             console.log('study fetch');
@@ -72,7 +73,7 @@ export default function Carte() {
 
         if (
             (!repertoireDataFetched || repertoireData.length === 0) &&
-            mapType == MapType.REPERTOIRE &&
+            mapType === MapType.REPERTOIRE &&
             !loading
         ) {
             console.log('repertoire fetch');
@@ -81,7 +82,7 @@ export default function Carte() {
 
         if (
             !fournisseurDataFetched &&
-            mapType == MapType.FOURNISSEURS &&
+            mapType === MapType.FOURNISSEURS &&
             !loading
         ) {
             console.log('i am called');
