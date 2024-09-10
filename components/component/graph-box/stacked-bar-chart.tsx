@@ -75,6 +75,7 @@ const StackedBarChart: React.FC<StackedBarChartProps> = ({
                         if (key !== 'name') {
                             return (
                                 <Bar
+                                    key={key}
                                     dataKey={key}
                                     stackId="a"
                                     fill={
