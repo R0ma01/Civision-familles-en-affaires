@@ -12,7 +12,7 @@ const keyValuePairs: [MainDataFields, string[]][] = [
             '1991 à 2000',
             '2001 à 2010',
             'après 2010',
-            'Pas de réponse',
+            'NaN',
         ],
     ],
     [
@@ -24,7 +24,7 @@ const keyValuePairs: [MainDataFields, string[]][] = [
         //     '2 500 000 $ à 10 000 000 $',
         //     '10 000 000 $ à 100 000 000 $',
         //     'Plus de 100 000 000 $',
-        //     'Pas de réponse',
+        //     'NaN',
         // ],
     ],
     [
@@ -50,23 +50,16 @@ const keyValuePairs: [MainDataFields, string[]][] = [
         //     'Services professionels',
         //     'Vente de détail',
         //     'Entreposage, transport et distribution',
-        //     'Pas de réponse',
+        //     'NaN',
         // ],
     ],
     [
         MainDataFields.FEMMES_DIRECTION_POURCENTAGE,
-        ['0% à 25%', '26% à 50%', '51% à 75%', '76% à 100%', 'Pas de réponse'],
+        ['0% à 25%', '26% à 50%', '51% à 75%', '76% à 100%', 'NaN'],
     ],
     [
         MainDataFields.TAILLE_ENTREPRISE,
-        [
-            'petite',
-            'moyenne',
-            'grande',
-            'très petite',
-            'très grande',
-            'Pas de réponse',
-        ],
+        ['petite', 'moyenne', 'grande', 'très petite', 'très grande', 'NaN'],
     ],
     [MainDataFields.CONTINUITE_FAMILIALE, ['Oui', 'Non']],
     // [
@@ -87,10 +80,10 @@ const keyValuePairs: [MainDataFields, string[]][] = [
             '45 à 54 ans',
             '55 à 64 ans',
             '65 ans et +',
-            'Pas de réponse',
+            'NaN',
         ],
     ],
-    [MainDataFields.REPONDANT_SEXE, ['homme', 'femme', 'Pas de réponse']],
+    [MainDataFields.REPONDANT_SEXE, ['homme', 'femme', 'NaN']],
     [
         MainDataFields.REPONDANT_NIVEAU_ETUDE,
         [
@@ -209,7 +202,7 @@ const keyValuePairs: [MainDataFields, string[]][] = [
     //          '2ème génération' ,
     //          '3ème génération' ,
     //          '4ème génération ou plus' ,
-    //          'Pas de réponse' ,
+    //          'NaN' ,
     //     ],
     // ],
     // [
@@ -291,7 +284,7 @@ const keyValuePairs: [MainDataFields, string[]][] = [
             'Services professionels',
             'Vente de détail',
             'Entreposage, transport et distribution',
-            'Pas de réponse',
+            'NaN',
         ],
     ],
     // [
@@ -317,12 +310,12 @@ const keyValuePairs: [MainDataFields, string[]][] = [
             'Frère/Soeur',
             'Fils/Fille',
             'Autre',
-            'Pas de réponse',
+            'NaN',
         ],
     ],
     [
         MainDataFields.AUTRES_ENTREPRISES_AUTRES_MEMBRES_FAMILLE_RELATIONS_AFFAIRES,
-        ['Client', 'Fournisseur', 'Investisseur', 'Pas de réponse'],
+        ['Client', 'Fournisseur', 'Investisseur', 'NaN'],
     ],
     // [
     //     MainDataFields.DIRIGEANT_NIVEAU_ETUDES,
@@ -352,10 +345,10 @@ const keyValuePairs: [MainDataFields, string[]][] = [
             '2ème génération',
             '3ème génération',
             '4ème génération ou +',
-            'Pas de réponse',
+            'NaN',
         ],
     ],
-    [MainDataFields.DIRIGEANT_SEXE, ['Homme', 'Femme', 'Pas de réponse']],
+    [MainDataFields.DIRIGEANT_SEXE, ['Homme', 'Femme', 'NaN']],
     [
         MainDataFields.DIRIGEANT_AGE,
         [
@@ -367,10 +360,7 @@ const keyValuePairs: [MainDataFields, string[]][] = [
             '65 et +',
         ],
     ],
-    [
-        MainDataFields.DIRIGEANT_PRESIDE_CONSEIL,
-        ['Oui', 'Non', 'Pas de réponse'],
-    ],
+    [MainDataFields.DIRIGEANT_PRESIDE_CONSEIL, ['Oui', 'Non', 'NaN']],
     // [
     //     MainDataFields.GOUVERNANCE,
     //      [
@@ -388,7 +378,7 @@ const keyValuePairs: [MainDataFields, string[]][] = [
     //          'aucune' ,
     //          'conseil de famille' ,
     //          'conseil aviseur (ou consultatif)' ,
-    //          'pas de réponse' ,
+    //          'NaN' ,
     //     ],
     // ],
     // [
@@ -396,7 +386,7 @@ const keyValuePairs: [MainDataFields, string[]][] = [
     //     [
     //          'Oui' ,
     //          'Non' ,
-    //          'Pas de Réponse' ,
+    //          'NaN' ,
     //     ],
     // ],
     // [
@@ -433,7 +423,7 @@ const keyValuePairs: [MainDataFields, string[]][] = [
     //          '25 à 50%' ,
     //          '50 à 75%' ,
     //          'plus de 75%' ,
-    //          'Pas de réponse' ,
+    //          'NaN' ,
     //     ],
     // ],
     // [
@@ -471,14 +461,14 @@ const keyValuePairs: [MainDataFields, string[]][] = [
     //          'autre' ,
     //     ],
     // ],
-    [MainDataFields.GESTION_FAMILIALE, ['Oui', 'Non', 'Pas de réponse']],
+    [MainDataFields.GESTION_FAMILIALE, ['Oui', 'Non', 'NaN']],
     [
         MainDataFields.GESTION_FAMILIALE_GENERATIONS_IMPLIQUEES,
-        ['1ère', '2ème', '3ème', '4ème ou +', 'Pas de réponse'],
+        ['1ère', '2ème', '3ème', '4ème ou +', 'NaN'],
     ],
     [
         MainDataFields.GESTION_FAMILIALE_PROTOCOLE_FAMILIAL,
-        ['aucun', 'informel', 'formel et explicite', 'Pas de réponse'],
+        ['aucun', 'informel', 'formel et explicite', 'NaN'],
     ],
     [
         MainDataFields.GESTION_FAMILIALE_POLITIQUES_FAMILIALES,
@@ -505,10 +495,7 @@ const keyValuePairs: [MainDataFields, string[]][] = [
         MainDataFields.SUCCESSION_PLAN,
         ['Plan informel', 'Plan formel', 'Plan inexistant', 'N/A'],
     ],
-    [
-        MainDataFields.SUCCESSION_ACCOMPAGNEMENT_PRO,
-        ['Oui', 'Non', 'Pas de réponse'],
-    ],
+    [MainDataFields.SUCCESSION_ACCOMPAGNEMENT_PRO, ['Oui', 'Non', 'NaN']],
     [
         MainDataFields.SUCCESSION_ACCOMPAGNEMENT_TYPE,
         [
@@ -982,7 +969,7 @@ export const PossibleDataFileds = new Map<MainDataFields, any[]>([
             '2ème génération',
             '3ème génération',
             '4ème génération ou plus',
-            'Pas de réponse',
+            'NaN',
         ],
     ],
     [MainDataFields.ACTIONNAIRES_NOMBRE, ['0', '1', '2', '3', '4', '5+']], // needs filter function

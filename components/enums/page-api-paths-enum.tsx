@@ -13,4 +13,5 @@ export enum APIPaths {
     FOURNISSEURS_DELETE_ONE = '/api/fournisseurs/delete',
     GRAPH_GET_DATA = '/api/graph/getGraphData',
     MAP_GET_ENTREPRISE = '/api/map/getEntreprise',
+    SHEETS_GET_DATA = '/api/sheets/getData',
 }

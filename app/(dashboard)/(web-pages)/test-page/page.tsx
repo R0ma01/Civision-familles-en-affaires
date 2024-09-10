@@ -1,17 +1,8 @@
 'use client';
 import React, { useEffect, useState } from 'react';
 import PageContentContainer from '@/components/component/page-content-container/page-content-container';
-import ThemeCard from '@/components/component/theme-card/theme-card';
-import useGlobalPageStore from '@/stores/global-page-store';
-import PageContent from '@/components/interface/page-content';
-import constants from '@/constants/constants';
-import useMapStore from '@/stores/global-map-store';
-import { MapType } from '@/components/enums/map-type-enum';
-import { MainDataFields } from '@/components/enums/data-types-enum';
-import GraphBox from '@/components/component/graph-box/graph-box';
-import { GraphBoxType } from '@/components/enums/graph-box-enum';
-import { Field } from 'formik';
-import GraphBoxContent from '@/components/interface/graph-box-content';
+
+import { SheetsHTTPService } from '@/services/sheets-service';
 
 export default function test() {
     // const { mapType, setMapStyle } = useMapStore((state) => {
@@ -24,6 +15,20 @@ export default function test() {
     //     }
     //     // eslint-disable-next-line react-hooks/exhaustive-deps
     // }, [mapType]);
+
+    const [data, setData] = useState<any[]>([]);
+
+    useEffect(() => {
+        async function fetch() {
+            const laData: any = await SheetsHTTPService.getSheetData();
+            console.log(laData);
+            console.log('Some data' + JSON.stringify(laData));
+            setData(laData['data']['values']);
+
+            console.log('Some other data' + JSON.stringify(data));
+        }
+        if (data.length === 0) fetch();
+    }, [data]);
 
     return (
         <PageContentContainer className="h-screen overflow-y-auto relative flex items-center w-[100%]">
@@ -42,6 +47,14 @@ export default function test() {
                     </div>
                 );
             })} */}
+
+            {data.map((item) => {
+                return (
+                    <div>
+                        <p>{JSON.stringify(item)}</p>
+                    </div>
+                );
+            })}
             <div className="justify-center flex flex-wrap w-[80%]"></div>
         </PageContentContainer>
     );

@@ -4,7 +4,6 @@ import { MongoDBPaths } from '@/components/enums/mongodb-paths-enum';
 import { CompanyInfo } from '@/components/interface/company';
 import { PossibleDataFileds } from '@/services/tableaux-taitement';
 import { MainDataFields } from '@/components/enums/data-types-enum';
-import { Collection } from 'mongodb';
 
 // Define interfaces for the aggregation results
 interface AggregationResult {
@@ -120,18 +119,19 @@ function generateDualFieldAggregationQuery(
         }
     }
 
-    matchStage[field1] = { $exists: true, $ne: null };
-    matchStage[field2] = { $exists: true, $ne: null };
-
     const aggregationPipeline = [
         {
-            $match: matchStage,
+            $match: {
+                ...matchStage,
+                [field1]: { $exists: true, $ne: null },
+                [field2]: { $exists: true, $ne: null },
+            },
         },
         {
             $group: {
                 _id: {
-                    [field1]: `$${field1}`,
-                    [field2]: `$${field2}`,
+                    field1: `$${field1}`,
+                    field2: `$${field2}`,
                 },
                 count: { $sum: 1 },
             },
@@ -139,32 +139,55 @@ function generateDualFieldAggregationQuery(
         {
             $project: {
                 _id: 0,
-                name: `$_id.${field1}`,
-                [field2]: `$_id.${field2}`,
+                name: { $getField: `_id` },
+
                 count: '$count',
             },
         },
     ];
 
-    return async (collection: any): Promise<DualFieldAggregationResult[]> => {
-        const result = await collection
-            .aggregate(aggregationPipeline)
-            .toArray();
-        const resultMap = new Map<string, DualFieldAggregationResult>(
-            result.map((item: DualFieldAggregationResult) => [
-                `${item.name}-${item[field2]}`,
-                item,
-            ]),
+    return async (
+        collection: any,
+    ): Promise<
+        {
+            name: string;
+            [key: string]: number | string; // Allow string for 'name' and array for dynamic fields
+        }[]
+    > => {
+        const result: {
+            name: { field1: string; field2: string };
+            count: number;
+        }[] = await collection.aggregate(aggregationPipeline).toArray();
+
+        const resultMap = new Map<
+            string,
+            {
+                name: { field1: string; field2: string };
+                count: number;
+            }
+        >(
+            result.map((item: any) => {
+                return [`${item.name.field1}-${item.name.field2}`, item];
+            }),
         );
 
-        // Ensure all possible combinations of values are in the result
-        return possibleValues[field1].flatMap((value1) =>
-            possibleValues[field2].map((value2) => ({
+        const returnValues: any = [];
+
+        possibleValues[field1].flatMap((value1) => {
+            const item: any = {
                 name: value1,
-                [field2]: value2,
-                count: resultMap.get(`${value1}-${value2}`)?.count || 0,
-            })),
-        );
+            };
+            possibleValues[field2].forEach((value2) => {
+                // Type guard to ensure item[field2] is an array
+                item[value2] = resultMap.get(`${value1}-${value2}`)?.count || 0;
+            });
+
+            returnValues.push(item);
+        });
+
+        console.log(returnValues);
+        // Ensure all possible combinations of values are in the result
+        return returnValues;
     };
 }
 
@@ -234,6 +257,8 @@ export async function GET(req: Request) {
 
         const donnesObj: MainDataFields[] = JSON.parse(donnes);
         const filtersObj: CompanyInfo = JSON.parse(filters);
+
+        console.log(donnesObj);
 
         if (!donnesObj || !filtersObj) {
             return NextResponse.json(

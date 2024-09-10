@@ -114,7 +114,6 @@ const DoubleHorizontalBarChart: React.FC<
                                 <Bar
                                     key={key}
                                     dataKey={key}
-                                    stackId="a"
                                     fill={
                                         chartPalette[
                                             index % chartPalette.length

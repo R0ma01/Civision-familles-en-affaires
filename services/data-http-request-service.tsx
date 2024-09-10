@@ -67,7 +67,7 @@ async function getChartData(
                 filters: JSON.stringify(filters),
             },
         });
-
+        console.log(response);
         return response.data.chartData;
     } catch (error: any) {
         console.error(

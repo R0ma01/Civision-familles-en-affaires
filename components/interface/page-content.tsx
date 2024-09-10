@@ -5,6 +5,6 @@ export default interface PageContent {
     title: string;
     description: string;
     cards: DataCardContent[];
-    backgroundImage: string;    
+    backgroundImage: string;
     visible: boolean;
 }

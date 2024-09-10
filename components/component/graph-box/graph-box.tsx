@@ -125,6 +125,7 @@ const GraphBox: React.FC<GraphBoxProps> = ({ content, chartSize }) => {
                 donnes,
                 filterData,
             );
+
             const nanResult = result.findIndex(
                 (item) => item.name.toString() === 'NaN',
             );
@@ -265,7 +266,7 @@ const GraphBox: React.FC<GraphBoxProps> = ({ content, chartSize }) => {
         case GraphBoxType.STACKED_BARCHART:
             return (
                 <>
-                    <div className="border border-black">
+                    <div>
                         {' '}
                         <StackedBarChart
                             chartContent={chartContent}

@@ -12,7 +12,7 @@ export interface Fournisseur {
         cellPhone: number;
         company: string;
         title: string;
-        linkedin: string;
+        linkedIn: string;
     };
     secteurs_geographique: SecteursGeographiques[];
     services_offerts: ServiceOffert[];
