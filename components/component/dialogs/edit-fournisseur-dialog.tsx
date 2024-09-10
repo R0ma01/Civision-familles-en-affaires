@@ -134,7 +134,7 @@ export function EditFournisseurDialog({
         };
 
         console.log(fournisseurData);
-        submitDialog(fournisseurData as Fournisseur);
+        submitDialog(fournisseurData as unknown as Fournisseur);
     }
 
     return (
