@@ -1,6 +1,11 @@
 'use client';
 import React, { useEffect, useState } from 'react';
 import PageContentContainer from '@/components/component/page-content-container/page-content-container';
+import { MainDataFields } from '@/components/enums/data-types-enum';
+import GraphBox from '@/components/component/graph-box/graph-box';
+import DataCard from '@/components/component/data-card/data-card';
+import { DataCardType } from '@/components/enums/data-card-type-enum';
+import { GraphBoxType } from '@/components/enums/graph-box-enum';
 
 export default function test() {
     // const { mapType, setMapStyle } = useMapStore((state) => {
@@ -33,26 +38,41 @@ export default function test() {
             <h1 className="text-2xl font-semibold tracking-wide text-black dark:text-white z-10 mt-10 mb-5 cursor-default">
                 TEST
             </h1>
-            {/* {Object.values(MainDataFields).map((filed: MainDataFields) => {
-                const content: GraphBoxContent = {
-                    graphType: GraphBoxType.VERTICAL_BARCHART,
-                    donnes: [filed],
+            {/* {Object.values(MainDataFields).map((field) => {{()=> {
+                const content = {
+                    type: DataCardType.SIMPLE_GRAPH,
+                    title: field.toString(),
+                    description: 'string;',
+                    graphData: [
+                        {
+                            graphType: GraphBoxType.HORIZONTAL_BARCHART,
+                            donnes: [MainDataFields.ANNEE_FONDATION],
+                        },
+                    ],
                 };
                 return (
-                    <div className="bg-black">
-                        <p className="text-xl text-white">{filed}</p>
-                        <GraphBox content={content}></GraphBox>
-                    </div>
-                );
-            })} */}
-
-            {/* {data.map((item) => {
-                return (
                     <div>
-                        <p>{JSON.stringify(item)}</p>
+                        <DataCard content={content}></DataCard>
                     </div>
                 );
             })} */}
+            <div>
+                <DataCard
+                    content={{
+                        type: DataCardType.SIMPLE_GRAPH,
+                        title: MainDataFields.REPONDANT_ANNEE_TRAVAILLEES.toString(),
+                        description: 'string;',
+                        graphData: [
+                            {
+                                graphType: GraphBoxType.HORIZONTAL_BARCHART,
+                                donnes: [
+                                    MainDataFields.REPONDANT_ANNEE_TRAVAILLEES,
+                                ],
+                            },
+                        ],
+                    }}
+                ></DataCard>
+            </div>
             <div className="justify-center flex flex-wrap w-[80%]"></div>
         </PageContentContainer>
     );

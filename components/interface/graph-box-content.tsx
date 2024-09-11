@@ -5,5 +5,5 @@ import { ChartData, ChartDataMultipleFileds } from './chart-data';
 export default interface GraphBoxContent {
     graphType: GraphBoxType;
     donnes: MainDataFields[];
-    data?: ChartData[] | ChartDataMultipleFileds[];
+    
 }

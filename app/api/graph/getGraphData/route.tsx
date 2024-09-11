@@ -83,6 +83,8 @@ function generateAggregationQuery(
                 possibleValues,
             );
         }
+
+        resultMap = numberData(field, resultMap, possibleValues);
         // Ensure all possible values are in the result
         return possibleValues.map((value) => {
             return {
@@ -185,7 +187,7 @@ function generateDualFieldAggregationQuery(
             returnValues.push(item);
         });
 
-        console.log(returnValues);
+        // console.log(returnValues);
         // Ensure all possible combinations of values are in the result
         return returnValues;
     };
@@ -258,7 +260,7 @@ export async function GET(req: Request) {
         const donnesObj: MainDataFields[] = JSON.parse(donnes);
         const filtersObj: CompanyInfo = JSON.parse(filters);
 
-        console.log(donnesObj);
+        // console.log(donnesObj);
 
         if (!donnesObj || !filtersObj) {
             return NextResponse.json(
@@ -309,4 +311,255 @@ export async function GET(req: Request) {
         console.error(e.message);
         return NextResponse.json({ error: e.message }, { status: 500 });
     }
+}
+
+function numberData(
+    donnes: string,
+    result: Map<any, any>,
+    possibleValues: any,
+) {
+    if (donnes === MainDataFields.ANNEE_FONDATION) {
+        const returnMap = new Map();
+
+        possibleValues.map((value: string) =>
+            returnMap.set(value, { name: value, value: 0 }),
+        );
+        console.log(result);
+        console.log(returnMap);
+        Array.from(result.values()).map((item) => {
+            console.log(item.name > 1900);
+            if (item.name < 1900) {
+                returnMap.set(possibleValues[0], {
+                    name: possibleValues[0],
+                    value: returnMap.get(possibleValues[0]).value + item.value,
+                });
+            } else if (item.name < 1960) {
+                returnMap.set(possibleValues[1], {
+                    name: possibleValues[1],
+                    value: returnMap.get(possibleValues[1]).value + item.value,
+                });
+            } else if (item.name < 1970) {
+                returnMap.set(possibleValues[2], {
+                    name: possibleValues[2],
+                    value: returnMap.get(possibleValues[2]).value + item.value,
+                });
+            } else if (item.name < 1980) {
+                returnMap.set(possibleValues[3], {
+                    name: possibleValues[3],
+                    value: returnMap.get(possibleValues[3]).value + item.value,
+                });
+            } else if (item.name < 1990) {
+                returnMap.set(possibleValues[4], {
+                    name: possibleValues[4],
+                    value: returnMap.get(possibleValues[4]).value + item.value,
+                });
+            } else if (item.name < 2000) {
+                returnMap.set(possibleValues[5], {
+                    name: possibleValues[5],
+                    value: returnMap.get(possibleValues[5]).value + item.value,
+                });
+            } else if (item.name < 2010) {
+                returnMap.set(possibleValues[6], {
+                    name: possibleValues[6],
+                    value: returnMap.get(possibleValues[7]).value + item.value,
+                });
+            } else if (item.name >= 2010) {
+                returnMap.set(possibleValues[7], {
+                    name: possibleValues[7],
+                    value: returnMap.get(possibleValues[7]).value + item.value,
+                });
+            } else if (item.name.toString() === 'NaN') {
+                returnMap.set(possibleValues[8], {
+                    name: possibleValues[8],
+                    value: returnMap.get(possibleValues[8]).value + item.value,
+                });
+            }
+        });
+
+        return returnMap;
+    } else if (donnes === MainDataFields.REPONDANT_ANNEE_NAISSANCE) {
+        const returnMap = new Map();
+
+        possibleValues.map((value: string) =>
+            returnMap.set(value, { name: value, value: 0 }),
+        );
+
+        Array.from(result.values()).map((item) => {
+            if (item.name < 1960) {
+                returnMap.set(possibleValues[0], {
+                    name: possibleValues[0],
+                    value: returnMap.get(possibleValues[0]).value + item.value,
+                });
+            } else if (item.name < 1970) {
+                returnMap.set(possibleValues[1], {
+                    name: possibleValues[1],
+                    value: returnMap.get(possibleValues[1]).value + item.value,
+                });
+            } else if (item.name < 1980) {
+                returnMap.set(possibleValues[2], {
+                    name: possibleValues[2],
+                    value: returnMap.get(possibleValues[2]).value + item.value,
+                });
+            } else if (item.name < 1990) {
+                returnMap.set(possibleValues[3], {
+                    name: possibleValues[3],
+                    value: returnMap.get(possibleValues[3]).value + item.value,
+                });
+            } else if (item.name < 2000) {
+                returnMap.set(possibleValues[4], {
+                    name: possibleValues[4],
+                    value: returnMap.get(possibleValues[4]).value + item.value,
+                });
+            } else if (item.name < 2010) {
+                returnMap.set(possibleValues[5], {
+                    name: possibleValues[5],
+                    value: returnMap.get(possibleValues[5]).value + item.value,
+                });
+            } else if (item.name >= 2010) {
+                returnMap.set(possibleValues[6], {
+                    name: possibleValues[6],
+                    value: returnMap.get(possibleValues[6]).value + item.value,
+                });
+            }
+        });
+
+        return returnMap;
+    } else if (
+        donnes ===
+        MainDataFields.GOUVERNANCE_CONSEIL_CONSULTATIF_POURCENTAGE_FEMMES
+    ) {
+        console.log('pourcentage femmes');
+        const returnMap = new Map();
+
+        possibleValues.map((value: string) =>
+            returnMap.set(value, { name: value, value: 0 }),
+        );
+
+        Array.from(result.values()).map((item) => {
+            if (item.name < 10) {
+                returnMap.set(possibleValues[0], {
+                    name: possibleValues[0],
+                    value: returnMap.get(possibleValues[0]).value + item.value,
+                });
+            } else if (item.name < 25) {
+                returnMap.set(possibleValues[1], {
+                    name: possibleValues[1],
+                    value: returnMap.get(possibleValues[1]).value + item.value,
+                });
+            } else if (item.name < 50) {
+                returnMap.set(possibleValues[2], {
+                    name: possibleValues[2],
+                    value: returnMap.get(possibleValues[2]).value + item.value,
+                });
+            } else if (item.name < 75) {
+                returnMap.set(possibleValues[3], {
+                    name: possibleValues[3],
+                    value: returnMap.get(possibleValues[3]).value + item.value,
+                });
+            } else if (item.name >= 75) {
+                returnMap.set(possibleValues[4], {
+                    name: possibleValues[4],
+                    value: returnMap.get(possibleValues[4]).value + item.value,
+                });
+            } else if (item.name.toString() === ' NaN') {
+                returnMap.set(possibleValues[5], {
+                    name: possibleValues[5],
+                    value: returnMap.get(possibleValues[5]).value + item.value,
+                });
+            }
+        });
+
+        return returnMap;
+    } else if (donnes === MainDataFields.REPONDANT_ANNEE_TRAVAILLEES) {
+        const returnMap = new Map();
+
+        possibleValues.map((value: string) =>
+            returnMap.set(value, { name: value, value: 0 }),
+        );
+
+        Array.from(result.values()).map((item) => {
+            if (item.name < 10) {
+                returnMap.set(possibleValues[0], {
+                    name: possibleValues[0],
+                    value: returnMap.get(possibleValues[0]).value + item.value,
+                });
+            } else if (item.name < 20) {
+                returnMap.set(possibleValues[1], {
+                    name: possibleValues[1],
+                    value: returnMap.get(possibleValues[1]).value + item.value,
+                });
+            } else if (item.name < 30) {
+                returnMap.set(possibleValues[2], {
+                    name: possibleValues[2],
+                    value: returnMap.get(possibleValues[2]).value + item.value,
+                });
+            } else if (item.name < 40) {
+                returnMap.set(possibleValues[3], {
+                    name: possibleValues[3],
+                    value: returnMap.get(possibleValues[3]).value + item.value,
+                });
+            } else if (item.name >= 40) {
+                returnMap.set(possibleValues[4], {
+                    name: possibleValues[4],
+                    value: returnMap.get(possibleValues[4]).value + item.value,
+                });
+            } else if (item.name.toString() === ' NaN') {
+                returnMap.set(possibleValues[5], {
+                    name: possibleValues[5],
+                    value: returnMap.get(possibleValues[5]).value + item.value,
+                });
+            }
+        });
+        console.log(returnMap);
+        return returnMap;
+    } else if (donnes === MainDataFields.ACTIONNAIRES_NOMBRE) {
+        const returnMap = new Map();
+
+        possibleValues.map((value: string) =>
+            returnMap.set(value, { name: value, value: 0 }),
+        );
+
+        Array.from(result.values()).map((item) => {
+            if (item.name == 0) {
+                returnMap.set(possibleValues[0], {
+                    name: possibleValues[0],
+                    value: returnMap.get(possibleValues[0]).value + item.value,
+                });
+            } else if (item.name === 1) {
+                returnMap.set(possibleValues[1], {
+                    name: possibleValues[1],
+                    value: returnMap.get(possibleValues[1]).value + item.value,
+                });
+            } else if (item.name === 2) {
+                returnMap.set(possibleValues[2], {
+                    name: possibleValues[2],
+                    value: returnMap.get(possibleValues[2]).value + item.value,
+                });
+            } else if (item.name === 3) {
+                returnMap.set(possibleValues[3], {
+                    name: possibleValues[3],
+                    value: returnMap.get(possibleValues[3]).value + item.value,
+                });
+            } else if (item.name === 4) {
+                returnMap.set(possibleValues[4], {
+                    name: possibleValues[4],
+                    value: returnMap.get(possibleValues[4]).value + item.value,
+                });
+            } else if (item.name >= 5) {
+                returnMap.set(possibleValues[5], {
+                    name: possibleValues[5],
+                    value: returnMap.get(possibleValues[5]).value + item.value,
+                });
+            } else if (item.name.toString() === ' NaN') {
+                returnMap.set(possibleValues[6], {
+                    name: possibleValues[6],
+                    value: returnMap.get(possibleValues[6]).value + item.value,
+                });
+            }
+        });
+        console.log(returnMap);
+        return returnMap;
+    }
+
+    return result;
 }

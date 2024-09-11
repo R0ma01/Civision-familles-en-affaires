@@ -30,8 +30,6 @@ async function getAllStudyData(
             },
         });
 
-        console.log(response);
-
         return response.data.points;
     } catch (error: any) {
         console.error(
@@ -67,7 +65,7 @@ async function getChartData(
                 filters: JSON.stringify(filters),
             },
         });
-        console.log(response);
+
         return response.data.chartData;
     } catch (error: any) {
         console.error(

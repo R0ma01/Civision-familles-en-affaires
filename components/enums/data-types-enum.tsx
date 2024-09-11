@@ -5,7 +5,7 @@ export enum MainDataFields {
     FEMMES_DIRECTION_POURCENTAGE = 'femmes_direction_%',
     TAILLE_ENTREPRISE = 'taille_entreprise',
     CONTINUITE_FAMILIALE = 'continuite_familiale',
-    REPONDANT_AGE = 'repondant.age',
+
     REPONDANT_SEXE = 'repondant.sexe',
     REPONDANT_NIVEAU_ETUDE = 'repondant.niveau_etude',
     REPONDANT_NIVEAU_SANTE = 'repondant.niveau_sante',
@@ -63,13 +63,13 @@ export enum MainDataFields {
     QUESTIONNAIRE_DEVELOPPEMENT_ENV = 'questionnaires.q53_gestion_developpement_environnemental',
     QUESTIONNAIRE_REDISTRIBUTION_ENV = 'questionnaires.q54_retributions_environnementales_recompenses',
     QUESTIONNAIRE_PARTICIPATION_ENV = 'questionnaires.q55_participation_environnementale',
-    CREE_OU_REPRISE = 'entreprise_cree', //  ACHANGER PUR LE VRAI NOM DE VARIABLE DE MONGO
-    TEMPS_NOUVELLE_ENTREPRISE = 'temps nouvelle.entreprise',
-    BENEVOLAT = 'benevolat',
+    CREE_OU_REPRISE = 'Cree_ou_repris', //  ACHANGER PUR LE VRAI NOM DE VARIABLE DE MONGO
+    TEMPS_NOUVELLE_ENTREPRISE = 'J_aurai_le_temps_de_demarrer_une_nouvelle_entreprise',
+    BENEVOLAT = 'J_aurai_le_temps_de_faire_du_benevolat/travailler_pour_une_œuvre_caritative',
     SOIN_PERSONEL_FAMILIAL = 'SOINS PERSONEL FAMILIAL',
-    ROLE_INFORMEL = 'role informel',
-    APRES_VENTE = 'apres vente',
-    GESTION_FAMILIALE = 'gestion',
+    ROLE_INFORMEL = 'Je_continuerai_a_avoir_un_role_informel_aupres_des_entrepreneurs_qui_reprennent',
+    APRES_VENTE = 'Je_n_ai_pas_l_intention_de_suivre_l_evolution_de_mon_entreprise_apres_sa_vente/transfert',
+    // GESTION_FAMILIALE = 'gestion_familiale',
     NOMBRE_EMPLOYE = 'NB_EMPLO',
 }
 

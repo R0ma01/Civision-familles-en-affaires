@@ -74,7 +74,7 @@ const HorizontalBarChart: React.FC<SimpleHorizontalBarChartProps> = ({
     };
 
     useEffect(() => {
-        if (chartContent.data.length > 0) {
+        if (chartContent.data?.length > 0) {
             if (!originalOrder.current) {
                 originalOrder.current = chartContent.data as ChartData[];
             } else {
@@ -106,7 +106,7 @@ const HorizontalBarChart: React.FC<SimpleHorizontalBarChartProps> = ({
 
             // Calculate the longest label's width and set the Y-axis width
             const longestLabel = Math.max(
-                ...chartContent.data.map((item) => item.name.length),
+                ...chartContent.data.map((item) => item.name?.length),
             );
             const calculatedWidth = Math.min(longestLabel * 8, 150); // Adjust multiplier and max width as needed
             setYAxisWidth(calculatedWidth);

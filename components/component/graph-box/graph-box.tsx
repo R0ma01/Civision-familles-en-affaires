@@ -78,14 +78,28 @@ const GraphBox: React.FC<GraphBoxProps> = ({ content, chartSize }) => {
                 donnes,
                 filterData,
             );
-            const nanResult = result.findIndex(
-                (item) => item.name.toString() === 'NaN',
-            );
-            const newResult = result.filter(
-                (item) => item.name.toString() !== 'NaN',
-            );
-            if (nanResult > -1) setNanData(result[nanResult]);
-            setChartData(newResult);
+
+            console.log(donnes);
+            console.log(result);
+            // const nanResult = result.findIndex(
+            //     (item) => item.name.toString() === 'NaN',
+            // );
+            // const newResult = result.filter(
+            //     (item) => item.name.toString() !== 'NaN',
+            // );
+            // if (nanResult > -1) setNanData(result[nanResult]);
+
+            const tempResult: ChartData[] = [
+                {
+                    name: 'groupe1',
+                    value: 1,
+                },
+                {
+                    name: 'groupe2',
+                    value: 1,
+                },
+            ];
+            setChartData(result ? result : tempResult);
         }
 
         if (
@@ -126,14 +140,24 @@ const GraphBox: React.FC<GraphBoxProps> = ({ content, chartSize }) => {
                 filterData,
             );
 
-            const nanResult = result.findIndex(
-                (item) => item.name.toString() === 'NaN',
-            );
-            const newResult = result.filter(
-                (item) => item.name.toString() !== 'NaN',
-            );
-            if (nanResult > -1) setNanData(result[nanResult]);
-            setChartData(newResult);
+            // const nanResult = result.findIndex(
+            //     (item) => item.name.toString() === 'NaN',
+            // );
+            // const newResult = result.filter(
+            //     (item) => item.name.toString() !== 'NaN',
+            // );
+            // if (nanResult > -1) setNanData(result[nanResult]);
+            const tempResult: ChartData[] = [
+                {
+                    name: 'groupe1',
+                    value: 1,
+                },
+                {
+                    name: 'groupe2',
+                    value: 1,
+                },
+            ];
+            setChartData(result ? result : tempResult);
         }
 
         if (
@@ -181,7 +205,7 @@ const GraphBox: React.FC<GraphBoxProps> = ({ content, chartSize }) => {
 
     useEffect(() => {
         if (!chartSize) {
-            if (chartData.length > 5) {
+            if (chartData) {
                 setChartSize(ChartSize.LARGE);
             } else {
                 setChartSize(ChartSize.MEDIUM);
