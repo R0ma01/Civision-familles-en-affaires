@@ -57,21 +57,159 @@ export default function test() {
                 );
             })} */}
             <div>
-                <DataCard
+                {/*   <DataCard
                     content={{
                         type: DataCardType.SIMPLE_GRAPH,
-                        title: MainDataFields.REPONDANT_ANNEE_TRAVAILLEES.toString(),
+                        title: MainDataFields.EXPORT_MARCHES.toString(),
                         description: 'string;',
                         graphData: [
                             {
-                                graphType: GraphBoxType.HORIZONTAL_BARCHART,
+                                graphType:
+                                    GraphBoxType.DOUBLE_HORIZONTAL_BARCHART,
                                 donnes: [
-                                    MainDataFields.REPONDANT_ANNEE_TRAVAILLEES,
+                                    MainDataFields.ANNEE_FONDATION,
+                                    MainDataFields.EXPORT_MARGINAL,
                                 ],
                             },
                         ],
                     }}
                 ></DataCard>
+                <DataCard
+                    content={{
+                        type: DataCardType.SIMPLE_GRAPH,
+                        title: MainDataFields.EXPORT_MARCHES.toString(),
+                        description: 'string;',
+                        graphData: [
+                            {
+                                graphType:
+                                    GraphBoxType.DOUBLE_HORIZONTAL_BARCHART,
+                                donnes: [
+                                    MainDataFields.EXPORT_MARGINAL,
+                                    MainDataFields.ANNEE_FONDATION,
+                                ],
+                            },
+                        ],
+                    }}
+                ></DataCard>
+                <DataCard
+                    content={{
+                        type: DataCardType.SIMPLE_GRAPH,
+                        title: MainDataFields.EXPORT_MARCHES.toString(),
+                        description: 'string;',
+                        graphData: [
+                            {
+                                graphType:
+                                    GraphBoxType.DOUBLE_HORIZONTAL_BARCHART,
+                                donnes: [
+                                    MainDataFields.GOUVERNANCE_CONSEIL_CONSULTATIF_RINCIPALES_ACTIVITES,
+                                    MainDataFields.EXPORT_MARGINAL,
+                                ],
+                            },
+                        ],
+                    }}
+                ></DataCard>
+                <DataCard
+                    content={{
+                        type: DataCardType.SIMPLE_GRAPH,
+                        title: MainDataFields.EXPORT_MARCHES.toString(),
+                        description: 'string;',
+                        graphData: [
+                            {
+                                graphType:
+                                    GraphBoxType.DOUBLE_HORIZONTAL_BARCHART,
+                                donnes: [
+                                    MainDataFields.ANNEE_FONDATION,
+                                    MainDataFields.DIRIGEANT_AGE,
+                                ],
+                            },
+                        ],
+                    }}
+                ></DataCard>
+                <DataCard
+                    content={{
+                        type: DataCardType.SIMPLE_GRAPH,
+                        title: MainDataFields.EXPORT_MARCHES.toString(),
+                        description: 'string;',
+                        graphData: [
+                            {
+                                graphType:
+                                    GraphBoxType.DOUBLE_HORIZONTAL_BARCHART,
+                                donnes: [
+                                    MainDataFields.ANNEE_FONDATION,
+                                    MainDataFields.DIRIGEANT_SEXE,
+                                ],
+                            },
+                        ],
+                    }}
+                ></DataCard>
+                <DataCard
+                    content={{
+                        type: DataCardType.SIMPLE_GRAPH,
+                        title: MainDataFields.ACTIONNAIRES_MAJORITAIRE.toString(),
+                        description: 'string;',
+                        graphData: [
+                            {
+                                graphType:
+                                    GraphBoxType.DOUBLE_HORIZONTAL_BARCHART,
+                                donnes: [
+                                    MainDataFields.ACTIONNAIRES_MAJORITAIRE,
+                                    MainDataFields.DIRIGEANT_AGE,
+                                ],
+                            },
+                        ],
+                    }}
+                ></DataCard>
+                <DataCard
+                    content={{
+                        type: DataCardType.SIMPLE_GRAPH,
+                        title: MainDataFields.ACTIONNAIRES_EXTERNE.toString(),
+                        description: 'string;',
+                        graphData: [
+                            {
+                                graphType:
+                                    GraphBoxType.DOUBLE_HORIZONTAL_BARCHART,
+                                donnes: [
+                                    MainDataFields.ANNEE_FONDATION,
+                                    MainDataFields.EXPORT_MARGINAL,
+                                ],
+                            },
+                        ],
+                    }}
+                ></DataCard>
+                <DataCard
+                    content={{
+                        type: DataCardType.SIMPLE_GRAPH,
+                        title: MainDataFields.EXPORT_MARCHES.toString(),
+                        description: 'string;',
+                        graphData: [
+                            {
+                                graphType:
+                                    GraphBoxType.DOUBLE_HORIZONTAL_BARCHART,
+                                donnes: [
+                                    MainDataFields.ANNEE_FONDATION,
+                                    MainDataFields.EXPORT_MARGINAL,
+                                ],
+                            },
+                        ],
+                    }}
+                ></DataCard>
+                <DataCard
+                    content={{
+                        type: DataCardType.SIMPLE_GRAPH,
+                        title: MainDataFields.EXPORT_MARCHES.toString(),
+                        description: 'string;',
+                        graphData: [
+                            {
+                                graphType:
+                                    GraphBoxType.DOUBLE_HORIZONTAL_BARCHART,
+                                donnes: [
+                                    MainDataFields.ANNEE_FONDATION,
+                                    MainDataFields.EXPORT_MARGINAL,
+                                ],
+                            },
+                        ],
+                    }}
+                ></DataCard> */}
             </div>
             <div className="justify-center flex flex-wrap w-[80%]"></div>
         </PageContentContainer>

@@ -4,6 +4,8 @@ import { MongoDBPaths } from '@/components/enums/mongodb-paths-enum';
 import { CompanyInfo } from '@/components/interface/company';
 import { PossibleDataFileds } from '@/services/tableaux-taitement';
 import { MainDataFields } from '@/components/enums/data-types-enum';
+import { count } from 'console';
+import { convert } from 'three/webgpu';
 
 // Define interfaces for the aggregation results
 interface AggregationResult {
@@ -11,41 +13,15 @@ interface AggregationResult {
     value: number;
 }
 
-interface DualFieldAggregationResult {
-    name: string;
-    count: number;
-    [field2: string]: string | number; // Adjusted to include number
-}
-
 function generateAggregationQuery(
     field: string,
     filters: CompanyInfo,
     possibleValues: string[],
 ) {
-    const matchStage: any = {};
-
-    for (const [key, value] of Object.entries(filters)) {
-        if (value === 'toutes' || value === null) continue;
-
-        if (typeof value === 'object' && value !== null) {
-            for (const [nestedKey, nestedValue] of Object.entries(value)) {
-                if (
-                    nestedValue !== 'toutes' &&
-                    nestedValue !== null &&
-                    nestedValue !== -1
-                ) {
-                    matchStage[`${key}.${nestedKey}`] = nestedValue;
-                }
-            }
-        } else {
-            matchStage[key] = value;
-        }
-    }
-
     const aggregationPipeline = [
         {
             $match: {
-                ...matchStage,
+                ...generateMatchStage(filters),
                 [field]: { $exists: true, $ne: null },
             },
         },
@@ -83,8 +59,10 @@ function generateAggregationQuery(
                 possibleValues,
             );
         }
+        if (needsNumberFiltering(field)) {
+            resultMap = numberData(field, resultMap, possibleValues);
+        }
 
-        resultMap = numberData(field, resultMap, possibleValues);
         // Ensure all possible values are in the result
         return possibleValues.map((value) => {
             return {
@@ -101,30 +79,10 @@ function generateDualFieldAggregationQuery(
     filters: CompanyInfo,
     possibleValues: { [key: string]: string[] },
 ) {
-    const matchStage: any = {};
-
-    for (const [key, value] of Object.entries(filters)) {
-        if (value === 'toutes' || value === null) continue;
-
-        if (typeof value === 'object' && value !== null) {
-            for (const [nestedKey, nestedValue] of Object.entries(value)) {
-                if (
-                    nestedValue !== 'toutes' &&
-                    nestedValue !== null &&
-                    nestedValue !== -1
-                ) {
-                    matchStage[`${key}.${nestedKey}`] = nestedValue;
-                }
-            }
-        } else {
-            matchStage[key] = value;
-        }
-    }
-
     const aggregationPipeline = [
         {
             $match: {
-                ...matchStage,
+                ...generateMatchStage(filters),
                 [field1]: { $exists: true, $ne: null },
                 [field2]: { $exists: true, $ne: null },
             },
@@ -161,16 +119,22 @@ function generateDualFieldAggregationQuery(
             count: number;
         }[] = await collection.aggregate(aggregationPipeline).toArray();
 
-        const resultMap = new Map<
-            string,
-            {
-                name: { field1: string; field2: string };
-                count: number;
-            }
-        >(
-            result.map((item: any) => {
-                return [`${item.name.field1}-${item.name.field2}`, item];
-            }),
+        const dataMap = new Map();
+
+        possibleValues[field1].map((value1) =>
+            possibleValues[field2].map((value2) =>
+                dataMap.set([`${value1}-${value2}`], {
+                    name: { field1: value1, field2: value2 },
+                    count: 0,
+                }),
+            ),
+        );
+
+        const resultMap = dualDataFormatting(
+            result,
+            field1,
+            field2,
+            possibleValues,
         );
 
         const returnValues: any = [];
@@ -187,60 +151,32 @@ function generateDualFieldAggregationQuery(
             returnValues.push(item);
         });
 
-        // console.log(returnValues);
-        // Ensure all possible combinations of values are in the result
         return returnValues;
     };
 }
+function unclusterResultArrays(
+    originalResult: any[],
+    possibleValues: string[],
+): Map<string, AggregationResult> {
+    // Initialize the resultMap with all possible values set to 0
+    const resultMap = new Map<string, AggregationResult>();
 
-function unclusterResultArrays(originalResult: any, possibleValues: any) {
-    const resultMap = new Map();
-    possibleValues.map((value: string) => {
+    possibleValues.forEach((value) => {
         resultMap.set(value, { name: value, value: 0 });
     });
 
-    originalResult.map((item: any) => {
-        item[1].name.map((name: string) => {
-            let result = resultMap.get(name.toString());
-
-            result.value += item[1].value;
-            resultMap.set(name.toString(), result);
+    // Iterate over the original result and aggregate values
+    originalResult.forEach(([key, aggregationResult]) => {
+        aggregationResult.name.forEach((name: string) => {
+            const currentResult = resultMap.get(name);
+            if (currentResult) {
+                currentResult.value += aggregationResult.value;
+            }
         });
     });
 
     return resultMap;
 }
-
-// async function generateSimpleAggregationQuery(
-//     field: string,
-//     collection: Collection<any>,
-// ): Promise<AggregationResult[]> {
-//     // Define the aggregation pipeline
-//     const aggregationPipeline = [
-//         {
-//             $match: {
-//                 [field]: { $exists: true, $ne: null },
-//             },
-//         },
-//         {
-//             $group: {
-//                 _id: `$${field}`, // Group by the field value
-//                 count: { $sum: 1 }, // Count occurrences
-//             },
-//         },
-//         {
-//             $project: {
-//                 _id: 0, // Exclude _id from the output
-//                 name: '$_id', // Rename _id to name
-//                 count: 1, // Include the count
-//             },
-//         },
-//     ];
-
-//     // Execute the aggregation
-//     const result = await collection.aggregate(aggregationPipeline).toArray();
-//     return result;
-// }
 
 export async function GET(req: Request) {
     try {
@@ -259,8 +195,6 @@ export async function GET(req: Request) {
 
         const donnesObj: MainDataFields[] = JSON.parse(donnes);
         const filtersObj: CompanyInfo = JSON.parse(filters);
-
-        // console.log(donnesObj);
 
         if (!donnesObj || !filtersObj) {
             return NextResponse.json(
@@ -313,253 +247,321 @@ export async function GET(req: Request) {
     }
 }
 
+function needsNumberFiltering(donnes: string) {
+    return (
+        donnes === MainDataFields.ANNEE_FONDATION ||
+        donnes === MainDataFields.REPONDANT_ANNEE_NAISSANCE ||
+        donnes ===
+            MainDataFields.GOUVERNANCE_CONSEIL_CONSULTATIF_POURCENTAGE_FEMMES ||
+        donnes === MainDataFields.REPONDANT_ANNEE_TRAVAILLEES ||
+        donnes === MainDataFields.ACTIONNAIRES_NOMBRE
+    );
+}
+
+function convertNumber(donnes: string, data: any, possibleValues: any) {
+    if (donnes === MainDataFields.ANNEE_FONDATION) {
+        if (data < 1900) {
+            return possibleValues[0];
+        } else if (data < 1960) {
+            return possibleValues[1];
+        } else if (data < 1970) {
+            return possibleValues[2];
+        } else if (data < 1980) {
+            return possibleValues[3];
+        } else if (data < 1990) {
+            return possibleValues[4];
+        } else if (data < 2000) {
+            return possibleValues[5];
+        } else if (data < 2010) {
+            return possibleValues[6];
+        } else if (data >= 2010) {
+            return possibleValues[7];
+        } else if (data.toString() === 'NaN') {
+            return possibleValues[8];
+        }
+    } else if (donnes === MainDataFields.REPONDANT_ANNEE_NAISSANCE) {
+        if (data < 1960) {
+            return possibleValues[0];
+        } else if (data < 1970) {
+            return possibleValues[1];
+        } else if (data < 1980) {
+            return possibleValues[2];
+        } else if (data < 1990) {
+            return possibleValues[3];
+        } else if (data < 2000) {
+            return possibleValues[4];
+        } else if (data < 2010) {
+            return possibleValues[5];
+        } else if (data >= 2010) {
+            return possibleValues[6];
+        }
+    } else if (
+        donnes ===
+        MainDataFields.GOUVERNANCE_CONSEIL_CONSULTATIF_POURCENTAGE_FEMMES
+    ) {
+        if (data < 10) {
+            return possibleValues[0];
+        } else if (data < 25) {
+            return possibleValues[1];
+        } else if (data < 50) {
+            return possibleValues[2];
+        } else if (data < 75) {
+            return possibleValues[3];
+        } else if (data >= 75) {
+            return possibleValues[4];
+        } else if (data.toString() === ' NaN') {
+            return possibleValues[5];
+        }
+    } else if (donnes === MainDataFields.REPONDANT_ANNEE_TRAVAILLEES) {
+        if (data < 10) {
+            return possibleValues[0];
+        } else if (data < 20) {
+            return possibleValues[1];
+        } else if (data < 30) {
+            return possibleValues[2];
+        } else if (data < 40) {
+            return possibleValues[3];
+        } else if (data >= 40) {
+            return possibleValues[4];
+        } else if (data.toString() === ' NaN') {
+            return possibleValues[5];
+        }
+    } else if (donnes === MainDataFields.ACTIONNAIRES_NOMBRE) {
+        if (data == 0) {
+            return possibleValues[0];
+        } else if (data === 1) {
+            return possibleValues[1];
+        } else if (data === 2) {
+            return possibleValues[2];
+        } else if (data === 3) {
+            return possibleValues[3];
+        } else if (data === 4) {
+            return possibleValues[4];
+        } else if (data >= 5) {
+            return possibleValues[5];
+        } else if (data.toString() === ' NaN') {
+            return possibleValues[6];
+        }
+    }
+}
+
 function numberData(
     donnes: string,
     result: Map<any, any>,
     possibleValues: any,
 ) {
-    if (donnes === MainDataFields.ANNEE_FONDATION) {
-        const returnMap = new Map();
+    const returnMap = new Map();
 
-        possibleValues.map((value: string) =>
-            returnMap.set(value, { name: value, value: 0 }),
-        );
-        console.log(result);
-        console.log(returnMap);
-        Array.from(result.values()).map((item) => {
-            console.log(item.name > 1900);
-            if (item.name < 1900) {
-                returnMap.set(possibleValues[0], {
-                    name: possibleValues[0],
-                    value: returnMap.get(possibleValues[0]).value + item.value,
-                });
-            } else if (item.name < 1960) {
-                returnMap.set(possibleValues[1], {
-                    name: possibleValues[1],
-                    value: returnMap.get(possibleValues[1]).value + item.value,
-                });
-            } else if (item.name < 1970) {
-                returnMap.set(possibleValues[2], {
-                    name: possibleValues[2],
-                    value: returnMap.get(possibleValues[2]).value + item.value,
-                });
-            } else if (item.name < 1980) {
-                returnMap.set(possibleValues[3], {
-                    name: possibleValues[3],
-                    value: returnMap.get(possibleValues[3]).value + item.value,
-                });
-            } else if (item.name < 1990) {
-                returnMap.set(possibleValues[4], {
-                    name: possibleValues[4],
-                    value: returnMap.get(possibleValues[4]).value + item.value,
-                });
-            } else if (item.name < 2000) {
-                returnMap.set(possibleValues[5], {
-                    name: possibleValues[5],
-                    value: returnMap.get(possibleValues[5]).value + item.value,
-                });
-            } else if (item.name < 2010) {
-                returnMap.set(possibleValues[6], {
-                    name: possibleValues[6],
-                    value: returnMap.get(possibleValues[7]).value + item.value,
-                });
-            } else if (item.name >= 2010) {
-                returnMap.set(possibleValues[7], {
-                    name: possibleValues[7],
-                    value: returnMap.get(possibleValues[7]).value + item.value,
-                });
-            } else if (item.name.toString() === 'NaN') {
-                returnMap.set(possibleValues[8], {
-                    name: possibleValues[8],
-                    value: returnMap.get(possibleValues[8]).value + item.value,
-                });
-            }
+    possibleValues.map((value: string) =>
+        returnMap.set(value, { name: value, value: 0 }),
+    );
+    Array.from(result.values()).map((item) => {
+        const conversion = convertNumber(donnes, item.name, possibleValues);
+        returnMap.set(conversion, {
+            name: conversion,
+            value: returnMap.get(conversion).value + item.value,
         });
+    });
 
-        return returnMap;
-    } else if (donnes === MainDataFields.REPONDANT_ANNEE_NAISSANCE) {
-        const returnMap = new Map();
+    return returnMap;
+}
 
-        possibleValues.map((value: string) =>
-            returnMap.set(value, { name: value, value: 0 }),
-        );
+function generateMatchStage(filters: CompanyInfo): any {
+    const matchStage: any = {};
 
-        Array.from(result.values()).map((item) => {
-            if (item.name < 1960) {
-                returnMap.set(possibleValues[0], {
-                    name: possibleValues[0],
-                    value: returnMap.get(possibleValues[0]).value + item.value,
-                });
-            } else if (item.name < 1970) {
-                returnMap.set(possibleValues[1], {
-                    name: possibleValues[1],
-                    value: returnMap.get(possibleValues[1]).value + item.value,
-                });
-            } else if (item.name < 1980) {
-                returnMap.set(possibleValues[2], {
-                    name: possibleValues[2],
-                    value: returnMap.get(possibleValues[2]).value + item.value,
-                });
-            } else if (item.name < 1990) {
-                returnMap.set(possibleValues[3], {
-                    name: possibleValues[3],
-                    value: returnMap.get(possibleValues[3]).value + item.value,
-                });
-            } else if (item.name < 2000) {
-                returnMap.set(possibleValues[4], {
-                    name: possibleValues[4],
-                    value: returnMap.get(possibleValues[4]).value + item.value,
-                });
-            } else if (item.name < 2010) {
-                returnMap.set(possibleValues[5], {
-                    name: possibleValues[5],
-                    value: returnMap.get(possibleValues[5]).value + item.value,
-                });
-            } else if (item.name >= 2010) {
-                returnMap.set(possibleValues[6], {
-                    name: possibleValues[6],
-                    value: returnMap.get(possibleValues[6]).value + item.value,
-                });
+    for (const [key, value] of Object.entries(filters)) {
+        if (value === 'toutes' || value === null) continue;
+
+        if (typeof value === 'object' && value !== null) {
+            for (const [nestedKey, nestedValue] of Object.entries(value)) {
+                if (
+                    nestedValue !== 'toutes' &&
+                    nestedValue !== null &&
+                    nestedValue !== -1
+                ) {
+                    matchStage[`${key}.${nestedKey}`] = nestedValue;
+                }
             }
-        });
-
-        return returnMap;
-    } else if (
-        donnes ===
-        MainDataFields.GOUVERNANCE_CONSEIL_CONSULTATIF_POURCENTAGE_FEMMES
-    ) {
-        console.log('pourcentage femmes');
-        const returnMap = new Map();
-
-        possibleValues.map((value: string) =>
-            returnMap.set(value, { name: value, value: 0 }),
-        );
-
-        Array.from(result.values()).map((item) => {
-            if (item.name < 10) {
-                returnMap.set(possibleValues[0], {
-                    name: possibleValues[0],
-                    value: returnMap.get(possibleValues[0]).value + item.value,
-                });
-            } else if (item.name < 25) {
-                returnMap.set(possibleValues[1], {
-                    name: possibleValues[1],
-                    value: returnMap.get(possibleValues[1]).value + item.value,
-                });
-            } else if (item.name < 50) {
-                returnMap.set(possibleValues[2], {
-                    name: possibleValues[2],
-                    value: returnMap.get(possibleValues[2]).value + item.value,
-                });
-            } else if (item.name < 75) {
-                returnMap.set(possibleValues[3], {
-                    name: possibleValues[3],
-                    value: returnMap.get(possibleValues[3]).value + item.value,
-                });
-            } else if (item.name >= 75) {
-                returnMap.set(possibleValues[4], {
-                    name: possibleValues[4],
-                    value: returnMap.get(possibleValues[4]).value + item.value,
-                });
-            } else if (item.name.toString() === ' NaN') {
-                returnMap.set(possibleValues[5], {
-                    name: possibleValues[5],
-                    value: returnMap.get(possibleValues[5]).value + item.value,
-                });
-            }
-        });
-
-        return returnMap;
-    } else if (donnes === MainDataFields.REPONDANT_ANNEE_TRAVAILLEES) {
-        const returnMap = new Map();
-
-        possibleValues.map((value: string) =>
-            returnMap.set(value, { name: value, value: 0 }),
-        );
-
-        Array.from(result.values()).map((item) => {
-            if (item.name < 10) {
-                returnMap.set(possibleValues[0], {
-                    name: possibleValues[0],
-                    value: returnMap.get(possibleValues[0]).value + item.value,
-                });
-            } else if (item.name < 20) {
-                returnMap.set(possibleValues[1], {
-                    name: possibleValues[1],
-                    value: returnMap.get(possibleValues[1]).value + item.value,
-                });
-            } else if (item.name < 30) {
-                returnMap.set(possibleValues[2], {
-                    name: possibleValues[2],
-                    value: returnMap.get(possibleValues[2]).value + item.value,
-                });
-            } else if (item.name < 40) {
-                returnMap.set(possibleValues[3], {
-                    name: possibleValues[3],
-                    value: returnMap.get(possibleValues[3]).value + item.value,
-                });
-            } else if (item.name >= 40) {
-                returnMap.set(possibleValues[4], {
-                    name: possibleValues[4],
-                    value: returnMap.get(possibleValues[4]).value + item.value,
-                });
-            } else if (item.name.toString() === ' NaN') {
-                returnMap.set(possibleValues[5], {
-                    name: possibleValues[5],
-                    value: returnMap.get(possibleValues[5]).value + item.value,
-                });
-            }
-        });
-        console.log(returnMap);
-        return returnMap;
-    } else if (donnes === MainDataFields.ACTIONNAIRES_NOMBRE) {
-        const returnMap = new Map();
-
-        possibleValues.map((value: string) =>
-            returnMap.set(value, { name: value, value: 0 }),
-        );
-
-        Array.from(result.values()).map((item) => {
-            if (item.name == 0) {
-                returnMap.set(possibleValues[0], {
-                    name: possibleValues[0],
-                    value: returnMap.get(possibleValues[0]).value + item.value,
-                });
-            } else if (item.name === 1) {
-                returnMap.set(possibleValues[1], {
-                    name: possibleValues[1],
-                    value: returnMap.get(possibleValues[1]).value + item.value,
-                });
-            } else if (item.name === 2) {
-                returnMap.set(possibleValues[2], {
-                    name: possibleValues[2],
-                    value: returnMap.get(possibleValues[2]).value + item.value,
-                });
-            } else if (item.name === 3) {
-                returnMap.set(possibleValues[3], {
-                    name: possibleValues[3],
-                    value: returnMap.get(possibleValues[3]).value + item.value,
-                });
-            } else if (item.name === 4) {
-                returnMap.set(possibleValues[4], {
-                    name: possibleValues[4],
-                    value: returnMap.get(possibleValues[4]).value + item.value,
-                });
-            } else if (item.name >= 5) {
-                returnMap.set(possibleValues[5], {
-                    name: possibleValues[5],
-                    value: returnMap.get(possibleValues[5]).value + item.value,
-                });
-            } else if (item.name.toString() === ' NaN') {
-                returnMap.set(possibleValues[6], {
-                    name: possibleValues[6],
-                    value: returnMap.get(possibleValues[6]).value + item.value,
-                });
-            }
-        });
-        console.log(returnMap);
-        return returnMap;
+        } else {
+            matchStage[key] = value;
+        }
     }
 
-    return result;
+    return matchStage;
+}
+
+function dualDataFormatting(
+    result: any[],
+    field1: string,
+    field2: string,
+    possibleValues: { [key: string]: string[] },
+) {
+    const returnMap = new Map();
+
+    possibleValues[field1].map((value1) => {
+        possibleValues[field2].map((value2) => {
+            returnMap.set(`${value1}-${value2}`, { count: 0 });
+        });
+    });
+
+    if (Array.isArray(result[0].name.field1)) {
+        if (Array.isArray(result[0].name.field2)) {
+            console.log(' array array');
+            // F1 -> [] F2 -> []
+            result.map((item: any) => {
+                item.name.field1.map((value1: any) => {
+                    item.name.field2.map((value2: any) => {
+                        returnMap.set(`${value1}-${value2}`, {
+                            count:
+                                returnMap.get(`${value1}-${value2}`).count +
+                                item.count,
+                        });
+                    });
+                });
+            });
+        } else if (needsNumberFiltering(field2)) {
+            console.log('array - number');
+            // F1 -> [] F2 -> number
+            result.map((item: any) => {
+                item.name.field1.map((value1: any) => {
+                    const value2 = convertNumber(
+                        field2,
+                        item.name.field2,
+                        possibleValues[field2],
+                    );
+                    returnMap.set(`${value1}-${value2}`, {
+                        count:
+                            returnMap.get(`${value1}-${value2}`).count +
+                            item.count,
+                    });
+                });
+            });
+        } else {
+            console.log('array - string');
+            // F1 -> [] F2 -> string
+            result.map((item: any) => {
+                item.name.field1.map((value1: any) => {
+                    returnMap.set(`${value1}-${item.name.field2}`, {
+                        count:
+                            returnMap.get(`${value1}-${item.name.field2}`)
+                                .count + item.count,
+                    });
+                });
+            });
+        }
+    } else if (needsNumberFiltering(field1)) {
+        if (Array.isArray(result[0].name.field2)) {
+            console.log('number - array');
+            // F1 -> number F2 -> []
+            result.map((item: any) => {
+                item.name.field2.map((value2: any) => {
+                    const value1 = convertNumber(
+                        field1,
+                        item.name.field1,
+                        possibleValues[field1],
+                    );
+                    returnMap.set(`${value1}-${value2}`, {
+                        count:
+                            returnMap.get(`${value1}-${value2}`).count +
+                            item.count,
+                    });
+                });
+            });
+        } else if (needsNumberFiltering(field2)) {
+            console.log('number - number');
+            // F1 -> number F2 -> number
+            result.map((item: any) => {
+                const value1 = convertNumber(
+                    field1,
+                    item.name.field1,
+                    possibleValues[field1],
+                );
+                const value2 = convertNumber(
+                    field2,
+                    item.name.field2,
+                    possibleValues[field2],
+                );
+                returnMap.set(`${value1}-${value2}`, {
+                    count:
+                        returnMap.get(`${value1}-${value2}`).count + item.count,
+                });
+            });
+        } else {
+            // F1 -> number F2 -> string
+            console.log('number - string ');
+            result.map((item: any) => {
+                const value1 = convertNumber(
+                    field1,
+                    item.name.field1,
+                    possibleValues[field1],
+                );
+
+                returnMap.set(`${value1}-${item.name.field2}`, {
+                    count:
+                        returnMap.get(`${value1}-${item.name.field2}`).count +
+                        item.count,
+                });
+            });
+        }
+    } else {
+        if (Array.isArray(result[0].name.field2)) {
+            // F1 -> string F2 -> []
+            console.log('strinf - array');
+            result.map((item: any) => {
+                item.name.field2.map((value2: any) => {
+                    returnMap.set(`${item.name.field1}-${value2}`, {
+                        count:
+                            returnMap.get(`${item.name.field1}-${value2}`)
+                                .count + item.count,
+                    });
+                });
+            });
+        } else if (needsNumberFiltering(field2)) {
+            // F1 -> string F2 -> number
+            console.log('string - number');
+            result.map((item: any) => {
+                const value2 = convertNumber(
+                    field2,
+                    item.name.field2,
+                    possibleValues[field2],
+                );
+
+                returnMap.set(`${item.name.field1}-${value2}`, {
+                    count:
+                        returnMap.get(`${item.name.field1}-${value2}`).count +
+                        item.count,
+                });
+            });
+        } else {
+            // F1 -> string F2 -> string
+            console.log('string - string');
+            console.log(result);
+            console.log(returnMap);
+            result.map((item: any) => {
+                console.log(
+                    `${item.name.field1.toString()}-${item.name.field2.toString()}`,
+                );
+                console.log(
+                    returnMap.get(
+                        `${item.name.field1.toString()}-${item.name.field2.toString()}`,
+                    ).count + item.count,
+                );
+                returnMap.set(
+                    `${item.name.field1.toString()}-${item.name.field2.toString()}`,
+                    {
+                        count:
+                            returnMap.get(
+                                `${item.name.field1.toString()}-${item.name.field2.toString()}`,
+                            ).count + item.count,
+                    },
+                );
+            });
+            // console.log(
+            //     'AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA',
+            // );
+            // console.log(returnMap);
+        }
+    }
+
+    return returnMap;
 }

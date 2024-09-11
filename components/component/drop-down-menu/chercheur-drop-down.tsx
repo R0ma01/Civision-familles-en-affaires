@@ -191,8 +191,8 @@ const dropdownStructure: ChercheurDropdownSection[] = [
                 selected: false,
                 graphType: GraphBoxType.DOUBLE_HORIZONTAL_BARCHART,
                 donnees: [
-                    MainDataFields.DIRIGEANT_SEXE,
                     MainDataFields.REPONDANT_NIVEAU_ETUDE,
+                    MainDataFields.DIRIGEANT_SEXE,
                 ],
             },
         ],
