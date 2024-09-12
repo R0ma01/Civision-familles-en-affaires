@@ -26,7 +26,7 @@ const useGlobalDataStore = create(
                     set({ loading: true, error: null });
                     try {
                         console.log('I am called');
-                        console.log(filterData);
+
                         const responseStudy =
                             await GraphDataHttpRequestService.getAllStudyData(
                                 filters,

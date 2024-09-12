@@ -22,10 +22,6 @@ function PageContentComponent() {
         },
     );
 
-    const { filterData } = useGlobalFilterStore((state: any) => ({
-        filterData: state.filterData,
-    }));
-
     const { mapType, setMapStyle } = useMapStore((state) => {
         return { mapType: state.mapType, setMapStyle: state.setMapStyle };
     });

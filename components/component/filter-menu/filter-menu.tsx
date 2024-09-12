@@ -34,12 +34,12 @@ const FilterMenu: React.FC<FilterMenuProps> = ({
     const { mapType, map } = useMapStore((state) => {
         return { mapType: state.mapType, map: state.map };
     });
-    const { filterStudyData, filterRepertoireData } = useGlobalDataStore(
-        (state: any) => ({
+    const { filterStudyData, filterRepertoireData, fetchStudyData } =
+        useGlobalDataStore((state: any) => ({
+            fetchStudyData: state.fetchStudyData,
             filterStudyData: state.filterStudyData,
             filterRepertoireData: state.filterRepertoireData,
-        }),
-    );
+        }));
 
     const [visible, setVisible] = useState<boolean>(true);
 
