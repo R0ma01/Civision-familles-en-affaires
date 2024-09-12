@@ -3,6 +3,7 @@ export enum APIPaths {
     PAGE_UPDATE = '/api/page/update',
     PAGE_DELETE = '/api/page/delete',
     PAGE_GET_ONE = '/api/page/get',
+    PAGE_GET_ONE_TABS = '/api/page/getPageTabs',
     PAGE_GET_ALL = '/api/page/getAll',
     GRAPH_GET_ALL_STUDY = '/api/graph/getAllStudy',
     GRAPH_GET_ALL_REPERTOIRE = '/api/graph/getAllRepertoire',

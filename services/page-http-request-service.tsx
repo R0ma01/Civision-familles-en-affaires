@@ -1,6 +1,7 @@
 import PageContent from '@/components/interface/page-content';
 import axios from 'axios';
 import { APIPaths } from '@/components/enums/page-api-paths-enum';
+import PageTabContent from '@/components/interface/page-tabs-content';
 
 export const PageHttpRequestService = {
     insert: insertPage,
@@ -8,6 +9,7 @@ export const PageHttpRequestService = {
     delete: deletePage,
     getAll: getAllPages,
     get: getPage,
+    getTabPage: getTabPage,
 };
 
 async function insertPage(pageData: any) {
@@ -63,7 +65,22 @@ async function getPage(_id: string): Promise<PageContent | undefined> {
         const response = await axios.get(APIPaths.PAGE_GET_ONE, {
             params: { _id },
         });
-        return response.data;
+        return response.data.page;
+    } catch (error: any) {
+        console.error(
+            'Error fetching page:',
+            error.response?.data?.error || error.message,
+        );
+    }
+    return undefined;
+}
+
+async function getTabPage(_id: string): Promise<PageTabContent | undefined> {
+    try {
+        const response = await axios.get(APIPaths.PAGE_GET_ONE_TABS, {
+            params: { _id },
+        });
+        return response.data.page;
     } catch (error: any) {
         console.error(
             'Error fetching page:',
