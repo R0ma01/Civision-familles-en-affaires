@@ -1,5 +1,4 @@
 import React from 'react';
-import { VisibleSVG, InvisibleSVG } from '../svg-icons/svg-icons';
 import FilterMenu from '../filter-menu/filter-menu';
 
 type PageContentContainerProps = {
@@ -13,7 +12,6 @@ const PageContentContainer: React.FC<PageContentContainerProps> = ({
     className = '',
     children,
     filterMenu = false,
-    fournisseurFilterMenu = false,
 }) => {
     const [isContentVisible, setIsContentVisible] = React.useState(true);
 
@@ -31,10 +29,9 @@ const PageContentContainer: React.FC<PageContentContainerProps> = ({
                     {children}
                 </div>
             )}
-            {filterMenu || fournisseurFilterMenu ? (
+            {filterMenu ? (
                 <FilterMenu
                     toggleContentVisibility={toggleVisibility}
-                    fournisseurMenu={fournisseurFilterMenu}
                 ></FilterMenu>
             ) : (
                 ''

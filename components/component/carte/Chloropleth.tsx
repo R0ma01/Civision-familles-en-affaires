@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import useMapStore from '@/stores/global-map-store';
 import quebec_regions from '@/geojson/quebec_regions.json';
 import { choroplethColors } from '@/constants/color-palet';
-import { TableauxTraitementMap } from '@/services/tableaux-taitement';
+import { PossibleDataFileds } from '@/services/tableaux-taitement';
 import { MainDataFields } from '@/components/enums/data-types-enum';
 
 interface ChloroplethProps {
@@ -13,13 +13,19 @@ interface ChloroplethProps {
 
 const Chloropleth: React.FC<ChloroplethProps> = ({ data, dataField, map }) => {
     const [feature, setFeature] = useState<any>(null);
+    const [chloroData, setchloroData] = useState<any>([]);
+
+    useEffect(() => {
+        console.log(data);
+        setchloroData(data);
+    }, [data]);
 
     useEffect(() => {
         if (!map) return;
 
         const handleMapLoad = () => {
             const newRegionCounts: Record<string, number> = newRegionCount();
-            data.forEach((item: any) => {
+            chloroData.forEach((item: any) => {
                 newRegionCounts[item.region] = item.count;
             });
             const newFeature = createRegionFeatures(
@@ -40,7 +46,7 @@ const Chloropleth: React.FC<ChloroplethProps> = ({ data, dataField, map }) => {
                 map.off('load', handleMapLoad);
             }
         };
-    }, [data, map]);
+    }, [chloroData, map]);
 
     useEffect(() => {
         if (!map || !feature) return;
@@ -123,7 +129,7 @@ function createRegionFeatures(
 }
 
 function newRegionCount() {
-    const regions = TableauxTraitementMap.get(MainDataFields.COORDONNES_REGION);
+    const regions = PossibleDataFileds.get(MainDataFields.COORDONNES_REGION);
     const newRegionCounts: Record<string, number> = {};
     regions?.forEach((region) => (newRegionCounts[region] = 0));
 

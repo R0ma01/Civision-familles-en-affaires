@@ -68,7 +68,6 @@ function Fournisseurs() {
         <>
             <PageContentContainer
                 filterMenu={true}
-                fournisseurFilterMenu={true}
                 className="overflow-auto pb-10 pl-[30px]"
             >
                 <h1 className="text-2xl tracking-wide text-black dark:text-white z-10 mt-12 mb-2 cursor-default">

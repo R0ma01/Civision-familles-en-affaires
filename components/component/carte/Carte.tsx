@@ -7,7 +7,6 @@ import useMapStore from '@/stores/global-map-store';
 import { useEffect, useRef, useState } from 'react';
 import Chloropleth from './Chloropleth';
 import ClusterCloud from './ClusterCloud';
-import Repertoire from '@/app/(dashboard)/(web-pages)/repertoire/page';
 import { MapType } from '@/components/enums/map-type-enum';
 import { Fournisseur } from '@/components/interface/fournisseur';
 import ColorLegend from './Color-Legend';
@@ -52,6 +51,7 @@ export default function Carte() {
     useEffect(() => {
         console.log('hello');
         async function studyFetch() {
+            console.log('carte fetch');
             await fetchStudyData(filterData);
         }
         async function repertoireFetch() {

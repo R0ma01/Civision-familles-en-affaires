@@ -17,13 +17,14 @@ import useMapStore from '@/stores/global-map-store';
 import constants from '@/constants/constants';
 import { MapType } from '@/components/enums/map-type-enum';
 
+import { PossibleDataFileds } from '@/services/tableaux-taitement';
+
 interface FilterMenuProps {
     toggleContentVisibility?: () => void;
     fournisseurMenu?: boolean;
 }
 const FilterMenu: React.FC<FilterMenuProps> = ({
     toggleContentVisibility = () => {},
-    fournisseurMenu = false,
 }) => {
     const [isOpen, setIsOpen] = useState<boolean>(false);
     const [selectedTab, setSelectedTab] = useState<string>('general');
@@ -34,12 +35,17 @@ const FilterMenu: React.FC<FilterMenuProps> = ({
     const { mapType, map } = useMapStore((state) => {
         return { mapType: state.mapType, map: state.map };
     });
-    const { filterStudyData, filterRepertoireData, fetchStudyData } =
-        useGlobalDataStore((state: any) => ({
-            fetchStudyData: state.fetchStudyData,
-            filterStudyData: state.filterStudyData,
-            filterRepertoireData: state.filterRepertoireData,
-        }));
+    const {
+        filterStudyData,
+        filterRepertoireData,
+        fetchStudyData,
+        filterFournisseurData,
+    } = useGlobalDataStore((state: any) => ({
+        fetchStudyData: state.fetchStudyData,
+        filterStudyData: state.filterStudyData,
+        filterRepertoireData: state.filterRepertoireData,
+        filterFournisseurData: state.filterFournisseurData,
+    }));
 
     const [visible, setVisible] = useState<boolean>(true);
 
@@ -54,8 +60,9 @@ const FilterMenu: React.FC<FilterMenuProps> = ({
 
     async function handleChange(field: MainDataFields, newFieldValue: any) {
         setFilter(field, newFieldValue);
+
         await fetchStudyData(filterData);
-        console.log('bjfe');
+
         switch (mapType) {
             case MapType.REPERTOIRE:
                 filterRepertoireData();
@@ -67,6 +74,7 @@ const FilterMenu: React.FC<FilterMenuProps> = ({
                 break;
 
             default:
+                filterFournisseurData();
                 break;
         }
     }
@@ -145,9 +153,12 @@ const FilterMenu: React.FC<FilterMenuProps> = ({
                                             inputValue={
                                                 filterData.taille_entreprise
                                             }
-                                            options={Object.values(
-                                                filters.TailleEntrepriseFilters,
-                                            )}
+                                            options={[
+                                                'toutes',
+                                                ...(PossibleDataFileds.get(
+                                                    MainDataFields.TAILLE_ENTREPRISE,
+                                                ) || []),
+                                            ]}
                                             onChange={(value: any) =>
                                                 handleChange(
                                                     MainDataFields.TAILLE_ENTREPRISE,
@@ -160,9 +171,12 @@ const FilterMenu: React.FC<FilterMenuProps> = ({
                                             inputValue={
                                                 filterData.annee_fondation
                                             }
-                                            options={Object.values(
-                                                filters.AnneFondationFilters,
-                                            )}
+                                            options={[
+                                                'toutes',
+                                                ...(PossibleDataFileds.get(
+                                                    MainDataFields.ANNEE_FONDATION,
+                                                ) || []),
+                                            ]}
                                             onChange={(value: any) =>
                                                 handleChange(
                                                     MainDataFields.ANNEE_FONDATION,
@@ -175,9 +189,12 @@ const FilterMenu: React.FC<FilterMenuProps> = ({
                                             inputValue={
                                                 filterData.dirigeant?.generation
                                             }
-                                            options={Object.values(
-                                                filters.NombreGenerationsFilters,
-                                            )}
+                                            options={[
+                                                'toutes',
+                                                ...(PossibleDataFileds.get(
+                                                    MainDataFields.DIRIGEANT_GENERATION,
+                                                ) || []),
+                                            ]}
                                             onChange={(value: any) =>
                                                 handleChange(
                                                     MainDataFields.DIRIGEANT_GENERATION,
@@ -194,9 +211,12 @@ const FilterMenu: React.FC<FilterMenuProps> = ({
                                             inputValue={
                                                 filterData.coordonnees?.region
                                             }
-                                            options={Object.values(
-                                                filters.EntrepriseRegionFilters,
-                                            )}
+                                            options={[
+                                                'toutes',
+                                                ...(PossibleDataFileds.get(
+                                                    MainDataFields.COORDONNES_REGION,
+                                                ) || []),
+                                            ]}
                                             onChange={(value: any) =>
                                                 handleChange(
                                                     MainDataFields.COORDONNES_REGION,
@@ -205,37 +225,39 @@ const FilterMenu: React.FC<FilterMenuProps> = ({
                                             }
                                         />
                                         <label>Secteur Activité</label>
-                                        {/* <Dropdown
-                                inputValue={
-                                    filterData.Avancee.Entreprise
-                                        .secteurActivite
-                                }
-                                options={Object.values(
-                                    filters.SecteurActiviteFilters,
-                                )}
-                                onChange={(value: any) =>
-                                    handleChange(
-                                        filters.FilterTypes
-                                            .ENTREPRISE_SECTEUR_ACTIVITE,
-                                        value,
-                                    )
-                                }
-                            /> */}
+                                        <Dropdown
+                                            inputValue={
+                                                filterData.secteur_activite
+                                            }
+                                            options={[
+                                                'toutes',
+                                                ...(PossibleDataFileds.get(
+                                                    MainDataFields.SECTEUR_ACTIVITE,
+                                                ) || []),
+                                            ]}
+                                            onChange={(value: any) =>
+                                                handleChange(
+                                                    MainDataFields.SECTEUR_ACTIVITE,
+                                                    value,
+                                                )
+                                            }
+                                        />
                                         <label>Revenu Annuel</label>
-                                        {/* <Dropdown
-                                inputValue={
-                                    filterData.Avancee.Entreprise.revenuAnnuel
-                                }
-                                options={Object.values(filters.RevenuFilters)}
-                                onChange={(value: any) =>
-                                    handleChange(
-                                        filters.FilterTypes
-                                            .ENTREPRISE_REVENU_ANNUEL,
-                                        value,
-                                    )
-                                }
-                            /> */}
-                                        {/* Add more filter options as needed */}
+                                        <Dropdown
+                                            inputValue={filterData.revenus_rang}
+                                            options={[
+                                                'toutes',
+                                                ...(PossibleDataFileds.get(
+                                                    MainDataFields.REVENUS_RANG,
+                                                ) || []),
+                                            ]}
+                                            onChange={(value: any) =>
+                                                handleChange(
+                                                    MainDataFields.REVENUS_RANG,
+                                                    value,
+                                                )
+                                            }
+                                        />
                                     </div>
                                 )}
                             </div>
@@ -298,7 +320,7 @@ const FilterMenu: React.FC<FilterMenuProps> = ({
     }
 
     return (
-        <div id={constants.filter_menu_id} className="relative z-20 h-fit">
+        <div id={constants.filter_menu_id} className="relative z-20 h-[300px]">
             {/* Toggle Button */}
             <Button
                 id={constants.toggle_filter_tab_id}

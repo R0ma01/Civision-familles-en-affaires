@@ -58,7 +58,6 @@ export async function GET(req: Request) {
         // Add conditions for fields to exist
         matchStage['NEQ'] = { $exists: true };
         matchStage['coordonnees.longitude'] = { $exists: true };
-        matchStage['coordonnees.region'] = { $exists: true, $ne: null };
 
         const aggregationPipeline = [
             {

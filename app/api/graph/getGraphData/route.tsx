@@ -4,8 +4,6 @@ import { MongoDBPaths } from '@/components/enums/mongodb-paths-enum';
 import { CompanyInfo } from '@/components/interface/company';
 import { PossibleDataFileds } from '@/services/tableaux-taitement';
 import { MainDataFields } from '@/components/enums/data-types-enum';
-import { count } from 'console';
-import { convert } from 'three/webgpu';
 
 // Define interfaces for the aggregation results
 interface AggregationResult {
@@ -21,8 +19,7 @@ function generateAggregationQuery(
     const aggregationPipeline = [
         {
             $match: {
-                ...generateMatchStage(filters),
-                [field]: { $exists: true, $ne: null },
+                ...generateMatchStage(filters, [field]),
             },
         },
         {
@@ -39,7 +36,7 @@ function generateAggregationQuery(
             },
         },
     ];
-
+    console.log(aggregationPipeline[0]);
     return async (collection: any): Promise<AggregationResult[]> => {
         const result = await collection
             .aggregate(aggregationPipeline)
@@ -66,8 +63,8 @@ function generateAggregationQuery(
         // Ensure all possible values are in the result
         return possibleValues.map((value) => {
             return {
-                name: value,
-                value: resultMap.get(value)?.value || 0,
+                name: value.toString(),
+                value: resultMap.get(value.toString())?.value || 0,
             };
         });
     };
@@ -82,9 +79,9 @@ function generateDualFieldAggregationQuery(
     const aggregationPipeline = [
         {
             $match: {
-                ...generateMatchStage(filters),
-                [field1]: { $exists: true, $ne: null },
-                [field2]: { $exists: true, $ne: null },
+                ...generateMatchStage(filters, [field1, field2]),
+                // [field1]: { $exists: true, $ne: null },
+                // [field2]: { $exists: true, $ne: null },
             },
         },
         {
@@ -156,13 +153,13 @@ function generateDualFieldAggregationQuery(
 }
 function unclusterResultArrays(
     originalResult: any[],
-    possibleValues: string[],
+    possibleValues: any[],
 ): Map<string, AggregationResult> {
     // Initialize the resultMap with all possible values set to 0
     const resultMap = new Map<string, AggregationResult>();
 
     possibleValues.forEach((value) => {
-        resultMap.set(value, { name: value, value: 0 });
+        resultMap.set(value.toString(), { name: value.toString(), value: 0 });
     });
 
     // Iterate over the original result and aggregate values
@@ -261,86 +258,86 @@ function needsNumberFiltering(donnes: string) {
 function convertNumber(donnes: string, data: any, possibleValues: any) {
     if (donnes === MainDataFields.ANNEE_FONDATION) {
         if (data < 1900) {
-            return possibleValues[0];
+            return possibleValues[0].toString();
         } else if (data < 1960) {
-            return possibleValues[1];
+            return possibleValues[1].toString();
         } else if (data < 1970) {
-            return possibleValues[2];
+            return possibleValues[2].toString();
         } else if (data < 1980) {
-            return possibleValues[3];
+            return possibleValues[3].toString();
         } else if (data < 1990) {
-            return possibleValues[4];
+            return possibleValues[4].toString();
         } else if (data < 2000) {
-            return possibleValues[5];
+            return possibleValues[5].toString();
         } else if (data < 2010) {
-            return possibleValues[6];
+            return possibleValues[6].toString();
         } else if (data >= 2010) {
-            return possibleValues[7];
+            return possibleValues[7].toString();
         } else if (data.toString() === 'NaN') {
-            return possibleValues[8];
+            return possibleValues[8].toString();
         }
     } else if (donnes === MainDataFields.REPONDANT_ANNEE_NAISSANCE) {
         if (data < 1960) {
-            return possibleValues[0];
+            return possibleValues[0].toString();
         } else if (data < 1970) {
-            return possibleValues[1];
+            return possibleValues[1].toString();
         } else if (data < 1980) {
-            return possibleValues[2];
+            return possibleValues[2].toString();
         } else if (data < 1990) {
-            return possibleValues[3];
+            return possibleValues[3].toString();
         } else if (data < 2000) {
-            return possibleValues[4];
+            return possibleValues[4].toString();
         } else if (data < 2010) {
-            return possibleValues[5];
+            return possibleValues[5].toString();
         } else if (data >= 2010) {
-            return possibleValues[6];
+            return possibleValues[6].toString();
         }
     } else if (
         donnes ===
         MainDataFields.GOUVERNANCE_CONSEIL_CONSULTATIF_POURCENTAGE_FEMMES
     ) {
         if (data < 10) {
-            return possibleValues[0];
+            return possibleValues[0].toString();
         } else if (data < 25) {
-            return possibleValues[1];
+            return possibleValues[1].toString();
         } else if (data < 50) {
-            return possibleValues[2];
+            return possibleValues[2].toString();
         } else if (data < 75) {
-            return possibleValues[3];
+            return possibleValues[3].toString();
         } else if (data >= 75) {
-            return possibleValues[4];
+            return possibleValues[4].toString();
         } else if (data.toString() === ' NaN') {
-            return possibleValues[5];
+            return possibleValues[5].toString();
         }
     } else if (donnes === MainDataFields.REPONDANT_ANNEE_TRAVAILLEES) {
         if (data < 10) {
-            return possibleValues[0];
+            return possibleValues[0].toString();
         } else if (data < 20) {
-            return possibleValues[1];
+            return possibleValues[1].toString();
         } else if (data < 30) {
-            return possibleValues[2];
+            return possibleValues[2].toString();
         } else if (data < 40) {
-            return possibleValues[3];
+            return possibleValues[3].toString();
         } else if (data >= 40) {
-            return possibleValues[4];
+            return possibleValues[4].toString();
         } else if (data.toString() === ' NaN') {
-            return possibleValues[5];
+            return possibleValues[5].toString();
         }
     } else if (donnes === MainDataFields.ACTIONNAIRES_NOMBRE) {
         if (data == 0) {
-            return possibleValues[0];
+            return possibleValues[0].toString();
         } else if (data === 1) {
-            return possibleValues[1];
+            return possibleValues[1].toString();
         } else if (data === 2) {
-            return possibleValues[2];
+            return possibleValues[2].toString();
         } else if (data === 3) {
-            return possibleValues[3];
+            return possibleValues[3].toString();
         } else if (data === 4) {
-            return possibleValues[4];
+            return possibleValues[4].toString();
         } else if (data >= 5) {
-            return possibleValues[5];
+            return possibleValues[5].toString();
         } else if (data.toString() === ' NaN') {
-            return possibleValues[6];
+            return possibleValues[6].toString();
         }
     }
 }
@@ -352,8 +349,8 @@ function numberData(
 ) {
     const returnMap = new Map();
 
-    possibleValues.map((value: string) =>
-        returnMap.set(value, { name: value, value: 0 }),
+    possibleValues.map((value: any) =>
+        returnMap.set(value.toString(), { name: value.toString(), value: 0 }),
     );
     Array.from(result.values()).map((item) => {
         const conversion = convertNumber(donnes, item.name, possibleValues);
@@ -366,11 +363,11 @@ function numberData(
     return returnMap;
 }
 
-function generateMatchStage(filters: CompanyInfo): any {
+function generateMatchStage(filters: CompanyInfo, fields: string[]): any {
     const matchStage: any = {};
 
     for (const [key, value] of Object.entries(filters)) {
-        if (value === 'toutes' || value === null) continue;
+        if (value === 'toutes' || value === null || value === -1) continue;
 
         if (typeof value === 'object' && value !== null) {
             for (const [nestedKey, nestedValue] of Object.entries(value)) {
@@ -387,6 +384,21 @@ function generateMatchStage(filters: CompanyInfo): any {
         }
     }
 
+    fields.map((field) => {
+        if (matchStage[field]) {
+            matchStage[field] = {
+                $exists: true,
+                $nin: [null, NaN],
+                $in: [matchStage[field]],
+            };
+        } else {
+            matchStage[field] = {
+                $exists: true,
+                $nin: [null, NaN],
+            };
+        }
+    });
+
     return matchStage;
 }
 
@@ -394,7 +406,7 @@ function dualDataFormatting(
     result: any[],
     field1: string,
     field2: string,
-    possibleValues: { [key: string]: string[] },
+    possibleValues: { [key: string]: any[] },
 ) {
     const returnMap = new Map();
 

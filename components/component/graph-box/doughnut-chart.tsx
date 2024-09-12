@@ -48,42 +48,45 @@ const Doughnut: React.FC<DoughnutChartProps> = ({
     const { inner, outer } = radiusMap[size];
 
     const [chartData, setChartData] = useState<
-        ChartData[] | ChartDataMultipleFileds[] | undefined
+        (ChartData | ChartDataMultipleFileds)[] | undefined
     >(undefined);
 
     useEffect(() => {
-        if (chartContent.data.length > 0) {
-            if (!originalOrder.current) {
-                // Save the initial order on first render
-                originalOrder.current = chartContent.data as ChartData[];
-            } else {
-                // Reorder new data to match the original order
-                const updatedData = originalOrder.current.map(
-                    (originalItem) => {
-                        const newItem = chartContent.data.find(
-                            (newItem) => newItem.name === originalItem.name,
-                        );
-                        return newItem
-                            ? { ...originalItem, value: newItem.value }
-                            : { ...originalItem, value: 0 };
-                    },
-                );
+        // if (chartContent.data.length > 0) {
+        //     if (!originalOrder.current) {
+        //         // Save the initial order on first render
+        //         originalOrder.current = chartContent.data as ChartData[];
+        //     } else {
+        //         // Reorder new data to match the original order
+        //         // const updatedData = originalOrder.current.map(
+        //         //     (originalItem) => {
+        //         //         const newItem = chartContent.data.find(
+        //         //             (newItem) => newItem.name === originalItem.name,
+        //         //         );
+        //         //         return newItem
+        //         //             ? { ...originalItem, value: newItem.value }
+        //         //             : { ...originalItem, value: 0 };
+        //         //     },
+        //         // );
 
-                // Add new items that were not in the original data
-                chartContent.data.forEach((newItem: any) => {
-                    if (
-                        !originalOrder.current!.some(
-                            (originalItem) =>
-                                originalItem.name === newItem.name,
-                        )
-                    ) {
-                        updatedData.push(newItem);
-                    }
-                });
+        //         // // Add new items that were not in the original data
+        //         // chartContent.data.forEach((newItem: any) => {
+        //         //     if (
+        //         //         !originalOrder.current!.some(
+        //         //             (originalItem) =>
+        //         //                 originalItem.name === newItem.name,
+        //         //         )
+        //         //     ) {
+        //         //         updatedData.push(newItem);
+        //         //     }
+        //         // });
 
-                setChartData(updatedData);
-                originalOrder.current = updatedData;
-            }
+        //         setChartData(chartContent.data);
+        //         //originalOrder.current = updatedData;
+        //     }
+        // }
+        if (chartContent.data?.length > 0) {
+            setChartData(chartContent.data);
         }
     }, [chartContent.data]);
 

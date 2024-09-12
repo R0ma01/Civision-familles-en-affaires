@@ -4,7 +4,7 @@ import {
     ChartDataMultipleFileds,
 } from '@/components/interface/chart-data';
 import { MainDataFields } from '@/components/enums/data-types-enum';
-import { TableauxTraitementMap } from '@/services/tableaux-taitement';
+import { PossibleDataFileds } from '@/services/tableaux-taitement';
 import { CompanyInfo } from '@/components/interface/company';
 
 export function translateData(data: any, donnes: MainDataFields): string {
@@ -37,8 +37,8 @@ export function useFilteredDataMultipleFields(
     const donnesY: string[] = donnesSplit(donnes[1]);
 
     // Get the parameters for X and Y axes
-    const Xparams: any = TableauxTraitementMap.get(donnes[0]);
-    const Yparams: any = TableauxTraitementMap.get(donnes[1]);
+    const Xparams: any = PossibleDataFileds.get(donnes[0]);
+    const Yparams: any = PossibleDataFileds.get(donnes[1]);
 
     if (!Xparams || !Yparams) {
         return [
@@ -88,7 +88,7 @@ export function useFilteredData(
     data: CompanyInfo[],
 ): ChartData[] {
     const filters: string[] = donnesSplit(donnes);
-    const returnTableauFields = TableauxTraitementMap.get(donnes);
+    const returnTableauFields = PossibleDataFileds.get(donnes);
     if (!returnTableauFields) {
         return [
             { name: 'Group A', value: 400 },
