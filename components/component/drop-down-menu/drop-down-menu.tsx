@@ -96,7 +96,6 @@ const Dropdown = <T,>({
                 >
                     <ul className="py-1 max-h-64 overflow-y-auto dark:bg-gray-700">
                         {options.map((option: any) => {
-                            console.log(option);
                             return (
                                 <li
                                     key={option as unknown as string}

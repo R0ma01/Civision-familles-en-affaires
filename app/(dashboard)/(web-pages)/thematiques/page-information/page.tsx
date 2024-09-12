@@ -41,7 +41,7 @@ function PageContentComponent() {
 
     if (pageLoading) return <div>Loading...</div>;
     if (pageError) return <div>Error: {pageError}</div>;
-    console.log(page);
+    // console.log(page);
     return (
         <>
             <PageContentContainer

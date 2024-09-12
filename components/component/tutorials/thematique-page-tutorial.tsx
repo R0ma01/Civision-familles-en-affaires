@@ -1,6 +1,6 @@
 import Shepherd from 'shepherd.js';
 import 'shepherd.js/dist/css/shepherd.css';
-import constants from '@/constants/constants';
+import { html_object_constants } from '@/constants/constants';
 
 const ThematiquePageTutorial = new Shepherd.Tour({
     useModalOverlay: true,
@@ -13,7 +13,7 @@ const ThematiquePageTutorial = new Shepherd.Tour({
             id: 'prompt-1',
             text: 'Chaque carte thématique représente une page rassemblant des données ayant un lien entre-elles',
             attachTo: {
-                element: constants.theme_card_id + '1',
+                element: html_object_constants.theme_card_id + '1',
                 on: 'top',
             },
             classes: 'shepeard-modal',

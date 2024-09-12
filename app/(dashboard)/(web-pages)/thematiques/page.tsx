@@ -4,7 +4,7 @@ import PageContentContainer from '@/components/component/page-content-container/
 import ThemeCard from '@/components/component/theme-card/theme-card';
 import useGlobalPageStore from '@/stores/global-page-store';
 import PageContent from '@/components/interface/page-content';
-import constants from '@/constants/constants';
+import { html_object_constants } from '@/constants/constants';
 import useMapStore from '@/stores/global-map-store';
 import { MapType } from '@/components/enums/map-type-enum';
 
@@ -51,8 +51,8 @@ export default function Thematiques() {
                         (card, index) =>
                             card.visible && (
                                 <ThemeCard
-                                    key={`${constants.theme_card_id}-${index}`}
-                                    index={`${constants.theme_card_id}-${index}`}
+                                    key={`${html_object_constants.theme_card_id}-${index}`}
+                                    index={`${html_object_constants.theme_card_id}-${index}`}
                                     page={card}
                                 />
                             ),

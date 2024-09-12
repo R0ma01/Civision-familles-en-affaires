@@ -25,7 +25,7 @@ export async function GET(req: Request) {
             );
         }
 
-        const filtersObj: CompanyInfo = JSON.parse(filters);
+        const filtersObj: Record<string, any> = JSON.parse(filters);
 
         if (!filtersObj) {
             return NextResponse.json(
@@ -34,26 +34,26 @@ export async function GET(req: Request) {
             );
         }
 
-        const matchStage: any = {};
+        const matchStage: any = { ...filtersObj };
 
         // Apply filters to the match stage
-        for (const [key, value] of Object.entries(filtersObj)) {
-            if (value === 'toutes' || value === null) continue;
+        // for (const [key, value] of Object.entries(filtersObj)) {
+        //     if (value === 'toutes' || value === null) continue;
 
-            if (typeof value === 'object' && value !== null) {
-                for (const [nestedKey, nestedValue] of Object.entries(value)) {
-                    if (
-                        nestedValue !== 'toutes' &&
-                        nestedValue !== null &&
-                        nestedValue !== -1
-                    ) {
-                        matchStage[`${key}.${nestedKey}`] = nestedValue;
-                    }
-                }
-            } else {
-                matchStage[key] = value;
-            }
-        }
+        //     if (typeof value === 'object' && value !== null) {
+        //         for (const [nestedKey, nestedValue] of Object.entries(value)) {
+        //             if (
+        //                 nestedValue !== 'toutes' &&
+        //                 nestedValue !== null &&
+        //                 nestedValue !== -1
+        //             ) {
+        //                 matchStage[`${key}.${nestedKey}`] = nestedValue;
+        //             }
+        //         }
+        //     } else {
+        //         matchStage[key] = value;
+        //     }
+        // }
 
         // Add conditions for fields to exist
         matchStage['NEQ'] = { $exists: true };

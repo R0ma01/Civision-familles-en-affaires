@@ -9,7 +9,7 @@ export async function GET(req: Request) {
         const collection = db.collection(MongoDBPaths.COLLECTION_PAGES);
         const url = new URL(req.url!);
         const id = url.searchParams.get('_id');
-        console.log(id);
+
         if (!id) {
             return NextResponse.json(
                 { error: 'Missing _id parameter' },
@@ -19,7 +19,6 @@ export async function GET(req: Request) {
 
         const objectId = new ObjectId(id);
         const result = await collection.findOne({ _id: objectId });
-        console.log(result);
 
         if (!result) {
             return NextResponse.json(

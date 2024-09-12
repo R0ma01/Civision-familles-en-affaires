@@ -14,7 +14,7 @@ import useGlobalFilterStore from '@/stores/global-filter-store';
 import useGlobalDataStore from '@/stores/global-data-store';
 import { ButtonType } from '@/components/enums/button-type-enum';
 import useMapStore from '@/stores/global-map-store';
-import constants from '@/constants/constants';
+import { html_object_constants, value_constants } from '@/constants/constants';
 import { MapType } from '@/components/enums/map-type-enum';
 
 import { PossibleDataFileds } from '@/services/tableaux-taitement';
@@ -28,24 +28,20 @@ const FilterMenu: React.FC<FilterMenuProps> = ({
 }) => {
     const [isOpen, setIsOpen] = useState<boolean>(false);
     const [selectedTab, setSelectedTab] = useState<string>('general');
-    const { filterData, setFilter } = useGlobalFilterStore((state: any) => ({
-        filterData: state.filterData,
+    const { matchStage, setFilter } = useGlobalFilterStore((state: any) => ({
+        matchStage: state.matchStage,
         setFilter: state.setFilter,
     }));
     const { mapType, map } = useMapStore((state) => {
         return { mapType: state.mapType, map: state.map };
     });
-    const {
-        filterStudyData,
-        filterRepertoireData,
-        fetchStudyData,
-        filterFournisseurData,
-    } = useGlobalDataStore((state: any) => ({
-        fetchStudyData: state.fetchStudyData,
-        filterStudyData: state.filterStudyData,
-        filterRepertoireData: state.filterRepertoireData,
-        filterFournisseurData: state.filterFournisseurData,
-    }));
+    const { filterStudyData, filterRepertoireData, filterFournisseurData } =
+        useGlobalDataStore((state: any) => ({
+            fetchStudyData: state.fetchStudyData,
+            filterStudyData: state.filterStudyData,
+            filterRepertoireData: state.filterRepertoireData,
+            filterFournisseurData: state.filterFournisseurData,
+        }));
 
     const [visible, setVisible] = useState<boolean>(true);
 
@@ -61,8 +57,6 @@ const FilterMenu: React.FC<FilterMenuProps> = ({
     async function handleChange(field: MainDataFields, newFieldValue: any) {
         setFilter(field, newFieldValue);
 
-        await fetchStudyData(filterData);
-
         switch (mapType) {
             case MapType.REPERTOIRE:
                 filterRepertoireData();
@@ -77,6 +71,8 @@ const FilterMenu: React.FC<FilterMenuProps> = ({
                 filterFournisseurData();
                 break;
         }
+
+        // await fetchStudyData();
     }
 
     const zoomIn = () => {
@@ -117,7 +113,7 @@ const FilterMenu: React.FC<FilterMenuProps> = ({
                         >
                             {/* Filter Content */}
                             <div
-                                id={constants.filters_container_id}
+                                id={html_object_constants.filters_container_id}
                                 className="mt-2"
                             >
                                 <h2 className="text-2xl font-bold">Filtres</h2>
@@ -151,7 +147,15 @@ const FilterMenu: React.FC<FilterMenuProps> = ({
                                         <label>Taille Entreprise</label>
                                         <Dropdown
                                             inputValue={
-                                                filterData.taille_entreprise
+                                                matchStage[
+                                                    MainDataFields
+                                                        .TAILLE_ENTREPRISE
+                                                ]
+                                                    ? matchStage[
+                                                          MainDataFields
+                                                              .TAILLE_ENTREPRISE
+                                                      ]['$in'][0]
+                                                    : value_constants.all_values_string_filter
                                             }
                                             options={[
                                                 'toutes',
@@ -169,7 +173,15 @@ const FilterMenu: React.FC<FilterMenuProps> = ({
                                         <label>Année Fondation</label>
                                         <Dropdown
                                             inputValue={
-                                                filterData.annee_fondation
+                                                matchStage[
+                                                    MainDataFields
+                                                        .ANNEE_FONDATION
+                                                ]
+                                                    ? matchStage[
+                                                          MainDataFields
+                                                              .ANNEE_FONDATION
+                                                      ]['$in'][0]
+                                                    : value_constants.all_values_string_filter
                                             }
                                             options={[
                                                 'toutes',
@@ -187,7 +199,15 @@ const FilterMenu: React.FC<FilterMenuProps> = ({
                                         <label>Nombre Génération</label>
                                         <Dropdown
                                             inputValue={
-                                                filterData.dirigeant?.generation
+                                                matchStage[
+                                                    MainDataFields
+                                                        .DIRIGEANT_GENERATION
+                                                ]
+                                                    ? matchStage[
+                                                          MainDataFields
+                                                              .DIRIGEANT_GENERATION
+                                                      ]['$in'][0]
+                                                    : value_constants.all_values_string_filter
                                             }
                                             options={[
                                                 'toutes',
@@ -209,7 +229,15 @@ const FilterMenu: React.FC<FilterMenuProps> = ({
                                         <label>Région</label>
                                         <Dropdown
                                             inputValue={
-                                                filterData.coordonnees?.region
+                                                matchStage[
+                                                    MainDataFields
+                                                        .COORDONNES_REGION
+                                                ]
+                                                    ? matchStage[
+                                                          MainDataFields
+                                                              .COORDONNES_REGION
+                                                      ]['$in'][0]
+                                                    : value_constants.all_values_string_filter
                                             }
                                             options={[
                                                 'toutes',
@@ -227,7 +255,15 @@ const FilterMenu: React.FC<FilterMenuProps> = ({
                                         <label>Secteur Activité</label>
                                         <Dropdown
                                             inputValue={
-                                                filterData.secteur_activite
+                                                matchStage[
+                                                    MainDataFields
+                                                        .SECTEUR_ACTIVITE
+                                                ]
+                                                    ? matchStage[
+                                                          MainDataFields
+                                                              .SECTEUR_ACTIVITE
+                                                      ]['$in'][0]
+                                                    : value_constants.all_values_string_filter
                                             }
                                             options={[
                                                 'toutes',
@@ -244,7 +280,16 @@ const FilterMenu: React.FC<FilterMenuProps> = ({
                                         />
                                         <label>Revenu Annuel</label>
                                         <Dropdown
-                                            inputValue={filterData.revenus_rang}
+                                            inputValue={
+                                                matchStage[
+                                                    MainDataFields.REVENUS_RANG
+                                                ]
+                                                    ? matchStage[
+                                                          MainDataFields
+                                                              .REVENUS_RANG
+                                                      ]['$in'][0]
+                                                    : value_constants.all_values_string_filter
+                                            }
                                             options={[
                                                 'toutes',
                                                 ...(PossibleDataFileds.get(
@@ -274,7 +319,7 @@ const FilterMenu: React.FC<FilterMenuProps> = ({
                         >
                             {/* Filter Content */}
                             <div
-                                id={constants.filters_container_id}
+                                id={html_object_constants.filters_container_id}
                                 className="mt-2"
                             >
                                 <h2 className="text-2xl font-bold">Filtres</h2>
@@ -282,7 +327,16 @@ const FilterMenu: React.FC<FilterMenuProps> = ({
                                 <div className="flex flex-col">
                                     <label>Région</label>
                                     <Dropdown
-                                        inputValue={filterData.annee_fondation}
+                                        inputValue={
+                                            matchStage[
+                                                MainDataFields.REVENUS_RANG
+                                            ]
+                                                ? matchStage[
+                                                      MainDataFields
+                                                          .REVENUS_RANG
+                                                  ]['$in'][0]
+                                                : value_constants.all_values_string_filter
+                                        }
                                         options={Object.values(
                                             filters.AnneFondationFilters,
                                         )}
@@ -296,7 +350,14 @@ const FilterMenu: React.FC<FilterMenuProps> = ({
                                     <label>Services Offerts</label>
                                     <Dropdown
                                         inputValue={
-                                            filterData.dirigeant?.generation
+                                            matchStage[
+                                                MainDataFields.REVENUS_RANG
+                                            ]
+                                                ? matchStage[
+                                                      MainDataFields
+                                                          .REVENUS_RANG
+                                                  ]['$in'][0]
+                                                : value_constants.all_values_string_filter
                                         }
                                         options={Object.values(
                                             filters.NombreGenerationsFilters,
@@ -320,10 +381,13 @@ const FilterMenu: React.FC<FilterMenuProps> = ({
     }
 
     return (
-        <div id={constants.filter_menu_id} className="relative z-20 h-[300px]">
+        <div
+            id={html_object_constants.filter_menu_id}
+            className="relative z-20 h-[300px]"
+        >
             {/* Toggle Button */}
             <Button
-                id={constants.toggle_filter_tab_id}
+                id={html_object_constants.toggle_filter_tab_id}
                 buttonType={ButtonType.ICON}
                 onClick={toggleTab}
                 scaleOnHover={false}
@@ -334,7 +398,7 @@ const FilterMenu: React.FC<FilterMenuProps> = ({
                 <FilterSVG className="w-10 h-10" />
             </Button>
             <Button
-                id={constants.zoom_in_tab_id}
+                id={html_object_constants.zoom_in_tab_id}
                 buttonType={ButtonType.ICON}
                 onClick={zoomIn}
                 scaleOnHover={false}
@@ -345,7 +409,7 @@ const FilterMenu: React.FC<FilterMenuProps> = ({
                 <ZoomInSVG />
             </Button>
             <Button
-                id={constants.zoom_out_tab_id}
+                id={html_object_constants.zoom_out_tab_id}
                 buttonType={ButtonType.ICON}
                 onClick={zoomOut}
                 scaleOnHover={false}
@@ -357,7 +421,7 @@ const FilterMenu: React.FC<FilterMenuProps> = ({
             </Button>
 
             <Button
-                id={constants.hide_content_tab_id}
+                id={html_object_constants.hide_content_tab_id}
                 buttonType={ButtonType.ICON}
                 onClick={toggleVicibility}
                 scaleOnHover={false}

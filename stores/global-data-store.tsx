@@ -22,11 +22,9 @@ const useGlobalDataStore = create(
                 fetchStudyData: async (filters: CompanyInfo) => {
                     console.log('fetch study data');
                     if ((get() as any).studyDataFetched) return;
-                    console.log('fetch stusdfrtgyhujikolmnbv cdxrftgyhuj');
+
                     set({ loading: true, error: null });
                     try {
-                        console.log('I am called');
-
                         const responseStudy =
                             await GraphDataHttpRequestService.getAllStudyData(
                                 filters,
@@ -42,13 +40,15 @@ const useGlobalDataStore = create(
                     }
                 },
 
-                fetchRepertoireData: async (filterData: CompanyInfo) => {
+                fetchRepertoireData: async (
+                    matchStage: Record<string, any>,
+                ) => {
                     if ((get() as any).repertoireDataFetched) return;
                     set({ loading: true, error: null });
                     try {
                         const responseRepertoire =
                             await GraphDataHttpRequestService.getAllRepertoireData();
-                        console.log(responseRepertoire);
+
                         set({
                             repertoireData: responseRepertoire,
                             loading: false,
@@ -65,13 +65,12 @@ const useGlobalDataStore = create(
                     try {
                         const responseFournisseur =
                             await FournisseursHttpRequestService.getAll();
-                        console.log(responseFournisseur);
+
                         set({
                             fournisseurData: responseFournisseur,
                             loading: false,
                             fournisseurDataFetched: true,
                         });
-                        console.log((get() as any).fournisseurData);
                     } catch (err: any) {
                         set({ error: err.message, loading: false });
                     }

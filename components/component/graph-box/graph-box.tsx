@@ -25,7 +25,7 @@ interface GraphBoxProps {
 
 const GraphBox: React.FC<GraphBoxProps> = ({ content, chartSize }) => {
     const [chartContent, setChartContent] = useState<ChartContent | null>(null);
-    const filterData = useGlobalFilterStore((state) => state.filterData);
+    const matchStage = useGlobalFilterStore((state) => state.matchStage);
     const setFilter = useGlobalFilterStore((state) => state.setFilter);
     const getFilter = useGlobalFilterStore((state) => state.getFilter);
 
@@ -56,7 +56,7 @@ const GraphBox: React.FC<GraphBoxProps> = ({ content, chartSize }) => {
         async function fetchMultiple(donnes: MainDataFields[]) {
             const result = await GraphDataHttpRequestService.getChartData(
                 donnes,
-                filterData,
+                matchStage,
             );
             const tempResult: ChartDataMultipleFileds[] = [
                 {
@@ -76,11 +76,9 @@ const GraphBox: React.FC<GraphBoxProps> = ({ content, chartSize }) => {
         async function fetch(donnes: MainDataFields[]) {
             const result = await GraphDataHttpRequestService.getChartData(
                 donnes,
-                filterData,
+                matchStage,
             );
 
-            console.log(donnes);
-            console.log(result);
             // const nanResult = result.findIndex(
             //     (item) => item.name.toString() === 'NaN',
             // );
@@ -111,13 +109,13 @@ const GraphBox: React.FC<GraphBoxProps> = ({ content, chartSize }) => {
         } else {
             fetchMultiple(content.donnes);
         }
-    }, [content, filterData]);
+    }, [content, matchStage]);
 
     useEffect(() => {
         async function fetchMultiple(donnes: MainDataFields[]) {
             const result = await GraphDataHttpRequestService.getChartData(
                 donnes,
-                filterData,
+                matchStage,
             );
             const tempResult: ChartDataMultipleFileds[] = [
                 {
@@ -137,7 +135,7 @@ const GraphBox: React.FC<GraphBoxProps> = ({ content, chartSize }) => {
         async function fetch(donnes: MainDataFields[]) {
             const result = await GraphDataHttpRequestService.getChartData(
                 donnes,
-                filterData,
+                matchStage,
             );
 
             // const nanResult = result.findIndex(
@@ -169,7 +167,7 @@ const GraphBox: React.FC<GraphBoxProps> = ({ content, chartSize }) => {
         } else {
             fetchMultiple(content.donnes);
         }
-    }, [filterData, content]);
+    }, [matchStage, content]);
 
     useEffect(() => {
         const filterChartData = () => {
@@ -201,7 +199,7 @@ const GraphBox: React.FC<GraphBoxProps> = ({ content, chartSize }) => {
         };
         filterChartData();
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [content, chartData, filterData]);
+    }, [content, chartData, matchStage]);
 
     useEffect(() => {
         if (!chartSize) {

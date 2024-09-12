@@ -16,7 +16,6 @@ const Chloropleth: React.FC<ChloroplethProps> = ({ data, dataField, map }) => {
     const [chloroData, setchloroData] = useState<any>([]);
 
     useEffect(() => {
-        console.log(data);
         setchloroData(data);
     }, [data]);
 

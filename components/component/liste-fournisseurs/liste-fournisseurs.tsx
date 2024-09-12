@@ -341,10 +341,6 @@ function FournisseurListElement({
                                             rel="noopener noreferrer"
                                             onClick={(e: any) => {
                                                 handleButtonClick(e);
-                                                console.log(
-                                                    fournisseur.contact
-                                                        .linkedIn,
-                                                );
                                             }}
                                         >
                                             <div className="border rounded-full w-fit h-fit overflow-hidden">

@@ -21,7 +21,7 @@ export const GraphDataHttpRequestService = {
 };
 
 async function getAllStudyData(
-    filters: CompanyInfo,
+    filters: Record<string, any>,
 ): Promise<MapChloroplethePointData[]> {
     try {
         const response = await axios.get(APIPaths.GRAPH_GET_ALL_STUDY, {
@@ -56,7 +56,7 @@ async function getAllRepertoireData(): Promise<MapClusterPointData[]> {
 
 async function getChartData(
     donnes: MainDataFields[],
-    filters: CompanyInfo,
+    filters: Record<string, any>,
 ): Promise<ChartData[] | ChartDataMultipleFileds[]> {
     try {
         const response = await axios.get(APIPaths.GRAPH_GET_DATA, {

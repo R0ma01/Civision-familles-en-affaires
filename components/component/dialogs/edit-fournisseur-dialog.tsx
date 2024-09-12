@@ -133,7 +133,6 @@ export function EditFournisseurDialog({
             visible: values.visible,
         };
 
-        console.log(fournisseurData);
         submitDialog(fournisseurData as unknown as Fournisseur);
     }
 

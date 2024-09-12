@@ -1,4 +1,4 @@
-const constants = {
+export const html_object_constants = {
     side_bar_id: 'side-bar',
     toggle_filter_tab_id: 'toggle-filter-tab',
     zoom_in_tab_id: 'zoom-in-tab',
@@ -11,4 +11,8 @@ const constants = {
     offset: -0.045,
 };
 
-export default constants;
+export const value_constants = {
+    all_values_string_filter: 'toutes',
+    all_values_number_filter: '-1',
+    all_values_else_filter: null,
+};

@@ -13,13 +13,13 @@ interface AggregationResult {
 
 function generateAggregationQuery(
     field: string,
-    filters: CompanyInfo,
+    filters: Record<string, any>,
     possibleValues: string[],
 ) {
     const aggregationPipeline = [
         {
             $match: {
-                ...generateMatchStage(filters, [field]),
+                ...filters,
             },
         },
         {
@@ -36,7 +36,6 @@ function generateAggregationQuery(
             },
         },
     ];
-    console.log(aggregationPipeline[0]);
     return async (collection: any): Promise<AggregationResult[]> => {
         const result = await collection
             .aggregate(aggregationPipeline)
@@ -73,15 +72,16 @@ function generateAggregationQuery(
 function generateDualFieldAggregationQuery(
     field1: string,
     field2: string,
-    filters: CompanyInfo,
+    filters: Record<string, any>,
     possibleValues: { [key: string]: string[] },
 ) {
     const aggregationPipeline = [
         {
             $match: {
-                ...generateMatchStage(filters, [field1, field2]),
+                // ...generateMatchStage(filters, [field1, field2]),
                 // [field1]: { $exists: true, $ne: null },
                 // [field2]: { $exists: true, $ne: null },
+                ...filters,
             },
         },
         {
@@ -191,7 +191,7 @@ export async function GET(req: Request) {
         }
 
         const donnesObj: MainDataFields[] = JSON.parse(donnes);
-        const filtersObj: CompanyInfo = JSON.parse(filters);
+        const filtersObj: Record<string, any> = JSON.parse(filters);
 
         if (!donnesObj || !filtersObj) {
             return NextResponse.json(
@@ -363,44 +363,44 @@ function numberData(
     return returnMap;
 }
 
-function generateMatchStage(filters: CompanyInfo, fields: string[]): any {
-    const matchStage: any = {};
+// function generateMatchStage(filters: CompanyInfo, fields: string[]): any {
+//     const matchStage: any = {};
 
-    for (const [key, value] of Object.entries(filters)) {
-        if (value === 'toutes' || value === null || value === -1) continue;
+//     for (const [key, value] of Object.entries(filters)) {
+//         if (value === 'toutes' || value === null || value === -1) continue;
 
-        if (typeof value === 'object' && value !== null) {
-            for (const [nestedKey, nestedValue] of Object.entries(value)) {
-                if (
-                    nestedValue !== 'toutes' &&
-                    nestedValue !== null &&
-                    nestedValue !== -1
-                ) {
-                    matchStage[`${key}.${nestedKey}`] = nestedValue;
-                }
-            }
-        } else {
-            matchStage[key] = value;
-        }
-    }
+//         if (typeof value === 'object' && value !== null) {
+//             for (const [nestedKey, nestedValue] of Object.entries(value)) {
+//                 if (
+//                     nestedValue !== 'toutes' &&
+//                     nestedValue !== null &&
+//                     nestedValue !== -1
+//                 ) {
+//                     matchStage[`${key}.${nestedKey}`] = nestedValue;
+//                 }
+//             }
+//         } else {
+//             matchStage[key] = value;
+//         }
+//     }
 
-    fields.map((field) => {
-        if (matchStage[field]) {
-            matchStage[field] = {
-                $exists: true,
-                $nin: [null, NaN],
-                $in: [matchStage[field]],
-            };
-        } else {
-            matchStage[field] = {
-                $exists: true,
-                $nin: [null, NaN],
-            };
-        }
-    });
+//     fields.map((field) => {
+//         if (matchStage[field]) {
+//             matchStage[field] = {
+//                 $exists: true,
+//                 $nin: [null, NaN],
+//                 $in: [matchStage[field]],
+//             };
+//         } else {
+//             matchStage[field] = {
+//                 $exists: true,
+//                 $nin: [null, NaN],
+//             };
+//         }
+//     });
 
-    return matchStage;
-}
+//     return matchStage;
+// }
 
 function dualDataFormatting(
     result: any[],
@@ -547,17 +547,8 @@ function dualDataFormatting(
         } else {
             // F1 -> string F2 -> string
             console.log('string - string');
-            console.log(result);
-            console.log(returnMap);
+
             result.map((item: any) => {
-                console.log(
-                    `${item.name.field1.toString()}-${item.name.field2.toString()}`,
-                );
-                console.log(
-                    returnMap.get(
-                        `${item.name.field1.toString()}-${item.name.field2.toString()}`,
-                    ).count + item.count,
-                );
                 returnMap.set(
                     `${item.name.field1.toString()}-${item.name.field2.toString()}`,
                     {
@@ -568,10 +559,6 @@ function dualDataFormatting(
                     },
                 );
             });
-            // console.log(
-            //     'AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA',
-            // );
-            // console.log(returnMap);
         }
     }
 

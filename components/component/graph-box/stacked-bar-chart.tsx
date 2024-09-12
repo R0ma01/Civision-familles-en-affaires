@@ -36,8 +36,6 @@ const StackedBarChart: React.FC<StackedBarChartProps> = ({
             // No transformation needed, we can directly use the data
             setChartData(chartContent.data);
         }
-
-        console.log(chartData);
     }, [chartContent.data]);
 
     // Extract all fields (keys) from the first element of chartData (excluding 'name')

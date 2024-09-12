@@ -38,8 +38,6 @@ export async function POST(req) {
             adminToken = generateAdminToken({ userId: user._id }, '24h');
         }
 
-        console.log(process.env.NODE_ENV);
-
         // Set the token in a cookie
         const response = NextResponse.json(
             {

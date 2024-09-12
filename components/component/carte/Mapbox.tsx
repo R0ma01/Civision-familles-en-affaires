@@ -3,7 +3,7 @@ import mapboxgl from 'mapbox-gl';
 import 'mapbox-gl/dist/mapbox-gl.css';
 
 import useMapStore from '@/stores/global-map-store';
-import constants from '@/constants/constants';
+import { html_object_constants } from '@/constants/constants';
 
 const MapBox = () => {
     const { mapType, setMap, point } = useMapStore((state) => {
@@ -61,7 +61,8 @@ const MapBox = () => {
         if (point && mapRef.current) {
             mapRef.current.flyTo({
                 center: [
-                    point.geometry.coordinates[0] + constants.offset,
+                    point.geometry.coordinates[0] +
+                        html_object_constants.offset,
                     point.geometry.coordinates[1],
                 ],
                 zoom: 12,

@@ -35,7 +35,7 @@ const useMapStore = create<GlobalMapStoreProps>((set) => ({
         if (!point) {
             return;
         }
-        console.log(point);
+
         const newJSONPoint = {
             type: 'Feature',
             geometry: {

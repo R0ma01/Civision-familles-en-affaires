@@ -1,6 +1,6 @@
 'use client';
 import { CompanyInfo } from '@/components/interface/company';
-import constants from '@/constants/constants';
+import { html_object_constants } from '@/constants/constants';
 import useGlobalDataStore from '@/stores/global-data-store';
 import { useEffect, useState } from 'react';
 import useMapStore from '@/stores/global-map-store';
@@ -82,7 +82,6 @@ function SearchBox() {
                         key={index}
                         className={`border-b dark:border-dark-map-gray cursor-pointer hover:shadow-[0px_1px_5px_rgba(0,0,0,0.25)] dark:hover:shadow-[0px_1px_5px_rgba(255,255,255,0.45)]`}
                         onClick={async () => {
-                            console.log(company);
                             await flyToPoint(company);
                         }}
                     >
@@ -111,7 +110,7 @@ function SearchBox() {
 
     return (
         <div
-            id={constants.search_box_id}
+            id={html_object_constants.search_box_id}
             className="flex flex-col pb-4 h-fit-content w-[500px] backdrop-filter 
     bg-opacity-0 saturate-100 border rounded-xl border-transparent 
     py-3 px-3 pointer-events-auto"

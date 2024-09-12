@@ -8,13 +8,11 @@ import RepertoirePageTutorial from '@/components/component/tutorials/repertoire-
 import useMapStore from '@/stores/global-map-store';
 import { MapType } from '@/components/enums/map-type-enum';
 import { useEffect } from 'react';
-import useGlobalDataStore from '@/stores/global-data-store';
-import useGlobalFilterStore from '@/stores/global-filter-store';
 
 function Repertoire() {
     const tour = RepertoirePageTutorial();
 
-    const filterData = useGlobalFilterStore((state: any) => state.filterData);
+    //const matchStage = useGlobalFilterStore((state: any) => state.matchStage);
 
     const { mapType, setMapStyle } = useMapStore((state) => ({
         setMapStyle: state.setMapStyle,

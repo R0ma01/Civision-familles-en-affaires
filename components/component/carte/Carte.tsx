@@ -17,7 +17,7 @@ export default function Carte() {
     const mapRef = useRef(null);
     const map = useMapStore((state) => state.map);
     const mapType = useMapStore((state) => state.mapType);
-    const filterData = useGlobalFilterStore((state: any) => state.filterData);
+    const matchStage = useGlobalFilterStore((state: any) => state.matchStage);
     const [fournisseurMapData, setFournisseurMapData] = useState<any>({});
     const {
         studyData,
@@ -49,13 +49,11 @@ export default function Carte() {
     }, [map]);
 
     useEffect(() => {
-        console.log('hello');
         async function studyFetch() {
-            console.log('carte fetch');
-            await fetchStudyData(filterData);
+            await fetchStudyData(matchStage);
         }
         async function repertoireFetch() {
-            await fetchRepertoireData(filterData);
+            await fetchRepertoireData(matchStage);
         }
 
         async function fournisseurFetch() {
@@ -67,7 +65,6 @@ export default function Carte() {
             mapType === MapType.PAGE_INFORMATION &&
             !loading
         ) {
-            console.log('study fetch');
             studyFetch();
         }
 
@@ -76,7 +73,6 @@ export default function Carte() {
             mapType === MapType.REPERTOIRE &&
             !loading
         ) {
-            console.log('repertoire fetch');
             repertoireFetch();
         }
 
@@ -85,7 +81,6 @@ export default function Carte() {
             mapType === MapType.FOURNISSEURS &&
             !loading
         ) {
-            console.log('i am called');
             fournisseurFetch();
         }
     }, [
@@ -100,7 +95,7 @@ export default function Carte() {
         repertoireDataFetched,
         loading,
         mapType,
-        filterData,
+        matchStage,
     ]);
 
     useEffect(() => {
