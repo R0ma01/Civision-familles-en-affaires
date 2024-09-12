@@ -23,16 +23,16 @@ interface GraphBoxProps {
     chartSize?: ChartSize;
 }
 
-const GraphBox: React.FC<GraphBoxProps> = ({
-    content,
-    chartSize = ChartSize.MEDIUM,
-}) => {
+const GraphBox: React.FC<GraphBoxProps> = ({ content, chartSize }) => {
     const [chartContent, setChartContent] = useState<ChartContent | null>(null);
     const filterData = useGlobalFilterStore((state) => state.filterData);
     const setFilter = useGlobalFilterStore((state) => state.setFilter);
     const getFilter = useGlobalFilterStore((state) => state.getFilter);
 
     const [frozen, setFrozen] = useState<boolean>(false);
+    const [size, setChartSize] = useState<ChartSize>(
+        chartSize ? chartSize : ChartSize.MEDIUM,
+    );
 
     function filterNewData(dataField: MainDataFields, entry: ChartData) {
         const currentFilter = getFilter(dataField);
@@ -45,8 +45,12 @@ const GraphBox: React.FC<GraphBoxProps> = ({
     }
 
     const [chartData, setChartData] = useState<
-        ChartData[] | ChartDataMultipleFileds[]
+        (ChartData | ChartDataMultipleFileds)[]
     >([]);
+
+    const [nanData, setNanData] = useState<ChartData | ChartDataMultipleFileds>(
+        { name: 'NaN', value: 0 },
+    );
 
     useEffect(() => {
         async function fetchMultiple(donnes: MainDataFields[]) {
@@ -74,7 +78,28 @@ const GraphBox: React.FC<GraphBoxProps> = ({
                 donnes,
                 filterData,
             );
-            setChartData(result);
+
+            console.log(donnes);
+            console.log(result);
+            // const nanResult = result.findIndex(
+            //     (item) => item.name.toString() === 'NaN',
+            // );
+            // const newResult = result.filter(
+            //     (item) => item.name.toString() !== 'NaN',
+            // );
+            // if (nanResult > -1) setNanData(result[nanResult]);
+
+            const tempResult: ChartData[] = [
+                {
+                    name: 'groupe1',
+                    value: 1,
+                },
+                {
+                    name: 'groupe2',
+                    value: 1,
+                },
+            ];
+            setChartData(result ? result : tempResult);
         }
 
         if (
@@ -114,7 +139,25 @@ const GraphBox: React.FC<GraphBoxProps> = ({
                 donnes,
                 filterData,
             );
-            setChartData(result);
+
+            // const nanResult = result.findIndex(
+            //     (item) => item.name.toString() === 'NaN',
+            // );
+            // const newResult = result.filter(
+            //     (item) => item.name.toString() !== 'NaN',
+            // );
+            // if (nanResult > -1) setNanData(result[nanResult]);
+            const tempResult: ChartData[] = [
+                {
+                    name: 'groupe1',
+                    value: 1,
+                },
+                {
+                    name: 'groupe2',
+                    value: 1,
+                },
+            ];
+            setChartData(result ? result : tempResult);
         }
 
         if (
@@ -126,7 +169,7 @@ const GraphBox: React.FC<GraphBoxProps> = ({
         } else {
             fetchMultiple(content.donnes);
         }
-    }, [filterData]);
+    }, [filterData, content]);
 
     useEffect(() => {
         const filterChartData = () => {
@@ -160,6 +203,16 @@ const GraphBox: React.FC<GraphBoxProps> = ({
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [content, chartData, filterData]);
 
+    useEffect(() => {
+        if (!chartSize) {
+            if (chartData) {
+                setChartSize(ChartSize.LARGE);
+            } else {
+                setChartSize(ChartSize.MEDIUM);
+            }
+        }
+    }, [chartData, chartSize]);
+
     if (!chartContent) {
         return (
             <div className="py-8 px-8 pointer-events-auto">
@@ -171,41 +224,87 @@ const GraphBox: React.FC<GraphBoxProps> = ({
     switch (content.graphType) {
         case GraphBoxType.DOUBLE_HORIZONTAL_BARCHART:
             return (
-                <DoubleHorizontalChart
-                    chartContent={chartContent}
-                    chartSize={chartSize}
-                />
+                <>
+                    <DoubleHorizontalChart
+                        chartContent={chartContent}
+                        chartSize={size}
+                    />{' '}
+                    {size !== ChartSize.SMALL && (
+                        <p className="text-red-600 text-left">
+                            *les {nanData.value} valeurs de {nanData.name} ne
+                            sont pas prises en compte ici
+                        </p>
+                    )}
+                </>
             );
         case GraphBoxType.DOUGHNUT:
             return (
-                <Doughnut
-                    chartContent={chartContent}
-                    chartSize={chartSize}
-                    filterData={filterNewData}
-                />
+                <>
+                    <div>
+                        <Doughnut
+                            chartContent={chartContent}
+                            chartSize={size}
+                            filterData={filterNewData}
+                        />{' '}
+                    </div>
+                    {size !== ChartSize.SMALL && (
+                        <p className="text-red-600 text-left">
+                            *les {nanData.value} valeurs de {nanData.name} ne
+                            sont pas prises en compte ici
+                        </p>
+                    )}
+                </>
             );
         case GraphBoxType.HORIZONTAL_BARCHART:
             return (
-                <HorizontalBarChart
-                    chartContent={chartContent}
-                    chartSize={chartSize}
-                    filterData={filterNewData}
-                />
+                <>
+                    <HorizontalBarChart
+                        chartContent={chartContent}
+                        chartSize={size}
+                        filterData={filterNewData}
+                    />
+                    {size !== ChartSize.SMALL && (
+                        <p className="text-red-600 text-left">
+                            *les {nanData.value} valeurs de {nanData.name} ne
+                            sont pas prises en compte ici
+                        </p>
+                    )}
+                </>
             );
         case GraphBoxType.VERTICAL_BARCHART:
             return (
-                <VerticalBarChart
-                    chartContent={chartContent}
-                    chartSize={chartSize}
-                    filterData={filterNewData}
-                />
+                <>
+                    <VerticalBarChart
+                        chartContent={chartContent}
+                        chartSize={size}
+                        filterData={filterNewData}
+                    />
+                    {size !== ChartSize.SMALL && (
+                        <p className="text-red-600 text-left">
+                            *les {nanData.value} valeurs de {nanData.name} ne
+                            sont pas prises en compte ici
+                        </p>
+                    )}
+                </>
             );
         case GraphBoxType.STACKED_BARCHART:
             return (
-                <StackedBarChart
-                    chartContent={chartContent}
-                    chartSize={chartSize}
-                />
+                <>
+                    <div>
+                        {' '}
+                        <StackedBarChart
+                            chartContent={chartContent}
+                            chartSize={size}
+                        />
+                    </div>
+
+                    {size !== ChartSize.SMALL && (
+                        <p className="text-red-600 text-left">
+                            *les {nanData.value} valeurs de {nanData.name} ne
+                            sont pas prises en compte ici
+                        </p>
+                    )}
+                </>
             );
         default:
             return (

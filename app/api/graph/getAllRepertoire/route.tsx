@@ -1,6 +1,7 @@
 import { NextResponse } from 'next/server';
 import { connectToDatabaseRepertoire } from '@/utils/mongodb';
 import { MongoDBPaths } from '@/components/enums/mongodb-paths-enum';
+import { MapClusterPointData } from '@/components/interface/point-data';
 
 export async function GET() {
     try {
@@ -25,11 +26,18 @@ export async function GET() {
                 { status: 404 },
             );
         }
+        const newResult: MapClusterPointData[] = result.map((item: any) => {
+            return {
+                _id: item._id,
+                nom: item.NOM_ASSUJ[0],
+                coords: item.COORD,
+            };
+        });
 
         // Return a successful response
         return NextResponse.json({
             message: 'Documents found successfully',
-            pages: result,
+            points: newResult,
         });
     } catch (e: any) {
         console.error(e.message);

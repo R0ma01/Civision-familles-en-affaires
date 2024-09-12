@@ -8,5 +8,10 @@ export enum APIPaths {
     GRAPH_GET_ALL_REPERTOIRE = '/api/graph/getAllRepertoire',
     USER_UPDATE_TUTORIALS = '/api/user/updateTutorials',
     FOURNISSEURS_GET_ALL = '/api/fournisseurs/getAll',
+    FOURNISSEURS_ADD_ONE = '/api/fournisseurs/add',
+    FOURNISSEURS_UPDATE_ONE = '/api/fournisseurs/update',
+    FOURNISSEURS_DELETE_ONE = '/api/fournisseurs/delete',
     GRAPH_GET_DATA = '/api/graph/getGraphData',
+    MAP_GET_ENTREPRISE = '/api/map/getEntreprise',
+    SHEETS_GET_DATA = '/api/sheets/getData',
 }

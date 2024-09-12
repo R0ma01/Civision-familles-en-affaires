@@ -1,17 +1,16 @@
 import { useEffect, useRef } from 'react';
 import Button from '@/components/component//buttons/button';
-import PageContent from '@/components/interface/page-content';
 
 interface DeleteDialogProps {
     closeDialog: () => void;
     submitDialog: (id?: string) => void;
-    page: PageContent;
+    deleteItem: any;
 }
 
-const PageDeleteDialog: React.FC<DeleteDialogProps> = ({
+const DeleteItemDialog: React.FC<DeleteDialogProps> = ({
     closeDialog,
     submitDialog,
-    page,
+    deleteItem: page,
 }) => {
     const dialogRef = useRef<HTMLDivElement>(null);
 
@@ -61,4 +60,4 @@ const PageDeleteDialog: React.FC<DeleteDialogProps> = ({
     );
 };
 
-export default PageDeleteDialog;
+export default DeleteItemDialog;

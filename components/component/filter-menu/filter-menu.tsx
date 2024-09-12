@@ -13,10 +13,9 @@ import { MainDataFields } from '@/components/enums/data-types-enum';
 import useGlobalFilterStore from '@/stores/global-filter-store';
 import useGlobalDataStore from '@/stores/global-data-store';
 import { ButtonType } from '@/components/enums/button-type-enum';
-import { CompanyInfo } from '@/components/interface/company';
-import { filterPredicate } from '@/services/filtering-service';
 import useMapStore from '@/stores/global-map-store';
 import constants from '@/constants/constants';
+import { MapType } from '@/components/enums/map-type-enum';
 
 interface FilterMenuProps {
     toggleContentVisibility?: () => void;
@@ -32,13 +31,17 @@ const FilterMenu: React.FC<FilterMenuProps> = ({
         filterData: state.filterData,
         setFilter: state.setFilter,
     }));
-
-    const { fetchStudyData } = useGlobalDataStore((state: any) => ({
-        fetchStudyData: state.fetchStudyData,
-    }));
+    const { mapType, map } = useMapStore((state) => {
+        return { mapType: state.mapType, map: state.map };
+    });
+    const { filterStudyData, filterRepertoireData } = useGlobalDataStore(
+        (state: any) => ({
+            filterStudyData: state.filterStudyData,
+            filterRepertoireData: state.filterRepertoireData,
+        }),
+    );
 
     const [visible, setVisible] = useState<boolean>(true);
-    const { map } = useMapStore(); // Get map instance from global state
 
     const toggleTab = () => {
         setIsOpen(!isOpen);
@@ -53,11 +56,19 @@ const FilterMenu: React.FC<FilterMenuProps> = ({
         setFilter(field, newFieldValue);
         await fetchStudyData(filterData);
         console.log('bjfe');
+        switch (mapType) {
+            case MapType.REPERTOIRE:
+                filterRepertoireData();
+                break;
+            case MapType.PAGE_INFORMATION:
+                filterStudyData();
+                break;
+            case MapType.FOURNISSEURS:
+                break;
 
-        // const filtered = studyCompanyData.filter((company: CompanyInfo) =>
-        //     filterPredicate(filterData, company),
-        // );
-        // setStudyFilteredData(filtered);
+            default:
+                break;
+        }
     }
 
     const zoomIn = () => {
@@ -71,6 +82,220 @@ const FilterMenu: React.FC<FilterMenuProps> = ({
             map.zoomOut();
         }
     };
+
+    function filterEntrails() {
+        switch (mapType) {
+            case MapType.REPERTOIRE:
+                return (
+                    <>
+                        <div
+                            className={`fixed top-10 right-0 h-fit w-64 bg-[#f5ebe0] bg-opacity-75 p-4 transform ${
+                                isOpen ? 'translate-x-0' : 'translate-x-full'
+                            } transition-transform duration-300 ease-in-out`}
+                        >
+                            <div>NO FILTERS YET</div>
+                        </div>
+                    </>
+                );
+
+            case MapType.PAGE_INFORMATION:
+                return (
+                    <>
+                        {/* Side Filter Tab */}
+                        <div
+                            className={`fixed top-10 right-0 h-fit w-64 bg-[#f5ebe0] bg-opacity-75 p-4 transform ${
+                                isOpen ? 'translate-x-0' : 'translate-x-full'
+                            } transition-transform duration-300 ease-in-out`}
+                        >
+                            {/* Filter Content */}
+                            <div
+                                id={constants.filters_container_id}
+                                className="mt-2"
+                            >
+                                <h2 className="text-2xl font-bold">Filtres</h2>
+                                {/* Add your filter options here */}
+                                <div className="mt-2 flex border-b dark:border-white border-black">
+                                    <button
+                                        className={`flex-1 text-center py-2 ${
+                                            selectedTab === 'general'
+                                                ? 'border-b-2 dark:border-white border-black dark:text-white text-black'
+                                                : 'text-gray-500'
+                                        }`}
+                                        onClick={() =>
+                                            setSelectedTab('general')
+                                        }
+                                    >
+                                        Général
+                                    </button>
+                                    <button
+                                        className={`flex-1 text-center py-2 ${
+                                            selectedTab === 'trend'
+                                                ? 'border-b-2 dark:border-white border-black dark:text-white text-black'
+                                                : 'text-gray-500'
+                                        }`}
+                                        onClick={() => setSelectedTab('trend')}
+                                    >
+                                        Avancé
+                                    </button>
+                                </div>
+                                {selectedTab === 'general' ? (
+                                    <div className="mt-4 flex flex-col">
+                                        <label>Taille Entreprise</label>
+                                        <Dropdown
+                                            inputValue={
+                                                filterData.taille_entreprise
+                                            }
+                                            options={Object.values(
+                                                filters.TailleEntrepriseFilters,
+                                            )}
+                                            onChange={(value: any) =>
+                                                handleChange(
+                                                    MainDataFields.TAILLE_ENTREPRISE,
+                                                    value,
+                                                )
+                                            }
+                                        />
+                                        <label>Année Fondation</label>
+                                        <Dropdown
+                                            inputValue={
+                                                filterData.annee_fondation
+                                            }
+                                            options={Object.values(
+                                                filters.AnneFondationFilters,
+                                            )}
+                                            onChange={(value: any) =>
+                                                handleChange(
+                                                    MainDataFields.ANNEE_FONDATION,
+                                                    value,
+                                                )
+                                            }
+                                        />
+                                        <label>Nombre Génération</label>
+                                        <Dropdown
+                                            inputValue={
+                                                filterData.dirigeant?.generation
+                                            }
+                                            options={Object.values(
+                                                filters.NombreGenerationsFilters,
+                                            )}
+                                            onChange={(value: any) =>
+                                                handleChange(
+                                                    MainDataFields.DIRIGEANT_GENERATION,
+                                                    value,
+                                                )
+                                            }
+                                        />
+                                        {/* Add more filter options as needed */}
+                                    </div>
+                                ) : (
+                                    <div className="mt-4 flex flex-col">
+                                        <label>Région</label>
+                                        <Dropdown
+                                            inputValue={
+                                                filterData.coordonnees?.region
+                                            }
+                                            options={Object.values(
+                                                filters.EntrepriseRegionFilters,
+                                            )}
+                                            onChange={(value: any) =>
+                                                handleChange(
+                                                    MainDataFields.COORDONNES_REGION,
+                                                    value,
+                                                )
+                                            }
+                                        />
+                                        <label>Secteur Activité</label>
+                                        {/* <Dropdown
+                                inputValue={
+                                    filterData.Avancee.Entreprise
+                                        .secteurActivite
+                                }
+                                options={Object.values(
+                                    filters.SecteurActiviteFilters,
+                                )}
+                                onChange={(value: any) =>
+                                    handleChange(
+                                        filters.FilterTypes
+                                            .ENTREPRISE_SECTEUR_ACTIVITE,
+                                        value,
+                                    )
+                                }
+                            /> */}
+                                        <label>Revenu Annuel</label>
+                                        {/* <Dropdown
+                                inputValue={
+                                    filterData.Avancee.Entreprise.revenuAnnuel
+                                }
+                                options={Object.values(filters.RevenuFilters)}
+                                onChange={(value: any) =>
+                                    handleChange(
+                                        filters.FilterTypes
+                                            .ENTREPRISE_REVENU_ANNUEL,
+                                        value,
+                                    )
+                                }
+                            /> */}
+                                        {/* Add more filter options as needed */}
+                                    </div>
+                                )}
+                            </div>
+                        </div>
+                    </>
+                );
+            case MapType.FOURNISSEURS:
+                return (
+                    <>
+                        <div
+                            className={`fixed top-10 right-0 h-fit w-64 bg-[#f5ebe0] bg-opacity-75 p-4 transform ${
+                                isOpen ? 'translate-x-0' : 'translate-x-full'
+                            } transition-transform duration-300 ease-in-out`}
+                        >
+                            {/* Filter Content */}
+                            <div
+                                id={constants.filters_container_id}
+                                className="mt-2"
+                            >
+                                <h2 className="text-2xl font-bold">Filtres</h2>
+                                {/* Add your filter options here */}
+                                <div className="flex flex-col">
+                                    <label>Région</label>
+                                    <Dropdown
+                                        inputValue={filterData.annee_fondation}
+                                        options={Object.values(
+                                            filters.AnneFondationFilters,
+                                        )}
+                                        onChange={(value: any) =>
+                                            handleChange(
+                                                MainDataFields.ANNEE_FONDATION,
+                                                value,
+                                            )
+                                        }
+                                    />
+                                    <label>Services Offerts</label>
+                                    <Dropdown
+                                        inputValue={
+                                            filterData.dirigeant?.generation
+                                        }
+                                        options={Object.values(
+                                            filters.NombreGenerationsFilters,
+                                        )}
+                                        onChange={(value: any) =>
+                                            handleChange(
+                                                MainDataFields.DIRIGEANT_GENERATION,
+                                                value,
+                                            )
+                                        }
+                                    />
+                                </div>
+                            </div>
+                        </div>
+                    </>
+                );
+
+            default:
+                break;
+        }
+    }
 
     return (
         <div id={constants.filter_menu_id} className="relative z-20 h-fit">
@@ -122,192 +347,7 @@ const FilterMenu: React.FC<FilterMenuProps> = ({
                 {!visible && <InvisibleSVG className="fill-gray-500" />}
             </Button>
             {/* FILTER CONTENT */}
-            {fournisseurMenu ? (
-                <>
-                    <div
-                        className={`fixed top-10 right-0 h-fit w-64 bg-[#f5ebe0] bg-opacity-75 p-4 transform ${
-                            isOpen ? 'translate-x-0' : 'translate-x-full'
-                        } transition-transform duration-300 ease-in-out`}
-                    >
-                        {/* Filter Content */}
-                        <div
-                            id={constants.filters_container_id}
-                            className="mt-2"
-                        >
-                            <h2 className="text-2xl font-bold">Filtres</h2>
-                            {/* Add your filter options here */}
-                            <div className="flex flex-col">
-                                <label>Région</label>
-                                <Dropdown
-                                    inputValue={filterData.annee_fondation}
-                                    options={Object.values(
-                                        filters.AnneFondationFilters,
-                                    )}
-                                    onChange={(value: any) =>
-                                        handleChange(
-                                            MainDataFields.ANNEE_FONDATION,
-                                            value,
-                                        )
-                                    }
-                                />
-                                <label>Services Offerts</label>
-                                <Dropdown
-                                    inputValue={
-                                        filterData.dirigeant?.generation
-                                    }
-                                    options={Object.values(
-                                        filters.NombreGenerationsFilters,
-                                    )}
-                                    onChange={(value: any) =>
-                                        handleChange(
-                                            MainDataFields.DIRIGEANT_GENERATION,
-                                            value,
-                                        )
-                                    }
-                                />
-                            </div>
-                        </div>
-                    </div>
-                </>
-            ) : (
-                <>
-                    {/* Side Filter Tab */}
-                    <div
-                        className={`fixed top-10 right-0 h-fit w-64 bg-[#f5ebe0] bg-opacity-75 p-4 transform ${
-                            isOpen ? 'translate-x-0' : 'translate-x-full'
-                        } transition-transform duration-300 ease-in-out`}
-                    >
-                        {/* Filter Content */}
-                        <div
-                            id={constants.filters_container_id}
-                            className="mt-2"
-                        >
-                            <h2 className="text-2xl font-bold">Filtres</h2>
-                            {/* Add your filter options here */}
-                            <div className="mt-2 flex border-b dark:border-white border-black">
-                                <button
-                                    className={`flex-1 text-center py-2 ${
-                                        selectedTab === 'general'
-                                            ? 'border-b-2 dark:border-white border-black dark:text-white text-black'
-                                            : 'text-gray-500'
-                                    }`}
-                                    onClick={() => setSelectedTab('general')}
-                                >
-                                    Général
-                                </button>
-                                <button
-                                    className={`flex-1 text-center py-2 ${
-                                        selectedTab === 'trend'
-                                            ? 'border-b-2 dark:border-white border-black dark:text-white text-black'
-                                            : 'text-gray-500'
-                                    }`}
-                                    onClick={() => setSelectedTab('trend')}
-                                >
-                                    Avancé
-                                </button>
-                            </div>
-                            {selectedTab === 'general' ? (
-                                <div className="mt-4 flex flex-col">
-                                    <label>Taille Entreprise</label>
-                                    <Dropdown
-                                        inputValue={
-                                            filterData.taille_entreprise
-                                        }
-                                        options={Object.values(
-                                            filters.TailleEntrepriseFilters,
-                                        )}
-                                        onChange={(value: any) =>
-                                            handleChange(
-                                                MainDataFields.TAILLE_ENTREPRISE,
-                                                value,
-                                            )
-                                        }
-                                    />
-                                    <label>Année Fondation</label>
-                                    <Dropdown
-                                        inputValue={filterData.annee_fondation}
-                                        options={Object.values(
-                                            filters.AnneFondationFilters,
-                                        )}
-                                        onChange={(value: any) =>
-                                            handleChange(
-                                                MainDataFields.ANNEE_FONDATION,
-                                                value,
-                                            )
-                                        }
-                                    />
-                                    <label>Nombre Génération</label>
-                                    <Dropdown
-                                        inputValue={
-                                            filterData.dirigeant?.generation
-                                        }
-                                        options={Object.values(
-                                            filters.NombreGenerationsFilters,
-                                        )}
-                                        onChange={(value: any) =>
-                                            handleChange(
-                                                MainDataFields.DIRIGEANT_GENERATION,
-                                                value,
-                                            )
-                                        }
-                                    />
-                                    {/* Add more filter options as needed */}
-                                </div>
-                            ) : (
-                                <div className="mt-4 flex flex-col">
-                                    <label>Région</label>
-                                    <Dropdown
-                                        inputValue={
-                                            filterData.coordonnees?.region
-                                        }
-                                        options={Object.values(
-                                            filters.EntrepriseRegionFilters,
-                                        )}
-                                        onChange={(value: any) =>
-                                            handleChange(
-                                                MainDataFields.COORDONNES_REGION,
-                                                value,
-                                            )
-                                        }
-                                    />
-                                    <label>Secteur Activité</label>
-                                    {/* <Dropdown
-                                inputValue={
-                                    filterData.Avancee.Entreprise
-                                        .secteurActivite
-                                }
-                                options={Object.values(
-                                    filters.SecteurActiviteFilters,
-                                )}
-                                onChange={(value: any) =>
-                                    handleChange(
-                                        filters.FilterTypes
-                                            .ENTREPRISE_SECTEUR_ACTIVITE,
-                                        value,
-                                    )
-                                }
-                            /> */}
-                                    <label>Revenu Annuel</label>
-                                    {/* <Dropdown
-                                inputValue={
-                                    filterData.Avancee.Entreprise.revenuAnnuel
-                                }
-                                options={Object.values(filters.RevenuFilters)}
-                                onChange={(value: any) =>
-                                    handleChange(
-                                        filters.FilterTypes
-                                            .ENTREPRISE_REVENU_ANNUEL,
-                                        value,
-                                    )
-                                }
-                            /> */}
-                                    {/* Add more filter options as needed */}
-                                </div>
-                            )}
-                        </div>
-                    </div>
-                </>
-            )}
+            {filterEntrails()}
         </div>
     );
 };

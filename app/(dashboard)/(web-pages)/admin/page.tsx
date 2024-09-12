@@ -5,7 +5,7 @@ import ThemeCard from '@/components/component/theme-card/theme-card';
 import useGlobalUserStore from '@/stores/global-user-store';
 import { UserType } from '@/components/enums/user-type-enum';
 import PageEditDialog from '@/components/component/dialogs/edit-page-dialog';
-import PageDeleteDialog from '@/components/component/dialogs/delete-page-dialog';
+import DeleteItemDialog from '@/components/component/dialogs/delete-page-dialog';
 import { AddCircleSVG } from '@/components/component/svg-icons/svg-icons';
 import { ButtonType } from '@/components/enums/button-type-enum';
 import Button from '@/components/component/buttons/button';
@@ -38,22 +38,6 @@ export default function Admin() {
     const { user } = useGlobalUserStore((state: any) => ({
         user: state.user,
     }));
-
-    const { studyCompanyData, fetchStudyData, loading, error } =
-        useGlobalDataStore((state: any) => ({
-            studyCompanyData: state.studyCompanyData,
-            fetchStudyData: state.fetchStudyData,
-            loading: state.loading,
-            error: state.error,
-        }));
-    useEffect(() => {
-        async function fetchData() {
-            await fetchStudyData();
-        }
-        if (studyCompanyData.length === 0 && !loading) {
-            fetchData();
-        }
-    }, [studyCompanyData, loading]);
 
     const { mapType, setMapStyle } = useMapStore((state) => ({
         setMapStyle: state.setMapStyle,
@@ -127,10 +111,10 @@ export default function Admin() {
                 />
             )}
             {isDeleteDialogOpen && currentPage && (
-                <PageDeleteDialog
+                <DeleteItemDialog
                     closeDialog={closeDeleteDialog}
                     submitDialog={submitDeleteDialog}
-                    page={currentPage}
+                    deleteItem={currentPage}
                 />
             )}
         </PageContentContainer>

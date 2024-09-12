@@ -1,38 +1,29 @@
 import React, { useEffect, useRef, useState } from 'react';
 import mapboxgl from 'mapbox-gl';
 import 'mapbox-gl/dist/mapbox-gl.css';
-import useGlobalDataStore from '@/stores/global-data-store';
+
 import useMapStore from '@/stores/global-map-store';
 import constants from '@/constants/constants';
 
-import useGlobalFournisseursStore from '@/stores/global-fournisseur-store';
-import { populateMapLayers } from '@/services/populate-map-service';
-
 const MapBox = () => {
-    const { mapType, setMap } = useMapStore((state) => {
-        return { mapType: state.mapType, setMap: state.setMap };
+    const { mapType, setMap, point } = useMapStore((state) => {
+        return {
+            mapType: state.mapType,
+            setMap: state.setMap,
+            point: state.point,
+        };
     });
-    const { point } = useMapStore();
-    const mapContainerRef = useRef(null);
-    const mapRef = useRef(null);
-    const { studyFilteredData, repertoireFilteredData } = useGlobalDataStore(
-        (state) => ({
-            studyFilteredData: state.studyFilteredData,
-            repertoireFilteredData: state.repertoireFilteredData,
-        }),
-    );
 
-    const { filteredFournisseurData } = useGlobalFournisseursStore((state) => ({
-        filteredFournisseurData: state.filteredFournisseurData,
-    }));
+    const mapContainerRef: any = useRef(null);
+    const mapRef: any = useRef(null);
+
     const [isDarkMode, setIsDarkMode] = useState(false);
-    const hoveredStateId = useRef(null); // To keep track of the hovered region
 
     useEffect(() => {
         const darkModeQuery = window.matchMedia('(prefers-color-scheme: dark)');
         setIsDarkMode(darkModeQuery.matches);
 
-        const handleDarkModeChange = (e) => setIsDarkMode(e.matches);
+        const handleDarkModeChange = (e: any) => setIsDarkMode(e.matches);
         darkModeQuery.addEventListener('change', handleDarkModeChange);
 
         return () =>
@@ -40,7 +31,8 @@ const MapBox = () => {
     }, []);
 
     useEffect(() => {
-        mapboxgl.accessToken = process.env.NEXT_PUBLIC_MAPBOX_ACCESS_TOKEN;
+        mapboxgl.accessToken =
+            process.env.NEXT_PUBLIC_MAPBOX_ACCESS_TOKEN || '';
         if (!mapRef.current) {
             mapRef.current = new mapboxgl.Map({
                 container: mapContainerRef.current,
@@ -53,15 +45,6 @@ const MapBox = () => {
 
             mapRef.current.on('load', () => {
                 setMap(mapRef.current);
-                populateMapLayers(
-                    mapRef,
-                    mapType,
-                    filteredFournisseurData,
-                    studyFilteredData,
-                    isDarkMode,
-                    hoveredStateId,
-                    repertoireFilteredData,
-                );
             });
         }
 
@@ -90,25 +73,15 @@ const MapBox = () => {
                 .setLngLat(point.geometry.coordinates)
                 .setHTML(
                     `
-                    <strong>${point.properties.nom_entreprise}</strong><br>
+                    <strong>${point.properties.nom}</strong><br>
                     Secteur d'activité: ${point.properties.secteur_activite}<br>
-                    Taille de l'entreprise: ${point.properties.taille_entreprise}<br>
-                    Année de fondation: ${point.properties.annee_fondation}<br>
-                    Adresse: ${point.properties.adresse}
+                    Taille Entreprise: ${point.properties.taille_entreprise}<br>
+                    Adresse: ${point.properties.adresse}<br>
                 `,
                 )
                 .addTo(mapRef.current);
         }
     }, [point]);
-
-    useEffect(() => {
-        if (mapRef.current) {
-            const source = mapRef.current.getSource('compagnies');
-            if (source) {
-                source.setData(convertData(studyFilteredData));
-            }
-        }
-    }, [studyFilteredData]);
 
     return <div id="map" ref={mapContainerRef} style={{ height: '100%' }} />;
 };

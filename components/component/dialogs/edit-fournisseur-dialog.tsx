@@ -2,7 +2,6 @@
 
 import { Formik, Form, Field } from 'formik';
 import React, { useState, useEffect, useRef } from 'react';
-
 import Button from '@/components/component/buttons/button';
 import { ButtonType } from '@/components/enums/button-type-enum';
 import {
@@ -10,27 +9,25 @@ import {
     ServiceOffert,
 } from '@/components/enums/fournisseur-filter-enum';
 import ListeFournisseurs from '../liste-fournisseurs/liste-fournisseurs';
+import { Fournisseur } from '@/components/interface/fournisseur';
 
-interface AddFournisseurDialogProps {
+interface EditFournisseurDialogProps {
     closeDialog: (e: any) => void;
-    handleSubmit: (values: any) => void;
+    submitDialog: (fournisseur: Fournisseur) => void;
+    fournisseur: Fournisseur;
 }
 
-export function AddFournisseurDialog({
+export function EditFournisseurDialog({
     closeDialog,
-    handleSubmit,
-}: AddFournisseurDialogProps) {
-    const INITIAL_VALUES = {
-        firstName: '',
-        lastName: '',
-        organization: '',
-        email: '',
-        secteursGeographiques: [] as string[],
-        servicesOfferts: [] as string[],
-    };
-
-    const [secteursOptions, setSecteursOptions] = useState<string[]>([]);
-    const [servicesOptions, setServicesOptions] = useState<string[]>([]);
+    submitDialog,
+    fournisseur,
+}: EditFournisseurDialogProps) {
+    const [secteursOptions, setSecteursOptions] = useState<
+        SecteursGeographiques[]
+    >(fournisseur.secteurs_geographique);
+    const [servicesOptions, setServicesOptions] = useState<ServiceOffert[]>(
+        fournisseur.services_offerts,
+    );
     const [isSecteurDropdownVisible, setSecteurDropdownVisible] =
         useState(false);
     const [isServiceDropdownVisible, setServiceDropdownVisible] =
@@ -41,8 +38,11 @@ export function AddFournisseurDialog({
     const serviceDropdownRef = useRef<HTMLDivElement>(null);
 
     const addSecteur = (secteur: string) => {
-        if (!secteursOptions.includes(secteur)) {
-            setSecteursOptions([...secteursOptions, secteur]);
+        if (!secteursOptions.includes(secteur as SecteursGeographiques)) {
+            setSecteursOptions([
+                ...secteursOptions,
+                secteur as SecteursGeographiques,
+            ]);
         }
         setSecteurDropdownVisible(false); // Close the dropdown after selection
     };
@@ -52,8 +52,8 @@ export function AddFournisseurDialog({
     };
 
     const addService = (service: string) => {
-        if (!servicesOptions.includes(service)) {
-            setServicesOptions([...servicesOptions, service]);
+        if (!servicesOptions.includes(service as ServiceOffert)) {
+            setServicesOptions([...servicesOptions, service as ServiceOffert]);
         }
         setServiceDropdownVisible(false); // Close the dropdown after selection
     };
@@ -84,7 +84,6 @@ export function AddFournisseurDialog({
                 setServiceDropdownVisible(false);
             }
 
-            // Keep the dialog open, only close if clicking outside the dialog and not on the dropdowns
             if (
                 dialogRef.current &&
                 !dialogRef.current.contains(target) &&
@@ -106,24 +105,51 @@ export function AddFournisseurDialog({
         };
     }, [closeDialog]);
 
+    const initialFournisseurValues = {
+        firstName: fournisseur.contact.firstName || '',
+        lastName: fournisseur.contact.lastName || '',
+        compagnie: fournisseur.contact.company || '',
+        courriel: fournisseur.contact.email || '',
+        telephone: fournisseur.contact.cellPhone || '',
+        titre: fournisseur.contact.title || '',
+        secteurs_geographiques: secteursOptions,
+        services_offerts: servicesOptions,
+        visible: fournisseur.visible || false,
+    };
+
+    function handleSubmit(values: any) {
+        const fournisseurData = {
+            contact: {
+                lastName: values.lastName,
+                firstName: values.firstName,
+                email: values.courriel,
+                cellPhone: values.telephone,
+                company: values.compagnie,
+                title: values.titre,
+                linkedin: values.profil_linkedin,
+            },
+            secteurs_geographique: secteursOptions,
+            services_offerts: servicesOptions,
+            visible: values.visible,
+        };
+
+        console.log(fournisseurData);
+        submitDialog(fournisseurData as unknown as Fournisseur);
+    }
+
     return (
         <div className="fixed z-40 h-[100%] left-[40px] backdrop-blur-md flex items-center justify-center w-screen overflow-hidden">
             <div
                 ref={dialogRef}
                 className="bg-white dark:bg-[#262626] p-2 rounded-lg shadow-2xl w-[80%] h-[95%] relative space-y-8 flex flex-row justify-evenly items-center"
             >
-                <div className="w-[40%] h-full flex justify-center items-center">
-                    <ListeFournisseurs></ListeFournisseurs>
-                </div>
                 <Formik
-                    initialValues={INITIAL_VALUES}
+                    initialValues={initialFournisseurValues}
                     onSubmit={(values) => {
-                        values.secteursGeographiques = secteursOptions;
-                        values.servicesOfferts = servicesOptions;
                         handleSubmit(values);
                     }}
                 >
-                    {({ isSubmitting, status }) => (
+                    {({ isSubmitting }) => (
                         <Form className="space-y-4 flex flex-col items-center">
                             <div className="flex gap-4 mb-3">
                                 <Field
@@ -137,16 +163,30 @@ export function AddFournisseurDialog({
                                     placeholder="Last Name"
                                 />
                             </div>
+                            <div className="flex gap-4 mb-3">
+                                <Field
+                                    name="compagnie"
+                                    className="input-field w-full p-2 border border-gray-300 dark:border-gray-700 rounded-md focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400 focus:outline-none"
+                                    placeholder="Compagnie"
+                                />
+                                <Field
+                                    name="titre"
+                                    className="input-field w-full p-2 border border-gray-300 dark:border-gray-700 rounded-md focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400 focus:outline-none"
+                                    placeholder="Titre"
+                                    type="text"
+                                />
+                            </div>
                             <Field
-                                name="organization"
+                                name="courriel"
                                 className="input-field w-full p-2 border border-gray-300 dark:border-gray-700 rounded-md focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400 focus:outline-none"
-                                placeholder="Organization"
+                                placeholder="Courriel"
+                                type="email"
                             />
                             <Field
-                                name="email"
+                                name="telephone"
                                 className="input-field w-full p-2 border border-gray-300 dark:border-gray-700 rounded-md focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400 focus:outline-none"
-                                placeholder="Email"
-                                type="email"
+                                placeholder="Telephone"
+                                type="tel"
                             />
 
                             {/* Secteurs Geographiques */}
@@ -192,7 +232,7 @@ export function AddFournisseurDialog({
                                         ).filter(
                                             (secteur: string) =>
                                                 !secteursOptions.includes(
-                                                    secteur,
+                                                    secteur as SecteursGeographiques,
                                                 ),
                                         )}
                                         select={addSecteur}
@@ -243,7 +283,7 @@ export function AddFournisseurDialog({
                                         ).filter(
                                             (service: string) =>
                                                 !servicesOptions.includes(
-                                                    service,
+                                                    service as ServiceOffert,
                                                 ),
                                         )}
                                         select={addService}
@@ -251,25 +291,21 @@ export function AddFournisseurDialog({
                                 )}
                             </div>
 
-                            <div className="flex items-center justify-evenly mt-4">
+                            <div className="flex justify-center">
                                 <Button
                                     onClick={closeDialog}
                                     buttonType={ButtonType.CANCEL}
                                 >
-                                    Annuler
+                                    Cancel
                                 </Button>
                                 <Button
-                                    onClick={handleSubmit}
+                                    type="submit"
+                                    disabled={isSubmitting}
                                     buttonType={ButtonType.CONFIRM}
                                 >
-                                    Ajouter Fournisseur
+                                    Submit
                                 </Button>
                             </div>
-                            {status && (
-                                <div className="text-red-600 mt-2 text-sm">
-                                    {status}
-                                </div>
-                            )}
                         </Form>
                     )}
                 </Formik>
@@ -278,33 +314,33 @@ export function AddFournisseurDialog({
     );
 }
 
-interface DropDownSelectorProps {
-    values: string[];
-    select: (value: string) => void;
-}
-
-const DropDownSelector = React.forwardRef<
-    HTMLDivElement,
-    DropDownSelectorProps
->(({ values, select }, ref) => {
-    return (
-        <div
-            ref={ref}
-            className="w-52 h-52 bg-black text-white rounded p-2 shadow-lg absolute overflow-auto z-20"
-        >
-            <ul>
+const DropDownSelector = React.forwardRef(
+    (
+        {
+            values,
+            select,
+        }: {
+            values: (SecteursGeographiques | ServiceOffert)[];
+            select: (value: string) => void;
+        },
+        ref: React.Ref<HTMLDivElement>,
+    ) => {
+        return (
+            <div
+                ref={ref}
+                className="bg-white dark:bg-gray-800 shadow-md p-2 rounded-lg space-y-2 absolute z-50"
+            >
                 {values.map((value: string) => (
-                    <li
+                    <div
                         key={value}
-                        className="cursor-pointer hover:bg-gray-700 p-1"
+                        className="p-2 hover:bg-gray-200 dark:hover:bg-gray-600 cursor-pointer"
                         onClick={() => select(value)}
                     >
                         {value}
-                    </li>
+                    </div>
                 ))}
-            </ul>
-        </div>
-    );
-});
-
+            </div>
+        );
+    },
+);
 DropDownSelector.displayName = 'DropDownSelector';

@@ -3,16 +3,22 @@ import { DataCardType } from '@/components/enums/data-card-type-enum';
 import DataCardContent from '@/components/interface/data-card-content';
 import GraphBox from '@/components/component/graph-box/graph-box';
 import SearchBox from '@/components/component/search-box/search-box';
-import { ChartSize } from '@/components/enums/chart-size-enum';
+
 import ListeFournisseurs from '@/components/component/liste-fournisseurs/liste-fournisseurs';
 import StaticDropdown from '../drop-down-menu/chercheur-drop-down';
+import { UserType } from '@/components/enums/user-type-enum';
 
 interface DataCardProps {
     className?: string;
     content: DataCardContent;
+    admin?: boolean;
 }
 
-const DataCard: React.FC<DataCardProps> = ({ content, className }) => {
+const DataCard: React.FC<DataCardProps> = ({
+    content,
+    className,
+    admin = false,
+}) => {
     const [isCollapsed, setIsCollapsed] = useState(false);
 
     const DataCardDiv: React.FC<{
@@ -74,10 +80,7 @@ const DataCard: React.FC<DataCardProps> = ({ content, className }) => {
                     <DescriptionComponent>
                         {content.description}
                     </DescriptionComponent>
-                    <GraphBox
-                        content={content.graphData[0]}
-                        chartSize={ChartSize.LARGE}
-                    />
+                    <GraphBox content={content.graphData[0]} />
                 </DataCardDiv>
             );
 
@@ -88,11 +91,7 @@ const DataCard: React.FC<DataCardProps> = ({ content, className }) => {
                         {content.description}
                     </DescriptionComponent>
                     {content.graphData?.map((graph, index) => (
-                        <GraphBox
-                            key={index}
-                            content={graph}
-                            chartSize={ChartSize.LARGE}
-                        />
+                        <GraphBox key={index} content={graph} />
                     ))}
                 </DataCardDiv>
             );
@@ -111,20 +110,12 @@ const DataCard: React.FC<DataCardProps> = ({ content, className }) => {
             return (
                 <DataCardDiv title={content.title}>
                     {content.graphData !== undefined && (
-                        <GraphBox
-                            content={content.graphData[0]}
-                            chartSize={ChartSize.MEDIUM}
-                        />
+                        <GraphBox content={content.graphData[0]} />
                     )}
                 </DataCardDiv>
             );
 
-        case DataCardType.FOURNISSEURS:
-            return (
-                <DataCardDiv title={content.title}>
-                    <ListeFournisseurs />
-                </DataCardDiv>
-            );
+  
 
         case DataCardType.CHERCHEUR_DROPDOWN:
             return (

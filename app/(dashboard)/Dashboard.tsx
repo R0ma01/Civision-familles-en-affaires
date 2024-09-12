@@ -2,44 +2,20 @@
 import React, { useEffect } from 'react';
 import Carte from '@/components/component/carte/Carte';
 import Sidebar from '@/components/component/sidebar/sidebar';
-import useGlobalDataStore from '@/stores/global-data-store';
 import useGlobalPageStore from '@/stores/global-page-store';
 import MobileWarningPopup from '@/components/component/mobile-popup/mobile-popup';
-import useGlobalFournisseursStore from '@/stores/global-fournisseur-store';
 
 interface DashboardProps {
     children: any;
 }
 
 const Dashboard = ({ children }: DashboardProps) => {
-    const {
-        studyCompanyData,
-        repertoireCompanyData,
-        fetchData,
-        loading,
-        error,
-    } = useGlobalDataStore((state: any) => ({
-        studyCompanyData: state.studyCompanyData,
-        repertoireCompanyData: state.repertoireCompanyData,
-        fetchData: state.fetchData,
-        loading: state.loading,
-        error: state.error,
-    }));
-
     const { pagesData, pageLoading, pageError, fetchPageData } =
-        useGlobalPageStore((state: any) => {
-            return {
-                pagesData: state.pagesData,
-                pageLoading: state.pageLoading,
-                pageError: state.pageError,
-                fetchPageData: state.fetchPageData,
-            };
-        });
-
-    const { fournisseurData, fetchFournisseurData } =
-        useGlobalFournisseursStore((state: any) => ({
-            fournisseurData: state.fournisseurData,
-            fetchFournisseurData: state.fetchFournisseurData,
+        useGlobalPageStore((state: any) => ({
+            pagesData: state.pagesData,
+            pageLoading: state.pageLoading,
+            pageError: state.pageError,
+            fetchPageData: state.fetchPageData,
         }));
 
     useEffect(() => {
@@ -47,33 +23,35 @@ const Dashboard = ({ children }: DashboardProps) => {
             if (!pagesData && !pageLoading) {
                 await fetchPageData();
             }
-
-            if (fournisseurData.length === 0) {
-                await fetchFournisseurData();
-            }
         }
 
         fetchAll();
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [
-        studyCompanyData.length,
-        repertoireCompanyData.length,
-        loading,
-        pagesData,
-        pageLoading,
-        fetchData,
-        fetchPageData,
-        fetchFournisseurData,
-    ]);
+    }, [pagesData, pageLoading, fetchPageData]);
+
+    useEffect(() => {
+        const handleBeforeUnload = (event: BeforeUnloadEvent) => {
+            // Detect if this is a refresh
+            clearCookies();
+            clearZustandStore();
+        };
+
+        // Listen for the beforeunload event
+        window.addEventListener('beforeunload', handleBeforeUnload);
+
+        return () => {
+            // Clean up the event listener on component unmount
+            window.removeEventListener('beforeunload', handleBeforeUnload);
+        };
+    }, []);
 
     return (
         <>
             <MobileWarningPopup />
             <div className="relative h-screen overflow-hidden">
-                {loading || pageLoading ? (
+                {pageLoading ? (
                     <div>Loading...</div>
-                ) : error || pageError ? (
-                    <div>Error: {error || pageError}</div>
+                ) : pageError ? (
+                    <div>Error: {pageError}</div>
                 ) : (
                     <>
                         <div className="fixed top-0 left-0 w-full h-full">
@@ -83,6 +61,15 @@ const Dashboard = ({ children }: DashboardProps) => {
                             <Sidebar />
                             {children}
                         </div>
+                        {/* <button
+                            onClick={() => {
+                                clearCookies();
+                                clearZustandStore();
+                            }}
+                            className="absolute top-0 right-0"
+                        >
+                    
+                        </button> */}
                     </>
                 )}
             </div>
@@ -91,3 +78,16 @@ const Dashboard = ({ children }: DashboardProps) => {
 };
 
 export default Dashboard;
+
+// Helper to clear cookies
+function clearCookies() {
+    localStorage.removeItem('token');
+    localStorage.removeItem('adminToken');
+}
+
+function clearZustandStore() {
+    // Replace 'zustand_store_key' with the actual key used by Zustand in localStorage
+    localStorage.removeItem('global-data-store');
+    localStorage.removeItem('global-page-store');
+    localStorage.removeItem('global-user-store');
+}

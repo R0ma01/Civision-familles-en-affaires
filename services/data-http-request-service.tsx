@@ -5,42 +5,49 @@ import {
     ChartDataMultipleFileds,
 } from '@/components/interface/chart-data';
 import { CompanyInfo } from '@/components/interface/company';
-import { RepertoireData } from '@/components/interface/repertoire-data';
+import {
+    EntreprisePointData,
+    MapChloroplethePointData,
+    MapClusterPointData,
+} from '@/components/interface/point-data';
+
 import axios from 'axios';
 
 export const GraphDataHttpRequestService = {
     getAllStudyData: getAllStudyData,
     getAllRepertoireData: getAllRepertoireData,
     getChartData: getChartData,
+    getEntrepriseInformation: getEntrepriseInformation,
 };
 
 async function getAllStudyData(
-    filterData: CompanyInfo,
-): Promise<CompanyInfo[]> {
+    filters: CompanyInfo,
+): Promise<MapChloroplethePointData[]> {
     try {
-        console.log('I am called');
-        console.log(filterData);
         const response = await axios.get(APIPaths.GRAPH_GET_ALL_STUDY, {
-            params: JSON.stringify(filterData),
+            params: {
+                filters: JSON.stringify(filters),
+            },
         });
-        return response.data.pages;
+
+        return response.data.points;
     } catch (error: any) {
         console.error(
-            'Error fetching pages:',
+            'Error fetching points:',
             error.response?.data?.error || error.message,
         );
     }
     return [];
 }
 
-async function getAllRepertoireData(): Promise<RepertoireData[]> {
+async function getAllRepertoireData(): Promise<MapClusterPointData[]> {
     try {
         const response = await axios.get(APIPaths.GRAPH_GET_ALL_REPERTOIRE);
 
-        return response.data.pages;
+        return response.data.points;
     } catch (error: any) {
         console.error(
-            'Error fetching pages:',
+            'Error fetching points:',
             error.response?.data?.error || error.message,
         );
     }
@@ -67,4 +74,24 @@ async function getChartData(
         );
     }
     return [];
+}
+
+async function getEntrepriseInformation(
+    id: string,
+): Promise<EntreprisePointData> {
+    try {
+        const response = await axios.get(APIPaths.MAP_GET_ENTREPRISE, {
+            params: {
+                id: id,
+            },
+        });
+
+        return response.data.entreprise;
+    } catch (error: any) {
+        console.error(
+            'Error fetching entreprise:',
+            error.response?.data?.error || error.message,
+        );
+    }
+    return undefined as unknown as EntreprisePointData;
 }

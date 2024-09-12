@@ -5,7 +5,7 @@ export enum SecteursGeographiques {
     CAPITALE_NATIONALE = 'Capitale-Nationale',
     MAURICIE = 'Mauricie',
     ESTRIE = 'Estrie',
-    MONTREAL = 'Montreal',
+    MONTREAL = 'Montréal',
     OUTAOUAIS = 'Outaouais',
     COTE_NORD = 'Côte-Nord',
     NORD_QUEBEC = 'Nord-du-Québec',

@@ -12,7 +12,6 @@ const keyValuePairs: [string, string][] = [
     [MainDataFields.TAILLE_ENTREPRISE, "Taille de l'Entreprise"],
     [MainDataFields.CONTINUITE_FAMILIALE, 'Continuité Familiale'],
 
-    [MainDataFields.REPONDANT_AGE, 'Age du Pépondant'],
     [MainDataFields.REPONDANT_SEXE, 'Sexe du Répondant'],
     [MainDataFields.REPONDANT_NIVEAU_ETUDE, "Niveau d'Étude du Répondant"],
     [MainDataFields.REPONDANT_NIVEAU_SANTE, 'Niveau de Santé du Répondant'],
@@ -249,7 +248,7 @@ const keyValuePairs: [string, string][] = [
     //          'autre' ,
     //     ],
     // ],
-    [MainDataFields.GESTION_FAMILIALE, 'Gestion Familiale'],
+
     [
         MainDataFields.GESTION_FAMILIALE_GENERATIONS_IMPLIQUEES,
         'Générations Impliquées dans la Gestion Familiale',

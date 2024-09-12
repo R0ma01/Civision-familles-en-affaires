@@ -9,37 +9,66 @@ import useMapStore from '@/stores/global-map-store';
 import { MapType } from '@/components/enums/map-type-enum';
 import { useEffect } from 'react';
 import useGlobalDataStore from '@/stores/global-data-store';
+import useGlobalFilterStore from '@/stores/global-filter-store';
 
 function Repertoire() {
     const tour = RepertoirePageTutorial();
+
+    const filterData = useGlobalFilterStore((state: any) => state.filterData);
 
     const { mapType, setMapStyle } = useMapStore((state) => ({
         setMapStyle: state.setMapStyle,
         mapType: state.mapType,
     }));
 
-    const { repertoireCompanyData, fetchRepertoireData, loading, error } =
-        useGlobalDataStore((state: any) => ({
-            repertoireCompanyData: state.repertoireCompanyData,
-            fetchRepertoireData: state.fetchRepertoireData,
-            loading: state.loading,
-            error: state.error,
-        }));
-    useEffect(() => {
-        async function fetchData() {
-            await fetchRepertoireData();
-        }
-        if (repertoireCompanyData.length === 0 && !loading) {
-            fetchData();
-        }
-    }, [repertoireCompanyData, loading]);
+    // const { repertoireDataFetched, fetchRepertoireData, loading } =
+    //     useGlobalDataStore((state: any) => ({
+    //         repertoireDataFetched: state.repertoireDataFetched,
+    //         fetchRepertoireData: state.fetchRepertoireData,
+    //         loading: state.loading,
+    //     }));
 
     useEffect(() => {
+        // async function fetch() {
+        //     await fetchRepertoireData(filterData);
+        // }
+
         if (mapType !== MapType.REPERTOIRE) {
             setMapStyle(MapType.REPERTOIRE);
         }
+
+        // if (!repertoireDataFetched && !loading) {
+        //     fetch();
+        // }
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [mapType, setMapStyle]);
+
+    // const {
+    //     repertoireData,
+
+    //     repertoireDataFetched,
+    //     fetchRepertoireData,
+    //     loading,
+    // } = useGlobalDataStore((state: any) => ({
+    //     repertoireData: state.repertoireData,
+
+    //     fetchRepertoireData: state.fetchRepertoireData,
+
+    //     repertoireDataFetched: state.repertoireDataFetched,
+    //     loading: state.loading,
+    // }));
+
+    // useEffect(() => {
+    //     async function repertoireFetch() {
+    //         await fetchRepertoireData(filterData);
+    //     }
+
+    //     if (!repertoireDataFetched && !loading) {
+    //         console.log('rep data');
+    //         repertoireFetch();
+    //         console.log(repertoireData);
+    //     }
+    // }, [repertoireData, repertoireDataFetched, fetchRepertoireData]);
 
     // async function customComplete() {
     //     const replacement = [true, ...tutorials.splice(1)];

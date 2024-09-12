@@ -15,6 +15,8 @@ module.exports = {
                 'hover-logo-green': '#99D960',
                 'logo-light-blue': '#9CDDD0',
                 'logo-dark-blue': '#233B70',
+                'dark-map-gray': '#292929',
+                'light-map-green': '#CAEBC0',
             },
             backgroundImage: {
                 'gradient-radial': 'radial-gradient(var(--tw-gradient-stops))',

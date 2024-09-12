@@ -5,20 +5,25 @@ import useGlobalDataStore from '@/stores/global-data-store';
 import { useEffect, useState } from 'react';
 import useMapStore from '@/stores/global-map-store';
 
+import { MapClusterPointData } from '@/components/interface/point-data';
+
 function SearchBox() {
-    const { studyFilteredData } = useGlobalDataStore((state: any) => ({
-        studyFilteredData: state.studyFilteredData,
+    const { repertoireData, loading } = useGlobalDataStore((state: any) => ({
+        repertoireData: state.repertoireData,
+        loading: state.loading,
     }));
     const [searchTerm, setSearchTerm] = useState<string>('');
-    const [tableData, setTableData] = useState<CompanyInfo[]>([]);
+    const [tableData, setTableData] = useState<MapClusterPointData[]>([]);
     const { setMapPoint } = useMapStore();
 
-    function sortAlphabetically(compagnies: CompanyInfo[]): CompanyInfo[] {
+    function sortAlphabetically(
+        compagnies: MapClusterPointData[],
+    ): MapClusterPointData[] {
         return compagnies.sort((a, b) => {
-            if (!a.nom_entreprise) {
+            if (!a.nom) {
                 return 1;
             }
-            if (!b.nom_entreprise) {
+            if (!b.nom) {
                 return -1;
             }
 
@@ -29,8 +34,8 @@ function SearchBox() {
                     .replace(/[\u0300-\u036f]/g, '')
                     .toLowerCase();
 
-            const nameA = normalize(a.nom_entreprise);
-            const nameB = normalize(b.nom_entreprise);
+            const nameA = normalize(a.nom);
+            const nameB = normalize(b.nom);
 
             // Regular expression to check if the first character is a letter
             const isLetter = (name: string) => /^[a-zA-Z]/.test(name);
@@ -48,68 +53,43 @@ function SearchBox() {
     function handleSearchChange(e: React.ChangeEvent<HTMLInputElement>) {
         setSearchTerm(e.target.value);
     }
+    async function flyToPoint(company: MapClusterPointData) {
+        // Handling RepertoireData type or any other type-specific logic
+        // Assuming similar properties to CompanyInfo
 
-    function flyToPoint(company: CompanyInfo) {
-        if (company.coordonnees?.longitude && company.coordonnees?.latitude) {
-            setMapPoint({
-                type: 'Feature',
-                geometry: {
-                    type: 'Point',
-                    coordinates: [
-                        company.coordonnees.longitude, // Longitude first
-                        company.coordonnees.latitude, // Latitude second
-                    ],
-                },
-                properties: {
-                    weight: 0.5,
-                    nom_entreprise: company.nom_entreprise
-                        ? company.nom_entreprise
-                        : company.NEQ
-                          ? company.NEQ
-                          : 'Non Disponible',
-                    secteur_activite: company.secteur_activite
-                        ? company.secteur_activite
-                        : 'Non Disponible',
-                    taille_entreprise: company.taille_entreprise
-                        ? company.taille_entreprise
-                        : 'Non Disponible',
-                    annee_fondation: company.annee_fondation
-                        ? company.annee_fondation
-                        : 'Non Disponible',
-                },
-            });
+        if (company.coords) {
+            await setMapPoint(company);
         }
     }
 
-    const filterPredicate = (company: CompanyInfo) => {
-        return company.nom_entreprise
-            ? company.nom_entreprise
-                  .toLowerCase()
-                  .startsWith(searchTerm.toLowerCase(), 0)
+    const filterPredicate = (company: MapClusterPointData) => {
+        return company.nom
+            ? company.nom.toLowerCase().startsWith(searchTerm.toLowerCase(), 0)
             : false;
     };
 
     function filterSearchParams() {
-        const newData = studyFilteredData.filter(filterPredicate);
+        const newData = repertoireData.filter(filterPredicate);
 
         setTableData(sortAlphabetically(newData));
     }
 
     function populateTable() {
-        return tableData.map((company: CompanyInfo, index) => {
-            if (company.nom_entreprise || company.NEQ)
+        return tableData.map((company: MapClusterPointData, index) => {
+            if (company.nom)
                 return (
                     <tr
                         key={index}
-                        className={`border-b cursor-pointer `}
-                        onClick={() => flyToPoint(company)}
+                        className={`border-b dark:border-dark-map-gray cursor-pointer hover:shadow-[0px_1px_5px_rgba(0,0,0,0.25)] dark:hover:shadow-[0px_1px_5px_rgba(255,255,255,0.45)]`}
+                        onClick={async () => {
+                            console.log(company);
+                            await flyToPoint(company);
+                        }}
                     >
                         <td className="px-2 py-2 text-small dark:text-white text-black">
-                            {company.nom_entreprise
-                                ? company.nom_entreprise
-                                : company.NEQ
-                                  ? company.NEQ
-                                  : 'Non Disponible'}
+                            {company.nom
+                                ? company.nom.toLowerCase()
+                                : 'Non Disponible'}
                         </td>
                         <td className="px-1 py-1 flex justify-end mr-3">
                             <span
@@ -127,14 +107,14 @@ function SearchBox() {
     useEffect(() => {
         filterSearchParams();
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [searchTerm, studyFilteredData]);
+    }, [searchTerm, repertoireData]);
 
     return (
         <div
             id={constants.search_box_id}
-            className="flex flex-col pb-4 h-fit-content w-[500px] dark:bg-[#262626] bg-[#f5ebe0] bg-clip-padding backdrop-filter 
-    dark:bg-opacity-50 backdrop-blur bg-opacity-50 saturate-100 backdrop-contrast-100 border rounded-xl border-transparent 
-    shadow-3xl py-3 px-3 pointer-events-auto"
+            className="flex flex-col pb-4 h-fit-content w-[500px] backdrop-filter 
+    bg-opacity-0 saturate-100 border rounded-xl border-transparent 
+    py-3 px-3 pointer-events-auto"
         >
             <h2 className="text-smaller md:text-small dark:text-white text-black py-4">
                 Liste des entreprises familiales recensées au Québec
@@ -152,6 +132,11 @@ function SearchBox() {
                 className="overflow-y-auto"
                 style={{ maxHeight: '200px' }} // Ensure this is correctly sized to allow overflow
             >
+                {loading && (
+                    <div className="w-full h-32 flex justify-center items-center">
+                        <div className="loader-circle"></div>
+                    </div>
+                )}
                 <table id="liste_entreprises_table" className="min-w-full">
                     <tbody>{populateTable()}</tbody>
                 </table>

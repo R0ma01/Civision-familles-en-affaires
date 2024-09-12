@@ -33,13 +33,19 @@ const Doughnut: React.FC<DoughnutChartProps> = ({
         ChartData[] | ChartDataMultipleFileds[] | undefined
     >(undefined);
 
+    const [size, setSize] = useState<ChartSize>(chartSize);
+
+    useEffect(() => {
+        setSize(chartSize);
+    }, [chartSize]);
+
     const radiusMap = {
         [ChartSize.SMALL]: { inner: '30%', outer: '70%' },
         [ChartSize.MEDIUM]: { inner: '40%', outer: '85%' },
         [ChartSize.LARGE]: { inner: '35%', outer: '65%' },
     };
 
-    const { inner, outer } = radiusMap[chartSize];
+    const { inner, outer } = radiusMap[size];
 
     const [chartData, setChartData] = useState<
         ChartData[] | ChartDataMultipleFileds[] | undefined
@@ -49,7 +55,7 @@ const Doughnut: React.FC<DoughnutChartProps> = ({
         if (chartContent.data.length > 0) {
             if (!originalOrder.current) {
                 // Save the initial order on first render
-                originalOrder.current = chartContent.data;
+                originalOrder.current = chartContent.data as ChartData[];
             } else {
                 // Reorder new data to match the original order
                 const updatedData = originalOrder.current.map(
@@ -81,15 +87,15 @@ const Doughnut: React.FC<DoughnutChartProps> = ({
         }
     }, [chartContent.data]);
 
-    const width = chartSize === ChartSize.SMALL ? chartSize : chartSize + 100;
+    const width = size === ChartSize.SMALL ? size : size + 100;
 
     return (
         <div className="dark:text-white">
-            <ResponsiveContainer height={chartSize} width={width}>
+            <ResponsiveContainer height={size} width={width}>
                 <PieChart>
                     <Pie
                         data={chartData}
-                        cx="50%"
+                        cx={`${size === ChartSize.MEDIUM ? '50%' : '40%'}`}
                         cy="50%"
                         outerRadius={outer}
                         innerRadius={inner}
@@ -122,14 +128,20 @@ const Doughnut: React.FC<DoughnutChartProps> = ({
                         layout="vertical"
                         align="right"
                         verticalAlign="middle"
+                        width={
+                            size === ChartSize.MEDIUM
+                                ? 100
+                                : size === ChartSize.LARGE
+                                  ? 150
+                                  : 50
+                        }
                         wrapperStyle={{
-                            paddingLeft: '10px',
                             lineHeight:
-                                chartSize === ChartSize.SMALL ? '10px' : '24px',
+                                size === ChartSize.SMALL ? '10px' : '24px',
                         }}
-                        iconSize={chartSize === ChartSize.SMALL ? 8 : 12}
+                        iconSize={size === ChartSize.SMALL ? 8 : 12}
                         formatter={(value) => {
-                            return chartSize === ChartSize.SMALL ? (
+                            return size === ChartSize.SMALL ? (
                                 <span
                                     style={{
                                         fontSize: '6px',

@@ -3,13 +3,13 @@ import { connectToDatabaseStudy } from '@/utils/mongodb';
 import { ObjectId } from 'mongodb'; // Import ObjectId
 import { MongoDBPaths } from '@/components/enums/mongodb-paths-enum';
 
-export async function GET(req: Request) {
+export async function DELETE(req: Request) {
     try {
         const db = (await connectToDatabaseStudy()).db;
-        const collection = db.collection(MongoDBPaths.COLLECTION_PAGES);
+        const collection = db.collection(MongoDBPaths.FOURNISSEURS);
         const url = new URL(req.url!);
         const id = url.searchParams.get('_id');
-        console.log(id);
+
         if (!id) {
             return NextResponse.json(
                 { error: 'Missing _id parameter' },
@@ -18,19 +18,18 @@ export async function GET(req: Request) {
         }
 
         const objectId = new ObjectId(id);
-        const result = await collection.findOne({ _id: objectId });
-        console.log(result);
+        const result = await collection.deleteOne({ _id: objectId });
 
         if (!result) {
             return NextResponse.json(
-                { error: 'Document not found' },
+                { error: 'Document not deleted' },
                 { status: 404 },
             );
         }
 
         // Return a successful response
         return NextResponse.json({
-            message: 'Document found successfully',
+            message: 'Document deleted successfully',
             page: result,
         });
     } catch (e: any) {

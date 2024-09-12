@@ -7,8 +7,6 @@ import useGlobalPageStore from '@/stores/global-page-store';
 import PageContent from '@/components/interface/page-content';
 import useMapStore from '@/stores/global-map-store';
 import { MapType } from '@/components/enums/map-type-enum';
-import useGlobalDataStore from '@/stores/global-data-store';
-import useGlobalFilterStore from '@/stores/global-filter-store';
 
 function PageContentComponent() {
     const [page, setPage] = useState<PageContent | undefined>(undefined);
@@ -31,23 +29,6 @@ function PageContentComponent() {
     const { mapType, setMapStyle } = useMapStore((state) => {
         return { mapType: state.mapType, setMapStyle: state.setMapStyle };
     });
-    const { studyCompanyData, fetchStudyData, loading, error } =
-        useGlobalDataStore((state: any) => ({
-            studyCompanyData: state.studyCompanyData,
-            fetchStudyData: state.fetchStudyData,
-            loading: state.loading,
-            error: state.error,
-        }));
-
-    useEffect(() => {
-        async function fetchData() {
-            console.log('iam called');
-            await fetchStudyData(filterData);
-        }
-        if (studyCompanyData.length === 0 && !loading) {
-            fetchData();
-        }
-    }, [studyCompanyData, loading, filterData]);
 
     useEffect(() => {
         if (mapType !== MapType.PAGE_INFORMATION) {
@@ -62,9 +43,9 @@ function PageContentComponent() {
         }
     }, [page, pagesData, _id]);
 
-    if (pageLoading || loading) return <div>Loading...</div>;
-    if (pageError || error) return <div>Error: {pageError}</div>;
-
+    if (pageLoading) return <div>Loading...</div>;
+    if (pageError) return <div>Error: {pageError}</div>;
+    console.log(page);
     return (
         <>
             <PageContentContainer
