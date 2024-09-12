@@ -30,8 +30,6 @@ async function getAllStudyData(
             },
         });
 
-        console.log(response);
-
         return response.data.points;
     } catch (error: any) {
         console.error(

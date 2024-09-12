@@ -5,5 +5,5 @@ export interface ChartData {
 
 export interface ChartDataMultipleFileds {
     name: string;
-    [key: string]: number | string; // Dynamic keys with numeric values
+    [key: string]: number | string; // Allow string for 'name' and array for dynamic fields
 }

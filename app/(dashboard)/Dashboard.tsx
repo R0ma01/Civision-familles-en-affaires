@@ -4,7 +4,6 @@ import Carte from '@/components/component/carte/Carte';
 import Sidebar from '@/components/component/sidebar/sidebar';
 import useGlobalPageStore from '@/stores/global-page-store';
 import MobileWarningPopup from '@/components/component/mobile-popup/mobile-popup';
-import useGlobalFournisseursStore from '@/stores/global-fournisseur-store';
 
 interface DashboardProps {
     children: any;
@@ -19,31 +18,15 @@ const Dashboard = ({ children }: DashboardProps) => {
             fetchPageData: state.fetchPageData,
         }));
 
-    const { fournisseurData, fetchFournisseurData } =
-        useGlobalFournisseursStore((state: any) => ({
-            fournisseurData: state.fournisseurData,
-            fetchFournisseurData: state.fetchFournisseurData,
-        }));
-
     useEffect(() => {
         async function fetchAll() {
             if (!pagesData && !pageLoading) {
                 await fetchPageData();
             }
-
-            if (fournisseurData.length === 0) {
-                await fetchFournisseurData();
-            }
         }
 
         fetchAll();
-    }, [
-        pagesData,
-        pageLoading,
-        fetchPageData,
-        fetchFournisseurData,
-        fournisseurData,
-    ]);
+    }, [pagesData, pageLoading, fetchPageData]);
 
     useEffect(() => {
         const handleBeforeUnload = (event: BeforeUnloadEvent) => {

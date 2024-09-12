@@ -25,6 +25,8 @@ const useGlobalDataStore = create(
                     console.log('fetch stusdfrtgyhujikolmnbv cdxrftgyhuj');
                     set({ loading: true, error: null });
                     try {
+                        console.log('I am called');
+
                         const responseStudy =
                             await GraphDataHttpRequestService.getAllStudyData(
                                 filters,

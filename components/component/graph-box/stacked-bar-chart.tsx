@@ -8,6 +8,7 @@ import {
     ResponsiveContainer,
     Tooltip,
     Legend,
+    CartesianGrid,
 } from 'recharts';
 import { chartPalette } from '@/constants/color-palet';
 import { ChartContent } from '@/components/interface/chart-content';
@@ -26,92 +27,53 @@ const StackedBarChart: React.FC<StackedBarChartProps> = ({
     chartSize = ChartSize.SMALL,
 }) => {
     const [chartData, setChartData] = useState<
-        ChartData[] | ChartDataMultipleFileds[] | undefined
-    >(undefined);
-
-    const originalOrder = useRef<
         (ChartData | ChartDataMultipleFileds)[] | undefined
     >(undefined);
+    const [stackedKeys, setStackedKey] = useState<string[]>([]);
 
     useEffect(() => {
         if (chartContent.data.length > 0) {
-            if (!originalOrder.current) {
-                // Save the initial order on first render
-                originalOrder.current = chartContent.data;
-            } else {
-                // Reorder new data to match the original order
-                const updatedData = originalOrder.current.map(
-                    (originalItem) => {
-                        const newItem = chartContent.data.find(
-                            (newItem) => newItem.name === originalItem.name,
-                        );
-                        return newItem
-                            ? { ...originalItem, ...newItem } // Merge values from new data
-                            : { ...originalItem, value: 0 };
-                    },
-                );
-
-                // Add new items that were not in the original data
-                chartContent.data.forEach((newItem) => {
-                    if (
-                        !originalOrder.current!.some(
-                            (originalItem) =>
-                                originalItem.name === newItem.name,
-                        )
-                    ) {
-                        updatedData.push(newItem);
-                    }
-                });
-
-                setChartData(updatedData);
-                originalOrder.current = updatedData;
-            }
+            // No transformation needed, we can directly use the data
+            setChartData(chartContent.data);
         }
+
+        console.log(chartData);
     }, [chartContent.data]);
 
+    // Extract all fields (keys) from the first element of chartData (excluding 'name')
+    useEffect(() => {
+        if (chartData) {
+            if (chartData.length > 0) {
+                setStackedKey(Object.keys(chartData[0]));
+            }
+        }
+    }, [chartData]);
+
     return (
-        <div
-            className={`dark:text-white ${
-                chartSize === ChartSize.SMALL ? 'text-sm' : 'text-base'
-            }`}
-        >
+        <div>
             <ResponsiveContainer width={chartSize} height={chartSize}>
-                <BarChart data={chartData}>
-                    <XAxis
-                        dataKey="name"
-                        stroke="currentColor"
-                        tick={{ fill: 'currentColor' }}
-                    />
-                    <YAxis
-                        stroke="currentColor"
-                        tick={{ fill: 'currentColor' }}
-                    />
+                <BarChart
+                    data={chartData}
+                    margin={
+                        chartSize !== ChartSize.SMALL
+                            ? {
+                                  top: 20,
+                                  right: 30,
+                                  left: 20,
+                                  bottom: 5,
+                              }
+                            : {}
+                    }
+                >
+                    <CartesianGrid strokeDasharray="3 3" />
+                    <XAxis dataKey="name" />
+                    <YAxis />
                     <Tooltip />
-                    <Legend
-                        wrapperStyle={{
-                            paddingLeft: '10px',
-                            lineHeight:
-                                chartSize === ChartSize.SMALL ? '10px' : '24px',
-                        }}
-                        iconSize={chartSize === ChartSize.SMALL ? 8 : 12}
-                        formatter={(value) => (
-                            <span
-                                style={{
-                                    fontSize:
-                                        chartSize === ChartSize.SMALL
-                                            ? '6px'
-                                            : '10px',
-                                    color: 'currentColor',
-                                }}
-                            >
-                                {value}
-                            </span>
-                        )}
-                    />
-                    {chartData &&
-                        Object.keys(chartData[0])
-                            .filter((key) => key !== 'name')
-                            .map((key, index) => (
+                    {chartSize !== ChartSize.SMALL && <Legend />}
+
+                    {stackedKeys.map((key, index) => {
+                        if (key !== 'name') {
+                            return (
                                 <Bar
                                     key={key}
                                     dataKey={key}
@@ -122,13 +84,9 @@ const StackedBarChart: React.FC<StackedBarChartProps> = ({
                                         ]
                                     }
                                 />
-                            ))}
-
-                    {!chartData && (
-                        <div>
-                            <p>Chargement ...</p>
-                        </div>
-                    )}
+                            );
+                        }
+                    })}
                 </BarChart>
             </ResponsiveContainer>
         </div>

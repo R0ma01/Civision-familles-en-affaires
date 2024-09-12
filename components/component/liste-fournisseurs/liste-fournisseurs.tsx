@@ -1,19 +1,19 @@
 import { Fournisseur } from '@/components/interface/fournisseur';
 import useGlobalDataStore from '@/stores/global-data-store';
-import useGlobalFournisseursStore from '@/stores/global-fournisseur-store';
 import React, { useEffect, useState } from 'react';
 import Dropdown from '../drop-down-menu/drop-down-menu';
 import {
     SecteursGeographiques,
     ServiceOffert,
 } from '@/components/enums/fournisseur-filter-enum';
-import useGlobalUserStore from '@/stores/global-user-store';
+
 import {
     AddCircleSVG,
     EditSVG,
     EmailSVG,
     GlobeSVG,
     InvisibleSVG,
+    LinkedInSVG,
     PhoneSVG,
     ProfessionalSVG,
     ServiceSVG,
@@ -22,7 +22,6 @@ import {
 } from '../svg-icons/svg-icons';
 import { ButtonType } from '@/components/enums/button-type-enum';
 import Button from '../buttons/button';
-import { Global } from 'recharts';
 
 interface ListeFournisseurProps {
     admin: boolean;
@@ -166,11 +165,14 @@ export default function ListeFournisseurs({
         >
             {/* Search and Filters */}
             <div className="flex flex-col w-full space-y-4">
-                <div className="flex flex-row items-center space-x-4 justify-between">
+                <h1 className="font-semibold text-xl">
+                    Liste et profil des fournisseurs
+                </h1>
+                <div className="flex flex-col items-center justify-between">
                     {/* Search Input */}
                     <input
                         type="text"
-                        placeholder="Rechercher..."
+                        placeholder="Rechercher un fournisseur"
                         value={searchString}
                         onChange={handleSearchChange}
                         className="w-full p-3 bg-white dark:bg-[#3a3a3a] border border-logo-turquoise dark:border-[#4fc3f7] 
@@ -179,26 +181,34 @@ export default function ListeFournisseurs({
                     />
 
                     {/* Dropdown Filters */}
-                    <div className="flex flex-col space-y-2">
-                        <p className="text-xs">Région</p>
-                        <Dropdown
-                            options={[
-                                'Toutes',
-                                ...Object.values(SecteursGeographiques),
-                            ]}
-                            inputValue={searchSecteur}
-                            onChange={(value: any) => setSearchSecteur(value)}
-                            className="hover:border-logo-turquoise focus:ring-2"
-                        />
-                        <p className="text-xs">Service Offert</p>
-                        <Dropdown
-                            options={[
-                                'Toutes',
-                                ...Object.values(ServiceOffert),
-                            ]}
-                            inputValue={searchService}
-                            onChange={(value: any) => setSearchService(value)}
-                        />
+                    <div className="flex flex-row justify-evenly space-x-4 mt-2">
+                        <div className="flex flex-col">
+                            <p className="text-xs">Région</p>
+                            <Dropdown
+                                options={[
+                                    'Toutes',
+                                    ...Object.values(SecteursGeographiques),
+                                ]}
+                                inputValue={searchSecteur}
+                                onChange={(value: any) =>
+                                    setSearchSecteur(value)
+                                }
+                                className="hover:border-logo-turquoise focus:ring-2"
+                            />
+                        </div>
+                        <div className="flex flex-col">
+                            <p className="text-xs">Service Offert</p>
+                            <Dropdown
+                                options={[
+                                    'Toutes',
+                                    ...Object.values(ServiceOffert),
+                                ]}
+                                inputValue={searchService}
+                                onChange={(value: any) =>
+                                    setSearchService(value)
+                                }
+                            />
+                        </div>
                     </div>
                 </div>
             </div>
@@ -206,7 +216,7 @@ export default function ListeFournisseurs({
             {/* Table with Suppliers */}
             {!loading ? (
                 <>
-                    <div className="w-full overflow-y-auto max-h-[70%] rounded-md shadow-inner bg-white dark:bg-[#3a3a3a]">
+                    <div className="w-full overflow-y-auto max-h-[70%] rounded-md">
                         <table className="min-w-full">
                             <tbody>{populateTable()}</tbody>
                         </table>
@@ -262,7 +272,7 @@ function FournisseurListElement({
     return (
         <tr
             key={index}
-            className={`border-b border-gray-200 dark:border-gray-700 hover:shadow-lg dark:hover:shadow-md flex items-center overflow-hidden cursor-pointer w-full relative transition-all ease-in-out duration-300 transform ${
+            className={`border-b border-gray-400 dark:border-gray-700 hover:shadow-lg dark:hover:shadow-md flex items-center overflow-hidden cursor-pointer w-full relative transition-all ease-in-out duration-300 transform ${
                 isOpen ? 'h-auto' : 'h-12'
             } group`}
             onClick={handleRowClick}
@@ -270,84 +280,105 @@ function FournisseurListElement({
             {/* Main Row */}
             <tr className="w-full flex flex-col justify-between items-center">
                 {!isOpen && (
-                    <td className="w-full">
+                    <td className="w-full p-2">
                         <div className="flex flex-row space-x-4 w-full">
                             {' '}
-                            <p>
-                                {fournisseur.contact.lastName +
-                                    ', ' +
-                                    fournisseur.contact.firstName}{' '}
+                            <p className="font-bold">
+                                {fournisseur.contact.firstName +
+                                    ' ' +
+                                    fournisseur.contact.lastName.toUpperCase()}{' '}
                             </p>
-                            <p>{fournisseur.contact.company}</p>
                         </div>
                     </td>
                 )}
 
                 {isOpen && (
-                    <td className="w-full flex flex-row transition-all transform duration-300">
-                        <div className="flex flex-row items-center">
-                            <ProfessionalSVG className="w-28 h-28"></ProfessionalSVG>{' '}
-                            <div className="flex flex-col">
-                                <div className="flex ">
-                                    <p className="font-semibold">
-                                        {fournisseur.contact.lastName +
-                                            ', ' +
-                                            fournisseur.contact.firstName}{' '}
+                    <td className="w-full flex flex-col transition-all transform duration-300 p-2">
+                        <div className="flex flex-row items-center justify-between">
+                            <div className="flex flex-col w-full">
+                                <div className="flex w-[60%]">
+                                    <p className="font-bold text-left">
+                                        {fournisseur.contact.firstName +
+                                            ' ' +
+                                            fournisseur.contact.lastName.toUpperCase()}{' '}
                                     </p>
                                 </div>
-                                <p>{fournisseur.contact.company}</p>
-                                <div className="flex flex-row space-x-1">
-                                    <GlobeSVG></GlobeSVG>
-                                    <p className="max-h-12 overflow-auto flex flex-col">
-                                        {fournisseur.secteurs_geographique.map(
-                                            (secteur: any) => {
-                                                return (
-                                                    <p key={index}>{secteur}</p>
-                                                );
-                                            },
-                                        )}
-                                    </p>
-                                </div>
-                                <div className="flex flex-row space-x-1">
-                                    <ServiceSVG></ServiceSVG>
-                                    <p className="max-h-12 overflow-auto flex flex-col">
-                                        {fournisseur.services_offerts.map(
-                                            (service: any) => {
-                                                return (
-                                                    <p key={index}>{service}</p>
-                                                );
-                                            },
-                                        )}
-                                    </p>
-                                </div>
-                                <div className="flex flex-row space-x-1">
-                                    <PhoneSVG></PhoneSVG>
-                                    {fournisseur.contact.cellPhone}
-                                </div>
-                                <div className="flex flex-row space-x-1">
-                                    <EmailSVG></EmailSVG>
-                                    <a
-                                        href={`mailto:${fournisseur.contact.email}`}
-                                        className="text-blue-500 underline"
-                                        onClick={(e: any) => {
-                                            handleButtonClick(e);
-                                        }}
-                                    >
-                                        {' '}
-                                        {fournisseur.contact.email}
-                                    </a>
-                                </div>
-                                <div className="flex flex-row space-x-1">
-                                    <EmailSVG></EmailSVG>
-                                    <a
-                                        href={fournisseur.contact.linkedin}
-                                        target="_blank"
-                                        rel="noopener noreferrer"
-                                    >
-                                        LinkedIn
-                                    </a>
-                                </div>
+                                <p className="text-left">
+                                    {fournisseur.contact.company}
+                                </p>
                             </div>
+                            <div className="flex flex-col w-[40%]">
+                                <div className="flex flex-row justify-end space-x-2">
+                                    <div className="flex flex-col">
+                                        <a
+                                            href={`tel:+1${fournisseur.contact.cellPhone}`}
+                                            onClick={(e: any) => {
+                                                handleButtonClick(e);
+                                            }}
+                                        >
+                                            <div className="border rounded-full w-fit h-fit overflow-hidden">
+                                                <PhoneSVG className="bg-black fill-white p-1"></PhoneSVG>
+                                            </div>
+                                        </a>
+                                    </div>
+                                    <div className="flex flex-col">
+                                        <a
+                                            href={`mailto:${fournisseur.contact.email}`}
+                                            className="text-blue-500 underline"
+                                            onClick={(e: any) => {
+                                                handleButtonClick(e);
+                                            }}
+                                        >
+                                            <div className="border rounded-full w-fit h-fit overflow-hidden">
+                                                <EmailSVG className="bg-black fill-white p-1"></EmailSVG>
+                                            </div>{' '}
+                                        </a>
+                                    </div>
+                                    <div className="flex flex-col">
+                                        <a
+                                            href={fournisseur.contact.linkedIn}
+                                            target="_blank"
+                                            rel="noopener noreferrer"
+                                            onClick={(e: any) => {
+                                                handleButtonClick(e);
+                                                console.log(
+                                                    fournisseur.contact
+                                                        .linkedIn,
+                                                );
+                                            }}
+                                        >
+                                            <div className="border rounded-full w-fit h-fit overflow-hidden">
+                                                <LinkedInSVG className="bg-black fill-white p-1"></LinkedInSVG>
+                                            </div>
+                                        </a>
+                                    </div>
+                                </div>
+                                <p className="text-right">
+                                    {fournisseur.contact.cellPhone}
+                                </p>
+                            </div>
+                        </div>
+                        <div className="flex flex-row space-x-1">
+                            <div className="border rounded-full w-fit h-fit overflow-hidden">
+                                <GlobeSVG className="bg-black fill-white p-1"></GlobeSVG>
+                            </div>
+                            <p className="max-h-12 overflow-auto flex flex-col">
+                                {fournisseur.secteurs_geographique.map(
+                                    (secteur: any) => {
+                                        return <p key={index}>{secteur}</p>;
+                                    },
+                                )}
+                            </p>
+                        </div>
+                        <div className="flex flex-row space-x-1">
+                            <ServiceSVG></ServiceSVG>
+                            <p className="max-h-12 overflow-auto flex flex-col">
+                                {fournisseur.services_offerts.map(
+                                    (service: any) => {
+                                        return <p key={index}>{service}</p>;
+                                    },
+                                )}
+                            </p>
                         </div>
                     </td>
                 )}
@@ -399,63 +430,3 @@ function FournisseurListElement({
         </tr>
     );
 }
-
-// <tr>
-//     <td className="w-full flex">
-//         {/* Contact Name */}
-//         <td className="px-4 text-sm font-medium dark:text-white text-black transition-all ease-in-out transform duration-300 w-full">
-//             <p>
-//                 {fournisseur.contact.lastName +
-//                     ', ' +
-//                     fournisseur.contact.firstName[0] +
-//                     '.'}
-//             </p>
-//         </td>
-
-//         {/* Company Name */}
-//         <td className="px-4 text-sm dark:text-white text-black transition-all ease-in-out transform duration-300">
-//             {fournisseur.contact.company}
-//         </td>
-//     </td>
-//     {/* Expandable Content */}
-//     {isOpen && (
-//         <tr className="w-full flex flex-col py-2 space-y-2">
-//             <tr className="flex justify-between items-start w-full">
-//                 {/* Contact Info */}
-//                 <td className="px-4 text-sm dark:text-white text-black transition-all ease-in-out transform duration-300">
-//                     {fournisseur.contact.cellPhone || 'N/A'}
-//                 </td>
-//                 <td className="px-4 text-sm dark:text-white text-blue-500 underline transition-all ease-in-out transform duration-300">
-//                     <a
-//                         href={`mailto:${fournisseur.contact.email}`}
-//                     >
-//                         {fournisseur.contact.email}
-//                     </a>
-//                 </td>
-//                 <td className="px-4 text-sm dark:text-white text-blue-500 underline transition-all ease-in-out transform duration-300">
-//                     {fournisseur.contact.linkedin && (
-//                         <a
-//                             href={fournisseur.contact.linkedin}
-//                             target="_blank"
-//                             rel="noopener noreferrer"
-//                         >
-//                             LinkedIn
-//                         </a>
-//                     )}
-//                 </td>
-//             </tr>
-
-//             {/* Additional Info (Secteurs Geographique & Services Offerts) */}
-//             <tr className="w-full flex flex-col space-y-2">
-//                 <td className="px-4 py-2 text-xs dark:text-white text-black transition-all ease-in-out transform duration-300">
-//                     {fournisseur.secteurs_geographique.join(
-//                         ', ',
-//                     )}
-//                 </td>
-//                 <td className="px-4 py-2 text-xs dark:text-white text-black transition-all ease-in-out transform duration-300">
-//                     {fournisseur.services_offerts.join(', ')}
-//                 </td>
-//             </tr>
-//         </tr>
-//     )}
-// </tr>;
