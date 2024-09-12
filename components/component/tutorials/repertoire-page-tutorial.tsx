@@ -1,6 +1,6 @@
 import Shepherd from 'shepherd.js';
 import 'shepherd.js/dist/css/shepherd.css';
-import html_object_constants from '@/constants/constants';
+import { html_object_constants } from '@/constants/constants';
 
 const RepertoirePageTutorial = () => {
     const tour = new Shepherd.Tour({
