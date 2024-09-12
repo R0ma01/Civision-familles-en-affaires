@@ -6,7 +6,7 @@ interface TabProps {
     tabs: TabContent[];
     className?: string;
 }
-
+//some comment
 export function TabContainer({ tabs, className }: TabProps) {
     const [containerContent, setTabContent] = useState<TabContent[]>(tabs);
     const [selectedTab, setSelectedTab] = useState<TabContent>(tabs[0]);

@@ -6,7 +6,7 @@ interface TabProps {
     content: TabContent;
     className?: string;
 }
-
+//some comment
 export function Tab({ content, className }: TabProps) {
     const [tabContent, setTabContent] = useState<TabContent>(content);
 

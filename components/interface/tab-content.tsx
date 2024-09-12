@@ -6,3 +6,4 @@ export interface TabContent {
     cards: DataCardContent[];
     visible: boolean;
 }
+//some compoennt
