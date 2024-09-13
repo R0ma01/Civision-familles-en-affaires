@@ -9,6 +9,11 @@ import useMapStore from '@/stores/global-map-store';
 import { MapType } from '@/components/enums/map-type-enum';
 import { TabContainer } from '@/components/component/tab/tab-container';
 import { PageHttpRequestService } from '@/services/page-http-request-service';
+import { MainDataFields } from '@/components/enums/data-types-enum';
+import { title } from 'process';
+import { GraphBoxType } from '@/components/enums/graph-box-enum';
+import { value_constants } from '@/constants/constants';
+import { DataCardType } from '@/components/enums/data-card-type-enum';
 
 function PageContentComponent() {
     const [page, setPage] = useState<PageTabContent | undefined>(undefined);
@@ -58,14 +63,23 @@ function PageContentComponent() {
                     {page?.title}
                 </h1>
 
-                {page ? (
-                    <div className="flex flex-col space-y-4 dark:text-white">
-                        <p className="z-10 text-xs">{page?.description}</p>
-                        {page && <TabContainer tabs={page.tabs} />}
-                    </div>
-                ) : (
-                    <p>Loading...</p>
-                )}
+                {Object.values(MainDataFields).map((value: any) => {
+                    return (
+                        <DataCard
+                            content={{
+                                type: DataCardType.SIMPLE_GRAPH,
+                                title: value,
+                                description: '',
+                                graphData: [
+                                    {
+                                        graphType: GraphBoxType.DOUGHNUT,
+                                        donnes: [value],
+                                    },
+                                ],
+                            }}
+                        ></DataCard>
+                    );
+                })}
             </PageContentContainer>
         </>
     );

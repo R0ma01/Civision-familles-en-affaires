@@ -48,7 +48,7 @@ export const PossibleDataFileds = new Map<MainDataFields, any[]>([
     ],
     [
         MainDataFields.QUESTIONNAIRE_ASPECTS_EMOTIONNELS, // IMPLEMENT FILTER FUNCTION
-        ['1', '2', '3', '4', '5', '6'],
+        [1, 2, 3, 4, 5, 6],
     ],
     [
         MainDataFields.QUESTIONNAIRE_IDENTIFICATION_INFLUENCE, // IMPLEMENT FILTER FUNCTION
@@ -163,7 +163,10 @@ export const PossibleDataFileds = new Map<MainDataFields, any[]>([
         MainDataFields.GESTION_FAMILIALE_PROTOCOLE_FAMILIAL,
         ['aucun', 'formel et explicite', 'informel'],
     ],
-    [MainDataFields.GESTION_FAMILIALE_MULTIPLES_FAMILLES, ['true', 'false']],
+    [
+        MainDataFields.GESTION_FAMILIALE_GENERATIONS_IMPLIQUEES,
+        ['true', 'false'],
+    ],
     [
         MainDataFields.GESTION_FAMILIALE_GENERATIONS_IMPLIQUEES,
         ['1ere', '2eme', '3eme', '4eme ou +'],
@@ -460,7 +463,7 @@ export const PossibleDataFileds = new Map<MainDataFields, any[]>([
         MainDataFields.TAILLE_ENTREPRISE,
         ['petite', 'moyenne', 'grande', 'tres petite', 'tres grande', 'NaN'],
     ],
-    [MainDataFields.CREE_OU_REPRISE, ['0', '1']],
+    [MainDataFields.CREE_OU_REPRISE, ['2', '1']],
     [MainDataFields.BENEVOLAT, ['0', '1']],
     [MainDataFields.ROLE_INFORMEL, ['0', '1']],
     [MainDataFields.APRES_VENTE, ['0', '1']],

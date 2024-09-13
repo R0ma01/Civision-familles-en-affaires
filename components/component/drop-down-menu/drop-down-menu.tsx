@@ -1,27 +1,29 @@
 import React, { useState, useRef, useEffect } from 'react';
-import { TableauxTraductions } from '@/services/translations';
+import { TableauxTraductionsMainDataFields } from '@/services/translations';
+import { value_constants } from '@/constants/constants';
 
-interface DropdownProps<T> {
-    inputValue?: T;
-    options: T[];
-    onChange?: (value: T) => void;
-    displayValue?: (value: T) => string; // Function to display the value
+interface DropdownProps {
+    inputValue?: any;
+    options: any;
+    onChange?: (value: any) => void;
+    displayValue?: (value: any) => string; // Function to display the value
     className?: string;
 }
 
-const Dropdown = <T,>({
+const Dropdown = ({
     inputValue,
     options,
     onChange = () => {},
-    displayValue = (value: T) => {
-        if (TableauxTraductions.get(value as string)) {
-            return TableauxTraductions.get(value as string) as string;
+    displayValue = (value: any) => {
+        if (TableauxTraductionsMainDataFields.get(value as string)) {
+            return TableauxTraductionsMainDataFields.get(value as string)?.label
+                .FR as string;
         }
         return value as string;
     },
     className = '',
-}: DropdownProps<T>) => {
-    const [selectedValue, setSelectedValue] = useState<T | undefined>(
+}: DropdownProps) => {
+    const [selectedValue, setSelectedValue] = useState<any | undefined>(
         inputValue,
     );
     const [dropdownOpen, setDropdownOpen] = useState(false);
@@ -38,7 +40,7 @@ const Dropdown = <T,>({
         setDropdownOpen((prev) => !prev);
     };
 
-    const handleSelection = (value: T) => {
+    const handleSelection = (value: any) => {
         setSelectedValue(value);
         onChange(value);
         setDropdownOpen(false);
@@ -72,7 +74,10 @@ const Dropdown = <T,>({
                  focus:ring-blue-500 focus:ring-opacity-50 text-xs dark:bg-gray-700 dark:text-white dark:hover:bg-black ${className}`}
             >
                 <span className="overflow-hidden w-40 max-h-8">
-                    {displayValue(selectedValue ?? options[0])}
+                    {displayValue(
+                        selectedValue ??
+                            value_constants.all_values_string_filter,
+                    )}
                 </span>
                 <svg
                     className={`w-4 h-4 transition-transform ${dropdownOpen ? 'rotate-180' : 'rotate-0'}`}

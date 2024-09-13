@@ -115,8 +115,6 @@ const DataCard: React.FC<DataCardProps> = ({
                 </DataCardDiv>
             );
 
-  
-
         case DataCardType.CHERCHEUR_DROPDOWN:
             return (
                 <DataCardDiv title={content.title}>

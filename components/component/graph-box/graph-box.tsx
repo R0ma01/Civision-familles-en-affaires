@@ -28,7 +28,7 @@ const GraphBox: React.FC<GraphBoxProps> = ({ content, chartSize }) => {
     const matchStage = useGlobalFilterStore((state) => state.matchStage);
     const setFilter = useGlobalFilterStore((state) => state.setFilter);
     const getFilter = useGlobalFilterStore((state) => state.getFilter);
-
+    const [loading, setLoading] = useState<boolean>(false);
     const [frozen, setFrozen] = useState<boolean>(false);
     const [size, setChartSize] = useState<ChartSize>(
         chartSize ? chartSize : ChartSize.MEDIUM,
@@ -70,7 +70,9 @@ const GraphBox: React.FC<GraphBoxProps> = ({ content, chartSize }) => {
                     value2: 3,
                 },
             ];
+
             setChartData(result ? result : tempResult);
+            setLoading(false);
         }
 
         async function fetch(donnes: MainDataFields[]) {
@@ -98,76 +100,22 @@ const GraphBox: React.FC<GraphBoxProps> = ({ content, chartSize }) => {
                 },
             ];
             setChartData(result ? result : tempResult);
+            setLoading(false);
         }
 
         if (
-            content.graphType === GraphBoxType.DOUGHNUT ||
-            content.graphType === GraphBoxType.VERTICAL_BARCHART ||
-            content.graphType === GraphBoxType.HORIZONTAL_BARCHART
+            (content.graphType === GraphBoxType.DOUGHNUT ||
+                content.graphType === GraphBoxType.VERTICAL_BARCHART ||
+                content.graphType === GraphBoxType.HORIZONTAL_BARCHART) &&
+            !loading
         ) {
+            setLoading(true);
             fetch(content.donnes);
         } else {
+            setLoading(true);
             fetchMultiple(content.donnes);
         }
     }, [content, matchStage]);
-
-    useEffect(() => {
-        async function fetchMultiple(donnes: MainDataFields[]) {
-            const result = await GraphDataHttpRequestService.getChartData(
-                donnes,
-                matchStage,
-            );
-            const tempResult: ChartDataMultipleFileds[] = [
-                {
-                    name: 'groupe1',
-                    value1: 1,
-                    value2: 3,
-                },
-                {
-                    name: 'groupe2',
-                    value1: 1,
-                    value2: 3,
-                },
-            ];
-            setChartData(result ? result : tempResult);
-        }
-
-        async function fetch(donnes: MainDataFields[]) {
-            const result = await GraphDataHttpRequestService.getChartData(
-                donnes,
-                matchStage,
-            );
-
-            // const nanResult = result.findIndex(
-            //     (item) => item.name.toString() === 'NaN',
-            // );
-            // const newResult = result.filter(
-            //     (item) => item.name.toString() !== 'NaN',
-            // );
-            // if (nanResult > -1) setNanData(result[nanResult]);
-            const tempResult: ChartData[] = [
-                {
-                    name: 'groupe1',
-                    value: 1,
-                },
-                {
-                    name: 'groupe2',
-                    value: 1,
-                },
-            ];
-            setChartData(result ? result : tempResult);
-        }
-
-        if (
-            content.graphType === GraphBoxType.DOUGHNUT ||
-            content.graphType === GraphBoxType.VERTICAL_BARCHART ||
-            content.graphType === GraphBoxType.HORIZONTAL_BARCHART
-        ) {
-            fetch(content.donnes);
-        } else {
-            fetchMultiple(content.donnes);
-        }
-    }, [matchStage, content]);
 
     useEffect(() => {
         const filterChartData = () => {

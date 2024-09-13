@@ -1,8 +1,8 @@
 import { NextResponse } from 'next/server';
 import { connectToDatabaseStudy } from '@/utils/mongodb';
 import { MongoDBPaths } from '@/components/enums/mongodb-paths-enum';
-import { CompanyInfo } from '@/components/interface/company';
 import { PossibleDataFileds } from '@/services/tableaux-taitement';
+import { TableauxTraductionsMainDataFields } from '@/services/translations';
 import { MainDataFields } from '@/components/enums/data-types-enum';
 
 // Define interfaces for the aggregation results
@@ -16,6 +16,21 @@ function generateAggregationQuery(
     filters: Record<string, any>,
     possibleValues: string[],
 ) {
+    if (
+        typeof filters[field] === 'number' ||
+        typeof filters[field] === 'string'
+    ) {
+        filters[field] = {
+            $nin: [null, NaN],
+            $in: [filters[field]],
+        };
+    } else {
+        filters[field] = {
+            $nin: [null, NaN],
+        };
+    }
+
+    console.log(filters);
     const aggregationPipeline = [
         {
             $match: {
@@ -40,6 +55,7 @@ function generateAggregationQuery(
         const result = await collection
             .aggregate(aggregationPipeline)
             .toArray();
+        console.log(result);
         let resultMap = new Map<string, AggregationResult>(
             result.map((item: AggregationResult) => {
                 if (Array.isArray(item.name)) {
@@ -48,13 +64,13 @@ function generateAggregationQuery(
                 return [item.name.toString(), item];
             }),
         );
-
         if (Array.from(resultMap.keys())[0]?.includes('[')) {
             resultMap = unclusterResultArrays(
                 Array.from(resultMap.entries()),
                 possibleValues,
             );
         }
+        console.log(resultMap);
         if (needsNumberFiltering(field)) {
             resultMap = numberData(field, resultMap, possibleValues);
         }
@@ -75,6 +91,36 @@ function generateDualFieldAggregationQuery(
     filters: Record<string, any>,
     possibleValues: { [key: string]: string[] },
 ) {
+    if (
+        typeof filters[field1] === 'number' ||
+        typeof filters[field1] === 'string'
+    ) {
+        filters[field1] = {
+            $exists: true,
+            $nin: [null, NaN],
+            $in: [filters[field1]],
+        };
+    } else {
+        filters[field1] = {
+            $exists: true,
+            $nin: [null, NaN],
+        };
+    }
+    if (
+        typeof filters[field2] === 'number' ||
+        typeof filters[field2] === 'string'
+    ) {
+        filters[field2] = {
+            $exists: true,
+            $nin: [null, NaN],
+            $in: [filters[field2]],
+        };
+    } else {
+        filters[field2] = {
+            $exists: true,
+            $nin: [null, NaN],
+        };
+    }
     const aggregationPipeline = [
         {
             $match: {
@@ -165,7 +211,7 @@ function unclusterResultArrays(
     // Iterate over the original result and aggregate values
     originalResult.forEach(([key, aggregationResult]) => {
         aggregationResult.name.forEach((name: string) => {
-            const currentResult = resultMap.get(name);
+            const currentResult = resultMap.get(name.toString());
             if (currentResult) {
                 currentResult.value += aggregationResult.value;
             }
@@ -203,8 +249,14 @@ export async function GET(req: Request) {
         let mongoQuery: (collection: any) => Promise<any[]>;
 
         if (donnesObj.length > 1) {
-            const tableau1 = PossibleDataFileds.get(donnesObj[0]) || [];
-            const tableau2 = PossibleDataFileds.get(donnesObj[1]) || [];
+            const tableau1 = Object.keys(
+                TableauxTraductionsMainDataFields.get(donnesObj[0])
+                    ?.dataLabels ?? {},
+            );
+            const tableau2 = Object.keys(
+                TableauxTraductionsMainDataFields.get(donnesObj[1])
+                    ?.dataLabels ?? {},
+            );
             const dynamicObject = {
                 [donnesObj[0]]: tableau1,
                 [donnesObj[1]]: tableau2,
@@ -217,7 +269,10 @@ export async function GET(req: Request) {
                 dynamicObject,
             );
         } else {
-            const tableau = PossibleDataFileds.get(donnesObj[0]) || [];
+            const tableau = Object.keys(
+                TableauxTraductionsMainDataFields.get(donnesObj[0])
+                    ?.dataLabels ?? {},
+            );
             mongoQuery = generateAggregationQuery(
                 donnesObj[0],
                 filtersObj,
@@ -226,8 +281,9 @@ export async function GET(req: Request) {
         }
 
         const result = await mongoQuery(collection);
-
+        console.log(result);
         if (!result || result.length === 0) {
+            console.log('hello');
             return NextResponse.json(
                 { error: 'Data field not found' },
                 { status: 404 },
