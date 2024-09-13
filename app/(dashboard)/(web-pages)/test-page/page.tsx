@@ -72,7 +72,8 @@ function PageContentComponent() {
                                 description: '',
                                 graphData: [
                                     {
-                                        graphType: GraphBoxType.DOUGHNUT,
+                                        graphType:
+                                            GraphBoxType.VERTICAL_BARCHART,
                                         donnes: [value],
                                     },
                                 ],

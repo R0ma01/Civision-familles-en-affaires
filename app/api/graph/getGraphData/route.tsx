@@ -1,8 +1,8 @@
 import { NextResponse } from 'next/server';
 import { connectToDatabaseStudy } from '@/utils/mongodb';
 import { MongoDBPaths } from '@/components/enums/mongodb-paths-enum';
-import { PossibleDataFileds } from '@/services/tableaux-taitement';
-import { TableauxTraductionsMainDataFields } from '@/services/translations';
+
+import { GraphTextService } from '@/services/translations';
 import { MainDataFields } from '@/components/enums/data-types-enum';
 
 // Define interfaces for the aggregation results
@@ -14,7 +14,7 @@ interface AggregationResult {
 function generateAggregationQuery(
     field: string,
     filters: Record<string, any>,
-    possibleValues: string[],
+    possibleValues: string[] | number[],
 ) {
     if (
         typeof filters[field] === 'number' ||
@@ -89,7 +89,7 @@ function generateDualFieldAggregationQuery(
     field1: string,
     field2: string,
     filters: Record<string, any>,
-    possibleValues: { [key: string]: string[] },
+    possibleValues: { [key: string]: string[] | number[] },
 ) {
     if (
         typeof filters[field1] === 'number' ||
@@ -249,14 +249,9 @@ export async function GET(req: Request) {
         let mongoQuery: (collection: any) => Promise<any[]>;
 
         if (donnesObj.length > 1) {
-            const tableau1 = Object.keys(
-                TableauxTraductionsMainDataFields.get(donnesObj[0])
-                    ?.dataLabels ?? {},
-            );
-            const tableau2 = Object.keys(
-                TableauxTraductionsMainDataFields.get(donnesObj[1])
-                    ?.dataLabels ?? {},
-            );
+            const tableau1 = GraphTextService.getKeys(donnesObj[0]);
+            const tableau2 = GraphTextService.getKeys(donnesObj[1]);
+
             const dynamicObject = {
                 [donnesObj[0]]: tableau1,
                 [donnesObj[1]]: tableau2,
@@ -269,10 +264,7 @@ export async function GET(req: Request) {
                 dynamicObject,
             );
         } else {
-            const tableau = Object.keys(
-                TableauxTraductionsMainDataFields.get(donnesObj[0])
-                    ?.dataLabels ?? {},
-            );
+            const tableau = GraphTextService.getKeys(donnesObj[0]);
             mongoQuery = generateAggregationQuery(
                 donnesObj[0],
                 filtersObj,

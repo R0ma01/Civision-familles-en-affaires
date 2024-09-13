@@ -1,5 +1,6 @@
 import { MainDataFields } from '@/components/enums/data-types-enum';
 import { GraphBoxType } from '@/components/enums/graph-box-enum';
+import { Language } from '@/components/enums/language';
 interface Traductions {
     FR: string;
     EN: string;
@@ -46,10 +47,6 @@ const keyValuePairs: [string, dataInformations][] = [
                 'apres 2010': {
                     FR: 'après 2010',
                     EN: 'after 2010',
-                },
-                NaN: {
-                    FR: 'Non Applicable',
-                    EN: 'Not Applicable',
                 },
             },
         },
@@ -1537,3 +1534,43 @@ export const TableauxTraductionsGraphiques = new Map<
     string,
     { FR: string; EN: string }
 >(keyValuePairsGraphs);
+
+export const GraphTextService = {
+    getKeys: getKeys,
+    getFieldLabels: getFieldLabels,
+    getFieldLabel: getFieldLabel,
+    getLabel: getLabel,
+};
+
+function getKeys(dataField: MainDataFields): number[] | string[] {
+    return Object.keys(
+        TableauxTraductionsMainDataFields.get(dataField)?.dataLabels ?? {},
+    );
+}
+function getFieldLabels(
+    dataField: MainDataFields,
+    language: Language,
+): string[] {
+    return Object.values(
+        TableauxTraductionsMainDataFields.get(dataField)?.dataLabels ?? {},
+    ).map((value) => value[language]);
+}
+
+function getFieldLabel(
+    dataField: MainDataFields,
+    field: string,
+    language: Language,
+): string {
+    const dataLabels =
+        TableauxTraductionsMainDataFields.get(dataField)?.dataLabels;
+    const fieldLabel = dataLabels?.[field]?.[language];
+
+    // If the label is undefined, return field.toString()
+    return fieldLabel !== undefined ? fieldLabel : field.toString();
+}
+
+function getLabel(dataField: MainDataFields, language: Language): string {
+    return (
+        TableauxTraductionsMainDataFields.get(dataField)?.label[language] ?? ''
+    );
+}

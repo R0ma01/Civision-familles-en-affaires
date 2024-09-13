@@ -15,6 +15,8 @@ import {
     ChartData,
     ChartDataMultipleFileds,
 } from '@/components/interface/chart-data';
+import { GraphTextService } from '@/services/translations';
+import { Language } from '@/components/enums/language';
 
 interface DoughnutChartProps {
     chartContent: ChartContent;
@@ -91,6 +93,24 @@ const Doughnut: React.FC<DoughnutChartProps> = ({
     }, [chartContent.data]);
 
     const width = size === ChartSize.SMALL ? size : size + 100;
+    const CustomTooltip = ({ active, payload }: any) => {
+        if (active && payload && payload.length) {
+            const customLabel = GraphTextService.getFieldLabel(
+                chartContent.donnees[0],
+                payload[0].name,
+                Language.FR,
+            );
+
+            return (
+                <div className="custom-tooltip bg-white p-2 shadow-lg rounded text-black max-w-[200px] text-wrap">
+                    <p className="label font-bold text-black">{customLabel}</p>
+                    <p className="intro text-black">{`${payload[0].value}`}</p>
+                </div>
+            );
+        }
+
+        return null;
+    };
 
     return (
         <div className="dark:text-white">
@@ -126,7 +146,7 @@ const Doughnut: React.FC<DoughnutChartProps> = ({
                             ))}
                         {!chartData && <div>Chargement...</div>}
                     </Pie>
-                    <Tooltip />
+                    <Tooltip content={<CustomTooltip />} />
                     <Legend
                         layout="vertical"
                         align="right"
@@ -141,6 +161,9 @@ const Doughnut: React.FC<DoughnutChartProps> = ({
                         wrapperStyle={{
                             lineHeight:
                                 size === ChartSize.SMALL ? '10px' : '24px',
+                            maxHeight: `${size}px`, // Control the height of the legend area
+                            overflowY: 'auto', // Enable vertical scrolling
+                            overflowX: 'hidden', // Hide horizontal scroll if not needed
                         }}
                         iconSize={size === ChartSize.SMALL ? 8 : 12}
                         formatter={(value) => {
@@ -151,16 +174,24 @@ const Doughnut: React.FC<DoughnutChartProps> = ({
                                         color: 'currentColor',
                                     }}
                                 >
-                                    {value}
+                                    {GraphTextService.getFieldLabel(
+                                        chartContent.donnees[0],
+                                        value,
+                                        Language.FR,
+                                    )}
                                 </span>
                             ) : (
                                 <span
                                     style={{
-                                        fontSize: '12px',
+                                        fontSize: '10px',
                                         color: 'currentColor',
                                     }}
                                 >
-                                    {value}
+                                    {GraphTextService.getFieldLabel(
+                                        chartContent.donnees[0],
+                                        value,
+                                        Language.FR,
+                                    )}
                                 </span>
                             );
                         }}

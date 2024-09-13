@@ -16,6 +16,8 @@ import {
     ChartDataMultipleFileds,
 } from '@/components/interface/chart-data';
 import { MainDataFields } from '@/components/enums/data-types-enum';
+import { GraphTextService } from '@/services/translations';
+import { Language } from '@/components/enums/language';
 
 interface SimpleHorizontalBarChartProps {
     chartContent: ChartContent;
@@ -23,134 +25,81 @@ interface SimpleHorizontalBarChartProps {
     filterData?: (dataField: MainDataFields, entry: any) => void;
 }
 
-const CustomTooltip = ({ active, payload }: any) => {
-    if (active && payload && payload.length) {
-        return (
-            <div
-                className="custom-tooltip"
-                style={{
-                    cursor: 'pointer',
-                    background: 'white',
-                    color: 'black',
-                    border: '1px solid #ccc',
-                }}
-            >
-                <p>{`${payload[0].payload.name} : ${payload[0].payload.value}`}</p>
-            </div>
-        );
-    }
-    return null;
-};
-
 const HorizontalBarChart: React.FC<SimpleHorizontalBarChartProps> = ({
     chartContent,
     chartSize = ChartSize.SMALL,
-    filterData = (entry: any) => {},
+    filterData = () => {},
 }) => {
     const [chartData, setChartData] = useState<
-        ChartData[] | ChartDataMultipleFileds[] | undefined
-    >(undefined);
-
-    const originalOrder = useRef<
-        ChartData[] | ChartDataMultipleFileds[] | undefined
+        (ChartData | ChartDataMultipleFileds)[] | undefined
     >(undefined);
 
     const [size, setSize] = useState<ChartSize>(chartSize);
-
-    useEffect(() => {
-        setSize(chartSize);
-    }, [chartSize]);
     const [yAxisWidth, setYAxisWidth] = useState<number>(40);
 
     // Calculate dynamic height based on the number of data points
     const calculateHeight = () => {
         const dataLength = chartContent.data.length;
         const baseHeight = size === ChartSize.SMALL ? 150 : 300;
-        const dynamicHeight =
-            size === ChartSize.SMALL
-                ? baseHeight // Fixed height for SMALL
-                : Math.max(baseHeight, dataLength * 40); // 30px per line for other sizes
-        return dynamicHeight;
+        return size === ChartSize.SMALL
+            ? baseHeight
+            : Math.max(baseHeight, dataLength * 40);
     };
 
     useEffect(() => {
         if (chartContent.data?.length > 0) {
-            if (!originalOrder.current) {
-                originalOrder.current = chartContent.data as ChartData[];
-            } else {
-                const updatedData = originalOrder.current.map(
-                    (originalItem) => {
-                        const newItem = chartContent.data.find(
-                            (newItem) => newItem.name === originalItem.name,
-                        );
-                        return newItem
-                            ? { ...originalItem, ...newItem }
-                            : { ...originalItem, value: 0 };
-                    },
-                );
-
-                chartContent.data.forEach((newItem) => {
-                    if (
-                        !originalOrder.current!.some(
-                            (originalItem) =>
-                                originalItem.name === newItem.name,
-                        )
-                    ) {
-                        updatedData.push(newItem);
-                    }
-                });
-
-                setChartData(updatedData);
-                originalOrder.current = updatedData;
-            }
+            setChartData(chartContent.data);
 
             // Calculate the longest label's width and set the Y-axis width
-            const longestLabel = Math.max(
-                ...chartContent.data.map((item) => item.name?.length),
-            );
-            const calculatedWidth = Math.min(longestLabel * 8, 150); // Adjust multiplier and max width as needed
+
+            const calculatedWidth = 150; // Adjust as needed
             setYAxisWidth(calculatedWidth);
         }
-    }, [chartContent.data]);
+    }, [chartContent.data, chartContent.donnees]);
+
+    const CustomTooltip = ({ active, payload }: any) => {
+        if (active && payload && payload.length) {
+            const customLabel = GraphTextService.getFieldLabel(
+                chartContent.donnees[0],
+                payload[0].payload.name,
+                Language.FR,
+            );
+
+            return (
+                <div className="custom-tooltip bg-white p-2 shadow-lg rounded text-black max-w-[200px] text-wrap">
+                    <p className="label font-bold text-black">{customLabel}</p>
+                    <p className="intro text-black">{`${payload[0].payload.value}`}</p>
+                </div>
+            );
+        }
+
+        return null;
+    };
 
     return (
-        <div className="dark:text-white">
+        <div className="dark:text-white text-wrap">
             <ResponsiveContainer width={size + 100} height={calculateHeight()}>
                 <BarChart layout="vertical" data={chartData}>
-                    {size === ChartSize.SMALL ? (
-                        <>
-                            <XAxis
-                                type="number"
-                                fontSize={8}
-                                stroke="currentColor"
-                            />
-                            <YAxis
-                                dataKey="name"
-                                type="category"
-                                width={yAxisWidth}
-                                fontSize={8}
-                                stroke="currentColor"
-                            />
-                        </>
-                    ) : (
-                        <>
-                            <XAxis
-                                type="number"
-                                fontSize={12}
-                                stroke="currentColor"
-                            />
-                            <YAxis
-                                dataKey="name"
-                                type="category"
-                                width={yAxisWidth}
-                                fontSize={12}
-                                stroke="currentColor"
-                            />
-                        </>
-                    )}
-
+                    <XAxis
+                        type="number"
+                        fontSize={size === ChartSize.SMALL ? 6 : 10}
+                        stroke="currentColor"
+                    />
+                    <YAxis
+                        dataKey="name"
+                        type="category"
+                        width={yAxisWidth}
+                        fontSize={size === ChartSize.SMALL ? 6 : 10}
+                        stroke="currentColor"
+                        tickFormatter={(value: any, index: number) =>
+                            GraphTextService.getFieldLabel(
+                                chartContent.donnees[0],
+                                value,
+                                Language.FR,
+                            ).toString()
+                        }
+                    />
                     <Tooltip content={<CustomTooltip />} />
-
                     <Bar
                         dataKey="value"
                         barSize={
@@ -161,7 +110,6 @@ const HorizontalBarChart: React.FC<SimpleHorizontalBarChartProps> = ({
                                   : 20
                         }
                     >
-                        s
                         {chartData &&
                             chartData.map((entry, index) => (
                                 <Cell
@@ -179,7 +127,6 @@ const HorizontalBarChart: React.FC<SimpleHorizontalBarChartProps> = ({
                                     }
                                 />
                             ))}
-                        {!chartData && <div>Chargement... </div>}
                     </Bar>
                 </BarChart>
             </ResponsiveContainer>

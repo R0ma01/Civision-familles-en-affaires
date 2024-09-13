@@ -19,6 +19,15 @@ const chartPalette = [
     '#89BF9E', // Soft Green
     '#647D88', // Grayish Blue
     '#9C6B98', // Muted Purple
+    '#FFA07A', // Light Salmon
+    '#F4A499', // Sandy Brown
+    '#FFD700', // Gold
+    '#87CEEB', // Light Sky Blue
+    '#4682B4', // Steel Blue
+    '#B0C4DE', // Light Steel Blue
+    '#8B4513', // Saddle Brown
+    '#DDA0DD', // Plum
+    '#FF69B4', // Hot Pink
 ];
 
 const colors = {

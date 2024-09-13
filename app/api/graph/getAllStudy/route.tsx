@@ -1,7 +1,6 @@
 import { NextResponse } from 'next/server';
 import { connectToDatabaseStudy } from '@/utils/mongodb';
 import { MongoDBPaths } from '@/components/enums/mongodb-paths-enum';
-import { CompanyInfo } from '@/components/interface/company';
 
 // Define interfaces for the aggregation results
 interface AggregationResult {

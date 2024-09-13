@@ -7,6 +7,7 @@ import {
     ResponsiveContainer,
     Tooltip,
     Cell,
+    Legend,
 } from 'recharts';
 import { chartPalette } from '@/constants/color-palet';
 import { ChartContent } from '@/components/interface/chart-content';
@@ -16,6 +17,8 @@ import {
     ChartData,
     ChartDataMultipleFileds,
 } from '@/components/interface/chart-data';
+import { GraphTextService } from '@/services/translations';
+import { Language } from '@/components/enums/language';
 
 interface VerticalBarChartProps {
     chartContent: ChartContent;
@@ -80,21 +83,20 @@ const VerticalBarChart: React.FC<VerticalBarChartProps> = ({
 
     const CustomTooltip = ({ active, payload }: any) => {
         if (active && payload && payload.length) {
+            const customLabel = GraphTextService.getFieldLabel(
+                chartContent.donnees[0],
+                payload[0].payload.name,
+                Language.FR,
+            );
+
             return (
-                <div
-                    className="custom-tooltip"
-                    style={{
-                        cursor: 'pointer',
-                        background: 'white',
-                        color: 'black',
-                        padding: '5px',
-                        border: '1px solid #ccc',
-                    }}
-                >
-                    <p>{`${payload[0].payload.name} : ${payload[0].payload.value}`}</p>
+                <div className="custom-tooltip bg-white p-2 shadow-lg rounded text-black max-w-[200px] text-wrap">
+                    <p className="label font-bold text-black">{customLabel}</p>
+                    <p className="intro text-black">{`${payload[0].payload.value}`}</p>
                 </div>
             );
         }
+
         return null;
     };
 
@@ -130,6 +132,13 @@ const VerticalBarChart: React.FC<VerticalBarChartProps> = ({
                                 type="category"
                                 fontSize={12}
                                 stroke="currentColor"
+                                tickFormatter={(value: any, index: number) =>
+                                    GraphTextService.getFieldLabel(
+                                        chartContent.donnees[0],
+                                        value,
+                                        Language.FR,
+                                    ).toString()
+                                }
                             />
                         </>
                     )}
