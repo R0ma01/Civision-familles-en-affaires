@@ -9,7 +9,7 @@ import {
 } from '@/components/component/svg-icons/svg-icons';
 import Dropdown from '@/components/component/drop-down-menu/drop-down-menu';
 import * as filters from '@/components/enums/filter-enum';
-import { MainDataFields } from '@/components/enums/data-types-enum';
+import { AlbumDataFields } from '@/components/enums/data-types-enum';
 import useGlobalFilterStore from '@/stores/global-filter-store';
 import useGlobalDataStore from '@/stores/global-data-store';
 import { ButtonType } from '@/components/enums/button-type-enum';
@@ -54,7 +54,7 @@ const FilterMenu: React.FC<FilterMenuProps> = ({
         toggleContentVisibility();
     };
 
-    async function handleChange(field: MainDataFields, newFieldValue: any) {
+    async function handleChange(field: AlbumDataFields, newFieldValue: any) {
         setFilter(field, newFieldValue);
 
         switch (mapType) {
@@ -148,11 +148,11 @@ const FilterMenu: React.FC<FilterMenuProps> = ({
                                         <Dropdown
                                             inputValue={
                                                 matchStage[
-                                                    MainDataFields
+                                                    AlbumDataFields
                                                         .TAILLE_ENTREPRISE
                                                 ]
                                                     ? matchStage[
-                                                          MainDataFields
+                                                          AlbumDataFields
                                                               .TAILLE_ENTREPRISE
                                                       ]['$in'][0]
                                                     : value_constants.all_values_string_filter
@@ -160,12 +160,12 @@ const FilterMenu: React.FC<FilterMenuProps> = ({
                                             options={[
                                                 'toutes',
                                                 ...(PossibleDataFileds.get(
-                                                    MainDataFields.TAILLE_ENTREPRISE,
+                                                    AlbumDataFields.TAILLE_ENTREPRISE,
                                                 ) || []),
                                             ]}
                                             onChange={(value: any) =>
                                                 handleChange(
-                                                    MainDataFields.TAILLE_ENTREPRISE,
+                                                    AlbumDataFields.TAILLE_ENTREPRISE,
                                                     value,
                                                 )
                                             }
@@ -174,11 +174,11 @@ const FilterMenu: React.FC<FilterMenuProps> = ({
                                         <Dropdown
                                             inputValue={
                                                 matchStage[
-                                                    MainDataFields
+                                                    AlbumDataFields
                                                         .ANNEE_FONDATION
                                                 ]
                                                     ? matchStage[
-                                                          MainDataFields
+                                                          AlbumDataFields
                                                               .ANNEE_FONDATION
                                                       ]['$in'][0]
                                                     : value_constants.all_values_string_filter
@@ -186,12 +186,12 @@ const FilterMenu: React.FC<FilterMenuProps> = ({
                                             options={[
                                                 'toutes',
                                                 ...(PossibleDataFileds.get(
-                                                    MainDataFields.ANNEE_FONDATION,
+                                                    AlbumDataFields.ANNEE_FONDATION,
                                                 ) || []),
                                             ]}
                                             onChange={(value: any) =>
                                                 handleChange(
-                                                    MainDataFields.ANNEE_FONDATION,
+                                                    AlbumDataFields.ANNEE_FONDATION,
                                                     value,
                                                 )
                                             }
@@ -200,11 +200,11 @@ const FilterMenu: React.FC<FilterMenuProps> = ({
                                         <Dropdown
                                             inputValue={
                                                 matchStage[
-                                                    MainDataFields
+                                                    AlbumDataFields
                                                         .DIRIGEANT_GENERATION
                                                 ]
                                                     ? matchStage[
-                                                          MainDataFields
+                                                          AlbumDataFields
                                                               .DIRIGEANT_GENERATION
                                                       ]['$in'][0]
                                                     : value_constants.all_values_string_filter
@@ -212,12 +212,12 @@ const FilterMenu: React.FC<FilterMenuProps> = ({
                                             options={[
                                                 'toutes',
                                                 ...(PossibleDataFileds.get(
-                                                    MainDataFields.DIRIGEANT_GENERATION,
+                                                    AlbumDataFields.DIRIGEANT_GENERATION,
                                                 ) || []),
                                             ]}
                                             onChange={(value: any) =>
                                                 handleChange(
-                                                    MainDataFields.DIRIGEANT_GENERATION,
+                                                    AlbumDataFields.DIRIGEANT_GENERATION,
                                                     value,
                                                 )
                                             }
@@ -230,11 +230,11 @@ const FilterMenu: React.FC<FilterMenuProps> = ({
                                         <Dropdown
                                             inputValue={
                                                 matchStage[
-                                                    MainDataFields
+                                                    AlbumDataFields
                                                         .COORDONNES_REGION
                                                 ]
                                                     ? matchStage[
-                                                          MainDataFields
+                                                          AlbumDataFields
                                                               .COORDONNES_REGION
                                                       ]['$in'][0]
                                                     : value_constants.all_values_string_filter
@@ -242,12 +242,12 @@ const FilterMenu: React.FC<FilterMenuProps> = ({
                                             options={[
                                                 'toutes',
                                                 ...(PossibleDataFileds.get(
-                                                    MainDataFields.COORDONNES_REGION,
+                                                    AlbumDataFields.COORDONNES_REGION,
                                                 ) || []),
                                             ]}
                                             onChange={(value: any) =>
                                                 handleChange(
-                                                    MainDataFields.COORDONNES_REGION,
+                                                    AlbumDataFields.COORDONNES_REGION,
                                                     value,
                                                 )
                                             }
@@ -256,11 +256,11 @@ const FilterMenu: React.FC<FilterMenuProps> = ({
                                         <Dropdown
                                             inputValue={
                                                 matchStage[
-                                                    MainDataFields
+                                                    AlbumDataFields
                                                         .SECTEUR_ACTIVITE
                                                 ]
                                                     ? matchStage[
-                                                          MainDataFields
+                                                          AlbumDataFields
                                                               .SECTEUR_ACTIVITE
                                                       ]['$in'][0]
                                                     : value_constants.all_values_string_filter
@@ -268,12 +268,12 @@ const FilterMenu: React.FC<FilterMenuProps> = ({
                                             options={[
                                                 'toutes',
                                                 ...(PossibleDataFileds.get(
-                                                    MainDataFields.SECTEUR_ACTIVITE,
+                                                    AlbumDataFields.SECTEUR_ACTIVITE,
                                                 ) || []),
                                             ]}
                                             onChange={(value: any) =>
                                                 handleChange(
-                                                    MainDataFields.SECTEUR_ACTIVITE,
+                                                    AlbumDataFields.SECTEUR_ACTIVITE,
                                                     value,
                                                 )
                                             }
@@ -282,10 +282,10 @@ const FilterMenu: React.FC<FilterMenuProps> = ({
                                         <Dropdown
                                             inputValue={
                                                 matchStage[
-                                                    MainDataFields.REVENUS_RANG
+                                                    AlbumDataFields.REVENUS_RANG
                                                 ]
                                                     ? matchStage[
-                                                          MainDataFields
+                                                          AlbumDataFields
                                                               .REVENUS_RANG
                                                       ]['$in'][0]
                                                     : value_constants.all_values_string_filter
@@ -293,12 +293,12 @@ const FilterMenu: React.FC<FilterMenuProps> = ({
                                             options={[
                                                 'toutes',
                                                 ...(PossibleDataFileds.get(
-                                                    MainDataFields.REVENUS_RANG,
+                                                    AlbumDataFields.REVENUS_RANG,
                                                 ) || []),
                                             ]}
                                             onChange={(value: any) =>
                                                 handleChange(
-                                                    MainDataFields.REVENUS_RANG,
+                                                    AlbumDataFields.REVENUS_RANG,
                                                     value,
                                                 )
                                             }
@@ -329,10 +329,10 @@ const FilterMenu: React.FC<FilterMenuProps> = ({
                                     <Dropdown
                                         inputValue={
                                             matchStage[
-                                                MainDataFields.REVENUS_RANG
+                                                AlbumDataFields.REVENUS_RANG
                                             ]
                                                 ? matchStage[
-                                                      MainDataFields
+                                                      AlbumDataFields
                                                           .REVENUS_RANG
                                                   ]['$in'][0]
                                                 : value_constants.all_values_string_filter
@@ -342,7 +342,7 @@ const FilterMenu: React.FC<FilterMenuProps> = ({
                                         )}
                                         onChange={(value: any) =>
                                             handleChange(
-                                                MainDataFields.ANNEE_FONDATION,
+                                                AlbumDataFields.ANNEE_FONDATION,
                                                 value,
                                             )
                                         }
@@ -351,10 +351,10 @@ const FilterMenu: React.FC<FilterMenuProps> = ({
                                     <Dropdown
                                         inputValue={
                                             matchStage[
-                                                MainDataFields.REVENUS_RANG
+                                                AlbumDataFields.REVENUS_RANG
                                             ]
                                                 ? matchStage[
-                                                      MainDataFields
+                                                      AlbumDataFields
                                                           .REVENUS_RANG
                                                   ]['$in'][0]
                                                 : value_constants.all_values_string_filter
@@ -364,7 +364,7 @@ const FilterMenu: React.FC<FilterMenuProps> = ({
                                         )}
                                         onChange={(value: any) =>
                                             handleChange(
-                                                MainDataFields.DIRIGEANT_GENERATION,
+                                                AlbumDataFields.DIRIGEANT_GENERATION,
                                                 value,
                                             )
                                         }

@@ -12,7 +12,7 @@ import {
 import { chartPalette } from '@/constants/color-palet';
 import { ChartContent } from '@/components/interface/chart-content';
 import { ChartSize } from '@/components/enums/chart-size-enum';
-import { MainDataFields } from '@/components/enums/data-types-enum';
+import { AlbumDataFields } from '@/components/enums/data-types-enum';
 import {
     ChartData,
     ChartDataMultipleFileds,
@@ -23,7 +23,7 @@ import { Language } from '@/components/enums/language';
 interface VerticalBarChartProps {
     chartContent: ChartContent;
     chartSize?: ChartSize;
-    filterData?: (dataField: MainDataFields, entry: any) => void;
+    filterData?: (dataField: AlbumDataFields, entry: any) => void;
 }
 
 const VerticalBarChart: React.FC<VerticalBarChartProps> = ({

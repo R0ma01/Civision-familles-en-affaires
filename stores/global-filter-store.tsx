@@ -1,16 +1,16 @@
 import { create } from 'zustand';
 import { produce } from 'immer';
 
-import { MainDataFields } from '@/components/enums/data-types-enum';
+import { AlbumDataFields } from '@/components/enums/data-types-enum';
 import { value_constants } from '@/constants/constants';
 
 interface GlobalState {
     matchStage: Record<string, any>;
     setFilter: (
-        filterName: MainDataFields | string,
+        filterName: AlbumDataFields | string,
         filterValue: string | number,
     ) => void;
-    getFilter: (filterName: MainDataFields | string) => any;
+    getFilter: (filterName: AlbumDataFields | string) => any;
 }
 
 const useGlobalFilterStore = create<GlobalState>((set, get) => ({

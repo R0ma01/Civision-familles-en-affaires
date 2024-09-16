@@ -3,7 +3,7 @@ import DataCard from '@/components/component/data-card/data-card';
 import PageContentContainer from '@/components/component/page-content-container/page-content-container';
 import { DataCardType } from '@/components/enums/data-card-type-enum';
 import { GraphBoxType } from '@/components/enums/graph-box-enum';
-import { MainDataFields } from '@/components/enums/data-types-enum';
+import { AlbumDataFields } from '@/components/enums/data-types-enum';
 import RepertoirePageTutorial from '@/components/component/tutorials/repertoire-page-tutorial';
 import useMapStore from '@/stores/global-map-store';
 import { MapType } from '@/components/enums/map-type-enum';
@@ -91,7 +91,7 @@ function Repertoire() {
             graphData: [
                 {
                     graphType: GraphBoxType.DOUGHNUT,
-                    donnes: [MainDataFields.DIRIGEANT_AGE],
+                    donnes: [AlbumDataFields.DIRIGEANT_AGE],
                 },
             ],
         },

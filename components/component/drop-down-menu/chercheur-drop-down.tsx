@@ -4,7 +4,7 @@ import {
     ChercheurDropdownItem,
     ChercheurDropdownSection,
 } from '@/components/interface/chercheur-drop-down-content';
-import { MainDataFields } from '@/components/enums/data-types-enum';
+import { AlbumDataFields } from '@/components/enums/data-types-enum';
 import { GraphBoxType } from '@/components/enums/graph-box-enum';
 
 // Static dropdown structure
@@ -16,25 +16,25 @@ const dropdownStructure: ChercheurDropdownSection[] = [
                 label: 'Année de fondation des entreprises',
                 selected: false,
                 graphType: GraphBoxType.DOUGHNUT,
-                donnees: [MainDataFields.ANNEE_FONDATION],
+                donnees: [AlbumDataFields.ANNEE_FONDATION],
             },
             {
                 label: 'Taille des entreprises',
                 selected: false,
                 graphType: GraphBoxType.DOUGHNUT,
-                donnees: [MainDataFields.TAILLE_ENTREPRISE],
+                donnees: [AlbumDataFields.TAILLE_ENTREPRISE],
             },
             {
                 label: "Secteur d'activité des entreprises",
                 selected: false,
                 graphType: GraphBoxType.VERTICAL_BARCHART,
-                donnees: [MainDataFields.SECTEUR_ACTIVITE],
+                donnees: [AlbumDataFields.SECTEUR_ACTIVITE],
             },
             {
                 label: "Région d'opération des entreprises",
                 selected: false,
                 graphType: GraphBoxType.VERTICAL_BARCHART,
-                donnees: [MainDataFields.COORDONNES_REGION],
+                donnees: [AlbumDataFields.COORDONNES_REGION],
             },
         ],
     },
@@ -45,33 +45,33 @@ const dropdownStructure: ChercheurDropdownSection[] = [
                 label: "Structure des dirigeants par groupe d'âge",
                 selected: false,
                 graphType: GraphBoxType.DOUGHNUT,
-                donnees: [MainDataFields.DIRIGEANT_AGE],
+                donnees: [AlbumDataFields.DIRIGEANT_AGE],
             },
             {
                 label: 'Position générationelle des dirrigeants',
                 selected: false,
                 graphType: GraphBoxType.VERTICAL_BARCHART,
-                donnees: [MainDataFields.DIRIGEANT_GENERATION],
+                donnees: [AlbumDataFields.DIRIGEANT_GENERATION],
             },
             {
                 label: 'Distribution du dirigeant de la famille propriétaire selon le sexe',
                 selected: false,
                 graphType: GraphBoxType.DOUGHNUT,
-                donnees: [MainDataFields.DIRIGEANT_SEXE],
+                donnees: [AlbumDataFields.DIRIGEANT_SEXE],
             },
             {
                 label: "Niveau d'études des dirigeants",
                 selected: false,
                 graphType: GraphBoxType.DOUGHNUT,
-                donnees: [MainDataFields.REPONDANT_NIVEAU_ETUDE],
+                donnees: [AlbumDataFields.REPONDANT_NIVEAU_ETUDE],
             },
             {
                 label: "Niveau d'études des dirigeants en fonction de leur âge",
                 selected: false,
                 graphType: GraphBoxType.STACKED_BARCHART,
                 donnees: [
-                    MainDataFields.REPONDANT_NIVEAU_ETUDE,
-                    MainDataFields.DIRIGEANT_AGE,
+                    AlbumDataFields.REPONDANT_NIVEAU_ETUDE,
+                    AlbumDataFields.DIRIGEANT_AGE,
                 ],
             },
             {
@@ -79,15 +79,15 @@ const dropdownStructure: ChercheurDropdownSection[] = [
                 selected: false,
                 graphType: GraphBoxType.STACKED_BARCHART,
                 donnees: [
-                    MainDataFields.REPONDANT_NIVEAU_ETUDE,
-                    MainDataFields.DIRIGEANT_GENERATION,
+                    AlbumDataFields.REPONDANT_NIVEAU_ETUDE,
+                    AlbumDataFields.DIRIGEANT_GENERATION,
                 ],
             },
             {
                 label: "Nombre d'années travaillées par les dirigeants dans l'entreprise",
                 selected: false,
                 graphType: GraphBoxType.DOUGHNUT,
-                donnees: [MainDataFields.DIRIGEANT_AGE], //TODO ADD FIELD TO MAIN DATA FIELDS
+                donnees: [AlbumDataFields.DIRIGEANT_AGE], //TODO ADD FIELD TO MAIN DATA FIELDS
             },
         ],
     },
@@ -98,27 +98,27 @@ const dropdownStructure: ChercheurDropdownSection[] = [
                 label: 'Nombre d’actionnaires dans l’entreprise',
                 selected: false,
                 graphType: GraphBoxType.HORIZONTAL_BARCHART,
-                donnees: [MainDataFields.ACTIONNAIRES_NOMBRE], //TODO ADD FIELD
+                donnees: [AlbumDataFields.ACTIONNAIRES_NOMBRE], //TODO ADD FIELD
             },
             {
                 label: 'Type d’actionnaires externe à la famille',
                 selected: false,
                 graphType: GraphBoxType.VERTICAL_BARCHART,
-                donnees: [MainDataFields.ACTIONNAIRES_EXTERNE],
+                donnees: [AlbumDataFields.ACTIONNAIRES_EXTERNE],
             },
             {
                 label: 'Revenus annuels des entreprises familiales',
                 selected: false,
                 graphType: GraphBoxType.DOUGHNUT,
-                donnees: [MainDataFields.REVENUS_RANG],
+                donnees: [AlbumDataFields.REVENUS_RANG],
             },
             {
                 label: "Répartition des femmes directrices générales en fonction des revenus d'entreprise",
                 selected: false,
                 graphType: GraphBoxType.STACKED_BARCHART,
                 donnees: [
-                    MainDataFields.REVENUS_RANG,
-                    MainDataFields.DIRIGEANT_SEXE,
+                    AlbumDataFields.REVENUS_RANG,
+                    AlbumDataFields.DIRIGEANT_SEXE,
                 ],
             },
         ],
@@ -130,14 +130,14 @@ const dropdownStructure: ChercheurDropdownSection[] = [
                 label: 'Structure de gouvernance des entreprises familiales',
                 selected: false,
                 graphType: GraphBoxType.VERTICAL_BARCHART,
-                donnees: [MainDataFields.GOUVERNANCE_STRUCTURES], //TODO ADD FIELD
+                donnees: [AlbumDataFields.GOUVERNANCE_STRUCTURES], //TODO ADD FIELD
             },
             {
                 label: "Types de personnes qui siègent au comité consultatif ou conseil d'administration",
                 selected: false,
                 graphType: GraphBoxType.VERTICAL_BARCHART,
                 donnees: [
-                    MainDataFields.GOUVERNANCE_CONSEIL_CONSULTATIF_COMPOSITION,
+                    AlbumDataFields.GOUVERNANCE_CONSEIL_CONSULTATIF_COMPOSITION,
                 ], // TODO ADD FIELD
             },
         ],
@@ -149,13 +149,13 @@ const dropdownStructure: ChercheurDropdownSection[] = [
                 label: "Possession d'un plan de succession dans les entreprises",
                 selected: false,
                 graphType: GraphBoxType.DOUGHNUT,
-                donnees: [MainDataFields.SUCCESSION_PLAN],
+                donnees: [AlbumDataFields.SUCCESSION_PLAN],
             },
             {
                 label: "Type d'accompagnement dans le processus de succession",
                 selected: false,
                 graphType: GraphBoxType.VERTICAL_BARCHART,
-                donnees: [MainDataFields.SUCCESSION_ACCOMPAGNEMENT_TYPE],
+                donnees: [AlbumDataFields.SUCCESSION_ACCOMPAGNEMENT_TYPE],
             },
         ],
     },
@@ -166,15 +166,15 @@ const dropdownStructure: ChercheurDropdownSection[] = [
                 label: 'Proportion de femmes dans l’équipe de direction',
                 selected: false,
                 graphType: GraphBoxType.DOUGHNUT,
-                donnees: [MainDataFields.FEMMES_DIRECTION_POURCENTAGE],
+                donnees: [AlbumDataFields.FEMMES_DIRECTION_POURCENTAGE],
             },
             {
                 label: 'Structure de gouvernance en fonction du sexe du dirigeant',
                 selected: false,
                 graphType: GraphBoxType.DOUBLE_HORIZONTAL_BARCHART,
                 donnees: [
-                    MainDataFields.GOUVERNANCE_STRUCTURES,
-                    MainDataFields.DIRIGEANT_SEXE,
+                    AlbumDataFields.GOUVERNANCE_STRUCTURES,
+                    AlbumDataFields.DIRIGEANT_SEXE,
                 ],
             },
             {
@@ -182,8 +182,8 @@ const dropdownStructure: ChercheurDropdownSection[] = [
                 selected: false,
                 graphType: GraphBoxType.STACKED_BARCHART,
                 donnees: [
-                    MainDataFields.FEMMES_DIRECTION_POURCENTAGE,
-                    MainDataFields.TAILLE_ENTREPRISE,
+                    AlbumDataFields.FEMMES_DIRECTION_POURCENTAGE,
+                    AlbumDataFields.TAILLE_ENTREPRISE,
                 ],
             },
             {
@@ -191,8 +191,8 @@ const dropdownStructure: ChercheurDropdownSection[] = [
                 selected: false,
                 graphType: GraphBoxType.DOUBLE_HORIZONTAL_BARCHART,
                 donnees: [
-                    MainDataFields.REPONDANT_NIVEAU_ETUDE,
-                    MainDataFields.DIRIGEANT_SEXE,
+                    AlbumDataFields.REPONDANT_NIVEAU_ETUDE,
+                    AlbumDataFields.DIRIGEANT_SEXE,
                 ],
             },
         ],

@@ -15,14 +15,14 @@ import {
     ChartData,
     ChartDataMultipleFileds,
 } from '@/components/interface/chart-data';
-import { MainDataFields } from '@/components/enums/data-types-enum';
+import { AlbumDataFields } from '@/components/enums/data-types-enum';
 import { GraphTextService } from '@/services/translations';
 import { Language } from '@/components/enums/language';
 
 interface SimpleHorizontalBarChartProps {
     chartContent: ChartContent;
     chartSize?: ChartSize;
-    filterData?: (dataField: MainDataFields, entry: any) => void;
+    filterData?: (dataField: AlbumDataFields, entry: any) => void;
 }
 
 const HorizontalBarChart: React.FC<SimpleHorizontalBarChartProps> = ({

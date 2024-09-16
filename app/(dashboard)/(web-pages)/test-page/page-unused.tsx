@@ -1,7 +1,7 @@
 'use client';
 import React, { useEffect, useState } from 'react';
 import PageContentContainer from '@/components/component/page-content-container/page-content-container';
-import { MainDataFields } from '@/components/enums/data-types-enum';
+import { AlbumDataFields } from '@/components/enums/data-types-enum';
 import GraphBox from '@/components/component/graph-box/graph-box';
 import DataCard from '@/components/component/data-card/data-card';
 import { DataCardType } from '@/components/enums/data-card-type-enum';

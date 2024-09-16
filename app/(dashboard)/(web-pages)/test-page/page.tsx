@@ -9,15 +9,25 @@ import useMapStore from '@/stores/global-map-store';
 import { MapType } from '@/components/enums/map-type-enum';
 import { TabContainer } from '@/components/component/tab/tab-container';
 import { PageHttpRequestService } from '@/services/page-http-request-service';
-import { MainDataFields } from '@/components/enums/data-types-enum';
+import {
+    AlbumDataFields,
+    DataBaseOrigin,
+    IndexeDataFieldsB,
+} from '@/components/enums/data-types-enum';
 import { title } from 'process';
 import { GraphBoxType } from '@/components/enums/graph-box-enum';
 import { value_constants } from '@/constants/constants';
 import { DataCardType } from '@/components/enums/data-card-type-enum';
+import { GraphDataHttpRequestService } from '@/services/data-http-request-service';
+
+import useGlobalFilterStore from '@/stores/global-filter-store';
 
 function PageContentComponent() {
     const [page, setPage] = useState<PageTabContent | undefined>(undefined);
     const searchParams = useSearchParams();
+    const { matchStage } = useGlobalFilterStore((state) => ({
+        matchStage: state.matchStage,
+    }));
     const _id = '66b4e544cad59ae8b5a4b710'; //searchParams.get('_id');
     const { pagesData, pageLoading, pageError } = useGlobalPageStore(
         (state: any) => {
@@ -63,7 +73,26 @@ function PageContentComponent() {
                 <h1 className="text-2xl tracking-wide text-black dark:text-white z-10 mt-12 mb-2 cursor-default">
                     {page?.title}
                 </h1>
-                {page && <TabContainer tabs={page?.tabs ?? []}></TabContainer>}
+                {Object.values(IndexeDataFieldsB).map((value, index) => {
+                    return (
+                        <DataCard
+                            key={index}
+                            content={{
+                                type: DataCardType.SIMPLE_GRAPH,
+                                title: value,
+                                description: '',
+                                graphData: [
+                                    {
+                                        graphType: GraphBoxType.DOUGHNUT,
+                                        donnes: [value],
+                                        dataOrigin: DataBaseOrigin.INDEX_VOLETB,
+                                    },
+                                ],
+                            }}
+                        ></DataCard>
+                    );
+                })}
+                {/* {page && <TabContainer tabs={page?.tabs ?? []}></TabContainer>} */}
             </PageContentContainer>
         </>
     );

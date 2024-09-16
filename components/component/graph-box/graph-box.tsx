@@ -10,7 +10,10 @@ import StackedBarChart from './stacked-bar-chart';
 import DoubleHorizontalChart from './double-horizontal-chart';
 import { ChartContent } from '@/components/interface/chart-content';
 import { ChartSize } from '@/components/enums/chart-size-enum';
-import { MainDataFields } from '@/components/enums/data-types-enum';
+import {
+    DataBaseOrigin,
+    AlbumDataFields,
+} from '@/components/enums/data-types-enum';
 import useGlobalFilterStore from '@/stores/global-filter-store';
 import {
     ChartData,
@@ -34,7 +37,7 @@ const GraphBox: React.FC<GraphBoxProps> = ({ content, chartSize }) => {
         chartSize ? chartSize : ChartSize.MEDIUM,
     );
 
-    function filterNewData(dataField: MainDataFields, entry: ChartData) {
+    function filterNewData(dataField: AlbumDataFields, entry: ChartData) {
         const currentFilter = getFilter(dataField);
         if (currentFilter === entry.name) {
             setFilter(dataField, 'toutes');
@@ -53,10 +56,11 @@ const GraphBox: React.FC<GraphBoxProps> = ({ content, chartSize }) => {
     );
 
     useEffect(() => {
-        async function fetchMultiple(donnes: MainDataFields[]) {
+        async function fetchMultiple(donnes: AlbumDataFields[]) {
             const result = await GraphDataHttpRequestService.getChartData(
                 donnes,
                 matchStage,
+                content.dataOrigin ?? DataBaseOrigin.ALBUM_FAMILLE,
             );
             const tempResult: ChartDataMultipleFileds[] = [
                 {
@@ -75,10 +79,11 @@ const GraphBox: React.FC<GraphBoxProps> = ({ content, chartSize }) => {
             setLoading(false);
         }
 
-        async function fetch(donnes: MainDataFields[]) {
+        async function fetch(donnes: AlbumDataFields[]) {
             const result = await GraphDataHttpRequestService.getChartData(
                 donnes,
                 matchStage,
+                content.dataOrigin ?? DataBaseOrigin.ALBUM_FAMILLE,
             );
 
             // const nanResult = result.findIndex(

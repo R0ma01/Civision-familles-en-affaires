@@ -1,6 +1,6 @@
 import React from 'react';
 import Dropdown from '@/components/component/drop-down-menu/drop-down-menu';
-import { MainDataFields } from '@/components/enums/data-types-enum';
+import { AlbumDataFields } from '@/components/enums/data-types-enum';
 import { GraphBoxType } from '@/components/enums/graph-box-enum';
 import GraphBox from '../graph-box/graph-box';
 import { TrashSVG } from '../svg-icons/svg-icons';
@@ -69,9 +69,9 @@ const EditGraphCard: React.FC<GraphCardProps> = ({
                             Données Affichées
                         </label>
 
-                        <Dropdown<MainDataFields | 'Pas de Valeur'>
+                        <Dropdown<AlbumDataFields | 'Pas de Valeur'>
                             inputValue={graph.donnes[0]}
-                            options={Object.values(MainDataFields)}
+                            options={Object.values(AlbumDataFields)}
                             onChange={(value: any) =>
                                 handleGraphDataChange(
                                     cardIndex,
@@ -82,9 +82,9 @@ const EditGraphCard: React.FC<GraphCardProps> = ({
                             }
                         />
                         {graph.donnes.length > 1 && (
-                            <Dropdown<MainDataFields | 'Pas de Valeur'>
+                            <Dropdown<AlbumDataFields | 'Pas de Valeur'>
                                 inputValue={graph.donnes[1]}
-                                options={Object.values(MainDataFields)}
+                                options={Object.values(AlbumDataFields)}
                                 onChange={(value: any) =>
                                     handleGraphDataChange(
                                         cardIndex,

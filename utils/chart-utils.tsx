@@ -3,11 +3,11 @@ import {
     ChartData,
     ChartDataMultipleFileds,
 } from '@/components/interface/chart-data';
-import { MainDataFields } from '@/components/enums/data-types-enum';
+import { AlbumDataFields } from '@/components/enums/data-types-enum';
 import { PossibleDataFileds } from '@/services/tableaux-taitement';
 import { CompanyInfo } from '@/components/interface/company';
 
-export function translateData(data: any, donnes: MainDataFields): string {
+export function translateData(data: any, donnes: AlbumDataFields): string {
     // Implement conversion logic based on donnes
     return data;
 }
@@ -29,7 +29,7 @@ function fetchNested(entreprise: any, donnees: string[]) {
 }
 
 export function useFilteredDataMultipleFields(
-    donnes: MainDataFields[],
+    donnes: AlbumDataFields[],
     data: CompanyInfo[],
 ): ChartDataMultipleFileds[] {
     // Split the fields
@@ -84,7 +84,7 @@ export function useFilteredDataMultipleFields(
 }
 
 export function useFilteredData(
-    donnes: MainDataFields,
+    donnes: AlbumDataFields,
     data: CompanyInfo[],
 ): ChartData[] {
     const filters: string[] = donnesSplit(donnes);

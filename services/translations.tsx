@@ -1,4 +1,7 @@
-import { MainDataFields } from '@/components/enums/data-types-enum';
+import {
+    AlbumDataFields,
+    IndexeDataFieldsB,
+} from '@/components/enums/data-types-enum';
 import { GraphBoxType } from '@/components/enums/graph-box-enum';
 import { Language } from '@/components/enums/language';
 interface Traductions {
@@ -12,7 +15,7 @@ interface dataInformations {
 
 const keyValuePairs: [string, dataInformations][] = [
     [
-        MainDataFields.ANNEE_FONDATION,
+        AlbumDataFields.ANNEE_FONDATION,
         {
             label: { FR: 'Année Fondation', EN: 'Foundation Year' },
             dataLabels: {
@@ -52,7 +55,7 @@ const keyValuePairs: [string, dataInformations][] = [
         },
     ],
     [
-        MainDataFields.REVENUS_RANG,
+        AlbumDataFields.REVENUS_RANG,
         {
             label: { FR: 'Rang de Revenu', EN: 'Revenue Rank' },
             dataLabels: {
@@ -78,7 +81,7 @@ const keyValuePairs: [string, dataInformations][] = [
         },
     ],
     [
-        MainDataFields.SECTEUR_ACTIVITE,
+        AlbumDataFields.SECTEUR_ACTIVITE,
         {
             label: { FR: "Secteur d'Activité", EN: 'Sector of Activity' },
             dataLabels: {
@@ -135,7 +138,7 @@ const keyValuePairs: [string, dataInformations][] = [
         },
     ],
     [
-        MainDataFields.FEMMES_DIRECTION_POURCENTAGE,
+        AlbumDataFields.FEMMES_DIRECTION_POURCENTAGE,
         {
             label: {
                 FR: 'Pourcentage de Femmes à la direction',
@@ -151,7 +154,7 @@ const keyValuePairs: [string, dataInformations][] = [
         },
     ],
     [
-        MainDataFields.TAILLE_ENTREPRISE,
+        AlbumDataFields.TAILLE_ENTREPRISE,
         {
             label: { FR: "Taille de l'Entreprise", EN: 'Company Size' },
             dataLabels: {
@@ -164,7 +167,7 @@ const keyValuePairs: [string, dataInformations][] = [
         },
     ],
     [
-        MainDataFields.CONTINUITE_FAMILIALE,
+        AlbumDataFields.CONTINUITE_FAMILIALE,
         {
             label: { FR: 'Continuité Familiale', EN: 'Family Continuity' },
             dataLabels: {
@@ -175,7 +178,7 @@ const keyValuePairs: [string, dataInformations][] = [
     ],
 
     [
-        MainDataFields.REPONDANT_SEXE,
+        AlbumDataFields.REPONDANT_SEXE,
         {
             label: { FR: 'Sexe du Répondant', EN: 'Respondent Gender' },
             dataLabels: {
@@ -185,7 +188,7 @@ const keyValuePairs: [string, dataInformations][] = [
         },
     ],
     [
-        MainDataFields.REPONDANT_NIVEAU_ETUDE,
+        AlbumDataFields.REPONDANT_NIVEAU_ETUDE,
         {
             label: {
                 FR: "Niveau d'Étude du Répondant",
@@ -213,7 +216,7 @@ const keyValuePairs: [string, dataInformations][] = [
         },
     ],
     [
-        MainDataFields.REPONDANT_NIVEAU_SANTE,
+        AlbumDataFields.REPONDANT_NIVEAU_SANTE,
         {
             label: {
                 FR: 'Niveau de Santé du Répondant',
@@ -229,7 +232,7 @@ const keyValuePairs: [string, dataInformations][] = [
         },
     ],
     [
-        MainDataFields.REPONDANT_POSTE,
+        AlbumDataFields.REPONDANT_POSTE,
         {
             label: { FR: 'Poste du Répondant', EN: 'Respondent Position' },
             dataLabels: {
@@ -248,7 +251,7 @@ const keyValuePairs: [string, dataInformations][] = [
         },
     ],
     [
-        MainDataFields.REPONDANT_MEMBRE_FAMILLE,
+        AlbumDataFields.REPONDANT_MEMBRE_FAMILLE,
         {
             label: {
                 FR: 'Position du Répondant par rapport à la Famille',
@@ -279,7 +282,7 @@ const keyValuePairs: [string, dataInformations][] = [
         },
     ],
     [
-        MainDataFields.REPONDANT_ANNEE_TRAVAILLEES,
+        AlbumDataFields.REPONDANT_ANNEE_TRAVAILLEES,
         {
             label: {
                 FR: "Années Travaillées au Sein de l'Entreprise par le Répondant",
@@ -298,7 +301,7 @@ const keyValuePairs: [string, dataInformations][] = [
         },
     ],
     [
-        MainDataFields.REPONDANT_ANNEE_NAISSANCE,
+        AlbumDataFields.REPONDANT_ANNEE_NAISSANCE,
         {
             label: {
                 FR: 'Année de Naissance du Répondant',
@@ -317,7 +320,7 @@ const keyValuePairs: [string, dataInformations][] = [
     ],
 
     [
-        MainDataFields.IMPORT_POURCENTAGE,
+        AlbumDataFields.IMPORT_POURCENTAGE,
         {
             label: { FR: "Pourcentage d'Imports", EN: 'Percentage of Imports' },
             dataLabels: {
@@ -332,7 +335,7 @@ const keyValuePairs: [string, dataInformations][] = [
         },
     ],
     [
-        MainDataFields.IMPORT_MARCHES,
+        AlbumDataFields.IMPORT_MARCHES,
         {
             label: { FR: "Marchés d'Import", EN: 'Import Markets' },
             dataLabels: {
@@ -353,7 +356,7 @@ const keyValuePairs: [string, dataInformations][] = [
         },
     ],
     [
-        MainDataFields.IMPORT_PRINCIPAL,
+        AlbumDataFields.IMPORT_PRINCIPAL,
         {
             label: { FR: 'Import Principal', EN: 'Main Import' },
             dataLabels: {
@@ -373,7 +376,7 @@ const keyValuePairs: [string, dataInformations][] = [
         },
     ],
     [
-        MainDataFields.IMPORT_MARGINAL,
+        AlbumDataFields.IMPORT_MARGINAL,
         {
             label: { FR: 'Import Marginal', EN: 'Marginal Import' },
             dataLabels: {
@@ -394,7 +397,7 @@ const keyValuePairs: [string, dataInformations][] = [
     ],
 
     [
-        MainDataFields.EXPORT_POURCENTAGE,
+        AlbumDataFields.EXPORT_POURCENTAGE,
         {
             label: { FR: "Pourcentage d'Export", EN: 'Percentage of Exports' },
             dataLabels: {
@@ -409,7 +412,7 @@ const keyValuePairs: [string, dataInformations][] = [
         },
     ],
     [
-        MainDataFields.EXPORT_MARCHES,
+        AlbumDataFields.EXPORT_MARCHES,
         {
             label: { FR: "Marchés d'Export", EN: 'Export Markets' },
             dataLabels: {
@@ -430,7 +433,7 @@ const keyValuePairs: [string, dataInformations][] = [
         },
     ],
     [
-        MainDataFields.EXPORT_PRINCIPAL,
+        AlbumDataFields.EXPORT_PRINCIPAL,
         {
             label: { FR: 'Export Principal', EN: 'Main Export' },
             dataLabels: {
@@ -450,7 +453,7 @@ const keyValuePairs: [string, dataInformations][] = [
         },
     ],
     [
-        MainDataFields.EXPORT_MARGINAL,
+        AlbumDataFields.EXPORT_MARGINAL,
         {
             label: { FR: 'Export Marginal', EN: 'Marginal Export' },
             dataLabels: {
@@ -471,7 +474,7 @@ const keyValuePairs: [string, dataInformations][] = [
     ],
 
     [
-        MainDataFields.ACTIONNAIRES_MAJORITAIRE,
+        AlbumDataFields.ACTIONNAIRES_MAJORITAIRE,
         {
             label: {
                 FR: 'Actionnaires Majoritaires',
@@ -498,7 +501,7 @@ const keyValuePairs: [string, dataInformations][] = [
         },
     ],
     [
-        MainDataFields.ACTIONNAIRES_NOMBRE,
+        AlbumDataFields.ACTIONNAIRES_NOMBRE,
         {
             label: {
                 FR: "Nombre d'Actionnaires",
@@ -518,7 +521,7 @@ const keyValuePairs: [string, dataInformations][] = [
         },
     ],
     [
-        MainDataFields.ACTIONNAIRES_EXTERNE,
+        AlbumDataFields.ACTIONNAIRES_EXTERNE,
         {
             label: { FR: 'Actionnaires Externes', EN: 'External Shareholders' },
             dataLabels: {
@@ -534,7 +537,7 @@ const keyValuePairs: [string, dataInformations][] = [
         },
     ],
     [
-        MainDataFields.ACTIONNAIRES_TYPE,
+        AlbumDataFields.ACTIONNAIRES_TYPE,
         {
             label: { FR: "Type d'Actionnaires", EN: 'Type of Shareholders' },
             dataLabels: {
@@ -591,7 +594,7 @@ const keyValuePairs: [string, dataInformations][] = [
     ],
 
     [
-        MainDataFields.AUTRES_ENTREPRISES_FAMILLE_PROPRIETAIRE_POSSEDE,
+        AlbumDataFields.AUTRES_ENTREPRISES_FAMILLE_PROPRIETAIRE_POSSEDE,
         {
             label: {
                 FR: 'Autres Entreprises Familiales Possédées',
@@ -610,7 +613,7 @@ const keyValuePairs: [string, dataInformations][] = [
         },
     ],
     [
-        MainDataFields.AUTRES_ENTREPRISES_FAMILLE_PROPRIETAIRE_SECTEURS,
+        AlbumDataFields.AUTRES_ENTREPRISES_FAMILLE_PROPRIETAIRE_SECTEURS,
         {
             label: {
                 FR: 'Secteurs des autres Entreprises Familiales Possédées',
@@ -671,7 +674,7 @@ const keyValuePairs: [string, dataInformations][] = [
         },
     ],
     [
-        MainDataFields.AUTRES_ENTREPRISES_AUTRES_MEMBRES_FAMILLE_POSSEDE,
+        AlbumDataFields.AUTRES_ENTREPRISES_AUTRES_MEMBRES_FAMILLE_POSSEDE,
         {
             label: {
                 FR: "Autres Entreprises Familiales Possédées par d'autres Membres",
@@ -690,7 +693,7 @@ const keyValuePairs: [string, dataInformations][] = [
         },
     ],
     [
-        MainDataFields.AUTRES_ENTREPRISES_AUTRES_MEMBRES_FAMILLE_LIENS_PARENTE,
+        AlbumDataFields.AUTRES_ENTREPRISES_AUTRES_MEMBRES_FAMILLE_LIENS_PARENTE,
         {
             label: {
                 FR: "Relation Génétiques avec les autres Propriétaires d'Entreprises dans la Famille",
@@ -709,7 +712,7 @@ const keyValuePairs: [string, dataInformations][] = [
         },
     ],
     [
-        MainDataFields.AUTRES_ENTREPRISES_AUTRES_MEMBRES_FAMILLE_RELATIONS_AFFAIRES,
+        AlbumDataFields.AUTRES_ENTREPRISES_AUTRES_MEMBRES_FAMILLE_RELATIONS_AFFAIRES,
         {
             label: {
                 FR: "Relation D'Affaires avec les autres Propriétaires d'Entreprises dans la Famille",
@@ -724,7 +727,7 @@ const keyValuePairs: [string, dataInformations][] = [
         },
     ],
     [
-        MainDataFields.DIRIGEANT_GENERATION,
+        AlbumDataFields.DIRIGEANT_GENERATION,
         {
             label: {
                 FR: 'Génération Familiale du Dirigeant',
@@ -755,7 +758,7 @@ const keyValuePairs: [string, dataInformations][] = [
         },
     ],
     [
-        MainDataFields.DIRIGEANT_SEXE,
+        AlbumDataFields.DIRIGEANT_SEXE,
         {
             label: { FR: 'Sexe du Dirigeant', EN: 'Gender of the Leader' },
             dataLabels: {
@@ -765,7 +768,7 @@ const keyValuePairs: [string, dataInformations][] = [
         },
     ],
     [
-        MainDataFields.DIRIGEANT_AGE,
+        AlbumDataFields.DIRIGEANT_AGE,
         {
             label: { FR: 'Age du Dirigeant', EN: 'Age of the Leader' },
             dataLabels: {
@@ -779,7 +782,7 @@ const keyValuePairs: [string, dataInformations][] = [
         },
     ],
     [
-        MainDataFields.DIRIGEANT_PRESIDE_CONSEIL,
+        AlbumDataFields.DIRIGEANT_PRESIDE_CONSEIL,
         {
             label: {
                 FR: 'Conseil présidé par le Dirigeant',
@@ -798,7 +801,7 @@ const keyValuePairs: [string, dataInformations][] = [
         },
     ],
     [
-        MainDataFields.GOUVERNANCE_STRUCTURES,
+        AlbumDataFields.GOUVERNANCE_STRUCTURES,
         {
             label: {
                 FR: 'Structure de Gouvernance',
@@ -827,7 +830,7 @@ const keyValuePairs: [string, dataInformations][] = [
         },
     ],
     [
-        MainDataFields.GOUVERNANCE_ACCOMPAGNEMENT_PRO,
+        AlbumDataFields.GOUVERNANCE_ACCOMPAGNEMENT_PRO,
         {
             label: {
                 FR: 'Acompagnement Professionnel',
@@ -846,7 +849,7 @@ const keyValuePairs: [string, dataInformations][] = [
         },
     ],
     [
-        MainDataFields.GOUVERNANCE_CONSEIL_CONSULTATIF_COMPOSITION,
+        AlbumDataFields.GOUVERNANCE_CONSEIL_CONSULTATIF_COMPOSITION,
         {
             label: {
                 FR: 'Composition du Conseil Consultatif',
@@ -878,7 +881,7 @@ const keyValuePairs: [string, dataInformations][] = [
         },
     ],
     [
-        MainDataFields.GOUVERNANCE_CONSEIL_CONSULTATIF_POURCENTAGE_FEMMES,
+        AlbumDataFields.GOUVERNANCE_CONSEIL_CONSULTATIF_POURCENTAGE_FEMMES,
         {
             label: {
                 FR: 'Pourcentage de Femmes sur le Conseil Consultatif',
@@ -894,7 +897,7 @@ const keyValuePairs: [string, dataInformations][] = [
         },
     ],
     [
-        MainDataFields.GOUVERNANCE_CONSEIL_CONSULTATIF_RINCIPALES_ACTIVITES,
+        AlbumDataFields.GOUVERNANCE_CONSEIL_CONSULTATIF_RINCIPALES_ACTIVITES,
         {
             label: {
                 FR: 'Principales Responsabilités du Conseil Consultatif',
@@ -949,7 +952,7 @@ const keyValuePairs: [string, dataInformations][] = [
         },
     ],
     [
-        MainDataFields.GESTION_FAMILIALE_MULTIPLES_FAMILLES,
+        AlbumDataFields.GESTION_FAMILIALE_MULTIPLES_FAMILLES,
         {
             label: {
                 FR: "Présence de Multiples Familles dans l'Équipe de Gouvernance",
@@ -968,7 +971,7 @@ const keyValuePairs: [string, dataInformations][] = [
         },
     ],
     [
-        MainDataFields.GESTION_FAMILIALE_GENERATIONS_IMPLIQUEES,
+        AlbumDataFields.GESTION_FAMILIALE_GENERATIONS_IMPLIQUEES,
         {
             label: {
                 FR: 'Générations Impliquées dans la Gestion Familiale',
@@ -999,7 +1002,7 @@ const keyValuePairs: [string, dataInformations][] = [
         },
     ],
     [
-        MainDataFields.GESTION_FAMILIALE_PROTOCOLE_FAMILIAL,
+        AlbumDataFields.GESTION_FAMILIALE_PROTOCOLE_FAMILIAL,
         {
             label: {
                 FR: 'Protocole Familial Établi',
@@ -1016,7 +1019,7 @@ const keyValuePairs: [string, dataInformations][] = [
         },
     ],
     [
-        MainDataFields.GESTION_FAMILIALE_POLITIQUES_FAMILIALES,
+        AlbumDataFields.GESTION_FAMILIALE_POLITIQUES_FAMILIALES,
         {
             label: {
                 FR: 'Politiques Familiales Établies',
@@ -1049,7 +1052,7 @@ const keyValuePairs: [string, dataInformations][] = [
         },
     ],
     [
-        MainDataFields.COORDONNES_REGION,
+        AlbumDataFields.COORDONNES_REGION,
         {
             label: { FR: 'Régions', EN: 'Regions' },
             dataLabels: {
@@ -1098,7 +1101,7 @@ const keyValuePairs: [string, dataInformations][] = [
         },
     ],
     [
-        MainDataFields.SUCCESSION_PLAN,
+        AlbumDataFields.SUCCESSION_PLAN,
         {
             label: { FR: 'Plan de Succession', EN: 'Succession Plan' },
             dataLabels: {
@@ -1113,7 +1116,7 @@ const keyValuePairs: [string, dataInformations][] = [
         },
     ],
     [
-        MainDataFields.SUCCESSION_ACCOMPAGNEMENT_PRO,
+        AlbumDataFields.SUCCESSION_ACCOMPAGNEMENT_PRO,
         {
             label: {
                 FR: 'Accompagnement Professionnel pour la Succession',
@@ -1132,7 +1135,7 @@ const keyValuePairs: [string, dataInformations][] = [
         },
     ],
     [
-        MainDataFields.SUCCESSION_ACCOMPAGNEMENT_TYPE,
+        AlbumDataFields.SUCCESSION_ACCOMPAGNEMENT_TYPE,
         {
             label: {
                 FR: "Type d'Accompagnement pour la Succession",
@@ -1155,7 +1158,7 @@ const keyValuePairs: [string, dataInformations][] = [
         },
     ],
     [
-        MainDataFields.QUESTIONNAIRE_CONTROLE_INFLUENCE,
+        AlbumDataFields.QUESTIONNAIRE_CONTROLE_INFLUENCE,
         {
             label: {
                 FR: "Questionnaire sur le Contrôle d'Influence",
@@ -1172,7 +1175,7 @@ const keyValuePairs: [string, dataInformations][] = [
         },
     ],
     [
-        MainDataFields.QUESTIONNAIRE_LIENS_SOCIAUX,
+        AlbumDataFields.QUESTIONNAIRE_LIENS_SOCIAUX,
         {
             label: {
                 FR: 'Questionnaire sur les Liens Sociaux',
@@ -1189,7 +1192,7 @@ const keyValuePairs: [string, dataInformations][] = [
         },
     ],
     [
-        MainDataFields.QUESTIONNAIRE_IDENTIFICATION_INFLUENCE,
+        AlbumDataFields.QUESTIONNAIRE_IDENTIFICATION_INFLUENCE,
         {
             label: {
                 FR: "Questionnaire sur l'Identification d'Influence",
@@ -1206,7 +1209,7 @@ const keyValuePairs: [string, dataInformations][] = [
         },
     ],
     [
-        MainDataFields.QUESTIONNAIRE_ASPECTS_EMOTIONNELS,
+        AlbumDataFields.QUESTIONNAIRE_ASPECTS_EMOTIONNELS,
         {
             label: {
                 FR: 'Questionnaire sur les Aspects Émotionnels',
@@ -1223,7 +1226,7 @@ const keyValuePairs: [string, dataInformations][] = [
         },
     ],
     [
-        MainDataFields.QUESTIONNAIRE_SUCCESION,
+        AlbumDataFields.QUESTIONNAIRE_SUCCESION,
         {
             label: {
                 FR: 'Questionnaire sur la Succession',
@@ -1240,7 +1243,7 @@ const keyValuePairs: [string, dataInformations][] = [
         },
     ],
     [
-        MainDataFields.QUESTIONNAIRE_CONSCIENCE_ENV_RECRUTEMENT,
+        AlbumDataFields.QUESTIONNAIRE_CONSCIENCE_ENV_RECRUTEMENT,
         {
             label: {
                 FR: 'Questionnaire sur la Consicence Environnementale lors du Recrutement',
@@ -1257,7 +1260,7 @@ const keyValuePairs: [string, dataInformations][] = [
         },
     ],
     [
-        MainDataFields.QUESTIONNAIRE_FORMATION_ENV,
+        AlbumDataFields.QUESTIONNAIRE_FORMATION_ENV,
         {
             label: {
                 FR: 'Questionnaire sur la Formation Environnementale',
@@ -1274,7 +1277,7 @@ const keyValuePairs: [string, dataInformations][] = [
         },
     ],
     [
-        MainDataFields.QUESTIONNAIRE_DEVELOPPEMENT_ENV,
+        AlbumDataFields.QUESTIONNAIRE_DEVELOPPEMENT_ENV,
         {
             label: {
                 FR: 'Questionnaire sur le Développement Environnementale',
@@ -1291,7 +1294,7 @@ const keyValuePairs: [string, dataInformations][] = [
         },
     ],
     [
-        MainDataFields.QUESTIONNAIRE_REDISTRIBUTION_ENV,
+        AlbumDataFields.QUESTIONNAIRE_REDISTRIBUTION_ENV,
         {
             label: {
                 FR: 'Questionnaire sur la Redistribution Environnementale',
@@ -1308,7 +1311,7 @@ const keyValuePairs: [string, dataInformations][] = [
         },
     ],
     [
-        MainDataFields.QUESTIONNAIRE_PARTICIPATION_ENV,
+        AlbumDataFields.QUESTIONNAIRE_PARTICIPATION_ENV,
         {
             label: {
                 FR: 'Questionnaire sur la Participation Environnementale',
@@ -1325,7 +1328,7 @@ const keyValuePairs: [string, dataInformations][] = [
         },
     ],
     [
-        MainDataFields.CREE_OU_REPRISE,
+        AlbumDataFields.CREE_OU_REPRISE,
         {
             label: {
                 FR: 'Entreprise Crée ou Reprise',
@@ -1344,7 +1347,7 @@ const keyValuePairs: [string, dataInformations][] = [
         },
     ],
     [
-        MainDataFields.TEMPS_NOUVELLE_ENTREPRISE,
+        AlbumDataFields.TEMPS_NOUVELLE_ENTREPRISE,
         {
             label: {
                 FR: 'Le répondant aurait-il le temps de créer une nouvelle entreprise?',
@@ -1363,7 +1366,7 @@ const keyValuePairs: [string, dataInformations][] = [
         },
     ],
     [
-        MainDataFields.BENEVOLAT,
+        AlbumDataFields.BENEVOLAT,
         {
             label: {
                 FR: 'Le répondant aurait-il le temps de faire du bénévolat ou travailler pour une oeuvre caritative?',
@@ -1382,7 +1385,7 @@ const keyValuePairs: [string, dataInformations][] = [
         },
     ],
     [
-        MainDataFields.ROLE_INFORMEL,
+        AlbumDataFields.ROLE_INFORMEL,
         {
             label: {
                 FR: 'Le répondant souhaite-t-il asumer un rôle informel auprès des entreprenneurs qui reprendront son entreprise?',
@@ -1401,7 +1404,7 @@ const keyValuePairs: [string, dataInformations][] = [
         },
     ],
     [
-        MainDataFields.APRES_VENTE,
+        AlbumDataFields.APRES_VENTE,
         {
             label: {
                 FR: "Le répondant souhaite-t-il suivre l'évolution de son entreprise suite à sa vente ou son transfert?",
@@ -1420,7 +1423,7 @@ const keyValuePairs: [string, dataInformations][] = [
         },
     ],
     [
-        MainDataFields.NOMBRE_EMPLOYE,
+        AlbumDataFields.NOMBRE_EMPLOYE,
         {
             label: {
                 FR: "Le répondant souhaite-t-il suivre l'évolution de son entreprise suite à sa vente ou son transfert?",
@@ -1491,6 +1494,129 @@ const keyValuePairs: [string, dataInformations][] = [
             },
         },
     ],
+
+    [
+        IndexeDataFieldsB.GENRE,
+        {
+            label: {
+                FR: 'Comment décrivez-vous votre identité de genre?',
+                EN: 'How do you describe your gender identity?',
+            },
+            dataLabels: {
+                1: {
+                    FR: 'Masculin',
+                    EN: 'Man',
+                },
+                2: {
+                    FR: 'Féminin',
+                    EN: 'Woman',
+                },
+                99: {
+                    FR: 'Autre identité de genre',
+                    EN: 'Other gender identity',
+                },
+            },
+        },
+    ],
+
+    [
+        IndexeDataFieldsB.AGE,
+        {
+            label: {
+                FR: 'Quel âge avez-vous ?',
+                EN: 'How old are you ?',
+            },
+            dataLabels: {
+                0: {
+                    FR: 'Moins de 18 ans',
+                    EN: 'Younger than 18 years old',
+                },
+                1: {
+                    FR: 'Entre 18 et 19 ans',
+                    EN: 'Between 18 and 19 years old',
+                },
+                2: {
+                    FR: 'Entre 20 et 24 ans',
+                    EN: 'Between 20 and 24 years old',
+                },
+                3: {
+                    FR: 'Entre 25 et 29 ans',
+                    EN: 'Betweem 25 and 29 years old',
+                },
+                4: {
+                    FR: 'Entre 30 et 34 ans',
+                    EN: 'Betweem 30 and 34 years old',
+                },
+                5: {
+                    FR: 'Entre 35 et 39 ans',
+                    EN: 'Betweem 35 and 39 years old',
+                },
+                6: {
+                    FR: 'Entre 40 et 44 ans',
+                    EN: 'Betweem 40 and 44 years old',
+                },
+                7: {
+                    FR: 'Entre 44 et 49 ans',
+                    EN: 'Betweem 44 and 49 years old',
+                },
+                8: {
+                    FR: 'Entre 50 et 54 ans',
+                    EN: 'Betweem 50 and 54 years old',
+                },
+                9: {
+                    FR: 'Entre 55 et 59 ans',
+                    EN: 'Betweem 55 and 59 years old',
+                },
+                10: {
+                    FR: 'Entre 60 et 64 ans',
+                    EN: 'Betweem 60 and 64 years old',
+                },
+                11: {
+                    FR: 'Entre 65 et 69 ans',
+                    EN: 'Betweem 65 and 69 years old',
+                },
+                12: {
+                    FR: 'Entre 70 et 74 ans',
+                    EN: 'Betweem 70 and 74 years old',
+                },
+                13: {
+                    FR: '75 ans et plus',
+                    EN: '75 years or older',
+                },
+                99: {
+                    FR: 'Pas de réponses',
+                    EN: 'No answer',
+                },
+            },
+        },
+    ],
+    [
+        IndexeDataFieldsB.AGER,
+        {
+            label: {
+                FR: 'Quel âge avez-vous ?',
+                EN: 'How old are you ?',
+            },
+            dataLabels: {
+                1: {
+                    FR: '18 à 34 ans',
+                    EN: '18 to 34 years old',
+                },
+                2: {
+                    FR: '35 et 49 ans',
+                    EN: '35 to 49 years old',
+                },
+                3: {
+                    FR: '50 à 64 ans',
+                    EN: '50 to 64 years old',
+                },
+                4: {
+                    FR: '65 ans et plus',
+                    EN: '65 years and older',
+                },
+            },
+        },
+    ],
 ];
 
 export const TableauxTraductionsMainDataFields = new Map<
@@ -1542,22 +1668,19 @@ export const GraphTextService = {
     getLabel: getLabel,
 };
 
-function getKeys(dataField: MainDataFields): number[] | string[] {
+function getKeys(dataField: any): number[] | string[] {
     return Object.keys(
         TableauxTraductionsMainDataFields.get(dataField)?.dataLabels ?? {},
     );
 }
-function getFieldLabels(
-    dataField: MainDataFields,
-    language: Language,
-): string[] {
+function getFieldLabels(dataField: any, language: Language): string[] {
     return Object.values(
         TableauxTraductionsMainDataFields.get(dataField)?.dataLabels ?? {},
     ).map((value) => value[language]);
 }
 
 function getFieldLabel(
-    dataField: MainDataFields,
+    dataField: any,
     field: string,
     language: Language,
 ): string {
@@ -1569,7 +1692,7 @@ function getFieldLabel(
     return fieldLabel !== undefined ? fieldLabel : field.toString();
 }
 
-function getLabel(dataField: MainDataFields, language: Language): string {
+function getLabel(dataField: any, language: Language): string {
     return (
         TableauxTraductionsMainDataFields.get(dataField)?.label[language] ?? ''
     );

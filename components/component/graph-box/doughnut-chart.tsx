@@ -10,7 +10,7 @@ import {
 import { chartPalette } from '@/constants/color-palet';
 import { ChartSize } from '@/components/enums/chart-size-enum';
 import { ChartContent } from '@/components/interface/chart-content';
-import { MainDataFields } from '@/components/enums/data-types-enum';
+import { AlbumDataFields } from '@/components/enums/data-types-enum';
 import {
     ChartData,
     ChartDataMultipleFileds,
@@ -22,7 +22,7 @@ interface DoughnutChartProps {
     chartContent: ChartContent;
     chartSize?: ChartSize;
     interactive?: boolean;
-    filterData?: (dataField: MainDataFields, entry: any) => void;
+    filterData?: (dataField: AlbumDataFields, entry: any) => void;
 }
 
 const Doughnut: React.FC<DoughnutChartProps> = ({

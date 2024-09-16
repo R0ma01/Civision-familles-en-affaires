@@ -9,10 +9,12 @@ const useGlobalDataStore = create(
         persist(
             (set, get) => ({
                 studyData: [],
+                indexeData: [],
                 repertoireData: [],
                 fournisseurData: [],
 
                 studyDataFetched: false,
+                indexeDataFetched: false,
                 repertoireDataFetched: false,
                 fournisseurDataFetched: false,
 
@@ -76,6 +78,23 @@ const useGlobalDataStore = create(
                     }
                 },
 
+                fetchIndexeData: async (matchStage: Record<string, any>) => {
+                    if ((get() as any).indexeData) return;
+                    set({ loading: true, error: null });
+                    try {
+                        const responseIndexe =
+                            await GraphDataHttpRequestService.getAllRepertoireData();
+
+                        set({
+                            indexeData: responseIndexe,
+                            loading: false,
+                            indexeDataFetched: true,
+                        });
+                    } catch (err: any) {
+                        set({ error: err.message, loading: false });
+                    }
+                },
+
                 filterStudyData: () => {
                     if ((get() as any).studyDataFetched) {
                         set({ studyDataFetched: false });
@@ -91,6 +110,12 @@ const useGlobalDataStore = create(
                 filterFournisseurData: () => {
                     if ((get() as any).fournisseurDataFetched) {
                         set({ fournisseurDataFetched: false });
+                    }
+                },
+
+                filterIndexeData: () => {
+                    if ((get() as any).indexeDataFetched) {
+                        set({ indexeDataFetched: false });
                     }
                 },
             }),

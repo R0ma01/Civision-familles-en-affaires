@@ -5,7 +5,7 @@ import {
     ChartData,
     ChartDataMultipleFileds,
 } from '@/components/interface/chart-data';
-import { MainDataFields } from '@/components/enums/data-types-enum';
+import { AlbumDataFields } from '@/components/enums/data-types-enum';
 import {
     useFilteredData,
     useFilteredDataMultipleFields,
@@ -13,7 +13,7 @@ import {
 import { CompanyInfo } from '@/components/interface/company';
 
 export function doubleHorizontalBarChartAnalysis(
-    donnes: MainDataFields[],
+    donnes: AlbumDataFields[],
     data: CompanyInfo[],
 ): ChartContent {
     const returnData: ChartDataMultipleFileds[] = useFilteredDataMultipleFields(
@@ -29,7 +29,7 @@ export function doubleHorizontalBarChartAnalysis(
 }
 
 export function useDoughnutChartAnalysis(
-    donnes: MainDataFields[],
+    donnes: AlbumDataFields[],
     data: CompanyInfo[],
 ): ChartContent {
     const chartData = useFilteredData(donnes[0], data);
@@ -42,7 +42,7 @@ export function useDoughnutChartAnalysis(
 }
 
 export function useStackedBarChartAnalysis(
-    donnes: MainDataFields[],
+    donnes: AlbumDataFields[],
     data: CompanyInfo[],
 ): ChartContent {
     const returnData: ChartDataMultipleFileds[] = useFilteredDataMultipleFields(

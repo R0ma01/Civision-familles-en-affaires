@@ -1,8 +1,8 @@
-import { MainDataFields } from '../enums/data-types-enum';
+import { AlbumDataFields } from '../enums/data-types-enum';
 import { ChartData, ChartDataMultipleFileds } from './chart-data';
 
 export interface ChartContent {
-    donnees: MainDataFields[];
+    donnees: AlbumDataFields[];
     data: (ChartData | ChartDataMultipleFileds)[];
     totalData: number;
     median?: number;

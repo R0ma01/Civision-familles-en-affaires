@@ -1,4 +1,7 @@
-import { MainDataFields } from '@/components/enums/data-types-enum';
+import {
+    AlbumDataFields,
+    DataBaseOrigin,
+} from '@/components/enums/data-types-enum';
 import { APIPaths } from '@/components/enums/page-api-paths-enum';
 import {
     ChartData,
@@ -18,6 +21,7 @@ export const GraphDataHttpRequestService = {
     getAllRepertoireData: getAllRepertoireData,
     getChartData: getChartData,
     getEntrepriseInformation: getEntrepriseInformation,
+    getAllIndexeData: getAllIndexeData,
 };
 
 async function getAllStudyData(
@@ -54,18 +58,56 @@ async function getAllRepertoireData(): Promise<MapClusterPointData[]> {
     return [];
 }
 
-async function getChartData(
-    donnes: MainDataFields[],
+async function getAllIndexeData(
     filters: Record<string, any>,
-): Promise<ChartData[] | ChartDataMultipleFileds[]> {
+): Promise<MapChloroplethePointData[]> {
     try {
-        const response = await axios.get(APIPaths.GRAPH_GET_DATA, {
+        const response = await axios.get(APIPaths.GRAPH_GET_ALL_INDEXE, {
             params: {
-                donnes: JSON.stringify(donnes),
                 filters: JSON.stringify(filters),
             },
         });
 
+        return response.data.points;
+    } catch (error: any) {
+        console.error(
+            'Error fetching points:',
+            error.response?.data?.error || error.message,
+        );
+    }
+    return [];
+}
+
+async function getChartData(
+    donnes: AlbumDataFields[],
+    filters: Record<string, any>,
+    dataOrigin: DataBaseOrigin,
+): Promise<ChartData[] | ChartDataMultipleFileds[]> {
+    try {
+        let response = { data: { chartData: [] } };
+
+        if (dataOrigin === DataBaseOrigin.INDEX_VOLETA) {
+            response = await axios.get(APIPaths.GRAPH_GET_DATA_VOLETA, {
+                params: {
+                    donnes: JSON.stringify(donnes),
+                    filters: JSON.stringify(filters),
+                },
+            });
+        } else if (dataOrigin === DataBaseOrigin.INDEX_VOLETB) {
+            response = await axios.get(APIPaths.GRAPH_GET_DATA_VOLETB, {
+                params: {
+                    donnes: JSON.stringify(donnes),
+                    filters: JSON.stringify(filters),
+                },
+            });
+        } else {
+            response = await axios.get(APIPaths.GRAPH_GET_DATA_ALBUM, {
+                params: {
+                    donnes: JSON.stringify(donnes),
+                    filters: JSON.stringify(filters),
+                },
+            });
+        }
         return response.data.chartData;
     } catch (error: any) {
         console.error(

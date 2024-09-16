@@ -4,7 +4,7 @@ import PageContent from '@/components/interface/page-content';
 import EditDataCard from '@/components/component/edit-data-card/edit-data-card';
 import { ButtonType } from '@/components/enums/button-type-enum';
 import { GraphBoxType } from '@/components/enums/graph-box-enum';
-import { MainDataFields } from '@/components/enums/data-types-enum';
+import { AlbumDataFields } from '@/components/enums/data-types-enum';
 import { DataCardType } from '@/components/enums/data-card-type-enum';
 import { AddCircleSVG } from '@/components/component/svg-icons/svg-icons';
 import {
@@ -109,7 +109,7 @@ const PageEditDialog: React.FC<EditDialogProps> = ({
             ) {
                 // Switching to stacked or double bar chart, add a new value if it doesn't already exist
                 if (newDonne.length === 1) {
-                    newDonne.push(MainDataFields.ANNEE_FONDATION);
+                    newDonne.push(AlbumDataFields.ANNEE_FONDATION);
                 }
             } else if (
                 value !== GraphBoxType.STACKED_BARCHART &&
@@ -180,13 +180,13 @@ const PageEditDialog: React.FC<EditDialogProps> = ({
         if (updatedGraphData) {
             updatedGraphData.push({
                 graphType: GraphBoxType.DOUGHNUT,
-                donnes: [MainDataFields.ANNEE_FONDATION],
+                donnes: [AlbumDataFields.ANNEE_FONDATION],
             });
         } else {
             updatedGraphData = [
                 {
                     graphType: GraphBoxType.DOUGHNUT,
-                    donnes: [MainDataFields.ANNEE_FONDATION],
+                    donnes: [AlbumDataFields.ANNEE_FONDATION],
                 },
             ];
         }

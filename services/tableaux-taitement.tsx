@@ -1,8 +1,8 @@
-import { MainDataFields } from '@/components/enums/data-types-enum';
+import { AlbumDataFields } from '@/components/enums/data-types-enum';
 
-export const PossibleDataFileds = new Map<MainDataFields, any[]>([
+export const PossibleDataFileds = new Map<AlbumDataFields, any[]>([
     [
-        MainDataFields.EXPORT_MARGINAL,
+        AlbumDataFields.EXPORT_MARGINAL,
         [
             'afrique',
             'amerique centrale & sud',
@@ -15,7 +15,7 @@ export const PossibleDataFileds = new Map<MainDataFields, any[]>([
         ],
     ],
     [
-        MainDataFields.EXPORT_PRINCIPAL,
+        AlbumDataFields.EXPORT_PRINCIPAL,
         [
             'afrique',
             'amerique centrale & sud',
@@ -27,44 +27,44 @@ export const PossibleDataFileds = new Map<MainDataFields, any[]>([
     ],
 
     [
-        MainDataFields.QUESTIONNAIRE_PARTICIPATION_ENV, // IMPLEMENT FILTER FUNCTION
+        AlbumDataFields.QUESTIONNAIRE_PARTICIPATION_ENV, // IMPLEMENT FILTER FUNCTION
         ['1', '2', '3', '4', '5', '6'],
     ],
     [
-        MainDataFields.QUESTIONNAIRE_CONSCIENCE_ENV_RECRUTEMENT, // IMPLEMENT FILTER FUNCTION
+        AlbumDataFields.QUESTIONNAIRE_CONSCIENCE_ENV_RECRUTEMENT, // IMPLEMENT FILTER FUNCTION
         ['1', '2', '3', '4', '5', '6'],
     ],
     [
-        MainDataFields.QUESTIONNAIRE_FORMATION_ENV, // IMPLEMENT FILTER FUNCTION
+        AlbumDataFields.QUESTIONNAIRE_FORMATION_ENV, // IMPLEMENT FILTER FUNCTION
         ['1', '2', '3', '4', '5', '6'],
     ],
     [
-        MainDataFields.QUESTIONNAIRE_REDISTRIBUTION_ENV, // IMPLEMENT FILTER FUNCTION
+        AlbumDataFields.QUESTIONNAIRE_REDISTRIBUTION_ENV, // IMPLEMENT FILTER FUNCTION
         ['1', '2', '3', '4', '5', '6'],
     ],
     [
-        MainDataFields.QUESTIONNAIRE_DEVELOPPEMENT_ENV, // IMPLEMENT FILTER FUNCTION
+        AlbumDataFields.QUESTIONNAIRE_DEVELOPPEMENT_ENV, // IMPLEMENT FILTER FUNCTION
         ['1', '2', '3', '4', '5', '6'],
     ],
     [
-        MainDataFields.QUESTIONNAIRE_ASPECTS_EMOTIONNELS, // IMPLEMENT FILTER FUNCTION
+        AlbumDataFields.QUESTIONNAIRE_ASPECTS_EMOTIONNELS, // IMPLEMENT FILTER FUNCTION
         [1, 2, 3, 4, 5, 6],
     ],
     [
-        MainDataFields.QUESTIONNAIRE_IDENTIFICATION_INFLUENCE, // IMPLEMENT FILTER FUNCTION
+        AlbumDataFields.QUESTIONNAIRE_IDENTIFICATION_INFLUENCE, // IMPLEMENT FILTER FUNCTION
         ['1', '2', '3', '4', '5', '6'],
     ],
-    [MainDataFields.QUESTIONNAIRE_SUCCESION, ['1', '2', '3', '4', '5', '6']], // IMPLEMENT FILTER FUNCTION
+    [AlbumDataFields.QUESTIONNAIRE_SUCCESION, ['1', '2', '3', '4', '5', '6']], // IMPLEMENT FILTER FUNCTION
     [
-        MainDataFields.QUESTIONNAIRE_CONTROLE_INFLUENCE, // IMPLEMENT FILTER FUNCTION
-        ['1', '2', '3', '4', '5', '6'],
-    ],
-    [
-        MainDataFields.QUESTIONNAIRE_LIENS_SOCIAUX, // IMPLEMENT FILTER FUNCTION
+        AlbumDataFields.QUESTIONNAIRE_CONTROLE_INFLUENCE, // IMPLEMENT FILTER FUNCTION
         ['1', '2', '3', '4', '5', '6'],
     ],
     [
-        MainDataFields.GOUVERNANCE_STRUCTURES,
+        AlbumDataFields.QUESTIONNAIRE_LIENS_SOCIAUX, // IMPLEMENT FILTER FUNCTION
+        ['1', '2', '3', '4', '5', '6'],
+    ],
+    [
+        AlbumDataFields.GOUVERNANCE_STRUCTURES,
         [
             'assemblee d’actionnaires',
             "conseil d'administration",
@@ -74,9 +74,9 @@ export const PossibleDataFileds = new Map<MainDataFields, any[]>([
             'aucune',
         ],
     ],
-    [MainDataFields.GOUVERNANCE_ACCOMPAGNEMENT_PRO, ['true', 'false']],
+    [AlbumDataFields.GOUVERNANCE_ACCOMPAGNEMENT_PRO, ['true', 'false']],
     [
-        MainDataFields.GOUVERNANCE_CONSEIL_CONSULTATIF_COMPOSITION,
+        AlbumDataFields.GOUVERNANCE_CONSEIL_CONSULTATIF_COMPOSITION,
         [
             'employe non membre de la famille en affaires',
             'entrepreneur externe a la famille',
@@ -87,7 +87,7 @@ export const PossibleDataFileds = new Map<MainDataFields, any[]>([
         ],
     ],
     [
-        MainDataFields.GOUVERNANCE_CONSEIL_CONSULTATIF_POURCENTAGE_FEMMES, // implement filter function
+        AlbumDataFields.GOUVERNANCE_CONSEIL_CONSULTATIF_POURCENTAGE_FEMMES, // implement filter function
         [
             'Moins de 10%',
             '10 a 25%',
@@ -98,7 +98,7 @@ export const PossibleDataFileds = new Map<MainDataFields, any[]>([
         ],
     ],
     [
-        MainDataFields.GOUVERNANCE_CONSEIL_CONSULTATIF_RINCIPALES_ACTIVITES,
+        AlbumDataFields.GOUVERNANCE_CONSEIL_CONSULTATIF_RINCIPALES_ACTIVITES,
         [
             'approuver les orientations strategiques, le plan d’affaires et les budgets qui en decoulent, en assurant que la direction y donne suite',
             'approuver les reglements generaux',
@@ -113,12 +113,12 @@ export const PossibleDataFileds = new Map<MainDataFields, any[]>([
         ],
     ],
     [
-        MainDataFields.SUCCESSION_ACCOMPAGNEMENT_TYPE,
+        AlbumDataFields.SUCCESSION_ACCOMPAGNEMENT_TYPE,
         ['01', '02', '03', '04', '05', '06', '07', '08', '96'],
     ],
-    [MainDataFields.SUCCESSION_ACCOMPAGNEMENT_PRO, ['true', 'false']],
+    [AlbumDataFields.SUCCESSION_ACCOMPAGNEMENT_PRO, ['true', 'false']],
     [
-        MainDataFields.GESTION_FAMILIALE_POLITIQUES_FAMILIALES,
+        AlbumDataFields.GESTION_FAMILIALE_POLITIQUES_FAMILIALES,
         [
             'dans la convention d’actionnaires',
             'document informel',
@@ -130,7 +130,7 @@ export const PossibleDataFileds = new Map<MainDataFields, any[]>([
         ],
     ],
     [
-        MainDataFields.COORDONNES_REGION,
+        AlbumDataFields.COORDONNES_REGION,
         [
             'Abitibi-Temiscamingue',
             'Bas-Saint-Laurent',
@@ -156,24 +156,24 @@ export const PossibleDataFileds = new Map<MainDataFields, any[]>([
     //     Array.from({ length: 17 }, (_, i) => i + 1),
     // ],
     [
-        MainDataFields.SUCCESSION_PLAN,
+        AlbumDataFields.SUCCESSION_PLAN,
         ['N/A', 'Plan inexistant', 'Plan informel', 'Plan formel'],
     ],
     [
-        MainDataFields.GESTION_FAMILIALE_PROTOCOLE_FAMILIAL,
+        AlbumDataFields.GESTION_FAMILIALE_PROTOCOLE_FAMILIAL,
         ['aucun', 'formel et explicite', 'informel'],
     ],
     [
-        MainDataFields.GESTION_FAMILIALE_GENERATIONS_IMPLIQUEES,
+        AlbumDataFields.GESTION_FAMILIALE_GENERATIONS_IMPLIQUEES,
         ['true', 'false'],
     ],
     [
-        MainDataFields.GESTION_FAMILIALE_GENERATIONS_IMPLIQUEES,
+        AlbumDataFields.GESTION_FAMILIALE_GENERATIONS_IMPLIQUEES,
         ['1ere', '2eme', '3eme', '4eme ou +'],
     ],
-    [MainDataFields.DIRIGEANT_PRESIDE_CONSEIL, ['true', 'false']],
+    [AlbumDataFields.DIRIGEANT_PRESIDE_CONSEIL, ['true', 'false']],
     [
-        MainDataFields.DIRIGEANT_AGE,
+        AlbumDataFields.DIRIGEANT_AGE,
         [
             '18 a 24 ans',
             '25 a 34 ans',
@@ -183,9 +183,9 @@ export const PossibleDataFileds = new Map<MainDataFields, any[]>([
             '65 et +',
         ],
     ],
-    [MainDataFields.DIRIGEANT_SEXE, ['femme', 'homme', 'NaN']],
+    [AlbumDataFields.DIRIGEANT_SEXE, ['femme', 'homme', 'NaN']],
     [
-        MainDataFields.DIRIGEANT_GENERATION,
+        AlbumDataFields.DIRIGEANT_GENERATION,
         [
             '1ere generation',
             '4eme generation ou +',
@@ -195,19 +195,19 @@ export const PossibleDataFileds = new Map<MainDataFields, any[]>([
         ],
     ],
     [
-        MainDataFields.AUTRES_ENTREPRISES_AUTRES_MEMBRES_FAMILLE_POSSEDE,
+        AlbumDataFields.AUTRES_ENTREPRISES_AUTRES_MEMBRES_FAMILLE_POSSEDE,
         ['true', 'false'],
     ],
     [
-        MainDataFields.AUTRES_ENTREPRISES_AUTRES_MEMBRES_FAMILLE_LIENS_PARENTE,
+        AlbumDataFields.AUTRES_ENTREPRISES_AUTRES_MEMBRES_FAMILLE_LIENS_PARENTE,
         ['01', '02', '03', '04', '05', '06', '07', '96'],
     ],
     [
-        MainDataFields.AUTRES_ENTREPRISES_AUTRES_MEMBRES_FAMILLE_RELATIONS_AFFAIRES, // need to implement decluster function
+        AlbumDataFields.AUTRES_ENTREPRISES_AUTRES_MEMBRES_FAMILLE_RELATIONS_AFFAIRES, // need to implement decluster function
         ['client', 'investisseur', 'fournisseur', 'autre'],
     ],
     [
-        MainDataFields.AUTRES_ENTREPRISES_FAMILLE_PROPRIETAIRE_SECTEURS,
+        AlbumDataFields.AUTRES_ENTREPRISES_FAMILLE_PROPRIETAIRE_SECTEURS,
         [
             '01',
             '02',
@@ -232,11 +232,11 @@ export const PossibleDataFileds = new Map<MainDataFields, any[]>([
         ],
     ],
     [
-        MainDataFields.AUTRES_ENTREPRISES_FAMILLE_PROPRIETAIRE_POSSEDE,
+        AlbumDataFields.AUTRES_ENTREPRISES_FAMILLE_PROPRIETAIRE_POSSEDE,
         ['true', 'false'],
     ],
     [
-        MainDataFields.EXPORT_MARCHES,
+        AlbumDataFields.EXPORT_MARCHES,
         [
             'afrique',
             'amerique centrale & sud',
@@ -249,7 +249,7 @@ export const PossibleDataFileds = new Map<MainDataFields, any[]>([
         ],
     ],
     [
-        MainDataFields.IMPORT_MARGINAL,
+        AlbumDataFields.IMPORT_MARGINAL,
         [
             'amerique centrale & sud',
             'asie',
@@ -260,7 +260,7 @@ export const PossibleDataFileds = new Map<MainDataFields, any[]>([
         ],
     ],
     [
-        MainDataFields.IMPORT_MARCHES,
+        AlbumDataFields.IMPORT_MARCHES,
         [
             'afrique',
             'amerique centrale & sud',
@@ -273,7 +273,7 @@ export const PossibleDataFileds = new Map<MainDataFields, any[]>([
         ],
     ],
     [
-        MainDataFields.EXPORT_POURCENTAGE,
+        AlbumDataFields.EXPORT_POURCENTAGE,
         ['~70%', '~90%', 'non indique', '- de 10%', 'jamais', '~30%', '~50%'],
     ],
 
@@ -282,7 +282,7 @@ export const PossibleDataFileds = new Map<MainDataFields, any[]>([
     //     ['1', '2', '3', '4', '5', '6', '7', '8', 'NaN'],
     // ],
     [
-        MainDataFields.SECTEUR_ACTIVITE,
+        AlbumDataFields.SECTEUR_ACTIVITE,
         [
             1,
             2,
@@ -307,14 +307,14 @@ export const PossibleDataFileds = new Map<MainDataFields, any[]>([
         ],
     ],
 
-    [MainDataFields.REVENUS_RANG, ['1', '2', '3', '4', '5', '9', 'NaN']],
-    [MainDataFields.CONTINUITE_FAMILIALE, ['true', 'false', 'NaN']],
+    [AlbumDataFields.REVENUS_RANG, ['1', '2', '3', '4', '5', '9', 'NaN']],
+    [AlbumDataFields.CONTINUITE_FAMILIALE, ['true', 'false', 'NaN']],
     [
-        MainDataFields.IMPORT_POURCENTAGE,
+        AlbumDataFields.IMPORT_POURCENTAGE,
         ['~30%', '- de 10%', 'jamais', '~50%', '~90%', '~70%', 'non indique'],
     ],
     [
-        MainDataFields.IMPORT_PRINCIPAL,
+        AlbumDataFields.IMPORT_PRINCIPAL,
         [
             'afrique',
             'amerique centrale & sud',
@@ -325,12 +325,12 @@ export const PossibleDataFileds = new Map<MainDataFields, any[]>([
         ],
     ],
     [
-        MainDataFields.FEMMES_DIRECTION_POURCENTAGE,
+        AlbumDataFields.FEMMES_DIRECTION_POURCENTAGE,
         ['25% a 49%', '10% a 24%', '50% a 75%', '- de 10%', '+ de 75%', 'NaN'],
     ],
     [
         // implement filter function
-        MainDataFields.REPONDANT_ANNEE_NAISSANCE,
+        AlbumDataFields.REPONDANT_ANNEE_NAISSANCE,
         [
             'avant 1960',
             '1961 a 1970',
@@ -342,7 +342,7 @@ export const PossibleDataFileds = new Map<MainDataFields, any[]>([
         ],
     ],
     [
-        MainDataFields.REPONDANT_MEMBRE_FAMILLE,
+        AlbumDataFields.REPONDANT_MEMBRE_FAMILLE,
         [
             '3eme generation',
             '2eme generation',
@@ -352,10 +352,10 @@ export const PossibleDataFileds = new Map<MainDataFields, any[]>([
         ],
     ],
 
-    [MainDataFields.REPONDANT_SEXE, ['homme', 'femme', 'NaN']],
+    [AlbumDataFields.REPONDANT_SEXE, ['homme', 'femme', 'NaN']],
 
     [
-        MainDataFields.REPONDANT_NIVEAU_ETUDE,
+        AlbumDataFields.REPONDANT_NIVEAU_ETUDE,
         ['1', '2', '3', '4', '5', '6', '7', '8', 'NaN'],
         // [
         //     'Secondaire',
@@ -369,7 +369,7 @@ export const PossibleDataFileds = new Map<MainDataFields, any[]>([
     ],
 
     [
-        MainDataFields.REPONDANT_NIVEAU_SANTE,
+        AlbumDataFields.REPONDANT_NIVEAU_SANTE,
         ['excellente', 'tres bonne', 'assez bonne', 'pas tres bonne', 'bonne'],
     ],
 
@@ -387,7 +387,7 @@ export const PossibleDataFileds = new Map<MainDataFields, any[]>([
     // ],
 
     [
-        MainDataFields.REPONDANT_POSTE,
+        AlbumDataFields.REPONDANT_POSTE,
         [
             "president du conseil d'administration",
             'employe',
@@ -398,7 +398,7 @@ export const PossibleDataFileds = new Map<MainDataFields, any[]>([
     ],
 
     [
-        MainDataFields.REPONDANT_ANNEE_TRAVAILLEES,
+        AlbumDataFields.REPONDANT_ANNEE_TRAVAILLEES,
         [
             '0 a 9 ans',
             '10 a 19 ans',
@@ -410,7 +410,7 @@ export const PossibleDataFileds = new Map<MainDataFields, any[]>([
     ], // IMPLEMENT FILTER FUNCTION
 
     [
-        MainDataFields.NOMBRE_EMPLOYE, // IMPLEMENT FILTER FUNCTION
+        AlbumDataFields.NOMBRE_EMPLOYE, // IMPLEMENT FILTER FUNCTION
         [
             '1 a 5',
             'aucun',
@@ -431,7 +431,7 @@ export const PossibleDataFileds = new Map<MainDataFields, any[]>([
         ],
     ],
     [
-        MainDataFields.ACTIONNAIRES_MAJORITAIRE,
+        AlbumDataFields.ACTIONNAIRES_MAJORITAIRE,
         [
             '1ere generation',
             '2eme generation',
@@ -440,10 +440,10 @@ export const PossibleDataFileds = new Map<MainDataFields, any[]>([
             'NaN',
         ],
     ],
-    [MainDataFields.ACTIONNAIRES_NOMBRE, ['0', '1', '2', '3', '4', '5+']], // needs filter function
-    [MainDataFields.ACTIONNAIRES_EXTERNE, ['true', 'false']],
+    [AlbumDataFields.ACTIONNAIRES_NOMBRE, ['0', '1', '2', '3', '4', '5+']], // needs filter function
+    [AlbumDataFields.ACTIONNAIRES_EXTERNE, ['true', 'false']],
     [
-        MainDataFields.ACTIONNAIRES_TYPE, // needs decluster function
+        AlbumDataFields.ACTIONNAIRES_TYPE, // needs decluster function
         [
             'employe',
             'fonds d’investissement',
@@ -460,17 +460,17 @@ export const PossibleDataFileds = new Map<MainDataFields, any[]>([
         ],
     ],
     [
-        MainDataFields.TAILLE_ENTREPRISE,
+        AlbumDataFields.TAILLE_ENTREPRISE,
         ['petite', 'moyenne', 'grande', 'tres petite', 'tres grande', 'NaN'],
     ],
-    [MainDataFields.CREE_OU_REPRISE, ['2', '1']],
-    [MainDataFields.BENEVOLAT, ['0', '1']],
-    [MainDataFields.ROLE_INFORMEL, ['0', '1']],
-    [MainDataFields.APRES_VENTE, ['0', '1']],
-    [MainDataFields.TEMPS_NOUVELLE_ENTREPRISE, ['0', '1']],
+    [AlbumDataFields.CREE_OU_REPRISE, ['2', '1']],
+    [AlbumDataFields.BENEVOLAT, ['0', '1']],
+    [AlbumDataFields.ROLE_INFORMEL, ['0', '1']],
+    [AlbumDataFields.APRES_VENTE, ['0', '1']],
+    [AlbumDataFields.TEMPS_NOUVELLE_ENTREPRISE, ['0', '1']],
 
     [
-        MainDataFields.ANNEE_FONDATION,
+        AlbumDataFields.ANNEE_FONDATION,
         [
             'avant 1900',
             '1900 a 1960',

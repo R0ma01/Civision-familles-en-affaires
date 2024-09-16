@@ -3,7 +3,7 @@ import { connectToDatabaseStudy } from '@/utils/mongodb';
 import { MongoDBPaths } from '@/components/enums/mongodb-paths-enum';
 
 import { GraphTextService } from '@/services/translations';
-import { MainDataFields } from '@/components/enums/data-types-enum';
+import { AlbumDataFields } from '@/components/enums/data-types-enum';
 
 // Define interfaces for the aggregation results
 interface AggregationResult {
@@ -236,7 +236,7 @@ export async function GET(req: Request) {
             );
         }
 
-        const donnesObj: MainDataFields[] = JSON.parse(donnes);
+        const donnesObj: AlbumDataFields[] = JSON.parse(donnes);
         const filtersObj: Record<string, any> = JSON.parse(filters);
 
         if (!donnesObj || !filtersObj) {
@@ -294,17 +294,17 @@ export async function GET(req: Request) {
 
 function needsNumberFiltering(donnes: string) {
     return (
-        donnes === MainDataFields.ANNEE_FONDATION ||
-        donnes === MainDataFields.REPONDANT_ANNEE_NAISSANCE ||
+        donnes === AlbumDataFields.ANNEE_FONDATION ||
+        donnes === AlbumDataFields.REPONDANT_ANNEE_NAISSANCE ||
         donnes ===
-            MainDataFields.GOUVERNANCE_CONSEIL_CONSULTATIF_POURCENTAGE_FEMMES ||
-        donnes === MainDataFields.REPONDANT_ANNEE_TRAVAILLEES ||
-        donnes === MainDataFields.ACTIONNAIRES_NOMBRE
+            AlbumDataFields.GOUVERNANCE_CONSEIL_CONSULTATIF_POURCENTAGE_FEMMES ||
+        donnes === AlbumDataFields.REPONDANT_ANNEE_TRAVAILLEES ||
+        donnes === AlbumDataFields.ACTIONNAIRES_NOMBRE
     );
 }
 
 function convertNumber(donnes: string, data: any, possibleValues: any) {
-    if (donnes === MainDataFields.ANNEE_FONDATION) {
+    if (donnes === AlbumDataFields.ANNEE_FONDATION) {
         if (data < 1900) {
             return possibleValues[0].toString();
         } else if (data < 1960) {
@@ -324,7 +324,7 @@ function convertNumber(donnes: string, data: any, possibleValues: any) {
         } else if (data.toString() === 'NaN') {
             return possibleValues[8].toString();
         }
-    } else if (donnes === MainDataFields.REPONDANT_ANNEE_NAISSANCE) {
+    } else if (donnes === AlbumDataFields.REPONDANT_ANNEE_NAISSANCE) {
         if (data < 1960) {
             return possibleValues[0].toString();
         } else if (data < 1970) {
@@ -342,7 +342,7 @@ function convertNumber(donnes: string, data: any, possibleValues: any) {
         }
     } else if (
         donnes ===
-        MainDataFields.GOUVERNANCE_CONSEIL_CONSULTATIF_POURCENTAGE_FEMMES
+        AlbumDataFields.GOUVERNANCE_CONSEIL_CONSULTATIF_POURCENTAGE_FEMMES
     ) {
         if (data < 10) {
             return possibleValues[0].toString();
@@ -357,7 +357,7 @@ function convertNumber(donnes: string, data: any, possibleValues: any) {
         } else if (data.toString() === ' NaN') {
             return possibleValues[5].toString();
         }
-    } else if (donnes === MainDataFields.REPONDANT_ANNEE_TRAVAILLEES) {
+    } else if (donnes === AlbumDataFields.REPONDANT_ANNEE_TRAVAILLEES) {
         if (data < 10) {
             return possibleValues[0].toString();
         } else if (data < 20) {
@@ -371,7 +371,7 @@ function convertNumber(donnes: string, data: any, possibleValues: any) {
         } else if (data.toString() === ' NaN') {
             return possibleValues[5].toString();
         }
-    } else if (donnes === MainDataFields.ACTIONNAIRES_NOMBRE) {
+    } else if (donnes === AlbumDataFields.ACTIONNAIRES_NOMBRE) {
         if (data == 0) {
             return possibleValues[0].toString();
         } else if (data === 1) {
