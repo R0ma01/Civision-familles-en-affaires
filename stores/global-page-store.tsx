@@ -1,10 +1,10 @@
 import { create } from 'zustand';
 import { PageHttpRequestService } from '@/services/page-http-request-service';
-import PageContent from '@/components/interface/page-content';
+import PageTabContent from '@/components/interface/page-content';
 import { devtools, persist } from 'zustand/middleware';
 
 interface GlobalState {
-    pagesData: PageContent[] | null;
+    pagesData: PageTabContent[] | null;
     pageLoading: boolean;
     pageError: string | null;
     pageDataFetched: boolean;

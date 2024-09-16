@@ -2,14 +2,16 @@
 import React, { useEffect, useState, Suspense } from 'react';
 import { useSearchParams } from 'next/navigation';
 import PageContentContainer from '@/components/component/page-content-container/page-content-container';
-import DataCard from '@/components/component/data-card/data-card';
+
 import useGlobalPageStore from '@/stores/global-page-store';
-import PageContent from '@/components/interface/page-content';
+
 import useMapStore from '@/stores/global-map-store';
 import { MapType } from '@/components/enums/map-type-enum';
+import { TabContainer } from '@/components/component/tab/tab-container';
+import PageTabContent from '@/components/interface/page-tabs-content';
 
 function PageContentComponent() {
-    const [page, setPage] = useState<PageContent | undefined>(undefined);
+    const [page, setPage] = useState<PageTabContent | undefined>(undefined);
     const searchParams = useSearchParams();
     const _id = searchParams.get('_id');
     const { pagesData, pageLoading, pageError } = useGlobalPageStore(
@@ -35,7 +37,7 @@ function PageContentComponent() {
 
     useEffect(() => {
         if (!page && pagesData) {
-            setPage(pagesData.find((page: PageContent) => page._id === _id));
+            setPage(pagesData.find((page: PageTabContent) => page._id === _id));
         }
     }, [page, pagesData, _id]);
 
@@ -52,7 +54,7 @@ function PageContentComponent() {
                     {page?.title}
                 </h1>
 
-                {page ? (
+                {/* {page ? (
                     <div className="flex flex-col space-y-4 dark:text-white">
                         <p className="z-10 text-xs">{page?.description}</p>
                         {page.cards.map((card) => (
@@ -61,7 +63,8 @@ function PageContentComponent() {
                     </div>
                 ) : (
                     <p>Loading...</p>
-                )}
+                )} */}
+                {page && <TabContainer tabs={page?.tabs ?? []}></TabContainer>}
             </PageContentContainer>
         </>
     );

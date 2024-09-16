@@ -5,7 +5,7 @@ import { MongoDBPaths } from '@/components/enums/mongodb-paths-enum';
 export async function GET() {
     try {
         const db = (await connectToDatabaseStudy()).db;
-        const collection = db.collection(MongoDBPaths.COLLECTION_PAGES);
+        const collection = db.collection(MongoDBPaths.COLLECTION_PAGES_TABS);
 
         const result = await collection.find({}).toArray();
 

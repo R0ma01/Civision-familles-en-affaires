@@ -48,6 +48,7 @@ function PageContentComponent() {
         if (!page) {
             fetchMe();
         }
+        console.log(page);
     }, [page, pagesData, _id]);
 
     if (pageLoading) return <div>Loading...</div>;
@@ -62,25 +63,7 @@ function PageContentComponent() {
                 <h1 className="text-2xl tracking-wide text-black dark:text-white z-10 mt-12 mb-2 cursor-default">
                     {page?.title}
                 </h1>
-
-                {Object.values(MainDataFields).map((value: any) => {
-                    return (
-                        <DataCard
-                            content={{
-                                type: DataCardType.SIMPLE_GRAPH,
-                                title: value,
-                                description: '',
-                                graphData: [
-                                    {
-                                        graphType:
-                                            GraphBoxType.VERTICAL_BARCHART,
-                                        donnes: [value],
-                                    },
-                                ],
-                            }}
-                        ></DataCard>
-                    );
-                })}
+                {page && <TabContainer tabs={page?.tabs ?? []}></TabContainer>}
             </PageContentContainer>
         </>
     );
@@ -92,4 +75,23 @@ export default function PageInformation() {
             <PageContentComponent />
         </Suspense>
     );
+}
+
+{
+    /* return (
+                    <DataCard
+                        content={{
+                            type: DataCardType.SIMPLE_GRAPH,
+                            title: value,
+                            description: '',
+                            graphData: [
+                                {
+                                    graphType:
+                                        GraphBoxType.VERTICAL_BARCHART,
+                                    donnes: [value],
+                                },
+                            ],
+                        }}
+                    ></DataCard>
+                ); */
 }
