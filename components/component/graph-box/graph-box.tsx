@@ -120,6 +120,7 @@ const GraphBox: React.FC<GraphBoxProps> = ({ content, chartSize }) => {
             setLoading(true);
             fetchMultiple(content.donnes);
         }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [content, matchStage]);
 
     useEffect(() => {
