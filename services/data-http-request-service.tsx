@@ -108,7 +108,7 @@ async function getChartData(
                 },
             });
         }
-        console.log(response.data.chartData);
+
         return response.data.chartData;
     } catch (error: any) {
         console.error(
