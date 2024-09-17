@@ -75,6 +75,7 @@ function PageContentComponent() {
                     {page?.title}
                 </h1>
                 {Object.values(IndexeDataFieldsA).map((value, index) => {
+                    console.log(value);
                     return (
                         <DataCard
                             key={index}
