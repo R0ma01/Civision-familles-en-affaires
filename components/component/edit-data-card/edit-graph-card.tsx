@@ -50,7 +50,7 @@ const EditGraphCard: React.FC<GraphCardProps> = ({
                         <label className="block text-xs font-medium text-gray-600 dark:text-gray-400 mb-1">
                             Type de Graphique
                         </label>
-                        <Dropdown<GraphBoxType>
+                        <Dropdown
                             inputValue={graph.graphType}
                             options={Object.values(GraphBoxType)}
                             onChange={(value: any) =>
@@ -69,7 +69,7 @@ const EditGraphCard: React.FC<GraphCardProps> = ({
                             Données Affichées
                         </label>
 
-                        <Dropdown<AlbumDataFields | 'Pas de Valeur'>
+                        <Dropdown
                             inputValue={graph.donnes[0]}
                             options={Object.values(AlbumDataFields)}
                             onChange={(value: any) =>
@@ -82,7 +82,7 @@ const EditGraphCard: React.FC<GraphCardProps> = ({
                             }
                         />
                         {graph.donnes.length > 1 && (
-                            <Dropdown<AlbumDataFields | 'Pas de Valeur'>
+                            <Dropdown
                                 inputValue={graph.donnes[1]}
                                 options={Object.values(AlbumDataFields)}
                                 onChange={(value: any) =>
