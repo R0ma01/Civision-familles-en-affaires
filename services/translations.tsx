@@ -1,5 +1,6 @@
 import {
     AlbumDataFields,
+    IndexeDataFieldsA,
     IndexeDataFieldsB,
 } from '@/components/enums/data-types-enum';
 import { GraphBoxType } from '@/components/enums/graph-box-enum';
@@ -12,6 +13,66 @@ interface dataInformations {
     label: Traductions;
     dataLabels: Record<string, Traductions>;
 }
+
+const satisfactionChartValues = {
+    3: {
+        FR: 'Neutre/Sans opinion',
+        EN: 'Neutral, No opinion',
+    },
+    5: {
+        FR: 'Très important',
+        EN: 'Very important',
+    },
+    4: {
+        FR: 'Assez important',
+        EN: 'Quite Important',
+    },
+    2: {
+        FR: 'Peu important',
+        EN: 'Somewhat Important',
+    },
+    1: {
+        FR: 'Pas du tout important',
+        EN: 'Unimportant',
+    },
+    '-97': {
+        FR: 'Ne s’applique pas / Mes démarches concrètes sont déjà commencées',
+        EN: 'Does not apply / My concrete actions are already underway',
+    },
+};
+
+const non0oui1 = {
+    0: {
+        FR: 'Non',
+        EN: 'No',
+    },
+    1: {
+        FR: 'Oui',
+        EN: 'Yes',
+    },
+};
+
+const oui0non1 = {
+    1: {
+        FR: 'Non',
+        EN: 'No',
+    },
+    0: {
+        FR: 'Oui',
+        EN: 'Yes',
+    },
+};
+
+const oui1non2 = {
+    2: {
+        FR: 'Non',
+        EN: 'No',
+    },
+    1: {
+        FR: 'Oui',
+        EN: 'Yes',
+    },
+};
 
 const keyValuePairs: [string, dataInformations][] = [
     [
@@ -1356,11 +1417,11 @@ const keyValuePairs: [string, dataInformations][] = [
             dataLabels: {
                 0: {
                     FR: 'Le répondant aurait le temps',
-                    EN: 'The respondant would have time',
+                    EN: 'The respondent would have time',
                 },
                 1: {
                     FR: "Le répondant n'aurait pas le temps",
-                    EN: 'The respondant would not have time',
+                    EN: 'The respondent would not have time',
                 },
             },
         },
@@ -1375,11 +1436,11 @@ const keyValuePairs: [string, dataInformations][] = [
             dataLabels: {
                 0: {
                     FR: 'Le répondant aurait le temps',
-                    EN: 'The respondant would have time',
+                    EN: 'The respondent would have time',
                 },
                 1: {
                     FR: "Le répondant n'aurait pas le temps",
-                    EN: 'The respondant would not have time',
+                    EN: 'The respondent would not have time',
                 },
             },
         },
@@ -1394,11 +1455,11 @@ const keyValuePairs: [string, dataInformations][] = [
             dataLabels: {
                 0: {
                     FR: 'Le répondant souhaite un rôle informel',
-                    EN: 'The respondant would like an informal role',
+                    EN: 'The respondent would like an informal role',
                 },
                 1: {
                     FR: 'Le répondant ne souhaite pas avoir un rôle informel',
-                    EN: 'The respondant would not like to have an informal role',
+                    EN: 'The respondent would not like to have an informal role',
                 },
             },
         },
@@ -1413,11 +1474,11 @@ const keyValuePairs: [string, dataInformations][] = [
             dataLabels: {
                 0: {
                     FR: "Le répondant souhaite suivre l'évolution de son entreprise après sa vente / tranfert",
-                    EN: 'The respondant would like to keep track of their company after sale / tranfert',
+                    EN: 'The respondent would like to keep track of their company after sale / tranfert',
                 },
                 1: {
                     FR: "Le répondant ne souhaite pas suivre l'évolution de son entreprise après sa vente / tranfert",
-                    EN: 'The respondant would not like to keep track of their company after sale / tranfert',
+                    EN: 'The respondent would not like to keep track of their company after sale / tranfert',
                 },
             },
         },
@@ -1426,8 +1487,8 @@ const keyValuePairs: [string, dataInformations][] = [
         AlbumDataFields.NOMBRE_EMPLOYE,
         {
             label: {
-                FR: "Le répondant souhaite-t-il suivre l'évolution de son entreprise suite à sa vente ou son transfert?",
-                EN: 'Does the respondent wish to follow the evolution of his business following its sale or transfer?',
+                FR: "Nombre d'employés",
+                EN: 'Number of employees',
             },
             dataLabels: {
                 '1 a 5': {
@@ -1523,8 +1584,8 @@ const keyValuePairs: [string, dataInformations][] = [
         IndexeDataFieldsB.AGE,
         {
             label: {
-                FR: 'Quel âge avez-vous ?',
-                EN: 'How old are you ?',
+                FR: 'Âge des entrepreneurs',
+                EN: 'Age of the entrepreneurs',
             },
             dataLabels: {
                 0: {
@@ -1594,8 +1655,8 @@ const keyValuePairs: [string, dataInformations][] = [
         IndexeDataFieldsB.AGER,
         {
             label: {
-                FR: 'Quel âge avez-vous ?',
-                EN: 'How old are you ?',
+                FR: 'Âge des entrepreneurs',
+                EN: 'Age of entrepreneurs',
             },
             dataLabels: {
                 1: {
@@ -1615,6 +1676,1692 @@ const keyValuePairs: [string, dataInformations][] = [
                     EN: '65 years and older',
                 },
             },
+        },
+    ],
+    [
+        IndexeDataFieldsB.QZ13,
+        {
+            label: {
+                FR: "Dernier niveau de scolarité complété par l'entrepreneur",
+                EN: 'Last degree obtained but the entrepreneur',
+            },
+            dataLabels: {
+                1: {
+                    FR: 'Primaire ou moins',
+                    EN: 'Primary school or less',
+                },
+                2: {
+                    FR: 'Secondaire - DES de formation générale',
+                    EN: 'Highschool, DES of general training',
+                },
+                3: {
+                    FR: 'Secondaire - DEP de formation professionnelle',
+                    EN: 'Highschool - DEP of professionnal training',
+                },
+                4: {
+                    FR: 'Collégial (DEC de formation pré-universitaire, de formation technique, certificats (CEP), attestations (AEC) ou diplômé',
+                    EN: 'Collegial (pre-university, technical training, certificate (CEP), attestation (AEC) or graduate',
+                },
+                5: {
+                    FR: 'Universitaire certificats et diplômes',
+                    EN: 'University, certificate or diplôma',
+                },
+                6: {
+                    FR: 'Universitaire 1er cycle Baccalauréat (incluant cours classique)',
+                    EN: 'University, Bachelors',
+                },
+                7: {
+                    FR: 'Universitaire 2ième cycle Maîtrise',
+                    EN: 'University, Masters',
+                },
+                8: {
+                    FR: 'Universitaire 3ième cycle Doctorat',
+                    EN: 'University, Doctorat',
+                },
+                9: {
+                    FR: 'Je préfère ne pas répondre',
+                    EN: 'No answer',
+                },
+            },
+        },
+    ],
+    [
+        IndexeDataFieldsB.Q0QC,
+        {
+            label: {
+                FR: 'Région de domicile au Québec',
+                EN: 'Region of residence in Quebec',
+            },
+            dataLabels: {
+                1: {
+                    FR: 'Bas-Saint-Laurent',
+                    EN: 'Bas-Saint-Laurent',
+                },
+                2: {
+                    FR: 'Saguenay-Lac-Saint-Jean',
+                    EN: 'Saguenay-Lac-Saint-Jean',
+                },
+                3: {
+                    FR: 'Capitale-Nationale',
+                    EN: 'Capitale-Nationale',
+                },
+                4: {
+                    FR: 'Mauricie',
+                    EN: 'Mauricie',
+                },
+                5: {
+                    FR: 'Estrie',
+                    EN: 'Estrie',
+                },
+                6: {
+                    FR: 'Montréal',
+                    EN: 'Montréal',
+                },
+                7: {
+                    FR: 'Outaouais',
+                    EN: 'Outaouais',
+                },
+                8: {
+                    FR: 'Abitibi-Témiscamingue',
+                    EN: 'Abitibi-Témiscamingue',
+                },
+                9: {
+                    FR: 'Côte-Nord',
+                    EN: 'Côte-Nord',
+                },
+                10: {
+                    FR: 'Gaspésie/Iles-de-la-Madeleine',
+                    EN: 'Gaspésie/Iles-de-la-Madeleine',
+                },
+                11: {
+                    FR: 'Nord-du-Québec',
+                    EN: 'Nord-du-Québec',
+                },
+                12: {
+                    FR: 'Chaudière-Appalaches',
+                    EN: 'Chaudière-Appalaches',
+                },
+                13: {
+                    FR: 'Laval',
+                    EN: 'Laval',
+                },
+                14: {
+                    FR: 'Lanaudière',
+                    EN: 'Lanaudière',
+                },
+                15: {
+                    FR: 'Laurentides',
+                    EN: 'Laurentides',
+                },
+                16: {
+                    FR: 'Montérégie',
+                    EN: 'Montérégie',
+                },
+                17: {
+                    FR: 'Centre-du-Québec',
+                    EN: 'Centre-du-Québec',
+                },
+            },
+        },
+    ],
+
+    [
+        IndexeDataFieldsB.REGIO,
+        {
+            label: {
+                FR: 'Régions calculées',
+                EN: 'Regions regrouped',
+            },
+            dataLabels: {
+                1: {
+                    FR: 'MTL RMR',
+                    EN: 'MTL RMR',
+                },
+                2: {
+                    FR: 'QC RMR',
+                    EN: 'QC RMR',
+                },
+                3: {
+                    FR: 'AUTRES RÉGIONS',
+                    EN: 'AUTRES RÉGIONS',
+                },
+            },
+        },
+    ],
+
+    [
+        IndexeDataFieldsB.QD8,
+        {
+            label: {
+                FR: "Nombre d'employés permanents travaillant pour la compagnie",
+                EN: 'Number of employees working full time for the company',
+            },
+            dataLabels: {
+                1: {
+                    FR: '0 employés',
+                    EN: '0 employees',
+                },
+                2: {
+                    FR: '1 à 3 employés',
+                    EN: '1 to 3 employees',
+                },
+                3: {
+                    FR: '4 à 5 employés',
+                    EN: '4 to 5 employees',
+                },
+                4: {
+                    FR: '6 à 10 employés',
+                    EN: '6 to 10 employees',
+                },
+                5: {
+                    FR: '11 à 20 employés',
+                    EN: '11 to 20 employees',
+                },
+                6: {
+                    FR: '21 à 50 employés',
+                    EN: '21 to 50 employees',
+                },
+                7: {
+                    FR: 'Plus de 50 employés',
+                    EN: 'More than 50 employees',
+                },
+            },
+        },
+    ],
+    [
+        IndexeDataFieldsB.QDA1r6, //TODO DIMINUE MOI
+        {
+            label: {
+                FR: 'QDA1r6: Est une entreprise familiale (dans laquelle au moins deux membres de la famille participent à la gestion ainsi qu’à l’orientation stratégique et qui appartient en majorité ou en totalité à la même famille - au moins à deux de ses membr',
+                EN: 'How old are you ?',
+            },
+            dataLabels: {
+                1: {
+                    FR: 'Oui',
+                    EN: 'Yes',
+                },
+                0: {
+                    FR: 'Non',
+                    EN: 'No',
+                },
+            },
+        },
+    ],
+    [
+        IndexeDataFieldsB.QDD3x,
+        {
+            label: {
+                FR: "Le propriétaire de l'entreprise a : ",
+                EN: "The company's current owner has : ",
+            },
+            dataLabels: {
+                1: {
+                    FR: 'Créé cette entreprise',
+                    EN: 'Created a new company',
+                },
+                0: {
+                    FR: "Repris l'entreprise",
+                    EN: 'Taken it over',
+                },
+            },
+        },
+    ],
+    [
+        IndexeDataFieldsB.QDD3Cx,
+        {
+            label: {
+                FR: "Le propriétaire a créé / reprise l'entreprise : ",
+                EN: "The company's ower created / took over the company : ",
+            },
+            dataLabels: {
+                1: {
+                    FR: 'Seul(e)',
+                    EN: 'Alone',
+                },
+                0: {
+                    FR: 'En équipe',
+                    EN: 'With a team',
+                },
+            },
+        },
+    ],
+    [
+        IndexeDataFieldsB.QD2,
+        {
+            label: {
+                FR: "Le propriétaire possède l'entreprise depuis : ",
+                EN: 'The owner has owned the company for : ',
+            },
+            dataLabels: {
+                1: {
+                    FR: 'Moins de 3 mois',
+                    EN: 'Less than 3 months',
+                },
+                2: {
+                    FR: '3 à 12 mois',
+                    EN: '3 to 12 months',
+                },
+                3: {
+                    FR: '1 à 3 an(s)',
+                    EN: '1 to 3 years',
+                },
+                4: {
+                    FR: '4 à 5 ans',
+                    EN: '4 to 5 years',
+                },
+                5: {
+                    FR: '6 à 10 ans',
+                    EN: '6 to 10 years',
+                },
+                6: {
+                    FR: '11 à 20 ans',
+                    EN: '11 to 20 years',
+                },
+                7: {
+                    FR: 'Plus de 20 ans',
+                    EN: 'More than 20 years',
+                },
+                8: {
+                    FR: 'Inconnu',
+                    EN: 'Unknown',
+                },
+            },
+        },
+    ],
+    [
+        IndexeDataFieldsB.QDD3Ar1, // TODO FIX ME // needs number filtering function
+        {
+            label: {
+                FR: "En excluant l'entreprise visée par l'étude, le propriétaire à créé :",
+                EN: 'Excluing their current company, the owner has created : ',
+            },
+            dataLabels: {
+                0: {
+                    FR: '0 autres entreprises',
+                    EN: '0 other companies',
+                },
+                1: {
+                    FR: '1 autre entreprise',
+                    EN: '1 other company',
+                },
+                2: {
+                    FR: '2 autres entreprises',
+                    EN: '2 other compagnies',
+                },
+                3: {
+                    FR: 'Entre 3 et 5 autres entreprises',
+                    EN: 'Between 3 to 5 other companies',
+                },
+                4: {
+                    FR: 'Entre 5 et 15 autres entreprises',
+                    EN: 'Between 5 to 15 other companies',
+                },
+                5: {
+                    FR: 'Plus de 15 autres entreprises',
+                    EN: 'More than 15 other compagnies',
+                },
+            },
+        },
+    ],
+    [
+        IndexeDataFieldsB.QDD3Ar2,
+        {
+            label: {
+                FR: "En excluant l'entreprise visée par l'étude, le nombre d'entreprises toujours en activité crées par le propriétaire est :",
+                EN: 'Excluing their current company, the number of companies still in operation created by the owner is:',
+            },
+            dataLabels: {
+                0: {
+                    FR: '0 entreprises',
+                    EN: '0 companies',
+                },
+                1: {
+                    FR: '1 entreprise',
+                    EN: '1 company',
+                },
+                2: {
+                    FR: '2 entreprises',
+                    EN: '2 compagnies',
+                },
+                3: {
+                    FR: 'Entre 3 et 5 entreprises',
+                    EN: 'Between 3 to 5 companies',
+                },
+                4: {
+                    FR: 'Entre 5 et 15 entreprises',
+                    EN: 'Between 5 to 15 companies',
+                },
+                5: {
+                    FR: 'Plus de 15 entreprises',
+                    EN: 'More than 15 compagnies',
+                },
+            },
+        },
+    ],
+    [
+        IndexeDataFieldsB.QD11,
+        {
+            label: {
+                FR: "Secteur d'activité principal de l'entreprise",
+                EN: 'Main sector of activity of the company',
+            },
+            dataLabels: {
+                1: {
+                    FR: 'Commerce de détail (SCIAN 44-45)',
+                    EN: 'Retail trade (NAICS 44-45)',
+                },
+                2: {
+                    FR: 'Autres services, sauf les administrations publiques',
+                    EN: 'Other services, except public administration',
+                },
+                3: {
+                    FR: 'Services professionnels, scientifiques et techniques (services juridiques, comptables, architecture, génie, arpentage,',
+                    EN: 'Professional, scientific, and technical services (legal, accounting, architectural, engineering, surveying services)',
+                },
+                4: {
+                    FR: 'Arts, spectacles et loisirs (SCIAN 71)',
+                    EN: 'Arts, entertainment, and recreation (NAICS 71)',
+                },
+                5: {
+                    FR: 'Finance et assurances (SCIAN 52)',
+                    EN: 'Finance and insurance (NAICS 52)',
+                },
+                6: {
+                    FR: 'Soins de santé et assistance sociale (SCIAN 62)',
+                    EN: 'Health care and social assistance (NAICS 62)',
+                },
+                7: {
+                    FR: 'Construction (SCIAN 23)',
+                    EN: 'Construction (NAICS 23)',
+                },
+                8: {
+                    FR: 'Hébergement et services de restauration (SCIAN 72)',
+                    EN: 'Accommodation and food services (NAICS 72)',
+                },
+                9: {
+                    FR: 'Services d’enseignement (SCIAN 61)',
+                    EN: 'Educational services (NAICS 61)',
+                },
+                10: {
+                    FR: 'Commerce de gros (SCIAN 41)',
+                    EN: 'Wholesale trade (NAICS 41)',
+                },
+                11: {
+                    FR: 'Fabrication (SCIAN 31-33)',
+                    EN: 'Manufacturing (NAICS 31-33)',
+                },
+                12: {
+                    FR: 'Industrie de l’information et industrie culturelle (SCIAN 51)',
+                    EN: 'Information and cultural industries (NAICS 51)',
+                },
+                13: {
+                    FR: 'Transport et entreposage (SCIAN 48-49)',
+                    EN: 'Transportation and warehousing (NAICS 48-49)',
+                },
+                14: {
+                    FR: 'Agriculture, foresterie, pêche et chasse (SCIAN 11)',
+                    EN: 'Agriculture, forestry, fishing, and hunting (NAICS 11)',
+                },
+                15: {
+                    FR: 'Gestion de sociétés et d’entreprises (SCIAN 55)',
+                    EN: 'Management of companies and enterprises (NAICS 55)',
+                },
+                16: {
+                    FR: 'Services immobiliers et services de location et de location à bail (SCIAN 53)',
+                    EN: 'Real estate and rental and leasing services (NAICS 53)',
+                },
+                17: {
+                    FR: 'Services administratifs, services de soutien, services de gestion des déchets et services d’assainissement (SCIAN 56)',
+                    EN: 'Administrative and support services, waste management and remediation services (NAICS 56)',
+                },
+                96: {
+                    FR: 'Autre',
+                    EN: 'Other',
+                },
+                98: {
+                    FR: 'Je ne sais pas',
+                    EN: 'I don’t know',
+                },
+            },
+        },
+    ],
+    [
+        IndexeDataFieldsB.QD14A, // TODO FIX ME
+        {
+            label: {
+                FR: "QD14A: ... à l'extérieur de votre région administrative, dans votre province? - Le fait d'être actif peut impliquer la réalisation de ventes de biens ou de services, le développement des alliances stratégiques, l'établissement d'un milieu d'affair",
+                EN: 'How old are you ?',
+            },
+            dataLabels: {
+                ...oui1non2,
+            },
+        },
+    ],
+    [
+        IndexeDataFieldsB.QD14B, // TODO FIX ME
+        {
+            label: {
+                FR: "QD14B: ... à l'extérieur de votre province, au Canada? - Le fait d'être actif peut impliquer la réalisation de ventes de biens ou de services, le développement des alliances stratégiques, l'établissement d'un milieu d'affaires, la sous-traitance ou",
+                EN: 'How old are you ?',
+            },
+            dataLabels: {
+                ...oui1non2,
+            },
+        },
+    ],
+    [
+        IndexeDataFieldsB.QD14C, // TODO FIX ME
+        {
+            label: {
+                FR: "QD14C: ... à l'international (à l'extérieur du Canada)? - Le fait d'être actif peut impliquer la réalisation de ventes de biens ou de services, le développement des alliances stratégiques, l'établissement d'un milieu d'affaires, la sous-traitance",
+                EN: 'How old are you ?',
+            },
+            dataLabels: {
+                ...oui1non2,
+            },
+        },
+    ],
+    [
+        IndexeDataFieldsB.ND32r1,
+        {
+            label: {
+                FR: "L'entreprise a-t-elle besoin de subventions ?",
+                EN: 'Does the company need subventions ?',
+            },
+            dataLabels: {
+                ...non0oui1,
+            },
+        },
+    ],
+    [
+        IndexeDataFieldsB.ND32r2,
+        {
+            label: {
+                FR: "L'entreprise a-t-elle besoin de financement privé ?",
+                EN: 'Does the company need private financing ?',
+            },
+            dataLabels: {
+                ...non0oui1,
+            },
+        },
+    ],
+    [
+        IndexeDataFieldsB.ND32r3,
+        {
+            label: {
+                FR: "L'entreprise a-t-elle besoin de conseil spécialisé (juridique, fiscal, comptable) ?",
+                EN: 'Does the company need specialized advice (legal, tax, accounting) ?',
+            },
+            dataLabels: {
+                ...non0oui1,
+            },
+        },
+    ],
+    [
+        IndexeDataFieldsB.ND32r7,
+        {
+            label: {
+                FR: "L'entreprise a-t-elle besoin de conseil juridique ?",
+                EN: 'Does the company need legal advice ?',
+            },
+            dataLabels: {
+                ...non0oui1,
+            },
+        },
+    ],
+    [
+        IndexeDataFieldsB.ND32r8,
+        {
+            label: {
+                FR: "L'entreprise a-t-elle besoin de conseil fiscal et comptable (ex. CPA) ?",
+                EN: 'Does the company need tax or acounting advice (e.g. CPA) ?',
+            },
+            dataLabels: {
+                ...non0oui1,
+            },
+        },
+    ],
+    [
+        IndexeDataFieldsB.ND32r4,
+        {
+            label: {
+                FR: "L'entreprise a-t-elle besoin d'accompagnement par des entrepreneur(e)s d'expérience (mentor(e)s) ?",
+                EN: 'Does the company need support from experienced entrepreneurs (mentors)?',
+            },
+            dataLabels: {
+                ...non0oui1,
+            },
+        },
+    ],
+    [
+        IndexeDataFieldsB.ND32r5,
+        {
+            label: {
+                FR: "L'entreprise a-t-elle besoin d'un accès à des réseaux d'entrepreneurs ?",
+                EN: 'Does the company need access to a netword of entrepreneurs ?',
+            },
+            dataLabels: {
+                ...non0oui1,
+            },
+        },
+    ],
+    [
+        IndexeDataFieldsB.ND32r6,
+        {
+            label: {
+                FR: "L'entreprise a-t-elle besoin de contacts influents ?",
+                EN: 'Does the company need influential contacts ?',
+            },
+            dataLabels: {
+                ...non0oui1,
+            },
+        },
+    ],
+    [
+        IndexeDataFieldsB.ND32r9,
+        {
+            label: {
+                FR: "L'entreprise a-t-elle besoin d'un accès à de l’information et des ressources relatives au transfert d’entreprise ?",
+                EN: 'Does the company need access to information and resources relating to business transfer?',
+            },
+            dataLabels: {
+                ...non0oui1,
+            },
+        },
+    ],
+    [
+        IndexeDataFieldsB.QH1,
+        {
+            label: {
+                FR: 'Le propriétaire souhaite prendre sa retraite dans : ',
+                EN: 'The owner wishes to retire in:',
+            },
+            dataLabels: {
+                1: {
+                    FR: "Moins d'un an",
+                    EN: 'Less than a year',
+                },
+                2: {
+                    FR: 'De 1 à 3 an(s)',
+                    EN: '1 to 3 years',
+                },
+                3: {
+                    FR: 'De 4 à 5 ans',
+                    EN: '4 to 5 years',
+                },
+                4: {
+                    FR: 'De 6 à 10 ans',
+                    EN: '6 to 10 years',
+                },
+                5: {
+                    FR: 'Plus de 10 ans',
+                    EN: 'More than 10 years',
+                },
+                97: {
+                    FR: 'Pas encore considéré',
+                    EN: 'Not yet considered',
+                },
+                98: {
+                    FR: 'Je ne sais pas',
+                    EN: 'I don’t know',
+                },
+            },
+        },
+    ],
+
+    [
+        IndexeDataFieldsB.QH2,
+        {
+            label: {
+                FR: 'Après sa retraite, le propriétaire souhaite : ',
+                EN: 'After retirement, the owner wishes to :',
+            },
+            dataLabels: {
+                1: {
+                    FR: "Fermer l'entreprise",
+                    EN: 'Close the business',
+                },
+                2: {
+                    FR: "Vendre l'entreprise au plus offrant",
+                    EN: 'Sell the business to the highest bidder',
+                },
+                3: {
+                    FR: "Vendre l'entreprise conditionnellement au maintien des emplois",
+                    EN: 'Sell the business on condition that jobs are retained',
+                },
+                4: {
+                    FR: "Transmettre et/ou vendre l'entreprise aux enfants/membres de la famille",
+                    EN: 'Transfer and/or sell the business to children/family members',
+                },
+                5: {
+                    FR: "Transmettre et/ou vendre l'entreprise à un ou des employés (rachat par les cadres)",
+                    EN: 'Transfer and/or sell the business to employees (management buyout)',
+                },
+                6: {
+                    FR: "Transmettre et/ou vendre l'entreprise à un membre de la famille (autres)",
+                    EN: 'Transfer and/or sell the business to a family member (other)',
+                },
+                7: {
+                    FR: 'Référer ma clientèle à une personne de confiance / compétente',
+                    EN: 'Refer my clients to a trustworthy/competent person',
+                },
+                8: {
+                    FR: 'Transformer l’entreprise en coopérative de travailleurs(-euses) actionnaires',
+                    EN: 'Convert the business into a worker-shareholder cooperative',
+                },
+                9: {
+                    FR: "Transmettre et/ou vendre l'entreprise à un ou des membre(s) de la famille ET à un ou des employé(e)s",
+                    EN: 'Transfer and/or sell the business to family members AND employees',
+                },
+                10: {
+                    FR: 'Vendre l’entreprise à l’externe (SANS LIEN avec la famille ni les employé(e)s)',
+                    EN: 'Sell the business externally (NO connection to family or employees)',
+                },
+                11: {
+                    FR: 'Vendre l’entreprise à l’externe et aux employé(e)s',
+                    EN: 'Sell the business externally and to employees',
+                },
+                12: {
+                    FR: 'Vendre l’entreprise à l’externe et à un ou des membre(s) de la famille',
+                    EN: 'Sell the business externally and to family members',
+                },
+                13: {
+                    FR: 'Vendre l’entreprise à un ou des membre(s) de la famille, à un ou des employé(e)s ainsi qu’à une ou des personne(',
+                    EN: 'Sell the business to family members, employees, and others',
+                },
+                96: {
+                    FR: 'Autre',
+                    EN: 'Other',
+                },
+                97: {
+                    FR: 'Pas de préférence',
+                    EN: 'No preference',
+                },
+                98: {
+                    FR: 'Inconnu',
+                    EN: 'Unknown',
+                },
+            },
+        },
+    ],
+    [
+        IndexeDataFieldsB.QREP2B,
+        {
+            label: {
+                FR: "Le propriétaire a-t-il un/des successeur(s) en tête pour l'entreprise ?",
+                EN: 'Does the owner have perspective buyers/successors for their buisness ?',
+            },
+            dataLabels: {
+                1: {
+                    FR: 'Oui, une personne',
+                    EN: 'Yes, one person',
+                },
+                2: {
+                    FR: "Oui, une équipe d'acheteurs protentiels",
+                    EN: 'Yes, a team of potential buyers',
+                },
+                3: {
+                    FR: 'Non',
+                    EN: 'No',
+                },
+            },
+        },
+    ],
+    [
+        IndexeDataFieldsB.QREP1x,
+        {
+            label: {
+                FR: "Le plan de succession de l'entreprise est : ",
+                EN: 'The succession plan for the company is ?',
+            },
+            dataLabels: {
+                0: {
+                    FR: 'Non-existant',
+                    EN: 'Nonexistant',
+                },
+                1: {
+                    FR: 'Informel',
+                    EN: 'Informal',
+                },
+                2: {
+                    FR: 'Formel',
+                    EN: 'Formal',
+                },
+            },
+        },
+    ],
+    // [
+    //     IndexeDataFieldsB.QREP3r4,
+    //     {
+    //         label: {
+    //             FR: 'Do you know the exact market value of your company?',
+    //             EN: 'How old are you ?',
+    //         },
+    //         dataLabels: {
+    //             0: {
+    //                 FR: 'Oui',
+    //                 EN: 'Yes',
+    //             },
+    //             1: {
+    //                 FR: 'Non',
+    //                 EN: 'Financement privé (investisseurs privés)',
+    //             },
+    //         },
+    //     },
+    // ],
+    // [
+    //     IndexeDataFieldsB.QREP4,
+    //     {
+    //         label: {
+    //             FR: "QREP3r4: Do you know the exact market value of your company?-No, I don't know the value",
+    //             EN: 'How old are you ?',
+    //         },
+    //         dataLabels: {
+    //             0: {
+    //                 FR: 'Non',
+    //                 EN: 'Yes',
+    //             },
+    //             1: {
+    //                 FR: 'Oui',
+    //                 EN: 'Financement privé (investisseurs privés)',
+    //             },
+    //         },
+    //     },
+    // ],
+    [
+        IndexeDataFieldsB.QREP5r1, // Wait for answer
+        {
+            label: {
+                FR: 'Le propriétaire a-t-il déjà eut recours à du support externe pour des conseils juridiques ?',
+                EN: 'Has the owner used external support for legal advice ?',
+            },
+            dataLabels: {
+                ...non0oui1,
+            },
+        },
+    ],
+    [
+        IndexeDataFieldsB.QREP5r2, // Wait for answer
+        {
+            label: {
+                FR: 'Le propriétaire a-t-il déjà eut recours à du support externe pour du fiscal et/ou la comptabilité ?',
+                EN: 'Has the owner used external support for tax and/or accounting ?',
+            },
+            dataLabels: {
+                ...non0oui1,
+            },
+        },
+    ],
+
+    [
+        IndexeDataFieldsB.QREP5r3, // Wait for answer
+        {
+            label: {
+                FR: 'Le propriétaire a-t-il déjà eut recours à un choach externe ?',
+                EN: 'Has the owner used an external coach ?',
+            },
+            dataLabels: {
+                ...non0oui1,
+            },
+        },
+    ],
+    [
+        IndexeDataFieldsB.QREP5r4, // Wait for answer
+        {
+            label: {
+                FR: 'Le propriétaire a-t-il déjà eut recours à un mentor externe ?',
+                EN: 'Has the owner used an external mentor ?',
+            },
+            dataLabels: {
+                ...non0oui1,
+            },
+        },
+    ],
+    [
+        IndexeDataFieldsB.QREP5r5, // Wait for answer
+        {
+            label: {
+                FR: "Le propriétaire a-t-il déjà eut recours à un consultant externe expert en succession et tranfert d'entreprise ?",
+                EN: 'Has the owner used an external consultant expert in business succession and transfer?',
+            },
+            dataLabels: {
+                ...non0oui1,
+            },
+        },
+    ],
+    [
+        IndexeDataFieldsB.QREP5r6, // Wait for answer
+        {
+            label: {
+                FR: 'Le propriétaire a-t-il déjà eu recours à un psycologue industriel (tests psychométriques, etc...) ?',
+                EN: 'Has the owner used an industrial psychologist (psychometric tests, etc.) ?',
+            },
+            dataLabels: {
+                ...non0oui1,
+            },
+        },
+    ],
+    [
+        IndexeDataFieldsB.QREP5r7, // Wait for answer
+        {
+            label: {
+                FR: "Le propriétaire a-t-il déjà eu recours à un support externe provenant d'une institution financière (banques ou autre) ?",
+                EN: 'Has the owner used external support from a financial institution (bank or otherwise) ?',
+            },
+            dataLabels: {
+                ...non0oui1,
+            },
+        },
+    ],
+    [
+        IndexeDataFieldsB.QREP7r1, // Wait for answer
+        {
+            label: {
+                FR: "Suite à la vente de son entreprise, le propriétaire actuel souhaiterai continuer son implication au sein de l'entreprise d'une autre façon.",
+                EN: 'Following the sale of his business, the current owner would like to continue his involvement in the company in another way.',
+            },
+            dataLabels: {
+                ...non0oui1,
+            },
+        },
+    ],
+    [
+        IndexeDataFieldsB.QREP7r2, // Wait for answer
+        {
+            label: {
+                FR: 'QREP7r2: Ce sera un vide, je ne sais pas comment sera ma vie ensuite - ***Inactiver en 2024 *** Vous avez indiqué avoir l’intention de vendre ou de transmettre votre entreprise. Comment envisagez-vous votre vie après cette étape?',
+                EN: '',
+            },
+            dataLabels: {
+                0: {
+                    FR: 'NO TO: Ce sera un vide, je ne sais pas comment sera ma vie ensuite',
+                    EN: '',
+                },
+                1: {
+                    FR: 'Ce sera un vide, je ne sais pas comment sera ma vie ensuite',
+                    EN: '',
+                },
+            },
+        },
+    ],
+    [
+        IndexeDataFieldsB.QREP7r3, // Wait for answer
+        {
+            label: {
+                FR: 'QREP7r3: Je n’aurai plus de réseau d’affaires - ***Inactiver en 2024 *** Vous avez indiqué avoir l’intention de vendre ou de transmettre votre entreprise. Comment envisagez-vous votre vie après cette étape?',
+                EN: '',
+            },
+            dataLabels: {
+                0: {
+                    FR: 'NO TO: Je n’aurai plus de réseau d’affaires',
+                    EN: '',
+                },
+                1: {
+                    FR: 'Je n’aurai plus de réseau d’affaires',
+                    EN: '',
+                },
+            },
+        },
+    ],
+    [
+        IndexeDataFieldsB.QREP7r4, // Wait for answer
+        {
+            label: {
+                FR: 'QREP7r4: Je devrai trouver un autre sens à ma vie - ***Inactiver en 2024 *** Vous avez indiqué avoir l’intention de vendre ou de transmettre votre entreprise. Comment envisagez-vous votre vie après cette étape?',
+                EN: '',
+            },
+            dataLabels: {
+                0: {
+                    FR: 'NO TO: Je devrai trouver un autre sens à ma vie',
+                    EN: '',
+                },
+                1: {
+                    FR: 'Je devrai trouver un autre sens à ma vie',
+                    EN: '',
+                },
+            },
+        },
+    ],
+    [
+        IndexeDataFieldsB.QREP7r5, // Wait for answer
+        {
+            label: {
+                FR: 'QREP7r5: C’est simplement une autre étape de ma vie, je m’adapterai - ***Inactiver en 2024 *** Vous avez indiqué avoir l’intention de vendre ou de transmettre votre entreprise. Comment envisagez-vous votre vie après cette étape?',
+                EN: '',
+            },
+            dataLabels: {
+                0: {
+                    FR: 'NO TO: C’est simplement une autre étape de ma vie, je m’adapterai',
+                    EN: '',
+                },
+                1: {
+                    FR: 'C’est simplement une autre étape de ma vie, je m’adapterai',
+                    EN: '',
+                },
+            },
+        },
+    ],
+    [
+        IndexeDataFieldsB.QREP7r6, // Wait for answer
+        {
+            label: {
+                FR: 'QREP7r6: J’aurai du temps pour lancer une nouvelle entreprise - ***Inactiver en 2024 *** Vous avez indiqué avoir l’intention de vendre ou de transmettre votre entreprise. Comment envisagez-vous votre vie après cette étape?',
+                EN: '',
+            },
+            dataLabels: {
+                0: {
+                    FR: 'NO TO: J’aurai du temps pour lancer une nouvelle entreprise',
+                    EN: '',
+                },
+                1: {
+                    FR: 'J’aurai du temps pour lancer une nouvelle entreprise',
+                    EN: '',
+                },
+            },
+        },
+    ],
+    [
+        IndexeDataFieldsB.QREP7r7, // Wait for answer
+        {
+            label: {
+                FR: 'QREP7r7: J’aurai du temps pour faire du bénévolat/des activités caritatives - ***Inactiver en 2024 *** Vous avez indiqué avoir l’intention de vendre ou de transmettre votre entreprise. Comment envisagez-vous votre vie après cette étape?',
+                EN: '',
+            },
+            dataLabels: {
+                0: {
+                    FR: 'NO TO: J’aurai du temps pour faire du bénévolat/des activités caritatives',
+                    EN: '',
+                },
+                1: {
+                    FR: 'J’aurai du temps pour faire du bénévolat/des activités caritatives',
+                    EN: '',
+                },
+            },
+        },
+    ],
+    [
+        IndexeDataFieldsB.QREP7r8, // Wait for answer
+        {
+            label: {
+                FR: 'QREP7r8: J’aurai du temps pour prendre soin de moi et/ou de ma famille - ***Inactiver en 2024 *** Vous avez indiqué avoir l’intention de vendre ou de transmettre votre entreprise. Comment envisagez-vous votre vie après cette étape?',
+                EN: '',
+            },
+            dataLabels: {
+                0: {
+                    FR: 'NO TO: J’aurai du temps pour prendre soin de moi et/ou de ma famille',
+                    EN: '',
+                },
+                1: {
+                    FR: 'J’aurai du temps pour prendre soin de moi et/ou de ma famille',
+                    EN: '',
+                },
+            },
+        },
+    ],
+    [
+        IndexeDataFieldsB.QREP8r1, // Wait for answer
+        {
+            label: {
+                FR: 'QREP8r1: Je continuerai de travailler pour l’entreprise dans un rôle OPÉRATIONNEL, sans la diriger - ***Inactiver en 2024 *** Vous avez indiqué avoir l’intention de vendre ou de transmettre votre entreprise. Quel sera en principe votre rôle par l',
+                EN: '',
+            },
+            dataLabels: {
+                0: {
+                    FR: 'NO TO: Je continuerai de travailler pour l’entreprise dans un rôle OPÉRATIONNEL, sans la diriger',
+                    EN: '',
+                },
+                1: {
+                    FR: 'Je continuerai de travailler pour l’entreprise dans un rôle OPÉRATIONNEL, sans la diriger',
+                    EN: '',
+                },
+            },
+        },
+    ],
+
+    [
+        IndexeDataFieldsB.QREP8r2, // Wait for answer
+        {
+            label: {
+                FR: 'QREP8r2: Je continuerai de travailler pour l’entreprise dans un rôle STRATÉGIQUE, sans la diriger - ***Inactiver en 2024 *** Vous avez indiqué avoir l’intention de vendre ou de transmettre votre entreprise. Quel sera en principe votre rôle par la',
+                EN: '',
+            },
+            dataLabels: {
+                0: {
+                    FR: 'NO TO: Je continuerai de travailler pour l’entreprise dans un rôle STRATÉGIQUE, sans la diriger',
+                    EN: '',
+                },
+                1: {
+                    FR: 'Je continuerai de travailler pour l’entreprise dans un rôle STRATÉGIQUE, sans la diriger',
+                    EN: '',
+                },
+            },
+        },
+    ],
+    [
+        IndexeDataFieldsB.QREP8r3, // Wait for answer
+        {
+            label: {
+                FR: 'QREP8r3: Je continuerai d’avoir un rôle informel auprès des repreneurs(-eures) (ex. : mentor, coach, etc.) - ***Inactiver en 2024 *** Vous avez indiqué avoir l’intention de vendre ou de transmettre votre entreprise. Quel sera en principe votre rô',
+                EN: '',
+            },
+            dataLabels: {
+                0: {
+                    FR: 'NO TO: Je continuerai d’avoir un rôle informel auprès des repreneurs(-eures) (ex. : mentor, coach, etc.)',
+                    EN: '',
+                },
+                1: {
+                    FR: 'Je continuerai d’avoir un rôle informel auprès des repreneurs(-eures) (ex. : mentor, coach, etc.)',
+                    EN: '',
+                },
+            },
+        },
+    ],
+    [
+        IndexeDataFieldsB.QREP8r4, // Wait for answer
+        {
+            label: {
+                FR: 'QREP8r4: Je ne compte pas suivre l’évolution de mon entreprise après sa vente/son transfert - ***Inactiver en 2024 *** Vous avez indiqué avoir l’intention de vendre ou de transmettre votre entreprise. Quel sera en principe votre rôle par la suite',
+                EN: '',
+            },
+            dataLabels: {
+                0: {
+                    FR: 'NO TO: Je ne compte pas suivre l’évolution de mon entreprise après sa vente/son transfert',
+                    EN: '',
+                },
+                1: {
+                    FR: 'Je ne compte pas suivre l’évolution de mon entreprise après sa vente/son transfert',
+                    EN: '',
+                },
+            },
+        },
+    ],
+    [
+        IndexeDataFieldsB.QREP8r5, // Wait for answer
+        {
+            label: {
+                FR: 'QREP8r5: Je siègerai sur son conseil (administratif ou consultatif) - ***Inactiver en 2024 *** Vous avez indiqué avoir l’intention de vendre ou de transmettre votre entreprise. Quel sera en principe votre rôle par la suite?',
+                EN: '',
+            },
+            dataLabels: {
+                0: {
+                    FR: 'NO TO: Je siègerai sur son conseil (administratif ou consultatif)',
+                    EN: '',
+                },
+                1: {
+                    FR: 'Je siègerai sur son conseil (administratif ou consultatif)',
+                    EN: '',
+                },
+            },
+        },
+    ],
+    [
+        IndexeDataFieldsB.QREP8r6, // Wait for answer
+        {
+            label: {
+                FR: 'QREP8r6: Je siègerai sur un conseil familial - ***Inactiver en 2024 *** Vous avez indiqué avoir l’intention de vendre ou de transmettre votre entreprise. Quel sera en principe votre rôle par la suite?',
+                EN: '',
+            },
+            dataLabels: {
+                0: {
+                    FR: 'NO TO: Je siègerai sur un conseil familial',
+                    EN: '',
+                },
+                1: {
+                    FR: 'Je siègerai sur un conseil familial',
+                    EN: '',
+                },
+            },
+        },
+    ],
+    [
+        IndexeDataFieldsB.QREP8r7, // Wait for answer
+        {
+            label: {
+                FR: 'QREP8r7: Je resterai actionnaire minoritaire - ***Inactiver en 2024 *** Vous avez indiqué avoir l’intention de vendre ou de transmettre votre entreprise. Quel sera en principe votre rôle par la suite?',
+                EN: '',
+            },
+            dataLabels: {
+                0: {
+                    FR: 'NO TO: Je resterai actionnaire minoritaire',
+                    EN: '',
+                },
+                1: {
+                    FR: 'Je resterai actionnaire minoritaire',
+                    EN: '',
+                },
+            },
+        },
+    ],
+    [
+        IndexeDataFieldsB.QREP8r8, // Wait for answer
+        {
+            label: {
+                FR: 'QREP8r8: Je resterai actionnaire avec des actions de contrôle - ***Inactiver en 2024 *** Vous avez indiqué avoir l’intention de vendre ou de transmettre votre entreprise. Quel sera en principe votre rôle par la suite?',
+                EN: '',
+            },
+            dataLabels: {
+                0: {
+                    FR: 'NO TO: Je resterai actionnaire avec des actions de contrôle',
+                    EN: '',
+                },
+                1: {
+                    FR: 'Je resterai actionnaire avec des actions de contrôle',
+                    EN: '',
+                },
+            },
+        },
+    ],
+
+    [
+        IndexeDataFieldsB.QD16,
+        {
+            label: {
+                FR: "L'entreprise a-t-elle un jour l'envie d'être active au niveau international ?",
+                EN: 'Does the company want to, one day, be active on an international level ?',
+            },
+            dataLabels: {
+                1: {
+                    FR: 'Oui',
+                    EN: 'Yes',
+                },
+                2: {
+                    FR: 'Non',
+                    EN: 'No',
+                },
+                3: {
+                    FR: 'Inconnu',
+                    EN: 'Unknown',
+                },
+            },
+        },
+    ],
+    [
+        IndexeDataFieldsB.QD16A,
+        {
+            label: {
+                FR: "Les raisons qui expliquent la non-considération d'une possible activité internationale : ",
+                EN: 'The reasons which explain the non-consideration of a possible international activity : ',
+            },
+            dataLabels: {
+                1: {
+                    FR: 'Le produit/service ne se prête pas à l’exportation',
+                    EN: "Product/service doesn't lend itself to export",
+                },
+                2: {
+                    FR: 'Complexité du processus d’internationalisation',
+                    EN: 'Complexity of the internationalization process',
+                },
+                3: {
+                    FR: 'Trop de risques associés à l’internationalisation',
+                    EN: 'Too many risks associated with internationalization',
+                },
+                4: {
+                    FR: 'Manque de ressources (financières, humaines, etc.)',
+                    EN: 'Lack of resources (financial, human, etc.)',
+                },
+                5: {
+                    FR: 'Le marché local est assez grand pour atteindre les objectifs de l’entreprise',
+                    EN: 'Local market is big enough to meet business objectives',
+                },
+                6: {
+                    FR: 'Manque de compétences',
+                    EN: 'Lack of skills',
+                },
+                7: {
+                    FR: 'Manque d’information',
+                    EN: 'Lack of information',
+                },
+                13: {
+                    FR: 'Les conséquences de la pandémie de COVID-19 sont trop importantes (économie, conditions de santé, etc.)',
+                    EN: 'Consequences of the COVID-19 pandemic are too significant (economy, health conditions, etc.)',
+                },
+                96: {
+                    FR: 'Autre',
+                    EN: 'Other',
+                },
+                98: {
+                    FR: 'Unknown',
+                    EN: 'Inconnu',
+                },
+            },
+        },
+    ],
+    [
+        IndexeDataFieldsB.QZ19,
+        {
+            label: {
+                FR: "Chiffre d'affaire annuel au courrant de la dernière année",
+                EN: 'Annual revenue during the last year',
+            },
+            dataLabels: {
+                1: {
+                    FR: '49 999 $ et moins',
+                    EN: '49,999 $ or less',
+                },
+                2: {
+                    FR: 'entre 50 000 $ et 99 999 $',
+                    EN: '50,000 $ to 99,999 $',
+                },
+                3: {
+                    FR: 'entre 100 000 $ et 199 999 $',
+                    EN: '100,000 $ to 199,999 $',
+                },
+                4: {
+                    FR: 'entre 200 000 $ et 499 999 $',
+                    EN: '200,000 $ to 499,999 $',
+                },
+                5: {
+                    FR: 'entre 500 000 $ et 999 999 $',
+                    EN: '500,000 $ to 999,999 $',
+                },
+                6: {
+                    FR: 'entre 1 000 000 $ et 1 499 999 $',
+                    EN: '1,000,000 $ to 1,499,999 $',
+                },
+                7: {
+                    FR: 'entre 1 500 000 $ et 4 999 999 $',
+                    EN: '1,500,000 $ to 4,999,999 $',
+                },
+                8: {
+                    FR: 'entre 5 000 000 $ et 9 999 999 $',
+                    EN: '5,000,000 $ to 9,999,999 $',
+                },
+                9: {
+                    FR: '10 000 000 $ et plus',
+                    EN: '10,000,000 $ or more',
+                },
+                97: {
+                    FR: "Ne s'applique pas",
+                    EN: 'Not applicable',
+                },
+                99: {
+                    FR: 'Je préfère ne pas répondre',
+                    EN: 'Prefers not to answer',
+                },
+            },
+        },
+    ],
+    [
+        IndexeDataFieldsA.TYPETYPE2,
+        {
+            label: {
+                FR: "Le répondant à l'intention d'entreprendre",
+                EN: 'The respondent intends to become an entrepreneur',
+            },
+            dataLabels: {
+                ...non0oui1,
+            },
+        },
+    ],
+    [
+        IndexeDataFieldsA.QE1x,
+        {
+            label: {
+                FR: 'Intensions du répondant',
+                EN: "respondents' intentions",
+            },
+            dataLabels: {
+                1: {
+                    FR: 'Créer une nouvelle entreprise',
+                    EN: 'Start a new business',
+                },
+                2: {
+                    FR: 'Reprendre une entreprise',
+                    EN: 'Acquire a business',
+                },
+                3: {
+                    FR: 'Reprendre une entreprise familliale',
+                    EN: 'Take over a family business',
+                },
+                96: {
+                    FR: 'Je ne sais pas encore',
+                    EN: 'Not sure yet',
+                },
+            },
+        },
+    ],
+    [
+        IndexeDataFieldsA.QE1Cx,
+        {
+            label: {
+                FR: "Le répondant a l'intention de créer une nouvelle entreprise :",
+                EN: 'The respondent want to create a new company : ',
+            },
+            dataLabels: {
+                1: {
+                    FR: 'Seul(e)',
+                    EN: 'Alone',
+                },
+                2: {
+                    FR: "Avec d'autres personnes",
+                    EN: 'With other peoplle',
+                },
+
+                96: {
+                    FR: 'Inconnu',
+                    EN: 'Unknown',
+                },
+            },
+        },
+    ],
+    [
+        IndexeDataFieldsA.QE3,
+        {
+            label: {
+                FR: 'Délais envisagés pour créer ou reprendre une entreprise',
+                EN: 'Timeline for Starting or Acquiring a Business',
+            },
+            dataLabels: {
+                0: {
+                    FR: 'Dès que les conditions économiques seront revenues à la normale',
+                    EN: 'As soon as economic conditions return to normal',
+                },
+                1: {
+                    FR: 'Moins de 1 an',
+                    EN: 'Less than 1 year',
+                },
+                2: {
+                    FR: 'De 1 à 3 an(s)',
+                    EN: '1 to 3 years',
+                },
+                3: {
+                    FR: 'De 4 à 5 ans',
+                    EN: '4 to 5 years',
+                },
+                4: {
+                    FR: 'De 6 à 10 ans',
+                    EN: '6 to 10 years',
+                },
+                5: {
+                    FR: 'Plus de 10 ans',
+                    EN: 'More than 10 years',
+                },
+                7: {
+                    FR: 'Mes démarches concrètes sont déjà commencées',
+                    EN: 'My concrete steps have already begun',
+                },
+                96: {
+                    FR: 'Je ne sais pas encore',
+                    EN: 'Not sure yet',
+                },
+            },
+        },
+    ],
+    [
+        IndexeDataFieldsA.QE6,
+        {
+            label: {
+                FR: "Les secteurs d'activité considérés par le répondant sont : ",
+                EN: 'The sectors of activity considered by the respondent are:',
+            },
+            dataLabels: {
+                1: {
+                    FR: 'Commerce de détail (SCIAN 44-45)',
+                    EN: 'Retail Trade (NAICS 44-45)',
+                },
+                2: {
+                    FR: 'Autres services, sauf les administrations publiques (réparation et entretien, services personnels et de blanchissage, m',
+                    EN: 'Other Services, except Public Administration (repair and maintenance, personal services, laundering, etc.)',
+                },
+                3: {
+                    FR: 'Services professionnels, scientifiques et techniques (services juridiques, comptables, architecture, génie, arpentage,',
+                    EN: 'Professional, Scientific, and Technical Services (legal, accounting, architecture, engineering, surveying, etc.)',
+                },
+                4: {
+                    FR: 'Arts, spectacles et loisirs (SCIAN 71)',
+                    EN: 'Arts, Entertainment, and Recreation (NAICS 71)',
+                },
+                5: {
+                    FR: 'Finance et assurances (SCIAN 52)',
+                    EN: 'Finance and Insurance (NAICS 52)',
+                },
+                6: {
+                    FR: 'Soins de santé et assistance sociale (SCIAN 62)',
+                    EN: 'Health Care and Social Assistance (NAICS 62)',
+                },
+                7: {
+                    FR: 'Construction (SCIAN 23)',
+                    EN: 'Construction (NAICS 23)',
+                },
+                8: {
+                    FR: 'Hébergement et services de restauration (SCIAN 72)',
+                    EN: 'Accommodation and Food Services (NAICS 72)',
+                },
+                9: {
+                    FR: 'Services d’enseignement (SCIAN 61)',
+                    EN: 'Educational Services (NAICS 61)',
+                },
+                10: {
+                    FR: 'Commerce de gros (SCIAN 41)',
+                    EN: 'Wholesale Trade (NAICS 41)',
+                },
+                11: {
+                    FR: 'Fabrication (SCIAN 31-33)',
+                    EN: 'Manufacturing (NAICS 31-33)',
+                },
+                12: {
+                    FR: 'Industrie de l’information et industrie culturelle (SCIAN 51)',
+                    EN: 'Information and Cultural Industries (NAICS 51)',
+                },
+                13: {
+                    FR: 'Transport et entreposage (SCIAN 48-49)',
+                    EN: 'Transportation and Warehousing (NAICS 48-49)',
+                },
+                14: {
+                    FR: 'Agriculture, foresterie, pêche et chasse (SCIAN 11)',
+                    EN: 'Agriculture, Forestry, Fishing, and Hunting (NAICS 11)',
+                },
+                15: {
+                    FR: 'Gestion de sociétés et d’entreprises (SCIAN 55)',
+                    EN: 'Management of Companies and Enterprises (NAICS 55)',
+                },
+                16: {
+                    FR: 'Services immobiliers et services de location et de location à bail (SCIAN 53)',
+                    EN: 'Real Estate and Rental and Leasing (NAICS 53)',
+                },
+                17: {
+                    FR: 'Services administratifs, services de soutien, services de gestion des déchets et services d’assainissement (SCIAN 56)',
+                    EN: 'Administrative and Support Services, Waste Management and Remediation Services (NAICS 56)',
+                },
+                97: {
+                    FR: 'Autre',
+                    EN: 'Other',
+                },
+                96: {
+                    FR: 'Je ne sais pas encore',
+                    EN: 'Not sure yet',
+                },
+            },
+        },
+    ],
+    [
+        IndexeDataFieldsA.QE8r1,
+        {
+            label: {
+                FR: "Pour accélérer le passage à l'action, la présence d'un mentor pour accompagner durant les premières années d'activités est :",
+                EN: 'To accelerate the move to action, the presence of a mentor to support during the first years of activities is :',
+            },
+            dataLabels: { ...satisfactionChartValues },
+        },
+    ],
+    [
+        IndexeDataFieldsA.QE8r2,
+        {
+            label: {
+                FR: "Pour accélérer le passage à l'action, un partenaire d'affaires afin de partager les coûts et les risques est :",
+                EN: 'To accelerate the move to action, having a buisness partner to share cost and risk is :',
+            },
+            dataLabels: { ...satisfactionChartValues },
+        },
+    ],
+    [
+        IndexeDataFieldsA.QE8r3,
+        {
+            label: {
+                FR: "Pour accélérer le passage à l'action, avoir de l'information sur des entreprises existantes à reprendre est :",
+                EN: 'To accelerate the move to action, having information on existing companies in need of a successor is :',
+            },
+            dataLabels: { ...satisfactionChartValues },
+        },
+    ],
+    [
+        IndexeDataFieldsA.QE8r4,
+        {
+            label: {
+                FR: "Pour accélérer le passage à l'action, avoir une occasion d'affaires est :",
+                EN: 'To accelerate the move to action, having a business opportunity is :',
+            },
+            dataLabels: { ...satisfactionChartValues },
+        },
+    ],
+    [
+        IndexeDataFieldsA.QE8r5,
+        {
+            label: {
+                FR: "Pour accélérer le passage à l'action, avoir de l'information sur le démarrage d'entreprises est :",
+                EN: 'To accelerate the move to action, having information on starting a business is :',
+            },
+            dataLabels: { ...satisfactionChartValues },
+        },
+    ],
+    [
+        IndexeDataFieldsA.QE8r6,
+        {
+            label: {
+                FR: "Pour accélérer le passage à l'action, avoir de l'aide gouvernementale/le financement public sous toutes formes est :",
+                EN: 'To accelerate the move to action, having governmental/public financing is :',
+            },
+            dataLabels: { ...satisfactionChartValues },
+        },
+    ],
+    [
+        IndexeDataFieldsA.QE8r7,
+        {
+            label: {
+                FR: "Pour accélérer le passage à l'action, avoir de l'aide aux entreprises/le financement privé (taux bancaire réduit, services professionnels avantageux, etc.) est :",
+                EN: 'To accelerate the move to action, having business assistance/private financing (reduced bank rates, advantageous professional services, etc.) is:',
+            },
+            dataLabels: { ...satisfactionChartValues },
+        },
+    ],
+    [
+        IndexeDataFieldsA.QE8r8,
+        {
+            label: {
+                FR: "Pour accélérer le passage à l'action, le changement dans le contexte économique (perte massive d'emploi, dégradation des conditions de travail, etc.) est :",
+                EN: 'To accelerate the move to action, the change in the economic context (massive loss of jobs, including mine, deterioration of working conditions, etc.) is:',
+            },
+            dataLabels: { ...satisfactionChartValues },
+        },
+    ],
+    [
+        IndexeDataFieldsA.QE8r9,
+        {
+            label: {
+                FR: "Pour accélérer le passage à l'action, avoir l'accompagnement d'un conseiller pour aider à démarrer ou reprendre une entreprise est :",
+                EN: 'To accelerate the move to action, having the support of an advisor to help start or take over a business is:',
+            },
+            dataLabels: { ...satisfactionChartValues },
+        },
+    ],
+    [
+        IndexeDataFieldsA.QE8r10,
+        {
+            label: {
+                FR: "Pour accélérer le passage à l'action, avoir de la motivation personnelle à passer à l'action est :",
+                EN: 'To accelerate action, having personal motivation to take action is:',
+            },
+            dataLabels: { ...satisfactionChartValues },
+        },
+    ],
+    [
+        IndexeDataFieldsA.QE8r11,
+        {
+            label: {
+                FR: "Pour accélérer le passage à l'action, l'augmentation des compétences / expériences du répondant est :",
+                EN: "To accelerate the move to action, increasing the respondent's skills/experience is:",
+            },
+            dataLabels: { ...satisfactionChartValues },
+        },
+    ],
+    [
+        IndexeDataFieldsA.QE8r12,
+        {
+            label: {
+                FR: "Pour accélérer le passage à l'action, la perte d'emploi du répondant est :",
+                EN: "To accelerate the move to action, the respondent's job loss is:",
+            },
+            dataLabels: { ...satisfactionChartValues },
+        },
+    ],
+    [
+        IndexeDataFieldsA.QE8r13,
+        {
+            label: {
+                FR: "Pour accélérer le passage à l'action, le soutien de l'entourage du répondant est :",
+                EN: 'To accelerate the move to action, support from those around the respondent is:',
+            },
+            dataLabels: { ...satisfactionChartValues },
+        },
+    ],
+    [
+        IndexeDataFieldsA.QE8r14,
+        {
+            label: {
+                FR: "Pour accélérer le passage à l'action, finir les études en cours du répondant est :",
+                EN: "To accelerate the move to action, finishing the respondent's current studies is:",
+            },
+            dataLabels: { ...satisfactionChartValues },
+        },
+    ],
+    [
+        IndexeDataFieldsA.QE8r15,
+        {
+            label: {
+                FR: "Pour accélérer le passage à l'action, la situation familiale (que les enfants grandissent, etc.) du répondant est :",
+                EN: 'To accelerate the move to action, the family situation (whether the children are growing up, etc.) of the respondent is:',
+            },
+            dataLabels: { ...satisfactionChartValues },
+        },
+    ],
+    [
+        IndexeDataFieldsA.QE8r16,
+        {
+            label: {
+                FR: "Pour accélérer le passage à l'action, mieux définir et évaluer l'idée du répondant est :",
+                EN: "To accelerate the move to action, better define and evaluate the respondent's idea is:",
+            },
+            dataLabels: { ...satisfactionChartValues },
+        },
+    ],
+    [
+        IndexeDataFieldsA.QE8r17,
+        {
+            label: {
+                FR: "Pour accélérer le passage à l'action, des conditions économiques davantage favorables est :",
+                EN: 'To accelerate the move to action, more favorable economic conditions are:',
+            },
+            dataLabels: { ...satisfactionChartValues },
+        },
+    ],
+    [
+        IndexeDataFieldsA.QE8r18,
+        {
+            label: {
+                FR: "Pour accélérer le passage à l'action, avoir de l’information sur les avantages et inconvénients des différentes formes juridiques d’une entreprise est :",
+                EN: 'To speed up the move to action, having information on the advantages and disadvantages of the different legal forms of a business is:',
+            },
+            dataLabels: { ...satisfactionChartValues },
+        },
+    ],
+    [
+        IndexeDataFieldsA.QE8r19,
+        {
+            label: {
+                FR: "Pour accélérer le passage à l'action, connaître les intentions de transfert (vente) de la(des) propriétaire(s) de l'entreprise pour laquelle le répondant travaille est :",
+                EN: 'To speed up the move to action, knowing the transfer (sale) intentions of the owner(s) of the company for which the respondent works is:',
+            },
+            dataLabels: { ...satisfactionChartValues },
         },
     ],
 ];

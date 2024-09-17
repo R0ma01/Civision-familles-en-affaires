@@ -265,6 +265,7 @@ export async function GET(req: Request) {
         }
 
         const result = await mongoQuery(collection);
+        console.log(donnes);
         console.log(result);
         if (!result || result.length === 0) {
             console.log('hello');

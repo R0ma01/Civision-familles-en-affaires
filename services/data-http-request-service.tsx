@@ -79,7 +79,7 @@ async function getAllIndexeData(
 }
 
 async function getChartData(
-    donnes: AlbumDataFields[],
+    donnes: any[],
     filters: Record<string, any>,
     dataOrigin: DataBaseOrigin,
 ): Promise<ChartData[] | ChartDataMultipleFileds[]> {
