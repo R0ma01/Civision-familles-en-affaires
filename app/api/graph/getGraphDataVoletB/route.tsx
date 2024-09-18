@@ -6,10 +6,7 @@ import {
 import { MongoDBPaths } from '@/components/enums/mongodb-paths-enum';
 
 import { GraphTextService } from '@/services/translations';
-import {
-    AlbumDataFields,
-    IndexeDataFieldsB,
-} from '@/components/enums/data-types-enum';
+import { IndexeDataFieldsB } from '@/components/enums/data-types-enum';
 
 // Define interfaces for the aggregation results
 interface AggregationResult {
@@ -23,53 +20,113 @@ function generateAggregationQuery(
     possibleValues: string[] | number[],
 ) {
     if (
-        typeof filters[field] === 'number' ||
-        typeof filters[field] === 'string'
+        field !== IndexeDataFieldsB.QREP5 &&
+        field !== IndexeDataFieldsB.QREP7 &&
+        field !== IndexeDataFieldsB.QREP8
     ) {
-        filters[field] = {
-            $nin: [null, NaN],
-            $in: [filters[field]],
+        if (
+            typeof filters[field] === 'number' ||
+            typeof filters[field] === 'string'
+        ) {
+            filters[field] = {
+                $nin: [null, NaN],
+                $in: [filters[field]],
+            };
+        } else {
+            filters[field] = {
+                $nin: [null, NaN],
+            };
+        }
+    }
+    let aggregationPipeline: any[] = [];
+
+    if (
+        field === IndexeDataFieldsB.QREP5 ||
+        field === IndexeDataFieldsB.QREP7 ||
+        field === IndexeDataFieldsB.QREP8
+    ) {
+        let group: Record<any, any> = { _id: null };
+        let projection: Record<any, any> = { _id: 0 };
+        const matchArray: any[] = [];
+        possibleValues.map((param) => {
+            let paramName: string = param.toString() + 'Count';
+            group[paramName] = {
+                $sum: { $cond: [{ $eq: [`$${param}`, 1] }, 1, 0] },
+            };
+            matchArray.push({ [param]: 1 });
+            projection[param] = { name: param, value: `$${paramName}` };
+        });
+
+        let match: Record<any, any> = {
+            _id: null,
+            $or: [...matchArray],
         };
+
+        aggregationPipeline = [
+            {
+                $match: {
+                    ...filters,
+                },
+            },
+            {
+                $group: {
+                    ...group,
+                },
+            },
+            {
+                $project: {
+                    ...projection,
+                },
+            },
+        ];
     } else {
-        filters[field] = {
-            $nin: [null, NaN],
-        };
+        aggregationPipeline = [
+            {
+                $match: {
+                    ...filters,
+                },
+            },
+            {
+                $group: {
+                    _id: `$${field}`,
+                    count: { $sum: 1 },
+                },
+            },
+            {
+                $project: {
+                    _id: 0,
+                    name: '$_id',
+                    value: '$count',
+                },
+            },
+        ];
     }
 
-    const aggregationPipeline = [
-        {
-            $match: {
-                ...filters,
-            },
-        },
-        {
-            $group: {
-                _id: `$${field}`,
-                count: { $sum: 1 },
-            },
-        },
-        {
-            $project: {
-                _id: 0,
-                name: '$_id',
-                value: '$count',
-            },
-        },
-    ];
     return async (collection: any): Promise<AggregationResult[]> => {
+        console.log(aggregationPipeline);
+        console.log('hiiiis');
         const result = await collection
             .aggregate(aggregationPipeline)
             .toArray();
         console.log(result);
+        let formattedResult = result;
+        if (
+            field === IndexeDataFieldsB.QREP5 ||
+            field === IndexeDataFieldsB.QREP7 ||
+            field === IndexeDataFieldsB.QREP8
+        ) {
+            formattedResult = Object.values(result[0]);
+        }
+
         let resultMap = new Map<string, AggregationResult>(
-            result.map((item: AggregationResult) => {
+            formattedResult.map((item: AggregationResult) => {
                 if (Array.isArray(item.name)) {
                     return [JSON.stringify(item.name), item];
                 }
                 return [item.name.toString(), item];
             }),
         );
-        return result;
+
         // Ensure all possible values are in the result
         return possibleValues.map((value) => {
             return {

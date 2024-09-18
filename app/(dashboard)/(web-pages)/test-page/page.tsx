@@ -74,25 +74,22 @@ function PageContentComponent() {
                 <h1 className="text-2xl tracking-wide text-black dark:text-white z-10 mt-12 mb-2 cursor-default">
                     {page?.title}
                 </h1>
-                {Object.values(IndexeDataFieldsA).map((value, index) => {
-                    return (
-                        <DataCard
-                            key={index}
-                            content={{
-                                type: DataCardType.SIMPLE_GRAPH,
-                                title: value,
-                                description: '',
-                                graphData: [
-                                    {
-                                        graphType: GraphBoxType.DOUGHNUT,
-                                        donnes: [value],
-                                        dataOrigin: DataBaseOrigin.INDEX_VOLETA,
-                                    },
-                                ],
-                            }}
-                        ></DataCard>
-                    );
-                })}
+
+                <DataCard
+                    content={{
+                        type: DataCardType.SIMPLE_GRAPH,
+                        title: IndexeDataFieldsB.QREP5,
+                        description: '',
+                        graphData: [
+                            {
+                                graphType: GraphBoxType.DOUGHNUT,
+                                donnes: [IndexeDataFieldsB.AGER],
+                                dataOrigin: DataBaseOrigin.INDEX_VOLETB,
+                            },
+                        ],
+                    }}
+                ></DataCard>
+
                 {/* {page && <TabContainer tabs={page?.tabs ?? []}></TabContainer>} */}
             </PageContentContainer>
         </>

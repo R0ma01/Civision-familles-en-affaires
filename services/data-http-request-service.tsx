@@ -94,6 +94,7 @@ async function getChartData(
                 },
             });
         } else if (dataOrigin === DataBaseOrigin.INDEX_VOLETB) {
+            console.log('shucks');
             response = await axios.get(APIPaths.GRAPH_GET_DATA_VOLETB, {
                 params: {
                     donnes: JSON.stringify(donnes),

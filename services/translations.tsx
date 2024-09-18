@@ -11,7 +11,7 @@ interface Traductions {
 }
 interface dataInformations {
     label: Traductions;
-    dataLabels: Record<string, Traductions>;
+    dataLabels: Record<any, Traductions>;
 }
 
 const satisfactionChartValues = {
@@ -2126,11 +2126,11 @@ const keyValuePairs: [string, dataInformations][] = [
         },
     ],
     [
-        IndexeDataFieldsB.QD14A, // TODO FIX ME
+        IndexeDataFieldsB.QD14A,
         {
             label: {
-                FR: "QD14A: ... à l'extérieur de votre région administrative, dans votre province? - Le fait d'être actif peut impliquer la réalisation de ventes de biens ou de services, le développement des alliances stratégiques, l'établissement d'un milieu d'affair",
-                EN: 'How old are you ?',
+                FR: "L'entreprise est-elle active à l'exterieur de sa région administrative ?",
+                EN: 'Is the company active outside of its administrative region ?',
             },
             dataLabels: {
                 ...oui1non2,
@@ -2138,11 +2138,11 @@ const keyValuePairs: [string, dataInformations][] = [
         },
     ],
     [
-        IndexeDataFieldsB.QD14B, // TODO FIX ME
+        IndexeDataFieldsB.QD14B,
         {
             label: {
-                FR: "QD14B: ... à l'extérieur de votre province, au Canada? - Le fait d'être actif peut impliquer la réalisation de ventes de biens ou de services, le développement des alliances stratégiques, l'établissement d'un milieu d'affaires, la sous-traitance ou",
-                EN: 'How old are you ?',
+                FR: "L'entreprise est-elle active à l'exterieur de sa province ?",
+                EN: 'Is the company active outside of its provice ?',
             },
             dataLabels: {
                 ...oui1non2,
@@ -2150,11 +2150,11 @@ const keyValuePairs: [string, dataInformations][] = [
         },
     ],
     [
-        IndexeDataFieldsB.QD14C, // TODO FIX ME
+        IndexeDataFieldsB.QD14C,
         {
             label: {
-                FR: "QD14C: ... à l'international (à l'extérieur du Canada)? - Le fait d'être actif peut impliquer la réalisation de ventes de biens ou de services, le développement des alliances stratégiques, l'établissement d'un milieu d'affaires, la sous-traitance",
-                EN: 'How old are you ?',
+                FR: "L'entreprise est-elle active à l'exterieur du Canada ?",
+                EN: 'Is the company active outside of Canada ?',
             },
             dataLabels: {
                 ...oui1non2,
@@ -2162,113 +2162,160 @@ const keyValuePairs: [string, dataInformations][] = [
         },
     ],
     [
-        IndexeDataFieldsB.ND32r1,
+        IndexeDataFieldsB.ND32,
         {
             label: {
-                FR: "L'entreprise a-t-elle besoin de subventions ?",
-                EN: 'Does the company need subventions ?',
+                FR: 'Besoins spécifiques des entreprises',
+                EN: 'Specific needs of the companies',
             },
             dataLabels: {
-                ...non0oui1,
+                ND32r1: {
+                    FR: 'Subventions',
+                    EN: 'Subventions',
+                },
+                ND32r2: {
+                    FR: 'Financement Privé (investisseur privé)',
+                    EN: 'Private Financing (private investor)',
+                },
+                ND32r3: {
+                    FR: 'Conseil Spécialisé (juridique, fiscal, comptable)',
+                    EN: 'Specialized councel (legal, tax, acounting)',
+                },
+                ND32r4: {
+                    FR: "Acompagnement par des entrepreneurs d'experience",
+                    EN: 'Mentoring from seasoned entrepreneurs',
+                },
+                ND32r5: {
+                    FR: "Accès à un réseau d'entrepreneurs",
+                    EN: 'Access to a network of entrepreneurs',
+                },
+                ND32r6: {
+                    FR: 'Contacts influents',
+                    EN: 'Influential connexions',
+                },
+                ND32r7: {
+                    FR: 'Conseil juridique',
+                    EN: 'Legal councel',
+                },
+                ND32r8: {
+                    FR: 'Conseil fiscal et comptable',
+                    EN: 'Tax and acounting councel',
+                },
+                ND32r9: {
+                    FR: "Accès à de l'information et des ressources sur le transfert d'entreprises",
+                    EN: 'Access to information and resources on company transfert',
+                },
             },
         },
     ],
-    [
-        IndexeDataFieldsB.ND32r2,
-        {
-            label: {
-                FR: "L'entreprise a-t-elle besoin de financement privé ?",
-                EN: 'Does the company need private financing ?',
-            },
-            dataLabels: {
-                ...non0oui1,
-            },
-        },
-    ],
-    [
-        IndexeDataFieldsB.ND32r3,
-        {
-            label: {
-                FR: "L'entreprise a-t-elle besoin de conseil spécialisé (juridique, fiscal, comptable) ?",
-                EN: 'Does the company need specialized advice (legal, tax, accounting) ?',
-            },
-            dataLabels: {
-                ...non0oui1,
-            },
-        },
-    ],
-    [
-        IndexeDataFieldsB.ND32r7,
-        {
-            label: {
-                FR: "L'entreprise a-t-elle besoin de conseil juridique ?",
-                EN: 'Does the company need legal advice ?',
-            },
-            dataLabels: {
-                ...non0oui1,
-            },
-        },
-    ],
-    [
-        IndexeDataFieldsB.ND32r8,
-        {
-            label: {
-                FR: "L'entreprise a-t-elle besoin de conseil fiscal et comptable (ex. CPA) ?",
-                EN: 'Does the company need tax or acounting advice (e.g. CPA) ?',
-            },
-            dataLabels: {
-                ...non0oui1,
-            },
-        },
-    ],
-    [
-        IndexeDataFieldsB.ND32r4,
-        {
-            label: {
-                FR: "L'entreprise a-t-elle besoin d'accompagnement par des entrepreneur(e)s d'expérience (mentor(e)s) ?",
-                EN: 'Does the company need support from experienced entrepreneurs (mentors)?',
-            },
-            dataLabels: {
-                ...non0oui1,
-            },
-        },
-    ],
-    [
-        IndexeDataFieldsB.ND32r5,
-        {
-            label: {
-                FR: "L'entreprise a-t-elle besoin d'un accès à des réseaux d'entrepreneurs ?",
-                EN: 'Does the company need access to a netword of entrepreneurs ?',
-            },
-            dataLabels: {
-                ...non0oui1,
-            },
-        },
-    ],
-    [
-        IndexeDataFieldsB.ND32r6,
-        {
-            label: {
-                FR: "L'entreprise a-t-elle besoin de contacts influents ?",
-                EN: 'Does the company need influential contacts ?',
-            },
-            dataLabels: {
-                ...non0oui1,
-            },
-        },
-    ],
-    [
-        IndexeDataFieldsB.ND32r9,
-        {
-            label: {
-                FR: "L'entreprise a-t-elle besoin d'un accès à de l’information et des ressources relatives au transfert d’entreprise ?",
-                EN: 'Does the company need access to information and resources relating to business transfer?',
-            },
-            dataLabels: {
-                ...non0oui1,
-            },
-        },
-    ],
+    // [
+    //     IndexeDataFieldsB.ND32r1,
+    //     {
+    //         label: {
+    //             FR: "L'entreprise a-t-elle besoin de subventions ?",
+    //             EN: 'Does the company need subventions ?',
+    //         },
+    //         dataLabels: {
+    //             ...non0oui1,
+    //         },
+    //     },
+    // ],
+    // [
+    //     IndexeDataFieldsB.ND32r2,
+    //     {
+    //         label: {
+    //             FR: "L'entreprise a-t-elle besoin de financement privé ?",
+    //             EN: 'Does the company need private financing ?',
+    //         },
+    //         dataLabels: {
+    //             ...non0oui1,
+    //         },
+    //     },
+    // ],
+    // [
+    //     IndexeDataFieldsB.ND32r3,
+    //     {
+    //         label: {
+    //             FR: "L'entreprise a-t-elle besoin de conseil spécialisé (juridique, fiscal, comptable) ?",
+    //             EN: 'Does the company need specialized advice (legal, tax, accounting) ?',
+    //         },
+    //         dataLabels: {
+    //             ...non0oui1,
+    //         },
+    //     },
+    // ],
+    // [
+    //     IndexeDataFieldsB.ND32r7,
+    //     {
+    //         label: {
+    //             FR: "L'entreprise a-t-elle besoin de conseil juridique ?",
+    //             EN: 'Does the company need legal advice ?',
+    //         },
+    //         dataLabels: {
+    //             ...non0oui1,
+    //         },
+    //     },
+    // ],
+    // [
+    //     IndexeDataFieldsB.ND32r8,
+    //     {
+    //         label: {
+    //             FR: "L'entreprise a-t-elle besoin de conseil fiscal et comptable (ex. CPA) ?",
+    //             EN: 'Does the company need tax or acounting advice (e.g. CPA) ?',
+    //         },
+    //         dataLabels: {
+    //             ...non0oui1,
+    //         },
+    //     },
+    // ],
+    // [
+    //     IndexeDataFieldsB.ND32r4,
+    //     {
+    //         label: {
+    //             FR: "L'entreprise a-t-elle besoin d'accompagnement par des entrepreneur(e)s d'expérience (mentor(e)s) ?",
+    //             EN: 'Does the company need support from experienced entrepreneurs (mentors)?',
+    //         },
+    //         dataLabels: {
+    //             ...non0oui1,
+    //         },
+    //     },
+    // ],
+    // [
+    //     IndexeDataFieldsB.ND32r5,
+    //     {
+    //         label: {
+    //             FR: "L'entreprise a-t-elle besoin d'un accès à des réseaux d'entrepreneurs ?",
+    //             EN: 'Does the company need access to a netword of entrepreneurs ?',
+    //         },
+    //         dataLabels: {
+    //             ...non0oui1,
+    //         },
+    //     },
+    // ],
+    // [
+    //     IndexeDataFieldsB.ND32r6,
+    //     {
+    //         label: {
+    //             FR: "L'entreprise a-t-elle besoin de contacts influents ?",
+    //             EN: 'Does the company need influential contacts ?',
+    //         },
+    //         dataLabels: {
+    //             ...non0oui1,
+    //         },
+    //     },
+    // ],
+    // [
+    //     IndexeDataFieldsB.ND32r9,
+    //     {
+    //         label: {
+    //             FR: "L'entreprise a-t-elle besoin d'un accès à de l’information et des ressources relatives au transfert d’entreprise ?",
+    //             EN: 'Does the company need access to information and resources relating to business transfer?',
+    //         },
+    //         dataLabels: {
+    //             ...non0oui1,
+    //         },
+    //     },
+    // ],
     [
         IndexeDataFieldsB.QH1,
         {
@@ -2468,389 +2515,506 @@ const keyValuePairs: [string, dataInformations][] = [
     //         },
     //     },
     // ],
+
     [
-        IndexeDataFieldsB.QREP5r1, // Wait for answer
+        IndexeDataFieldsB.QREP5, // Wait for answer
         {
             label: {
                 FR: 'Le propriétaire a-t-il déjà eut recours à du support externe pour des conseils juridiques ?',
                 EN: 'Has the owner used external support for legal advice ?',
             },
             dataLabels: {
-                ...non0oui1,
-            },
-        },
-    ],
-    [
-        IndexeDataFieldsB.QREP5r2, // Wait for answer
-        {
-            label: {
-                FR: 'Le propriétaire a-t-il déjà eut recours à du support externe pour du fiscal et/ou la comptabilité ?',
-                EN: 'Has the owner used external support for tax and/or accounting ?',
-            },
-            dataLabels: {
-                ...non0oui1,
-            },
-        },
-    ],
-
-    [
-        IndexeDataFieldsB.QREP5r3, // Wait for answer
-        {
-            label: {
-                FR: 'Le propriétaire a-t-il déjà eut recours à un choach externe ?',
-                EN: 'Has the owner used an external coach ?',
-            },
-            dataLabels: {
-                ...non0oui1,
-            },
-        },
-    ],
-    [
-        IndexeDataFieldsB.QREP5r4, // Wait for answer
-        {
-            label: {
-                FR: 'Le propriétaire a-t-il déjà eut recours à un mentor externe ?',
-                EN: 'Has the owner used an external mentor ?',
-            },
-            dataLabels: {
-                ...non0oui1,
-            },
-        },
-    ],
-    [
-        IndexeDataFieldsB.QREP5r5, // Wait for answer
-        {
-            label: {
-                FR: "Le propriétaire a-t-il déjà eut recours à un consultant externe expert en succession et tranfert d'entreprise ?",
-                EN: 'Has the owner used an external consultant expert in business succession and transfer?',
-            },
-            dataLabels: {
-                ...non0oui1,
-            },
-        },
-    ],
-    [
-        IndexeDataFieldsB.QREP5r6, // Wait for answer
-        {
-            label: {
-                FR: 'Le propriétaire a-t-il déjà eu recours à un psycologue industriel (tests psychométriques, etc...) ?',
-                EN: 'Has the owner used an industrial psychologist (psychometric tests, etc.) ?',
-            },
-            dataLabels: {
-                ...non0oui1,
-            },
-        },
-    ],
-    [
-        IndexeDataFieldsB.QREP5r7, // Wait for answer
-        {
-            label: {
-                FR: "Le propriétaire a-t-il déjà eu recours à un support externe provenant d'une institution financière (banques ou autre) ?",
-                EN: 'Has the owner used external support from a financial institution (bank or otherwise) ?',
-            },
-            dataLabels: {
-                ...non0oui1,
-            },
-        },
-    ],
-    [
-        IndexeDataFieldsB.QREP7r1, // Wait for answer
-        {
-            label: {
-                FR: "Suite à la vente de son entreprise, le propriétaire actuel souhaiterai continuer son implication au sein de l'entreprise d'une autre façon.",
-                EN: 'Following the sale of his business, the current owner would like to continue his involvement in the company in another way.',
-            },
-            dataLabels: {
-                ...non0oui1,
-            },
-        },
-    ],
-    [
-        IndexeDataFieldsB.QREP7r2, // Wait for answer
-        {
-            label: {
-                FR: 'QREP7r2: Ce sera un vide, je ne sais pas comment sera ma vie ensuite - ***Inactiver en 2024 *** Vous avez indiqué avoir l’intention de vendre ou de transmettre votre entreprise. Comment envisagez-vous votre vie après cette étape?',
-                EN: '',
-            },
-            dataLabels: {
-                0: {
-                    FR: 'NO TO: Ce sera un vide, je ne sais pas comment sera ma vie ensuite',
-                    EN: '',
+                QREP5r1: { FR: 'Conseil Légal', EN: 'Legal Advice' },
+                QREP5r2: {
+                    FR: 'Conseil fiscal et/ou comptable',
+                    EN: 'Tax and acounting advice',
                 },
-                1: {
-                    FR: 'Ce sera un vide, je ne sais pas comment sera ma vie ensuite',
-                    EN: '',
+                QREP5r3: { FR: 'Choaching', EN: 'Coaching' },
+                QREP5r4: { FR: 'Mentorat', EN: 'Mentoring' },
+                QREP5r5: {
+                    FR: "Expert en succession/transfert d'entreprise",
+                    EN: 'Expert in business transfert/succession',
                 },
-            },
-        },
-    ],
-    [
-        IndexeDataFieldsB.QREP7r3, // Wait for answer
-        {
-            label: {
-                FR: 'QREP7r3: Je n’aurai plus de réseau d’affaires - ***Inactiver en 2024 *** Vous avez indiqué avoir l’intention de vendre ou de transmettre votre entreprise. Comment envisagez-vous votre vie après cette étape?',
-                EN: '',
-            },
-            dataLabels: {
-                0: {
-                    FR: 'NO TO: Je n’aurai plus de réseau d’affaires',
-                    EN: '',
+                QREP5r6: {
+                    FR: 'Psycologue Industriel (tests psychométriques...)',
+                    EN: 'No to: Industrial psychologist (psychometric tests, etc.)',
                 },
-                1: {
-                    FR: 'Je n’aurai plus de réseau d’affaires',
-                    EN: '',
-                },
-            },
-        },
-    ],
-    [
-        IndexeDataFieldsB.QREP7r4, // Wait for answer
-        {
-            label: {
-                FR: 'QREP7r4: Je devrai trouver un autre sens à ma vie - ***Inactiver en 2024 *** Vous avez indiqué avoir l’intention de vendre ou de transmettre votre entreprise. Comment envisagez-vous votre vie après cette étape?',
-                EN: '',
-            },
-            dataLabels: {
-                0: {
-                    FR: 'NO TO: Je devrai trouver un autre sens à ma vie',
-                    EN: '',
-                },
-                1: {
-                    FR: 'Je devrai trouver un autre sens à ma vie',
-                    EN: '',
-                },
-            },
-        },
-    ],
-    [
-        IndexeDataFieldsB.QREP7r5, // Wait for answer
-        {
-            label: {
-                FR: 'QREP7r5: C’est simplement une autre étape de ma vie, je m’adapterai - ***Inactiver en 2024 *** Vous avez indiqué avoir l’intention de vendre ou de transmettre votre entreprise. Comment envisagez-vous votre vie après cette étape?',
-                EN: '',
-            },
-            dataLabels: {
-                0: {
-                    FR: 'NO TO: C’est simplement une autre étape de ma vie, je m’adapterai',
-                    EN: '',
-                },
-                1: {
-                    FR: 'C’est simplement une autre étape de ma vie, je m’adapterai',
-                    EN: '',
-                },
-            },
-        },
-    ],
-    [
-        IndexeDataFieldsB.QREP7r6, // Wait for answer
-        {
-            label: {
-                FR: 'QREP7r6: J’aurai du temps pour lancer une nouvelle entreprise - ***Inactiver en 2024 *** Vous avez indiqué avoir l’intention de vendre ou de transmettre votre entreprise. Comment envisagez-vous votre vie après cette étape?',
-                EN: '',
-            },
-            dataLabels: {
-                0: {
-                    FR: 'NO TO: J’aurai du temps pour lancer une nouvelle entreprise',
-                    EN: '',
-                },
-                1: {
-                    FR: 'J’aurai du temps pour lancer une nouvelle entreprise',
-                    EN: '',
-                },
-            },
-        },
-    ],
-    [
-        IndexeDataFieldsB.QREP7r7, // Wait for answer
-        {
-            label: {
-                FR: 'QREP7r7: J’aurai du temps pour faire du bénévolat/des activités caritatives - ***Inactiver en 2024 *** Vous avez indiqué avoir l’intention de vendre ou de transmettre votre entreprise. Comment envisagez-vous votre vie après cette étape?',
-                EN: '',
-            },
-            dataLabels: {
-                0: {
-                    FR: 'NO TO: J’aurai du temps pour faire du bénévolat/des activités caritatives',
-                    EN: '',
-                },
-                1: {
-                    FR: 'J’aurai du temps pour faire du bénévolat/des activités caritatives',
-                    EN: '',
-                },
-            },
-        },
-    ],
-    [
-        IndexeDataFieldsB.QREP7r8, // Wait for answer
-        {
-            label: {
-                FR: 'QREP7r8: J’aurai du temps pour prendre soin de moi et/ou de ma famille - ***Inactiver en 2024 *** Vous avez indiqué avoir l’intention de vendre ou de transmettre votre entreprise. Comment envisagez-vous votre vie après cette étape?',
-                EN: '',
-            },
-            dataLabels: {
-                0: {
-                    FR: 'NO TO: J’aurai du temps pour prendre soin de moi et/ou de ma famille',
-                    EN: '',
-                },
-                1: {
-                    FR: 'J’aurai du temps pour prendre soin de moi et/ou de ma famille',
-                    EN: '',
-                },
-            },
-        },
-    ],
-    [
-        IndexeDataFieldsB.QREP8r1, // Wait for answer
-        {
-            label: {
-                FR: 'QREP8r1: Je continuerai de travailler pour l’entreprise dans un rôle OPÉRATIONNEL, sans la diriger - ***Inactiver en 2024 *** Vous avez indiqué avoir l’intention de vendre ou de transmettre votre entreprise. Quel sera en principe votre rôle par l',
-                EN: '',
-            },
-            dataLabels: {
-                0: {
-                    FR: 'NO TO: Je continuerai de travailler pour l’entreprise dans un rôle OPÉRATIONNEL, sans la diriger',
-                    EN: '',
-                },
-                1: {
-                    FR: 'Je continuerai de travailler pour l’entreprise dans un rôle OPÉRATIONNEL, sans la diriger',
-                    EN: '',
+                QREP5r7: {
+                    FR: 'Institutions Financières (banques ou autre)',
+                    EN: 'Financial Institutions (banks or otherwise)',
                 },
             },
         },
     ],
 
+    // [
+    //     IndexeDataFieldsB.QREP5r1, // Wait for answer
+    //     {
+    //         label: {
+    //             FR: 'Le propriétaire a-t-il déjà eut recours à du support externe pour des conseils juridiques ?',
+    //             EN: 'Has the owner used external support for legal advice ?',
+    //         },
+    //         dataLabels: {
+    //             ...non0oui1,
+    //         },
+    //     },
+    // ],
+    // [
+    //     IndexeDataFieldsB.QREP5r2, // Wait for answer
+    //     {
+    //         label: {
+    //             FR: 'Le propriétaire a-t-il déjà eut recours à du support externe pour du fiscal et/ou la comptabilité ?',
+    //             EN: 'Has the owner used external support for tax and/or accounting ?',
+    //         },
+    //         dataLabels: {
+    //             ...non0oui1,
+    //         },
+    //     },
+    // ],
+
+    // [
+    //     IndexeDataFieldsB.QREP5r3, // Wait for answer
+    //     {
+    //         label: {
+    //             FR: 'Le propriétaire a-t-il déjà eut recours à un choach externe ?',
+    //             EN: 'Has the owner used an external coach ?',
+    //         },
+    //         dataLabels: {
+    //             ...non0oui1,
+    //         },
+    //     },
+    // ],
+    // [
+    //     IndexeDataFieldsB.QREP5r4, // Wait for answer
+    //     {
+    //         label: {
+    //             FR: 'Le propriétaire a-t-il déjà eut recours à un mentor externe ?',
+    //             EN: 'Has the owner used an external mentor ?',
+    //         },
+    //         dataLabels: {
+    //             ...non0oui1,
+    //         },
+    //     },
+    // ],
+    // [
+    //     IndexeDataFieldsB.QREP5r5, // Wait for answer
+    //     {
+    //         label: {
+    //             FR: "Le propriétaire a-t-il déjà eut recours à un consultant externe expert en succession et tranfert d'entreprise ?",
+    //             EN: 'Has the owner used an external consultant expert in business succession and transfer?',
+    //         },
+    //         dataLabels: {
+    //             ...non0oui1,
+    //         },
+    //     },
+    // ],
+    // [
+    //     IndexeDataFieldsB.QREP5r6, // Wait for answer
+    //     {
+    //         label: {
+    //             FR: 'Le propriétaire a-t-il déjà eu recours à un psycologue industriel (tests psychométriques, etc...) ?',
+    //             EN: 'Has the owner used an industrial psychologist (psychometric tests, etc.) ?',
+    //         },
+    //         dataLabels: {
+    //             ...non0oui1,
+    //         },
+    //     },
+    // ],
+    // [
+    //     IndexeDataFieldsB.QREP5r7, // Wait for answer
+    //     {
+    //         label: {
+    //             FR: "Le propriétaire a-t-il déjà eu recours à un support externe provenant d'une institution financière (banques ou autre) ?",
+    //             EN: 'Has the owner used external support from a financial institution (bank or otherwise) ?',
+    //         },
+    //         dataLabels: {
+    //             ...non0oui1,
+    //         },
+    //     },
+    // ],
+
     [
-        IndexeDataFieldsB.QREP8r2, // Wait for answer
+        IndexeDataFieldsB.QREP7, // Wait for answer
         {
             label: {
-                FR: 'QREP8r2: Je continuerai de travailler pour l’entreprise dans un rôle STRATÉGIQUE, sans la diriger - ***Inactiver en 2024 *** Vous avez indiqué avoir l’intention de vendre ou de transmettre votre entreprise. Quel sera en principe votre rôle par la',
-                EN: '',
+                FR: 'Le propriétaire souhaite vendre/transmettre son entreprise. Comment envisage-t-il sa vie ensuite ?',
+                EN: 'The owner wishes to sell/transfer his company. How does he envision his life afterwards ?',
             },
             dataLabels: {
-                0: {
-                    FR: 'NO TO: Je continuerai de travailler pour l’entreprise dans un rôle STRATÉGIQUE, sans la diriger',
-                    EN: '',
+                QREP5r1: {
+                    FR: "Continuera de s'impliquer dans l'entreprise",
+                    EN: 'Will stay involved with the company',
                 },
-                1: {
-                    FR: 'Je continuerai de travailler pour l’entreprise dans un rôle STRATÉGIQUE, sans la diriger',
-                    EN: '',
+                QREP5r2: {
+                    FR: 'Incertain par rapport à leur vie après',
+                    EN: 'Unsure about how their life will be afterwards',
+                },
+                QREP5r3: {
+                    FR: "N'aura plus de réseau d'ffaires ensuite",
+                    EN: "Won't have a business network anymore",
+                },
+                QREP5r4: {
+                    FR: 'Trouvera un autre sens a leur vie',
+                    EN: 'Will have to find a new meaning for their life',
+                },
+                QREP5r5: {
+                    FR: 'Adaptation au changement',
+                    EN: 'Will adapt to the change',
+                },
+                QREP5r6: {
+                    FR: 'Commencera une nouvelle entreprise',
+                    EN: 'Start a new company',
+                },
+                QREP5r7: {
+                    FR: 'Temps pour du bénévolat ou des activités caritatives',
+                    EN: 'Time for charity work',
                 },
             },
         },
     ],
+    // [
+    //     IndexeDataFieldsB.QREP7r1, // Wait for answer
+    //     {
+    //         label: {
+    //             FR: "Suite à la vente de son entreprise, le propriétaire actuel souhaiterai continuer son implication au sein de l'entreprise d'une autre façon.",
+    //             EN: 'Following the sale of his business, the current owner would like to continue his involvement in the company in another way.',
+    //         },
+    //         dataLabels: {
+    //             ...non0oui1,
+    //         },
+    //     },
+    // ],
+    // [
+    //     IndexeDataFieldsB.QREP7r2, // Wait for answer
+    //     {
+    //         label: {
+    //             FR: 'QREP7r2: Ce sera un vide, je ne sais pas comment sera ma vie ensuite - ***Inactiver en 2024 *** Vous avez indiqué avoir l’intention de vendre ou de transmettre votre entreprise. Comment envisagez-vous votre vie après cette étape?',
+    //             EN: '',
+    //         },
+    //         dataLabels: {
+    //             0: {
+    //                 FR: 'NO TO: Ce sera un vide, je ne sais pas comment sera ma vie ensuite',
+    //                 EN: '',
+    //             },
+    //             1: {
+    //                 FR: 'Ce sera un vide, je ne sais pas comment sera ma vie ensuite',
+    //                 EN: '',
+    //             },
+    //         },
+    //     },
+    // ],
+    // [
+    //     IndexeDataFieldsB.QREP7r3, // Wait for answer
+    //     {
+    //         label: {
+    //             FR: 'QREP7r3: Je n’aurai plus de réseau d’affaires - ***Inactiver en 2024 *** Vous avez indiqué avoir l’intention de vendre ou de transmettre votre entreprise. Comment envisagez-vous votre vie après cette étape?',
+    //             EN: '',
+    //         },
+    //         dataLabels: {
+    //             0: {
+    //                 FR: 'NO TO: Je n’aurai plus de réseau d’affaires',
+    //                 EN: '',
+    //             },
+    //             1: {
+    //                 FR: 'Je n’aurai plus de réseau d’affaires',
+    //                 EN: '',
+    //             },
+    //         },
+    //     },
+    // ],
+    // [
+    //     IndexeDataFieldsB.QREP7r4, // Wait for answer
+    //     {
+    //         label: {
+    //             FR: 'QREP7r4: Je devrai trouver un autre sens à ma vie - ***Inactiver en 2024 *** Vous avez indiqué avoir l’intention de vendre ou de transmettre votre entreprise. Comment envisagez-vous votre vie après cette étape?',
+    //             EN: '',
+    //         },
+    //         dataLabels: {
+    //             0: {
+    //                 FR: 'NO TO: Je devrai trouver un autre sens à ma vie',
+    //                 EN: '',
+    //             },
+    //             1: {
+    //                 FR: 'Je devrai trouver un autre sens à ma vie',
+    //                 EN: '',
+    //             },
+    //         },
+    //     },
+    // ],
+    // [
+    //     IndexeDataFieldsB.QREP7r5, // Wait for answer
+    //     {
+    //         label: {
+    //             FR: 'QREP7r5: C’est simplement une autre étape de ma vie, je m’adapterai - ***Inactiver en 2024 *** Vous avez indiqué avoir l’intention de vendre ou de transmettre votre entreprise. Comment envisagez-vous votre vie après cette étape?',
+    //             EN: '',
+    //         },
+    //         dataLabels: {
+    //             0: {
+    //                 FR: 'NO TO: C’est simplement une autre étape de ma vie, je m’adapterai',
+    //                 EN: '',
+    //             },
+    //             1: {
+    //                 FR: 'C’est simplement une autre étape de ma vie, je m’adapterai',
+    //                 EN: '',
+    //             },
+    //         },
+    //     },
+    // ],
+    // [
+    //     IndexeDataFieldsB.QREP7r6, // Wait for answer
+    //     {
+    //         label: {
+    //             FR: 'QREP7r6: J’aurai du temps pour lancer une nouvelle entreprise - ***Inactiver en 2024 *** Vous avez indiqué avoir l’intention de vendre ou de transmettre votre entreprise. Comment envisagez-vous votre vie après cette étape?',
+    //             EN: '',
+    //         },
+    //         dataLabels: {
+    //             0: {
+    //                 FR: 'NO TO: J’aurai du temps pour lancer une nouvelle entreprise',
+    //                 EN: '',
+    //             },
+    //             1: {
+    //                 FR: 'J’aurai du temps pour lancer une nouvelle entreprise',
+    //                 EN: '',
+    //             },
+    //         },
+    //     },
+    // ],
+    // [
+    //     IndexeDataFieldsB.QREP7r7, // Wait for answer
+    //     {
+    //         label: {
+    //             FR: 'QREP7r7: J’aurai du temps pour faire du bénévolat/des activités caritatives - ***Inactiver en 2024 *** Vous avez indiqué avoir l’intention de vendre ou de transmettre votre entreprise. Comment envisagez-vous votre vie après cette étape?',
+    //             EN: '',
+    //         },
+    //         dataLabels: {
+    //             0: {
+    //                 FR: 'NO TO: J’aurai du temps pour faire du bénévolat/des activités caritatives',
+    //                 EN: '',
+    //             },
+    //             1: {
+    //                 FR: 'J’aurai du temps pour faire du bénévolat/des activités caritatives',
+    //                 EN: '',
+    //             },
+    //         },
+    //     },
+    // ],
+    // [
+    //     IndexeDataFieldsB.QREP7r8, // Wait for answer
+    //     {
+    //         label: {
+    //             FR: 'QREP7r8: J’aurai du temps pour prendre soin de moi et/ou de ma famille - ***Inactiver en 2024 *** Vous avez indiqué avoir l’intention de vendre ou de transmettre votre entreprise. Comment envisagez-vous votre vie après cette étape?',
+    //             EN: '',
+    //         },
+    //         dataLabels: {
+    //             0: {
+    //                 FR: 'NO TO: J’aurai du temps pour prendre soin de moi et/ou de ma famille',
+    //                 EN: '',
+    //             },
+    //             1: {
+    //                 FR: 'J’aurai du temps pour prendre soin de moi et/ou de ma famille',
+    //                 EN: '',
+    //             },
+    //         },
+    //     },
+    // ],
+
     [
-        IndexeDataFieldsB.QREP8r3, // Wait for answer
+        IndexeDataFieldsB.QREP8, // Wait for answer
         {
             label: {
-                FR: 'QREP8r3: Je continuerai d’avoir un rôle informel auprès des repreneurs(-eures) (ex. : mentor, coach, etc.) - ***Inactiver en 2024 *** Vous avez indiqué avoir l’intention de vendre ou de transmettre votre entreprise. Quel sera en principe votre rô',
-                EN: '',
+                FR: 'Le propriétaire souhaite vendre/transmettre son entreprise. Quel sera son rôle ensuite?',
+                EN: 'The owner wishes to sell/transfer his company. What role will he asume afterwards ?',
             },
             dataLabels: {
-                0: {
-                    FR: 'NO TO: Je continuerai d’avoir un rôle informel auprès des repreneurs(-eures) (ex. : mentor, coach, etc.)',
-                    EN: '',
+                QREP5r1: {
+                    FR: 'Rôle opérationel, pas de direction',
+                    EN: 'Operational role, no leadership',
                 },
-                1: {
-                    FR: 'Je continuerai d’avoir un rôle informel auprès des repreneurs(-eures) (ex. : mentor, coach, etc.)',
-                    EN: '',
+                QREP5r2: {
+                    FR: 'Rôle stratégique, pas de direction',
+                    EN: 'Strategic role, no leadership',
+                },
+                QREP5r3: {
+                    FR: 'Rôle informel (mentor, coach...)',
+                    EN: 'Informal role (mentor, coacj...)',
+                },
+                QREP5r4: {
+                    FR: 'Pas de rôle',
+                    EN: 'No role at all',
+                },
+                QREP5r5: {
+                    FR: 'Siège sur le conseil (administratif ou consultatif)',
+                    EN: 'Seat on the board (administrative or advisory)',
+                },
+                QREP5r6: {
+                    FR: 'Siège sur le conseil familial',
+                    EN: 'Seat on the family council',
+                },
+                QREP5r7: {
+                    FR: 'Actionnaire minoritaire',
+                    EN: 'Minor shareholder',
+                },
+                QREP5r8: {
+                    FR: 'Actionnaire de contrôle',
+                    EN: 'Controling shareholder',
                 },
             },
         },
     ],
-    [
-        IndexeDataFieldsB.QREP8r4, // Wait for answer
-        {
-            label: {
-                FR: 'QREP8r4: Je ne compte pas suivre l’évolution de mon entreprise après sa vente/son transfert - ***Inactiver en 2024 *** Vous avez indiqué avoir l’intention de vendre ou de transmettre votre entreprise. Quel sera en principe votre rôle par la suite',
-                EN: '',
-            },
-            dataLabels: {
-                0: {
-                    FR: 'NO TO: Je ne compte pas suivre l’évolution de mon entreprise après sa vente/son transfert',
-                    EN: '',
-                },
-                1: {
-                    FR: 'Je ne compte pas suivre l’évolution de mon entreprise après sa vente/son transfert',
-                    EN: '',
-                },
-            },
-        },
-    ],
-    [
-        IndexeDataFieldsB.QREP8r5, // Wait for answer
-        {
-            label: {
-                FR: 'QREP8r5: Je siègerai sur son conseil (administratif ou consultatif) - ***Inactiver en 2024 *** Vous avez indiqué avoir l’intention de vendre ou de transmettre votre entreprise. Quel sera en principe votre rôle par la suite?',
-                EN: '',
-            },
-            dataLabels: {
-                0: {
-                    FR: 'NO TO: Je siègerai sur son conseil (administratif ou consultatif)',
-                    EN: '',
-                },
-                1: {
-                    FR: 'Je siègerai sur son conseil (administratif ou consultatif)',
-                    EN: '',
-                },
-            },
-        },
-    ],
-    [
-        IndexeDataFieldsB.QREP8r6, // Wait for answer
-        {
-            label: {
-                FR: 'QREP8r6: Je siègerai sur un conseil familial - ***Inactiver en 2024 *** Vous avez indiqué avoir l’intention de vendre ou de transmettre votre entreprise. Quel sera en principe votre rôle par la suite?',
-                EN: '',
-            },
-            dataLabels: {
-                0: {
-                    FR: 'NO TO: Je siègerai sur un conseil familial',
-                    EN: '',
-                },
-                1: {
-                    FR: 'Je siègerai sur un conseil familial',
-                    EN: '',
-                },
-            },
-        },
-    ],
-    [
-        IndexeDataFieldsB.QREP8r7, // Wait for answer
-        {
-            label: {
-                FR: 'QREP8r7: Je resterai actionnaire minoritaire - ***Inactiver en 2024 *** Vous avez indiqué avoir l’intention de vendre ou de transmettre votre entreprise. Quel sera en principe votre rôle par la suite?',
-                EN: '',
-            },
-            dataLabels: {
-                0: {
-                    FR: 'NO TO: Je resterai actionnaire minoritaire',
-                    EN: '',
-                },
-                1: {
-                    FR: 'Je resterai actionnaire minoritaire',
-                    EN: '',
-                },
-            },
-        },
-    ],
-    [
-        IndexeDataFieldsB.QREP8r8, // Wait for answer
-        {
-            label: {
-                FR: 'QREP8r8: Je resterai actionnaire avec des actions de contrôle - ***Inactiver en 2024 *** Vous avez indiqué avoir l’intention de vendre ou de transmettre votre entreprise. Quel sera en principe votre rôle par la suite?',
-                EN: '',
-            },
-            dataLabels: {
-                0: {
-                    FR: 'NO TO: Je resterai actionnaire avec des actions de contrôle',
-                    EN: '',
-                },
-                1: {
-                    FR: 'Je resterai actionnaire avec des actions de contrôle',
-                    EN: '',
-                },
-            },
-        },
-    ],
+
+    // [
+    //     IndexeDataFieldsB.QREP8r1, // Wait for answer
+    //     {
+    //         label: {
+    //             FR: 'QREP8r1: Je continuerai de travailler pour l’entreprise dans un rôle OPÉRATIONNEL, sans la diriger - ***Inactiver en 2024 *** Vous avez indiqué avoir l’intention de vendre ou de transmettre votre entreprise. Quel sera en principe votre rôle par l',
+    //             EN: '',
+    //         },
+    //         dataLabels: {
+    //             0: {
+    //                 FR: 'NO TO: Je continuerai de travailler pour l’entreprise dans un rôle OPÉRATIONNEL, sans la diriger',
+    //                 EN: '',
+    //             },
+    //             1: {
+    //                 FR: 'Je continuerai de travailler pour l’entreprise dans un rôle OPÉRATIONNEL, sans la diriger',
+    //                 EN: '',
+    //             },
+    //         },
+    //     },
+    // ],
+
+    // [
+    //     IndexeDataFieldsB.QREP8r2, // Wait for answer
+    //     {
+    //         label: {
+    //             FR: 'QREP8r2: Je continuerai de travailler pour l’entreprise dans un rôle STRATÉGIQUE, sans la diriger - ***Inactiver en 2024 *** Vous avez indiqué avoir l’intention de vendre ou de transmettre votre entreprise. Quel sera en principe votre rôle par la',
+    //             EN: '',
+    //         },
+    //         dataLabels: {
+    //             0: {
+    //                 FR: 'NO TO: Je continuerai de travailler pour l’entreprise dans un rôle STRATÉGIQUE, sans la diriger',
+    //                 EN: '',
+    //             },
+    //             1: {
+    //                 FR: 'Je continuerai de travailler pour l’entreprise dans un rôle STRATÉGIQUE, sans la diriger',
+    //                 EN: '',
+    //             },
+    //         },
+    //     },
+    // ],
+    // [
+    //     IndexeDataFieldsB.QREP8r3, // Wait for answer
+    //     {
+    //         label: {
+    //             FR: 'QREP8r3: Je continuerai d’avoir un rôle informel auprès des repreneurs(-eures) (ex. : mentor, coach, etc.) - ***Inactiver en 2024 *** Vous avez indiqué avoir l’intention de vendre ou de transmettre votre entreprise. Quel sera en principe votre rô',
+    //             EN: '',
+    //         },
+    //         dataLabels: {
+    //             0: {
+    //                 FR: 'NO TO: Je continuerai d’avoir un rôle informel auprès des repreneurs(-eures) (ex. : mentor, coach, etc.)',
+    //                 EN: '',
+    //             },
+    //             1: {
+    //                 FR: 'Je continuerai d’avoir un rôle informel auprès des repreneurs(-eures) (ex. : mentor, coach, etc.)',
+    //                 EN: '',
+    //             },
+    //         },
+    //     },
+    // ],
+    // [
+    //     IndexeDataFieldsB.QREP8r4, // Wait for answer
+    //     {
+    //         label: {
+    //             FR: 'QREP8r4: Je ne compte pas suivre l’évolution de mon entreprise après sa vente/son transfert - ***Inactiver en 2024 *** Vous avez indiqué avoir l’intention de vendre ou de transmettre votre entreprise. Quel sera en principe votre rôle par la suite',
+    //             EN: '',
+    //         },
+    //         dataLabels: {
+    //             0: {
+    //                 FR: 'NO TO: Je ne compte pas suivre l’évolution de mon entreprise après sa vente/son transfert',
+    //                 EN: '',
+    //             },
+    //             1: {
+    //                 FR: 'Je ne compte pas suivre l’évolution de mon entreprise après sa vente/son transfert',
+    //                 EN: '',
+    //             },
+    //         },
+    //     },
+    // ],
+    // [
+    //     IndexeDataFieldsB.QREP8r5, // Wait for answer
+    //     {
+    //         label: {
+    //             FR: 'QREP8r5: Je siègerai sur son conseil (administratif ou consultatif) - ***Inactiver en 2024 *** Vous avez indiqué avoir l’intention de vendre ou de transmettre votre entreprise. Quel sera en principe votre rôle par la suite?',
+    //             EN: '',
+    //         },
+    //         dataLabels: {
+    //             0: {
+    //                 FR: 'NO TO: Je siègerai sur son conseil (administratif ou consultatif)',
+    //                 EN: '',
+    //             },
+    //             1: {
+    //                 FR: 'Je siègerai sur son conseil (administratif ou consultatif)',
+    //                 EN: '',
+    //             },
+    //         },
+    //     },
+    // ],
+    // [
+    //     IndexeDataFieldsB.QREP8r6, // Wait for answer
+    //     {
+    //         label: {
+    //             FR: 'QREP8r6: Je siègerai sur un conseil familial - ***Inactiver en 2024 *** Vous avez indiqué avoir l’intention de vendre ou de transmettre votre entreprise. Quel sera en principe votre rôle par la suite?',
+    //             EN: '',
+    //         },
+    //         dataLabels: {
+    //             0: {
+    //                 FR: 'NO TO: Je siègerai sur un conseil familial',
+    //                 EN: '',
+    //             },
+    //             1: {
+    //                 FR: 'Je siègerai sur un conseil familial',
+    //                 EN: '',
+    //             },
+    //         },
+    //     },
+    // ],
+    // [
+    //     IndexeDataFieldsB.QREP8r7, // Wait for answer
+    //     {
+    //         label: {
+    //             FR: 'QREP8r7: Je resterai actionnaire minoritaire - ***Inactiver en 2024 *** Vous avez indiqué avoir l’intention de vendre ou de transmettre votre entreprise. Quel sera en principe votre rôle par la suite?',
+    //             EN: '',
+    //         },
+    //         dataLabels: {
+    //             0: {
+    //                 FR: 'NO TO: Je resterai actionnaire minoritaire',
+    //                 EN: '',
+    //             },
+    //             1: {
+    //                 FR: 'Je resterai actionnaire minoritaire',
+    //                 EN: '',
+    //             },
+    //         },
+    //     },
+    // ],
+    // [
+    //     IndexeDataFieldsB.QREP8r8, // Wait for answer
+    //     {
+    //         label: {
+    //             FR: 'QREP8r8: Je resterai actionnaire avec des actions de contrôle - ***Inactiver en 2024 *** Vous avez indiqué avoir l’intention de vendre ou de transmettre votre entreprise. Quel sera en principe votre rôle par la suite?',
+    //             EN: '',
+    //         },
+    //         dataLabels: {
+    //             0: {
+    //                 FR: 'NO TO: Je resterai actionnaire avec des actions de contrôle',
+    //                 EN: '',
+    //             },
+    //             1: {
+    //                 FR: 'Je resterai actionnaire avec des actions de contrôle',
+    //                 EN: '',
+    //             },
+    //         },
+    //     },
+    // ],
 
     [
         IndexeDataFieldsB.QD16,
