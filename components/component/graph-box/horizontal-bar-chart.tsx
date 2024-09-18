@@ -18,6 +18,7 @@ import {
 import { AlbumDataFields } from '@/components/enums/data-types-enum';
 import { GraphTextService } from '@/services/translations';
 import { Language } from '@/components/enums/language';
+import useDataStore from '@/reducer/dataStore';
 
 interface SimpleHorizontalBarChartProps {
     chartContent: ChartContent;
@@ -36,6 +37,15 @@ const HorizontalBarChart: React.FC<SimpleHorizontalBarChartProps> = ({
 
     const [size, setSize] = useState<ChartSize>(chartSize);
     const [yAxisWidth, setYAxisWidth] = useState<number>(40);
+
+    const [language, setLanguage] = useState<Language>(Language.FR);
+    const { lang } = useDataStore((state) => ({
+        lang: state.lang,
+    }));
+
+    useEffect(() => {
+        setLanguage(lang);
+    }, [lang]);
 
     // Calculate dynamic height based on the number of data points
     const calculateHeight = () => {
@@ -62,7 +72,7 @@ const HorizontalBarChart: React.FC<SimpleHorizontalBarChartProps> = ({
             const customLabel = GraphTextService.getFieldLabel(
                 chartContent.donnees[0],
                 payload[0].payload.name,
-                Language.FR,
+                language,
             );
 
             return (
@@ -95,7 +105,7 @@ const HorizontalBarChart: React.FC<SimpleHorizontalBarChartProps> = ({
                             GraphTextService.getFieldLabel(
                                 chartContent.donnees[0],
                                 value,
-                                Language.FR,
+                                language,
                             ).toString()
                         }
                     />

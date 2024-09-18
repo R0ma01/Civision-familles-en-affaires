@@ -17,6 +17,7 @@ import {
 } from '@/components/interface/chart-data';
 import { GraphTextService } from '@/services/translations';
 import { Language } from '@/components/enums/language';
+import useDataStore from '@/reducer/dataStore';
 
 interface DoughnutChartProps {
     chartContent: ChartContent;
@@ -41,6 +42,15 @@ const Doughnut: React.FC<DoughnutChartProps> = ({
         setSize(chartSize);
     }, [chartSize]);
 
+    const [language, setLanguage] = useState<Language>(Language.FR);
+    const { lang } = useDataStore((state) => ({
+        lang: state.lang,
+    }));
+
+    useEffect(() => {
+        setLanguage(lang);
+    }, [lang]);
+
     const radiusMap = {
         [ChartSize.SMALL]: { inner: '30%', outer: '70%' },
         [ChartSize.MEDIUM]: { inner: '40%', outer: '85%' },
@@ -54,39 +64,6 @@ const Doughnut: React.FC<DoughnutChartProps> = ({
     >(undefined);
 
     useEffect(() => {
-        // if (chartContent.data.length > 0) {
-        //     if (!originalOrder.current) {
-        //         // Save the initial order on first render
-        //         originalOrder.current = chartContent.data as ChartData[];
-        //     } else {
-        //         // Reorder new data to match the original order
-        //         // const updatedData = originalOrder.current.map(
-        //         //     (originalItem) => {
-        //         //         const newItem = chartContent.data.find(
-        //         //             (newItem) => newItem.name === originalItem.name,
-        //         //         );
-        //         //         return newItem
-        //         //             ? { ...originalItem, value: newItem.value }
-        //         //             : { ...originalItem, value: 0 };
-        //         //     },
-        //         // );
-
-        //         // // Add new items that were not in the original data
-        //         // chartContent.data.forEach((newItem: any) => {
-        //         //     if (
-        //         //         !originalOrder.current!.some(
-        //         //             (originalItem) =>
-        //         //                 originalItem.name === newItem.name,
-        //         //         )
-        //         //     ) {
-        //         //         updatedData.push(newItem);
-        //         //     }
-        //         // });
-
-        //         setChartData(chartContent.data);
-        //         //originalOrder.current = updatedData;
-        //     }
-        // }
         if (chartContent.data?.length > 0) {
             setChartData(chartContent.data);
         }
@@ -98,7 +75,7 @@ const Doughnut: React.FC<DoughnutChartProps> = ({
             const customLabel = GraphTextService.getFieldLabel(
                 chartContent.donnees[0],
                 payload[0].name,
-                Language.FR,
+                language,
             );
 
             return (
@@ -177,7 +154,7 @@ const Doughnut: React.FC<DoughnutChartProps> = ({
                                     {GraphTextService.getFieldLabel(
                                         chartContent.donnees[0],
                                         value,
-                                        Language.FR,
+                                        language,
                                     )}
                                 </span>
                             ) : (
@@ -190,7 +167,7 @@ const Doughnut: React.FC<DoughnutChartProps> = ({
                                     {GraphTextService.getFieldLabel(
                                         chartContent.donnees[0],
                                         value,
-                                        Language.FR,
+                                        language,
                                     )}
                                 </span>
                             );

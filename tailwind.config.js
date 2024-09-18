@@ -17,6 +17,7 @@ module.exports = {
                 'logo-dark-blue': '#233B70',
                 'dark-map-gray': '#292929',
                 'light-map-green': '#CAEBC0',
+                'icon-gray': '#5f6368',
             },
             backgroundImage: {
                 'gradient-radial': 'radial-gradient(var(--tw-gradient-stops))',

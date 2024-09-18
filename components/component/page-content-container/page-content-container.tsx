@@ -29,6 +29,7 @@ const PageContentContainer: React.FC<PageContentContainerProps> = ({
                     {children}
                 </div>
             )}
+
             {filterMenu ? (
                 <FilterMenu
                     toggleContentVisibility={toggleVisibility}

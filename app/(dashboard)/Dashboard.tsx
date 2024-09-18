@@ -4,6 +4,7 @@ import Carte from '@/components/component/carte/Carte';
 import Sidebar from '@/components/component/sidebar/sidebar';
 import useGlobalPageStore from '@/stores/global-page-store';
 import MobileWarningPopup from '@/components/component/mobile-popup/mobile-popup';
+import { LanguageToggle } from '@/components/component/language-toggle/language-toggle';
 
 interface DashboardProps {
     children: any;
@@ -54,14 +55,16 @@ const Dashboard = ({ children }: DashboardProps) => {
                     <div>Error: {pageError}</div>
                 ) : (
                     <>
-                        <div className="fixed top-0 left-0 w-full h-full">
-                            <Carte />
-                        </div>
-                        <div className="flex h-full">
-                            <Sidebar />
-                            {children}
-                        </div>
-                        {/* <button
+                        <div className="relative w-full h-full">
+                            <LanguageToggle className="absolute top-1 right-1 z-20"></LanguageToggle>
+                            <div className="fixed top-0 left-0 w-full h-full">
+                                <Carte />
+                            </div>
+                            <div className="flex h-full absolute top-0">
+                                <Sidebar />
+                                {children}
+                            </div>
+                            {/* <button
                             onClick={() => {
                                 clearCookies();
                                 clearZustandStore();
@@ -70,6 +73,7 @@ const Dashboard = ({ children }: DashboardProps) => {
                         >
                     
                         </button> */}
+                        </div>
                     </>
                 )}
             </div>

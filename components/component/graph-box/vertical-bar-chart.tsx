@@ -19,6 +19,7 @@ import {
 } from '@/components/interface/chart-data';
 import { GraphTextService } from '@/services/translations';
 import { Language } from '@/components/enums/language';
+import useDataStore from '@/reducer/dataStore';
 
 interface VerticalBarChartProps {
     chartContent: ChartContent;
@@ -44,6 +45,15 @@ const VerticalBarChart: React.FC<VerticalBarChartProps> = ({
     useEffect(() => {
         setSize(chartSize);
     }, [chartSize]);
+
+    const [language, setLanguage] = useState<Language>(Language.FR);
+    const { lang } = useDataStore((state) => ({
+        lang: state.lang,
+    }));
+
+    useEffect(() => {
+        setLanguage(lang);
+    }, [lang]);
 
     useEffect(() => {
         if (chartContent.data.length > 0) {
@@ -86,7 +96,7 @@ const VerticalBarChart: React.FC<VerticalBarChartProps> = ({
             const customLabel = GraphTextService.getFieldLabel(
                 chartContent.donnees[0],
                 payload[0].payload.name,
-                Language.FR,
+                language,
             );
 
             return (
@@ -136,7 +146,7 @@ const VerticalBarChart: React.FC<VerticalBarChartProps> = ({
                                     GraphTextService.getFieldLabel(
                                         chartContent.donnees[0],
                                         value,
-                                        Language.FR,
+                                        language,
                                     ).toString()
                                 }
                             />
