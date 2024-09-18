@@ -24,7 +24,7 @@ const PageContentContainer: React.FC<PageContentContainerProps> = ({
             {isContentVisible && (
                 <div
                     id="page-content-container"
-                    className={`ml-[40px] h-screen flex flex-col justify-start ${className}`}
+                    className={`scroll-hide overflow-auto ml-[40px] h-screen flex flex-col justify-start ${className}`}
                 >
                     {children}
                 </div>

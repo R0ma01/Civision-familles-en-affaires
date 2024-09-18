@@ -52,19 +52,26 @@ body {
 }
 
 /* For Firefox */
-/* html {
-  scrollbar-width:thin;
-  /* Make the scrollbar thinner
-  scroll-behavior:smooth;
-    
-  scrollbar-color: #8dd0cf white;
-  /* Scrollbar color (thumb and track) 
+html {
+    scrollbar-width: thin;
+
+    scroll-behavior: smooth;
+
+    scrollbar-color: #8dd0cf white;
 }
 
-/* For IE and Edge 
 * {
-  -ms-overflow-style: -ms-autohiding-scrollbar;
-} */
+    -ms-overflow-style: -ms-autohiding-scrollbar;
+}
+
+.scroll-hide::-webkit-scrollbar {
+    display: none; /* Safari and Chrome */
+}
+
+.scroll-hide {
+    -ms-overflow-style: none; /* IE and Edge */
+    scrollbar-width: none; /* Firefox */
+}
 
 /* Style the Mapbox popups */
 .mapboxgl-popup {
@@ -124,19 +131,18 @@ body {
     /* background-color: #d6dbdc !important; */
 }
 
-
 /* HTML: <div class="loader"></div> */
 .loader-circle {
     width: 50px;
     aspect-ratio: 1;
-    box-shadow: 0 0 0 3px #95C973 inset;
+    box-shadow: 0 0 0 3px #95c973 inset;
     border-radius: 50%;
     position: relative;
 }
 
 .loader-circle:before,
 .loader-circle:after {
-    content: "";
+    content: '';
     position: absolute;
     top: 5px;
     left: calc(50% - 12.5px);
@@ -159,5 +165,3 @@ body {
         transform: rotate(360deg);
     }
 }
-
-
