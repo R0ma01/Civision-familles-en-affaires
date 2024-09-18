@@ -103,12 +103,10 @@ function generateAggregationQuery(
     }
 
     return async (collection: any): Promise<AggregationResult[]> => {
-        console.log(aggregationPipeline);
-        console.log('hiiiis');
         const result = await collection
             .aggregate(aggregationPipeline)
             .toArray();
-        console.log(result);
+
         let formattedResult = result;
         if (
             field === IndexeDataFieldsB.QREP5 ||
