@@ -15,7 +15,7 @@ export async function PATCH(req: Request) {
 
         // Extract _id and updateData from the body
         const { _id, ...updateData } = body;
-        console.log(id, updatedData);
+        console.log(_id, updatedData);
         // Validate the presence of _id and updateData
         if (!_id || !updateData) {
             return NextResponse.json(
