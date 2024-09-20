@@ -3,7 +3,7 @@ import Button from '@/components/component//buttons/button';
 
 interface DeleteDialogProps {
     closeDialog: () => void;
-    submitDialog: (id?: string) => void;
+    submitDialog: (id: string) => void;
     deleteItem: any;
 }
 
