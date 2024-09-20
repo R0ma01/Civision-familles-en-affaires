@@ -20,16 +20,15 @@ export function TabContainer({ tabs, className }: TabProps) {
     const lang: Language = useDataStore((state) => state.lang);
 
     useEffect(() => {
-        if (tabs !== containerContent) {
+        if (tabs !== containerContent && tabs) {
             setTabContent(tabs);
+            if (containerContent) {
+                setSelectedTab(
+                    containerContent.findIndex((tab) => tab.visible),
+                ); // Set first tab as active if none is selected
+            }
         }
     }, [tabs, containerContent]);
-
-    useEffect(() => {
-        if (selectedTab === undefined && containerContent) {
-            setSelectedTab(containerContent.findIndex((tab) => tab.visible)); // Set first tab as active if none is selected
-        }
-    }, [containerContent, selectedTab]);
 
     return (
         <div className="w-fit z-10">
