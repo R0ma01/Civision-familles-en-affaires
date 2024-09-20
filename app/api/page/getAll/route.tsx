@@ -17,15 +17,27 @@ export async function GET() {
             );
         }
         console.log(result);
-        // Return a successful response
-        return NextResponse.json({
+
+        // Create the response
+        const response = NextResponse.json({
             message: 'Documents found successfully',
             pages: result,
         });
+
+        // Add Cache-Control headers to prevent caching
+        response.headers.set('Cache-Control', 'no-store, max-age=0');
+
+        return response;
     } catch (e: any) {
         console.error(e.message);
 
-        // Return an error response
-        return NextResponse.json({ error: e.message }, { status: 500 });
+        // Return an error response with no-cache headers as well
+        const errorResponse = NextResponse.json(
+            { error: e.message },
+            { status: 500 },
+        );
+        errorResponse.headers.set('Cache-Control', 'no-store, max-age=0');
+
+        return errorResponse;
     }
 }
