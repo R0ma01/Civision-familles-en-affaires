@@ -3,7 +3,7 @@ import React, { useEffect, useState } from 'react';
 import PageContentContainer from '@/components/component/page-content-container/page-content-container';
 import ThemeCard from '@/components/component/theme-card/theme-card';
 import useGlobalPageStore from '@/stores/global-page-store';
-import PageContent from '@/components/interface/page-content';
+import PageTabContent from '@/components/interface/page-tabs-content';
 import { html_object_constants } from '@/constants/constants';
 import useMapStore from '@/stores/global-map-store';
 import { MapType } from '@/components/enums/map-type-enum';
@@ -18,7 +18,7 @@ export default function Thematiques() {
             };
         },
     );
-    const [pages, setPages] = useState<PageContent[]>([]);
+    const [pages, setPages] = useState<PageTabContent[]>([]);
 
     const { mapType, setMapStyle } = useMapStore((state) => {
         return { mapType: state.mapType, setMapStyle: state.setMapStyle };

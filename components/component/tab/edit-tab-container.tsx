@@ -3,7 +3,12 @@ import { TabContent } from '@/components/interface/tab-content';
 import { useEffect, useState } from 'react';
 import { Tab } from './tab';
 import { tabColors } from '@/constants/color-palet';
-import { AddCircleSVG, EditSVG, VisibleSVG } from '../svg-icons/svg-icons';
+import {
+    AddCircleSVG,
+    InvisibleSVG,
+    VisibleSVG,
+    TrashSVG,
+} from '../svg-icons/svg-icons';
 import { EditTab } from './edit-tab';
 import { TableauxTraductionsTabs } from '@/services/translations';
 import useDataStore from '@/reducer/dataStore';
@@ -18,6 +23,7 @@ interface TabProps {
     className?: string;
     handleInputChange: (index: number, tab: TabContent) => void;
     handleTabAdd: (e: any) => void;
+    handleTabDelete: (index: number) => void;
 }
 
 export function EditTabContainer({
@@ -25,6 +31,7 @@ export function EditTabContainer({
     className,
     handleInputChange,
     handleTabAdd,
+    handleTabDelete,
 }: TabProps) {
     const [selectedTabIndex, setSelectedTabIndex] = useState<number>(0);
     const lang: Language = useDataStore((state) => state.lang);
@@ -60,11 +67,23 @@ export function EditTabContainer({
                             handleInputChange(index, updatedTab);
                         }
 
+                        function togglevisibility(e: any) {
+                            e.preventDefault();
+                            const updatedTab = { ...tab };
+                            updatedTab.visible = !tab.visible;
+                            handleInputChange(index, updatedTab);
+                        }
+
+                        function deleteTab(e: any) {
+                            e.preventDefault();
+                            handleTabDelete(index);
+                        }
+
                         return (
                             <div
                                 key={index} // Use index as key to ensure uniqueness
                                 onClick={() => setSelectedTabIndex(index)}
-                                className={`dark:text-white hover:bg-gray-700 dark:hover:bg-gray-300 text-black bg-opacity-75 cursor-pointer border-black dark:border-white md:text-xs lg:text-sm px-4 py-2 transition-all duration-200 rounded-t-xl border-b-0 ${className}`}
+                                className={`dark:text-white hover:bg-gray-700 dark:hover:bg-gray-300 text-black bg-opacity-75 cursor-pointer border-black dark:border-white md:text-xs lg:text-sm px-4 py-2 transition-all duration-200 rounded-t-xl border-b-0 ${className} flex flex-row items-center`}
                                 style={{
                                     backgroundColor: isActive
                                         ? color
@@ -90,6 +109,27 @@ export function EditTabContainer({
                                     }}
                                     className={`${isActive ? 'dark:text-black' : ''} border-none shadow-none z-20`}
                                 ></Dropdown>
+                                {isActive && (
+                                    <>
+                                        {' '}
+                                        <Button
+                                            onClick={togglevisibility}
+                                            buttonType={ButtonType.ICON}
+                                        >
+                                            {tab.visible ? (
+                                                <VisibleSVG></VisibleSVG>
+                                            ) : (
+                                                <InvisibleSVG></InvisibleSVG>
+                                            )}
+                                        </Button>
+                                        <Button
+                                            onClick={deleteTab}
+                                            buttonType={ButtonType.ICON}
+                                        >
+                                            <TrashSVG className="fill-red-600"></TrashSVG>
+                                        </Button>
+                                    </>
+                                )}
                             </div>
                         );
                     })}
@@ -97,7 +137,7 @@ export function EditTabContainer({
                 <Button
                     buttonType={ButtonType.ICON}
                     onClick={handleTabAdd}
-                    className={`bg-opacity-75 cursor-pointer transition-all duration-200 rounded-t-xl ${className}`}
+                    className={`bg-opacity-75 cursor-pointer transition-all duration-200 rounded-t-xl ${className} ml-2`}
                 >
                     <AddCircleSVG className="h-6 dark:fill-custom-grey fill-white" />
                 </Button>{' '}

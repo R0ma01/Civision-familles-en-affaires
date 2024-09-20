@@ -15,16 +15,16 @@ const dettermineColor = (buttonType: ButtonType, pending: boolean): string => {
     }
     switch (buttonType) {
         case ButtonType.CANCEL:
-            return 'bg-red-500 hover:bg-red-600';
+            return 'bg-red-500 hover:bg-red-600 py-2 px-4 ';
         case ButtonType.CONFIRM:
         case ButtonType.PULSE:
-            return 'bg-logo-green hover:bg-hover-logo-green';
+            return 'bg-logo-green hover:bg-hover-logo-green py-2 px-4 ';
         case ButtonType.ICON:
             return 'bg-none border-none';
         case ButtonType.LOADING:
-            return 'bg-gray-400 border-gray-400 cursor-not-allowed';
+            return 'bg-gray-400 border-gray-400 cursor-not-allowed py-2 px-4 ';
         default:
-            return 'bg-logo-light-blue hover:bg-logo-dark-blue';
+            return 'bg-logo-light-blue hover:bg-logo-dark-blue py-2 px-4 ';
     }
 };
 
@@ -46,7 +46,7 @@ const Button: React.FC<ButtonProps> = ({
           : '';
     return (
         <button
-            className={`text-white font-semibold py-2 px-4 border rounded transition-transform duration-300 transform-gpu ${pulseAnimation} ${pendingScale} ${colorScheme} ${className}`}
+            className={`text-white font-semibold border rounded transition-transform duration-300 transform-gpu ${pulseAnimation} ${pendingScale} ${colorScheme} ${className}`}
             {...props}
             disabled={pending}
         >

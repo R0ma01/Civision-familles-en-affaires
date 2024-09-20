@@ -69,7 +69,7 @@ const EditDataCard: React.FC<EditDataCardProps> = ({
                         onClick={(e) => {
                             handleSectionDelete(e, cardIndex);
                         }}
-                        className="absolute right-0 top-0 hover:scale-125"
+                        className="absolute right-1 top-1 hover:scale-125"
                     >
                         <TrashSVG className="fill-red-600"></TrashSVG>
                     </Button>

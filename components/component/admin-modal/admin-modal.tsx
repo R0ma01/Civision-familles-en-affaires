@@ -76,7 +76,6 @@ export function AdminModal({
         }
         updatedPage.tabs = updatedTabs;
         setEditPage(updatedPage);
-        console.log(updatedPage);
     }
 
     const handleSubmit = (e: React.FormEvent) => {
@@ -99,6 +98,17 @@ export function AdminModal({
 
         setEditPage(updatedPage);
     }
+
+    function handleTabDelete(index: number) {
+        const updatedPage = { ...editPage };
+        let updatedTabs = [...updatedPage.tabs];
+        updatedTabs = updatedTabs.filter((tab, tabIndex) => tabIndex !== index);
+
+        updatedPage.tabs = updatedTabs;
+
+        setEditPage(updatedPage);
+    }
+
     const [isDarkMode, setIsDarkMode] = useState(false);
     useEffect(() => {
         const darkModeQuery = window.matchMedia('(prefers-color-scheme: dark)');
@@ -143,12 +153,14 @@ export function AdminModal({
                     />
                     <ImageUpload
                         onImageUpload={handleImageUpload}
-                        className="absolute top-[45%] right-[18%]"
+                        className="absolute top-[30%] right-[18%]"
+                        imageURL={editPage.backgroundImage ?? null}
                     />
                     <EditTabContainer
                         tabs={editPage.tabs}
                         handleInputChange={handleTabChange}
                         handleTabAdd={handleTabAdd}
+                        handleTabDelete={handleTabDelete}
                     ></EditTabContainer>
                 </form>
                 <Button
@@ -174,15 +186,17 @@ interface ImageUploadProps {
     onImageUpload: (file: File | null) => void;
     label?: string;
     className?: string;
+    imageURL?: string;
 }
 
 export const ImageUpload: React.FC<ImageUploadProps> = ({
     onImageUpload,
     label = 'Upload Image',
     className = '',
+    imageURL = null,
 }) => {
     const [selectedImage, setSelectedImage] = useState<File | null>(null);
-    const [imagePreview, setImagePreview] = useState<string | null>(null);
+    const [imagePreview, setImagePreview] = useState<string | null>(imageURL);
 
     const handleImageChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         const file = event.target.files?.[0] || null;
@@ -210,7 +224,7 @@ export const ImageUpload: React.FC<ImageUploadProps> = ({
         >
             {/* Display image preview */}
             {imagePreview && (
-                <div className="relative max-w-20 m-1">
+                <div className="relative max-w-[245px] m-1">
                     <img
                         src={imagePreview}
                         alt="Selected"

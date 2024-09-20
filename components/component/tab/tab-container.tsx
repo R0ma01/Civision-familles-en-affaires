@@ -2,8 +2,6 @@ import { TabContent } from '@/components/interface/tab-content';
 import { useEffect, useState } from 'react';
 import { Tab } from './tab';
 import { tabColors } from '@/constants/color-palet';
-import { AddCircleSVG, EditSVG, VisibleSVG } from '../svg-icons/svg-icons';
-import { EditTab } from './edit-tab';
 import { TableauxTraductionsTabs } from '@/services/translations';
 import useDataStore from '@/reducer/dataStore';
 import { Language } from '@/components/enums/language';
