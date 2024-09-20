@@ -3,7 +3,7 @@ import { connectToDatabaseStudy } from '@/utils/mongodb';
 import { MongoDBPaths } from '@/components/enums/mongodb-paths-enum';
 
 export const revalidate = 0;
-export const dynaic = 'force-dynamic';
+export const dynamic = 'force-dynamic';
 
 export async function GET() {
     console.error('hiiiiiiii');
