@@ -22,13 +22,14 @@ export function TabContainer({ tabs, className }: TabProps) {
     useEffect(() => {
         if (tabs !== containerContent) {
             setTabContent(tabs);
-            if (selectedTab === undefined && containerContent) {
-                setSelectedTab(
-                    containerContent.findIndex((tab) => tab.visible),
-                ); // Set first tab as active if none is selected
-            }
         }
-    }, [tabs, containerContent, selectedTab]);
+    }, [tabs, containerContent]);
+
+    useEffect(() => {
+        if (selectedTab === undefined) {
+            setSelectedTab(containerContent.findIndex((tab) => tab.visible)); // Set first tab as active if none is selected
+        }
+    }, [containerContent, selectedTab]);
 
     return (
         <div className="w-fit z-10">
