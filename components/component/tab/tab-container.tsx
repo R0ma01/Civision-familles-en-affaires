@@ -21,14 +21,17 @@ export function TabContainer({ tabs, className }: TabProps) {
 
     useEffect(() => {
         if (tabs !== containerContent && tabs) {
+            console.log('i am called');
             setTabContent(tabs);
-            if (containerContent) {
+            if (containerContent && !selectedTab) {
+                console.log('i am called too');
                 setSelectedTab(
                     containerContent.findIndex((tab) => tab.visible),
                 ); // Set first tab as active if none is selected
+                console.log(selectedTab);
             }
         }
-    }, [tabs, containerContent]);
+    }, [tabs, containerContent, selectedTab]);
 
     return (
         <div className="w-fit z-10">
@@ -40,6 +43,7 @@ export function TabContainer({ tabs, className }: TabProps) {
                     containerContent.map((tab, index) => {
                         if (tab.visible) {
                             const isActive = index === selectedTab;
+                            console.log(index, isActive);
                             const tabTitle = TableauxTraductionsTabs.get(
                                 tab.tabType,
                             );
