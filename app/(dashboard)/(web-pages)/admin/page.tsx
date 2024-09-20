@@ -1,5 +1,5 @@
 'use client';
-import React, { useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import PageContentContainer from '@/components/component/page-content-container/page-content-container';
 import ThemeCard from '@/components/component/theme-card/theme-card';
 import useGlobalUserStore from '@/stores/global-user-store';
@@ -37,24 +37,22 @@ export default function Admin() {
     const [fetchData, setFetch] = useState<boolean>(false);
     const [loading, setLoading] = useState<boolean>(false);
 
-    useEffect(() => {
-        async function fetch() {
-            console.log('i am called too');
-            const newPages = await PageHttpRequestService.getAll();
-            if (newPages) {
-                setPages(newPages);
-            } else {
-                setFetch(false);
-            }
-            setLoading(false);
+    const fetchPages = useCallback(async () => {
+        const newPages = await PageHttpRequestService.getAll();
+        console.log('Fetched pages:', newPages); // Log
+        if (newPages) {
+            setPages([...newPages]);
         }
+        setLoading(false);
+    }, []);
+
+    useEffect(() => {
         if (!fetchData && !loading) {
-            console.log('i am called');
             setLoading(true);
             setFetch(true);
-            fetch();
+            fetchPages();
         }
-    }, [pages, loading, fetchData]);
+    }, [fetchData, loading, fetchPages]);
 
     const { mapType, setMapStyle } = useMapStore((state) => ({
         setMapStyle: state.setMapStyle,
