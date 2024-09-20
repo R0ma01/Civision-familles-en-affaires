@@ -4,7 +4,7 @@ import PageContentContainer from '@/components/component/page-content-container/
 import ThemeCard from '@/components/component/theme-card/theme-card';
 import useGlobalUserStore from '@/stores/global-user-store';
 import { UserType } from '@/components/enums/user-type-enum';
-import PageEditDialog from '@/components/component/dialogs/edit-page-dialog';
+// import PageEditDialog from '@/components/component/dialogs/edit-page-dialog';
 import DeleteItemDialog from '@/components/component/dialogs/delete-page-dialog';
 import { AddCircleSVG } from '@/components/component/svg-icons/svg-icons';
 import { ButtonType } from '@/components/enums/button-type-enum';
