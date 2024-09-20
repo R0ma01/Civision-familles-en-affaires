@@ -10,22 +10,25 @@ interface TabProps {
     tabs: TabContent[];
     className?: string;
 }
-//some comment
+
 export function TabContainer({ tabs, className }: TabProps) {
-    const [containerContent, setTabContent] = useState<TabContent[]>(tabs);
-    const [selectedTab, setSelectedTab] = useState<{
-        index: number;
-        tab: TabContent;
-    }>({
-        index: 0,
-        tab: tabs[0],
-    });
+    const [containerContent, setTabContent] = useState<
+        TabContent[] | undefined
+    >(undefined);
+    const [selectedTab, setSelectedTab] = useState<number>(0); // Initialize with 0
 
     const lang: Language = useDataStore((state) => state.lang);
 
     useEffect(() => {
-        setTabContent(tabs);
-    }, [tabs]);
+        if (tabs !== containerContent) {
+            setTabContent(tabs);
+            if (selectedTab === undefined) {
+                setSelectedTab(
+                    containerContent.findIndex((tab) => tab.visible),
+                ); // Set first tab as active if none is selected
+            }
+        }
+    }, [tabs, containerContent, selectedTab]);
 
     return (
         <div className="w-fit z-10">
@@ -33,39 +36,44 @@ export function TabContainer({ tabs, className }: TabProps) {
             <div
                 className={`flex flex-wrap items-center justify-start space-x-2 mb-4 border-b border-black dark:border-white ${className}`}
             >
-                {containerContent.map((tab, index) => {
-                    if (tab.visible) {
-                        const isActive = index === selectedTab.index;
-                        const tabTitle = TableauxTraductionsTabs.get(
-                            tab.tabType,
-                        );
-                        const title = tabTitle
-                            ? tabTitle.titre[lang] || 'No title'
-                            : 'No title';
-                        const color = tabColors[tab.tabType];
-                        return (
-                            <div
-                                key={title}
-                                onClick={() =>
-                                    setSelectedTab({ index: index, tab: tab })
-                                }
-                                className={`dark:text-white hover:bg-gray-700 dark:hover:bg-gray-300 text-balck bg-opacity-75 cursor-pointer border-black dark:border-white md:text-xs lg:tx-sm px-4 py-2 transition-all duration-200 rounded-t-xl border-b-0 ${className}`}
-                                style={{
-                                    backgroundColor: isActive
-                                        ? '#3b82f6'
-                                        : color,
-                                }}
-                            >
-                                <p>{title}</p>
-                            </div>
-                        );
-                    }
-                    return null;
-                })}
+                {containerContent &&
+                    containerContent.map((tab, index) => {
+                        if (tab.visible) {
+                            const isActive = index === selectedTab;
+                            const tabTitle = TableauxTraductionsTabs.get(
+                                tab.tabType,
+                            );
+                            const title = tabTitle
+                                ? tabTitle.titre[lang] || 'No title'
+                                : 'No title';
+                            const color = tabColors[tab.tabType];
+
+                            return (
+                                <div
+                                    key={`${tab.tabType}-${index}`} // Unique key
+                                    onClick={() => setSelectedTab(index)} // Set the active tab
+                                    className={`dark:text-white hover:bg-gray-700 dark:hover:bg-gray-300 text-black bg-opacity-75 cursor-pointer border-black dark:border-white md:text-xs lg:tx-sm px-4 py-2 transition-all duration-200 rounded-t-xl border-b-0 ${className}`}
+                                    style={{
+                                        backgroundColor: isActive
+                                            ? '#3b82f6'
+                                            : color,
+                                    }}
+                                >
+                                    <p>{title}</p>
+                                </div>
+                            );
+                        }
+                        return null;
+                    })}
             </div>
 
             {/* Selected Tab Content */}
-            <Tab content={selectedTab.tab} className={className} />
+            {containerContent && selectedTab !== undefined && (
+                <Tab
+                    content={containerContent[selectedTab]}
+                    className={className}
+                />
+            )}
         </div>
     );
 }
