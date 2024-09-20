@@ -4,6 +4,7 @@ import { ObjectId } from 'mongodb';
 import { MongoDBPaths } from '@/components/enums/mongodb-paths-enum';
 
 export async function PATCH(req: Request) {
+    console.error('update is Called');
     try {
         // Connect to the database
         const db = (await connectToDatabaseStudy()).db;

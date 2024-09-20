@@ -4,6 +4,7 @@ import { ObjectId } from 'mongodb'; // Import ObjectId
 import { MongoDBPaths } from '@/components/enums/mongodb-paths-enum';
 
 export async function DELETE(req: Request) {
+    console.error('delete is Called');
     try {
         const db = (await connectToDatabaseStudy()).db;
         const collection = db.collection(MongoDBPaths.COLLECTION_PAGES_TABS);

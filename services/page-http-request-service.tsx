@@ -26,9 +26,10 @@ async function insertPage(pageData: any): Promise<boolean> {
 }
 
 async function updatePage(pageData: PageTabContent): Promise<boolean> {
+    console.log('update page');
     try {
-        console.log('i am called');
         const response = await axios.patch(APIPaths.PAGE_UPDATE, pageData);
+        console.log('response for update', response.status === 200);
         return response.status === 200;
     } catch (error: any) {
         console.error(
@@ -40,10 +41,14 @@ async function updatePage(pageData: PageTabContent): Promise<boolean> {
 }
 
 async function deletePage(_id: any): Promise<boolean> {
+    console.log('delete Page');
+
     try {
         const response = await axios.delete(APIPaths.PAGE_DELETE, {
             params: { _id },
         });
+        console.log('response for delete', response.status === 200);
+
         return response.status === 200;
     } catch (error: any) {
         console.error(
@@ -55,8 +60,10 @@ async function deletePage(_id: any): Promise<boolean> {
 }
 
 async function getAllPages(): Promise<PageTabContent[]> {
+    console.log('get all pages');
     try {
         const response = await axios.get(APIPaths.PAGE_GET_ALL);
+        console.log(response.data.pages);
         return response.data.pages;
     } catch (error: any) {
         console.error(

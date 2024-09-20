@@ -97,7 +97,7 @@ export default function Admin() {
             resp = await PageHttpRequestService.insert(page);
             console.log(resp);
         }
-
+        console.log(resp);
         if (resp) {
             setFetch(false);
             // const newPages = await PageHttpRequestService.getAll();
