@@ -12,7 +12,7 @@ interface TabProps {
 }
 
 export function TabContainer({ tabs, className }: TabProps) {
-    const [containerContent, setTabContent] = useState<
+    const [containerContent, setContainerContent] = useState<
         TabContent[] | undefined
     >(undefined);
     const [selectedTab, setSelectedTab] = useState<number>(0); // Initialize with 0
@@ -21,14 +21,10 @@ export function TabContainer({ tabs, className }: TabProps) {
 
     useEffect(() => {
         if (tabs !== containerContent && tabs) {
-            console.log('i am called');
-            setTabContent(tabs);
-            if (containerContent && !selectedTab) {
-                console.log('i am called too');
-                setSelectedTab(
-                    containerContent.findIndex((tab) => tab.visible),
-                ); // Set first tab as active if none is selected
-                console.log(selectedTab);
+            setContainerContent(tabs);
+
+            if (!selectedTab) {
+                setSelectedTab(tabs.findIndex((tab) => tab.visible)); // Set first tab as active if none is selected
             }
         }
     }, [tabs, containerContent, selectedTab]);
@@ -43,7 +39,7 @@ export function TabContainer({ tabs, className }: TabProps) {
                     containerContent.map((tab, index) => {
                         if (tab.visible) {
                             const isActive = index === selectedTab;
-                            console.log(index, isActive);
+                            console.log(index, isActive, selectedTab);
                             const tabTitle = TableauxTraductionsTabs.get(
                                 tab.tabType,
                             );
