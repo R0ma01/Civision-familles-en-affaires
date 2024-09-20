@@ -24,10 +24,10 @@ import { ButtonType } from '@/components/enums/button-type-enum';
 import Button from '../buttons/button';
 
 interface ListeFournisseurProps {
-    admin: boolean;
-    openEditDialog: any;
-    openDeleteDialog: any;
-    toggleFournisseurVisibility: any;
+    admin?: boolean;
+    openEditDialog?: any;
+    openDeleteDialog?: any;
+    toggleFournisseurVisibility?: any;
 }
 
 const emptyFournisseur = {
@@ -46,9 +46,9 @@ const emptyFournisseur = {
 
 export default function ListeFournisseurs({
     admin = false,
-    openEditDialog,
-    openDeleteDialog,
-    toggleFournisseurVisibility,
+    openEditDialog = () => {},
+    openDeleteDialog = () => {},
+    toggleFournisseurVisibility = () => {},
 }: ListeFournisseurProps) {
     const [fournisseurs, setFournisseurs] = useState<Fournisseur[]>([]);
 
