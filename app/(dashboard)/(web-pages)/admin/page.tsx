@@ -1,5 +1,5 @@
 'use client';
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import PageContentContainer from '@/components/component/page-content-container/page-content-container';
 import ThemeCard from '@/components/component/theme-card/theme-card';
 import useGlobalUserStore from '@/stores/global-user-store';
@@ -21,7 +21,7 @@ import { Language } from '@/components/enums/language';
 
 export default function Admin() {
     const lang: Language = useDataStore((state) => state.lang);
-
+    const [pages, setPages] = useState<PageTabContent[]>([]);
     const newPage: PageTabContent = {
         title: adminPromptsTranslations.new_page_title[lang],
         description: adminPromptsTranslations.new_page_description[lang],
@@ -69,10 +69,8 @@ export default function Admin() {
     } = usePageActions();
 
     useEffect(() => {
-        if (pagesData === null) {
-            refreshPageData();
-        }
-    }, [pagesData, refreshPageData]);
+        if (pagesData !== null) setPages(pagesData);
+    }, [pagesData]);
 
     async function submitDialog(page: PageTabContent) {
         console.log('Dialog submitted');
@@ -95,24 +93,20 @@ export default function Admin() {
             </h1>
             <div className="justify-center flex flex-col w-[80%] items-center">
                 <div className="justify-center flex flex-wrap">
-                    {pagesData
-                        ? pagesData.map(
-                              (page: PageTabContent, index: number) => (
-                                  <ThemeCard
-                                      index={index.toString()}
-                                      key={page._id || page.title} // Ensure unique key
-                                      page={page}
-                                      admin={user === UserType.ADMIN} // Correct comparison with user
-                                      onClickEdit={() => openEditDialog(page)} // Pass page data to openEditDialog
-                                      onClickDelete={() =>
-                                          openDeleteDialog(page)
-                                      }
-                                      onClickVisible={() =>
-                                          togglePageVisibility(page)
-                                      }
-                                  />
-                              ),
-                          )
+                    {pages
+                        ? pages.map((page: PageTabContent, index: number) => (
+                              <ThemeCard
+                                  index={index.toString()}
+                                  key={page._id || page.title} // Ensure unique key
+                                  page={page}
+                                  admin={user === UserType.ADMIN} // Correct comparison with user
+                                  onClickEdit={() => openEditDialog(page)} // Pass page data to openEditDialog
+                                  onClickDelete={() => openDeleteDialog(page)}
+                                  onClickVisible={() =>
+                                      togglePageVisibility(page)
+                                  }
+                              />
+                          ))
                         : 'No pages available'}
                 </div>
                 <Button

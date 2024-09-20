@@ -32,10 +32,10 @@ export default function Thematiques() {
     }, [mapType]);
 
     useEffect(() => {
-        if (pages.length === 0 && pagesData) {
+        if (pagesData) {
             setPages(pagesData);
         }
-    }, [pages, pagesData]);
+    }, [pagesData]);
 
     if (pageLoading) return <div>Loading...</div>;
     if (pageError) return <div>Error: {pageError}</div>;

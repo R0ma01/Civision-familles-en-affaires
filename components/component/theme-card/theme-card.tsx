@@ -56,6 +56,7 @@ const ThemeCard: React.FC<ThemeCardProps> = ({
                         <TabNotches
                             tabs={page.tabs}
                             className="absolute top-3 right-0"
+                            admin={admin}
                         />
 
                         <h2 className="text-white text-2xl xl:text-3xl mb-7">
@@ -106,8 +107,9 @@ export default ThemeCard;
 interface TabNotchesProps {
     className?: string;
     tabs: TabContent[];
+    admin: boolean;
 }
-function TabNotches({ className, tabs }: TabNotchesProps) {
+function TabNotches({ className, tabs, admin }: TabNotchesProps) {
     const lang: Language = useDataStore((state) => state.lang);
     return (
         <div className={`${className} flex flex-col space-y-1`}>
@@ -119,19 +121,27 @@ function TabNotches({ className, tabs }: TabNotchesProps) {
                 const acronym = tabTitle
                     ? tabTitle.acronym[lang] || '??'
                     : '??';
-                const color = tabColors[tab.tabType];
+                const color = admin
+                    ? tab.visible
+                        ? tabColors[tab.tabType]
+                        : '#374151AA'
+                    : tabColors[tab.tabType];
                 return (
                     <>
-                        <div
-                            key={index}
-                            style={{
-                                backgroundColor: color + 'AA',
-                            }}
-                            className={`p-2 flex items-center bg-opacity-40 border-none rounded-l-full text-white w-9 h-7 overflow-hidden`}
-                            title={title}
-                        >
-                            <p className="text-xs">{acronym}</p>
-                        </div>
+                        {tab.visible || admin ? (
+                            <div
+                                key={index}
+                                style={{
+                                    backgroundColor: color + 'AA',
+                                }}
+                                className={`p-2 flex items-center bg-opacity-40 border-none rounded-l-full text-white w-9 h-7 overflow-hidden ${admin && !tab.visible ? 'opacity-35' : ''}`}
+                                title={title}
+                            >
+                                <p className="text-xs">{acronym}</p>
+                            </div>
+                        ) : (
+                            ''
+                        )}
                     </>
                 );
             })}
