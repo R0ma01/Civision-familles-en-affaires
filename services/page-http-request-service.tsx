@@ -63,7 +63,9 @@ async function getAllPages(): Promise<PageTabContent[]> {
     console.log('get all pages');
     try {
         const response = await axios.get(APIPaths.PAGE_GET_ALL, {
-            cache: 'no-store',
+            headers: {
+                'Cache-Control': 'no-cache', // Prevent caching
+            },
         });
         console.log(response.data.pages);
         return response.data.pages;
