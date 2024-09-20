@@ -26,7 +26,7 @@ export function TabContainer({ tabs, className }: TabProps) {
     }, [tabs, containerContent]);
 
     useEffect(() => {
-        if (selectedTab === undefined) {
+        if (selectedTab === undefined && containerContent) {
             setSelectedTab(containerContent.findIndex((tab) => tab.visible)); // Set first tab as active if none is selected
         }
     }, [containerContent, selectedTab]);
