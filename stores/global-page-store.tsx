@@ -12,51 +12,42 @@ interface GlobalState {
     refreshPageData: () => Promise<void>;
 }
 
-const useGlobalPageStore = create(
-    devtools(
-        persist(
-            (set, get) => ({
-                pagesData: null,
-                pageLoading: false,
-                pageError: null,
-                pageDataFetched: false,
-                fetchPageData: async () => {
-                    if ((get() as GlobalState).pageDataFetched) return; // Prevent redundant fetches
+const useGlobalPageStore = create((set, get) => ({
+    pagesData: null,
+    pageLoading: false,
+    pageError: null,
+    pageDataFetched: false,
+    fetchPageData: async () => {
+        if ((get() as GlobalState).pageDataFetched) return; // Prevent redundant fetches
 
-                    set({ pageLoading: true, pageError: null });
-                    try {
-                        const response = await PageHttpRequestService.getAll();
-                        set({
-                            pagesData: response,
-                            pageLoading: false,
-                            pageDataFetched: true,
-                        });
-                    } catch (err: any) {
-                        set({ pageError: err.message, pageLoading: false });
-                    }
-                },
-                refreshPageData: async () => {
-                    set({ pageLoading: true, pageError: null });
-                    try {
-                        console.log((get() as GlobalState).pagesData);
-                        const response = await PageHttpRequestService.getAll();
-                        console.log('refresh page data is called');
-                        console.log(response);
-                        set({
-                            pagesData: response,
-                            pageLoading: false,
-                            pageDataFetched: true,
-                        });
-                    } catch (err: any) {
-                        set({ pageError: err.message, pageLoading: false });
-                    }
-                },
-            }),
-            {
-                name: 'global-page-store', // unique name for local storage
-            },
-        ),
-    ),
-);
+        set({ pageLoading: true, pageError: null });
+        try {
+            const response = await PageHttpRequestService.getAll();
+            set({
+                pagesData: response,
+                pageLoading: false,
+                pageDataFetched: true,
+            });
+        } catch (err: any) {
+            set({ pageError: err.message, pageLoading: false });
+        }
+    },
+    refreshPageData: async () => {
+        set({ pageLoading: true, pageError: null });
+        try {
+            console.log((get() as GlobalState).pagesData);
+            const response = await PageHttpRequestService.getAll();
+            console.log('refresh page data is called');
+            console.log(response);
+            set({
+                pagesData: response,
+                pageLoading: false,
+                pageDataFetched: true,
+            });
+        } catch (err: any) {
+            set({ pageError: err.message, pageLoading: false });
+        }
+    },
+}));
 
 export default useGlobalPageStore;
