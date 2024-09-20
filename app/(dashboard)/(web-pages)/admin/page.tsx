@@ -75,6 +75,7 @@ export default function Admin() {
     }, [pagesData, refreshPageData]);
 
     async function submitDialog(page: PageTabContent) {
+        console.log('Dialog submitted');
         await submitEditDialog(page);
         await refreshPageData();
     }
