@@ -154,32 +154,6 @@ export default function Admin() {
         }
     }
 
-    // useEffect(() => {
-    //     console.log('pages is Set');
-    //     console.log(pages);
-    // }, [pages]);
-
-    // async function submitDialog(page: PageTabContent) {
-    //     const resp = await submitEditDialog(page);
-    //     if (resp) {
-    //         const newPagesData = { ...pages };
-    //         console.log('CHA CHA MOTHER CLUCKING CHA');
-    //     }
-    // }
-
-    // async function submitDelDialog(id: string) {
-    //     await submitDeleteDialog(id);
-    //     await refreshPageData();
-    // }
-
-    // async function toggleVis(page: PageTabContent) {
-    //     await togglePageVisibility(page);
-    //     await refreshPageData();
-    // }
-
-    // if (pageLoading) return <div>Loading...</div>;
-    // if (pageError) return <div>Error: {pageError}</div>;
-
     return (
         <PageContentContainer className="h-screen overflow-y-auto relative flex items-center w-[100%]">
             <h1 className="text-2xl font-semibold tracking-wide text-black dark:text-white z-10 mt-10 mb-5 cursor-default">

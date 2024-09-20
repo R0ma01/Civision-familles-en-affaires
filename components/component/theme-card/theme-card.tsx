@@ -1,3 +1,5 @@
+import React, { useEffect, useState } from 'react';
+
 import Link from 'next/link';
 import {
     EditSVG,
@@ -31,10 +33,15 @@ const ThemeCard: React.FC<ThemeCardProps> = ({
     onClickDelete = (e: any) => {},
     onClickVisible = () => {},
 }) => {
+    const [localContent, setLocalContent] = useState<PageTabContent>(page);
+
+    useEffect(() => {
+        setLocalContent(page);
+    }, [page]);
     const adminArticleCss = admin ? '' : 'cursor-pointer';
     const reference = admin
         ? ''
-        : `/thematiques/page-information?_id=${page._id}`;
+        : `/thematiques/page-information?_id=${localContent._id}`;
 
     return (
         <Link href={reference}>
@@ -54,16 +61,16 @@ const ThemeCard: React.FC<ThemeCardProps> = ({
                         className="group-hover:overflow-y-auto max-h-[250px] top-0"
                     >
                         <TabNotches
-                            tabs={page.tabs}
+                            tabs={localContent.tabs}
                             className="absolute top-3 right-0"
                             admin={admin}
                         />
 
                         <h2 className="text-white text-2xl xl:text-3xl mb-7">
-                            {page.title}
+                            {localContent.title}
                         </h2>
                         <p className="hidden mb-5 text-white text-sm xl:text-medium group-hover:block">
-                            {page.description}
+                            {localContent.description}
                         </p>
                     </div>
                     <div className="flex-row justify-evenly mb-4 hidden group-hover:flex">
@@ -88,7 +95,7 @@ const ThemeCard: React.FC<ThemeCardProps> = ({
                                 buttonType={ButtonType.ICON}
                                 onClick={onClickVisible}
                             >
-                                {page.visible ? (
+                                {localContent.visible ? (
                                     <VisibleSVG className="hover:scale-150 hover:fill-white fill-custom-grey"></VisibleSVG>
                                 ) : (
                                     <InvisibleSVG className="hover:scale-150 hover:fill-white fill-custom-grey"></InvisibleSVG>
