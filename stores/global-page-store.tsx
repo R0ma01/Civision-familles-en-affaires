@@ -32,22 +32,8 @@ const useGlobalPageStore = create((set, get) => ({
             set({ pageError: err.message, pageLoading: false });
         }
     },
-    refreshPageData: async () => {
-        set({ pageLoading: true, pageError: null });
-        try {
-            console.log('I am Called');
-            console.log((get() as GlobalState).pagesData);
-            const response = await PageHttpRequestService.getAll();
-            console.log('refresh page data is called');
-            console.log(response);
-            set({
-                pagesData: response,
-                pageLoading: false,
-                pageDataFetched: true,
-            });
-        } catch (err: any) {
-            set({ pageError: err.message, pageLoading: false });
-        }
+    refreshPageData: (pages: PageTabContent[]) => {
+        set({ pagesData: pages });
     },
 }));
 

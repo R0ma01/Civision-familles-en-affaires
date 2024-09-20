@@ -5,6 +5,8 @@ import Sidebar from '@/components/component/sidebar/sidebar';
 import useGlobalPageStore from '@/stores/global-page-store';
 import MobileWarningPopup from '@/components/component/mobile-popup/mobile-popup';
 import { LanguageToggle } from '@/components/component/language-toggle/language-toggle';
+import useGlobalUserStore from '@/stores/global-user-store';
+import { UserType } from '@/components/enums/user-type-enum';
 
 interface DashboardProps {
     children: any;
@@ -19,6 +21,11 @@ const Dashboard = ({ children }: DashboardProps) => {
             fetchPageData: state.fetchPageData,
         }));
 
+    const { user, setUser } = useGlobalUserStore((state: any) => ({
+        user: state.user,
+        setUser: state.setUser,
+    }));
+
     useEffect(() => {
         async function fetchAll() {
             if (!pagesData && !pageLoading) {
@@ -29,21 +36,32 @@ const Dashboard = ({ children }: DashboardProps) => {
         fetchAll();
     }, [pagesData, pageLoading, fetchPageData]);
 
-    // useEffect(() => {
-    //     const handleBeforeUnload = (event: BeforeUnloadEvent) => {
-    //         // Detect if this is a refresh
-    //         clearCookies();
-    //         clearZustandStore();
-    //     };
+    useEffect(() => {
+        const handleBeforeUnload = (event: BeforeUnloadEvent) => {
+            // Detect if this is a refresh
+            // clearCookies();
+            // clearZustandStore();
+            const token = localStorage.getItem('token');
+            const adminToken = localStorage.getItem('adminToken');
+            console.log('hello from reload');
+            console.log(token, adminToken);
 
-    //     // Listen for the beforeunload event
-    //     window.addEventListener('beforeunload', handleBeforeUnload);
+            if (token && !adminToken) {
+                setUser(UserType.USER);
+            } else if (token && adminToken) {
+                setUser(UserType.ADMIN);
+            }
+            console.log('hello from reload');
+        };
 
-    //     return () => {
-    //         // Clean up the event listener on component unmount
-    //         window.removeEventListener('beforeunload', handleBeforeUnload);
-    //     };
-    // }, []);
+        // Listen for the beforeunload event
+        window.addEventListener('beforeunload', handleBeforeUnload);
+
+        return () => {
+            // Clean up the event listener on component unmount
+            window.removeEventListener('beforeunload', handleBeforeUnload);
+        };
+    }, [setUser]);
 
     return (
         <>
@@ -84,14 +102,14 @@ const Dashboard = ({ children }: DashboardProps) => {
 export default Dashboard;
 
 // Helper to clear cookies
-function clearCookies() {
-    localStorage.removeItem('token');
-    localStorage.removeItem('adminToken');
-}
+// function clearCookies() {
+//     localStorage.removeItem('token');
+//     localStorage.removeItem('adminToken');
+// }
 
-function clearZustandStore() {
-    // Replace 'zustand_store_key' with the actual key used by Zustand in localStorage
-    localStorage.removeItem('global-data-store');
-    localStorage.removeItem('global-page-store');
-    localStorage.removeItem('global-user-store');
-}
+// function clearZustandStore() {
+//     // Replace 'zustand_store_key' with the actual key used by Zustand in localStorage
+//     localStorage.removeItem('global-data-store');
+//     localStorage.removeItem('global-page-store');
+//     localStorage.removeItem('global-user-store');
+// }

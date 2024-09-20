@@ -24,11 +24,18 @@ export function usePageActions() {
         setCurrentPage(null);
     };
 
-    const submitEditDialog = async (page: PageTabContent) => {
+    const submitEditDialog = async (page: PageTabContent): Promise<boolean> => {
+        console.log('hello');
         if (page._id) {
-            await PageHttpRequestService.update(page);
+            console.log('fuck youuuuu');
+            const response = await PageHttpRequestService.update(page);
+            console.log(response);
+            return response;
         } else {
-            await PageHttpRequestService.insert(page);
+            console.log('error');
+            const response = await PageHttpRequestService.insert(page);
+            console.log(response);
+            return response;
         }
         await refreshPageData();
         closeEditDialog();

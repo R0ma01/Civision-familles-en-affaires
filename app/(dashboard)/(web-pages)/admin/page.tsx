@@ -18,6 +18,7 @@ import { adminPromptsTranslations } from '@/constants/translations/admin-page-pr
 import useDataStore from '@/reducer/dataStore';
 import { AdminModal } from '@/components/component/admin-modal/admin-modal';
 import { Language } from '@/components/enums/language';
+import { PageHttpRequestService } from '@/services/page-http-request-service';
 
 export default function Admin() {
     const lang: Language = useDataStore((state) => state.lang);
@@ -61,37 +62,105 @@ export default function Admin() {
         currentPage,
         openEditDialog,
         closeEditDialog,
-        submitEditDialog,
+
         openDeleteDialog,
         closeDeleteDialog,
-        submitDeleteDialog,
-        togglePageVisibility,
     } = usePageActions();
 
     useEffect(() => {
+        console.log(pages);
         console.log(pagesData);
+        console.log('pagesData was refreshed');
         if (pagesData !== null) setPages(pagesData);
+        console.log('new Pages', pages);
     }, [pagesData]);
 
-    useEffect(() => {
-        console.log('pages is Set');
-        console.log(pages);
-    }, [pages]);
+    async function submitEditDialog(page: PageTabContent) {
+        closeEditDialog();
+        let resp = false;
+        if (page._id) {
+            console.log('fuck youuuuu');
+            resp = await PageHttpRequestService.update(page);
+            console.log(resp);
+        } else {
+            console.log('error');
+            resp = await PageHttpRequestService.insert(page);
+            console.log(resp);
+        }
 
-    async function submitDialog(page: PageTabContent) {
-        await submitEditDialog(page);
-        await refreshPageData();
+        if (resp) {
+            const newPages = await PageHttpRequestService.getAll();
+            if (newPages) {
+                refreshPageData(newPages);
+                console.log('should refresh pagesData');
+            }
+            // setPages(newPages);
+        }
     }
 
-    async function submitDelDialog(id: string) {
-        await submitDeleteDialog(id);
-        await refreshPageData();
+    async function submitDeleteDialog(id: string) {
+        closeDeleteDialog();
+        let resp = false;
+        if (id) {
+            console.log('fuck youuuuu');
+            resp = await PageHttpRequestService.delete(id);
+            console.log(resp);
+        }
+
+        if (resp) {
+            const newPages = await PageHttpRequestService.getAll();
+            if (newPages) {
+                refreshPageData(newPages);
+                console.log('should refresh pagesData');
+            }
+            // setPages(newPages);
+        }
     }
 
-    async function toggleVis(page: PageTabContent) {
-        await togglePageVisibility(page);
-        await refreshPageData();
+    async function togglePageVisibility(id: string | undefined) {
+        let resp = false;
+        if (id) {
+            const page: PageTabContent = pages.filter(
+                (pageItem) => pageItem._id === id,
+            )[0];
+            if (page) {
+                page.visible = !page.visible;
+                resp = await PageHttpRequestService.update(page);
+            }
+        }
+
+        if (resp) {
+            const newPages = await PageHttpRequestService.getAll();
+            if (newPages) {
+                refreshPageData(newPages);
+                console.log('should refresh pagesData');
+            }
+            // setPages(newPages);
+        }
     }
+
+    // useEffect(() => {
+    //     console.log('pages is Set');
+    //     console.log(pages);
+    // }, [pages]);
+
+    // async function submitDialog(page: PageTabContent) {
+    //     const resp = await submitEditDialog(page);
+    //     if (resp) {
+    //         const newPagesData = { ...pages };
+    //         console.log('CHA CHA MOTHER CLUCKING CHA');
+    //     }
+    // }
+
+    // async function submitDelDialog(id: string) {
+    //     await submitDeleteDialog(id);
+    //     await refreshPageData();
+    // }
+
+    // async function toggleVis(page: PageTabContent) {
+    //     await togglePageVisibility(page);
+    //     await refreshPageData();
+    // }
 
     if (pageLoading) return <div>Loading...</div>;
     if (pageError) return <div>Error: {pageError}</div>;
@@ -112,7 +181,9 @@ export default function Admin() {
                                   admin={user === UserType.ADMIN} // Correct comparison with user
                                   onClickEdit={() => openEditDialog(page)} // Pass page data to openEditDialog
                                   onClickDelete={() => openDeleteDialog(page)}
-                                  onClickVisible={async () => toggleVis(page)}
+                                  onClickVisible={async () =>
+                                      togglePageVisibility(page._id)
+                                  }
                               />
                           ))
                         : 'No pages available'}
@@ -133,13 +204,13 @@ export default function Admin() {
                 <AdminModal
                     page={currentPage}
                     closeDialog={closeEditDialog}
-                    submitDialog={submitDialog}
+                    submitDialog={submitEditDialog}
                 ></AdminModal>
             )}
             {isDeleteDialogOpen && currentPage && (
                 <DeleteItemDialog
                     closeDialog={closeDeleteDialog}
-                    submitDialog={submitDelDialog}
+                    submitDialog={submitDeleteDialog}
                     deleteItem={currentPage}
                 />
             )}

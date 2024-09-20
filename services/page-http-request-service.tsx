@@ -12,39 +12,46 @@ export const PageHttpRequestService = {
     getTabPage: getTabPage,
 };
 
-async function insertPage(pageData: any) {
+async function insertPage(pageData: any): Promise<boolean> {
     try {
         const response = await axios.post(APIPaths.PAGE_INSERT, pageData);
+        return response.status === 200;
     } catch (error: any) {
         console.error(
             'Error inserting document:',
             error.response ? error.response.data : error.message,
         );
     }
+    return false;
 }
 
-async function updatePage(pageData: PageTabContent) {
+async function updatePage(pageData: PageTabContent): Promise<boolean> {
     try {
+        console.log('i am called');
         const response = await axios.patch(APIPaths.PAGE_UPDATE, pageData);
+        return response.status === 200;
     } catch (error: any) {
         console.error(
             'Error updating page:',
             error.response ? error.response.data : error.message,
         );
     }
+    return false;
 }
 
-async function deletePage(_id: any) {
+async function deletePage(_id: any): Promise<boolean> {
     try {
         const response = await axios.delete(APIPaths.PAGE_DELETE, {
             params: { _id },
         });
+        return response.status === 200;
     } catch (error: any) {
         console.error(
             'Error deleting page:',
             error.response?.data?.error || error.message,
         );
     }
+    return false;
 }
 
 async function getAllPages(): Promise<PageTabContent[]> {
