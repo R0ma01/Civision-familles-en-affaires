@@ -3,6 +3,7 @@ import { connectToDatabaseStudy } from '@/utils/mongodb';
 import { MongoDBPaths } from '@/components/enums/mongodb-paths-enum';
 
 export async function GET() {
+    console.error('hiiiiiiii');
     try {
         const db = (await connectToDatabaseStudy()).db;
         const collection = db.collection(MongoDBPaths.COLLECTION_PAGES_TABS);
