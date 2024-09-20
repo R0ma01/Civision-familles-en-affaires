@@ -79,13 +79,17 @@ export default function Admin() {
     }, [pages]);
 
     async function submitDialog(page: PageTabContent) {
-        console.log('Dialog submitted');
         await submitEditDialog(page);
         await refreshPageData();
     }
 
     async function submitDelDialog(id: string) {
         await submitDeleteDialog(id);
+        await refreshPageData();
+    }
+
+    async function toggleVis(page: PageTabContent) {
+        await togglePageVisibility(page);
         await refreshPageData();
     }
 
@@ -108,9 +112,7 @@ export default function Admin() {
                                   admin={user === UserType.ADMIN} // Correct comparison with user
                                   onClickEdit={() => openEditDialog(page)} // Pass page data to openEditDialog
                                   onClickDelete={() => openDeleteDialog(page)}
-                                  onClickVisible={() =>
-                                      togglePageVisibility(page)
-                                  }
+                                  onClickVisible={() => toggleVis(page)}
                               />
                           ))
                         : 'No pages available'}
