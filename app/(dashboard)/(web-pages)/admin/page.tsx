@@ -74,6 +74,16 @@ export default function Admin() {
         }
     }, [pagesData, refreshPageData]);
 
+    async function submitDialog(page: PageTabContent) {
+        await submitEditDialog(page);
+        await refreshPageData();
+    }
+
+    async function submitDelDialog(id: string) {
+        await submitDeleteDialog(id);
+        await refreshPageData();
+    }
+
     if (pageLoading) return <div>Loading...</div>;
     if (pageError) return <div>Error: {pageError}</div>;
 
@@ -120,13 +130,13 @@ export default function Admin() {
                 <AdminModal
                     page={currentPage}
                     closeDialog={closeEditDialog}
-                    submitDialog={submitEditDialog}
+                    submitDialog={submitDialog}
                 ></AdminModal>
             )}
             {isDeleteDialogOpen && currentPage && (
                 <DeleteItemDialog
                     closeDialog={closeDeleteDialog}
-                    submitDialog={submitDeleteDialog}
+                    submitDialog={submitDelDialog}
                     deleteItem={currentPage}
                 />
             )}
