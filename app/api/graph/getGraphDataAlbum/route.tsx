@@ -30,7 +30,6 @@ function generateAggregationQuery(
         };
     }
 
-    console.log(filters);
     const aggregationPipeline = [
         {
             $match: {
@@ -55,7 +54,7 @@ function generateAggregationQuery(
         const result = await collection
             .aggregate(aggregationPipeline)
             .toArray();
-        console.log(result);
+
         let resultMap = new Map<string, AggregationResult>(
             result.map((item: AggregationResult) => {
                 if (Array.isArray(item.name)) {
@@ -70,7 +69,7 @@ function generateAggregationQuery(
                 possibleValues,
             );
         }
-        console.log(resultMap);
+
         if (needsNumberFiltering(field)) {
             resultMap = numberData(field, resultMap, possibleValues);
         }
@@ -273,9 +272,8 @@ export async function GET(req: Request) {
         }
 
         const result = await mongoQuery(collection);
-        console.log(result);
+
         if (!result || result.length === 0) {
-            console.log('hello');
             return NextResponse.json(
                 { error: 'Data field not found' },
                 { status: 404 },

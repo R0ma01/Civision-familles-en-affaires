@@ -57,7 +57,7 @@ function generateAggregationQuery(
         const result = await collection
             .aggregate(aggregationPipeline)
             .toArray();
-        console.log(result);
+
         let resultMap = new Map<string, AggregationResult>(
             result.map((item: AggregationResult) => {
                 if (Array.isArray(item.name)) {
@@ -265,10 +265,8 @@ export async function GET(req: Request) {
         }
 
         const result = await mongoQuery(collection);
-        console.log(donnes);
-        console.log(result);
+
         if (!result || result.length === 0) {
-            console.log('hello');
             return NextResponse.json(
                 { error: 'Data field not found' },
                 { status: 404 },

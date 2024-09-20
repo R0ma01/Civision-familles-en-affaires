@@ -15,7 +15,7 @@ export async function GET() {
                 { status: 404 },
             );
         }
-
+        console.log(result);
         // Return a successful response
         return NextResponse.json({
             message: 'Documents found successfully',

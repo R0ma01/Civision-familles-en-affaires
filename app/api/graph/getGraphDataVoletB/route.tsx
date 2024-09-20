@@ -300,7 +300,7 @@ export async function GET(req: Request) {
         }
 
         const result = await mongoQuery(collection);
-        console.log(result);
+
         if (!result || result.length === 0) {
             console.log('hello');
             return NextResponse.json(

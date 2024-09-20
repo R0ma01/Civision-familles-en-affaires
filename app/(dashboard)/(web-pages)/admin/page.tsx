@@ -30,19 +30,31 @@ export default function Admin() {
         backgroundImage: '',
         visible: false,
     };
-    const { pagesData, pageLoading, pageError, refreshPageData } =
-        useGlobalPageStore((state: any) => {
-            return {
-                pagesData: state.pagesData,
-                pageLoading: state.pageLoading,
-                pageError: state.pageError,
-                refreshPageData: state.refreshPageData,
-            };
-        });
 
     const { user } = useGlobalUserStore((state: any) => ({
         user: state.user,
     }));
+    const [fetchData, setFetch] = useState<boolean>(false);
+    const [loading, setLoading] = useState<boolean>(false);
+
+    useEffect(() => {
+        async function fetch() {
+            console.log('i am called too');
+            const newPages = await PageHttpRequestService.getAll();
+            if (newPages) {
+                setPages(newPages);
+            } else {
+                setFetch(false);
+            }
+            setLoading(false);
+        }
+        if (!fetchData && !loading) {
+            console.log('i am called');
+            setLoading(true);
+            setFetch(true);
+            fetch();
+        }
+    }, [pages, loading, fetchData]);
 
     const { mapType, setMapStyle } = useMapStore((state) => ({
         setMapStyle: state.setMapStyle,
@@ -67,13 +79,13 @@ export default function Admin() {
         closeDeleteDialog,
     } = usePageActions();
 
-    useEffect(() => {
-        console.log(pages);
-        console.log(pagesData);
-        console.log('pagesData was refreshed');
-        if (pagesData !== null) setPages(pagesData);
-        console.log('new Pages', pages);
-    }, [pagesData]);
+    // useEffect(() => {
+    //     console.log(pages);
+    //     console.log(pagesData);
+    //     console.log('pagesData was refreshed');
+    //     if (pagesData !== null) setPages(pagesData);
+    //     console.log('new Pages', pages);
+    // }, [pagesData]);
 
     async function submitEditDialog(page: PageTabContent) {
         closeEditDialog();
@@ -89,11 +101,12 @@ export default function Admin() {
         }
 
         if (resp) {
-            const newPages = await PageHttpRequestService.getAll();
-            if (newPages) {
-                refreshPageData(newPages);
-                console.log('should refresh pagesData');
-            }
+            setFetch(false);
+            // const newPages = await PageHttpRequestService.getAll();
+            // if (newPages) {
+            //     setPages(newPages);
+            //     console.log('should refresh pagesData');
+            // }
             // setPages(newPages);
         }
     }
@@ -108,11 +121,12 @@ export default function Admin() {
         }
 
         if (resp) {
-            const newPages = await PageHttpRequestService.getAll();
-            if (newPages) {
-                refreshPageData(newPages);
-                console.log('should refresh pagesData');
-            }
+            setFetch(false);
+            // const newPages = await PageHttpRequestService.getAll();
+            // if (newPages) {
+            //     setPages(newPages);
+            //     console.log('should refresh pagesData');
+            // }
             // setPages(newPages);
         }
     }
@@ -130,11 +144,12 @@ export default function Admin() {
         }
 
         if (resp) {
-            const newPages = await PageHttpRequestService.getAll();
-            if (newPages) {
-                refreshPageData(newPages);
-                console.log('should refresh pagesData');
-            }
+            setFetch(false);
+            // const newPages = await PageHttpRequestService.getAll();
+            // if (newPages) {
+            //     setPages(newPages);
+            //     console.log('should refresh pagesData');
+            // }
             // setPages(newPages);
         }
     }
@@ -162,8 +177,8 @@ export default function Admin() {
     //     await refreshPageData();
     // }
 
-    if (pageLoading) return <div>Loading...</div>;
-    if (pageError) return <div>Error: {pageError}</div>;
+    // if (pageLoading) return <div>Loading...</div>;
+    // if (pageError) return <div>Error: {pageError}</div>;
 
     return (
         <PageContentContainer className="h-screen overflow-y-auto relative flex items-center w-[100%]">
