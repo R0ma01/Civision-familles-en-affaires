@@ -112,7 +112,7 @@ export default function Admin() {
                                   admin={user === UserType.ADMIN} // Correct comparison with user
                                   onClickEdit={() => openEditDialog(page)} // Pass page data to openEditDialog
                                   onClickDelete={() => openDeleteDialog(page)}
-                                  onClickVisible={() => toggleVis(page)}
+                                  onClickVisible={async () => toggleVis(page)}
                               />
                           ))
                         : 'No pages available'}

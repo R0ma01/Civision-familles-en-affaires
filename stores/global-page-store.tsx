@@ -35,6 +35,7 @@ const useGlobalPageStore = create((set, get) => ({
     refreshPageData: async () => {
         set({ pageLoading: true, pageError: null });
         try {
+            console.log('I am Called');
             console.log((get() as GlobalState).pagesData);
             const response = await PageHttpRequestService.getAll();
             console.log('refresh page data is called');
