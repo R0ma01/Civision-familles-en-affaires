@@ -62,7 +62,9 @@ async function deletePage(_id: any): Promise<boolean> {
 async function getAllPages(): Promise<PageTabContent[]> {
     console.log('get all pages');
     try {
-        const response = await axios.get(APIPaths.PAGE_GET_ALL);
+        const response = await axios.get(APIPaths.PAGE_GET_ALL, {
+            cache: 'no-store',
+        });
         console.log(response.data.pages);
         return response.data.pages;
     } catch (error: any) {
