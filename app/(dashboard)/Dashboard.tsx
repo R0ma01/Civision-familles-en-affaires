@@ -29,21 +29,21 @@ const Dashboard = ({ children }: DashboardProps) => {
         fetchAll();
     }, [pagesData, pageLoading, fetchPageData]);
 
-    useEffect(() => {
-        const handleBeforeUnload = (event: BeforeUnloadEvent) => {
-            // Detect if this is a refresh
-            clearCookies();
-            clearZustandStore();
-        };
+    // useEffect(() => {
+    //     const handleBeforeUnload = (event: BeforeUnloadEvent) => {
+    //         // Detect if this is a refresh
+    //         clearCookies();
+    //         clearZustandStore();
+    //     };
 
-        // Listen for the beforeunload event
-        window.addEventListener('beforeunload', handleBeforeUnload);
+    //     // Listen for the beforeunload event
+    //     window.addEventListener('beforeunload', handleBeforeUnload);
 
-        return () => {
-            // Clean up the event listener on component unmount
-            window.removeEventListener('beforeunload', handleBeforeUnload);
-        };
-    }, []);
+    //     return () => {
+    //         // Clean up the event listener on component unmount
+    //         window.removeEventListener('beforeunload', handleBeforeUnload);
+    //     };
+    // }, []);
 
     return (
         <>

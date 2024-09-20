@@ -39,7 +39,7 @@ export function TabContainer({ tabs, className }: TabProps) {
                     containerContent.map((tab, index) => {
                         if (tab.visible) {
                             const isActive = index === selectedTab;
-                            console.log(index, isActive, selectedTab);
+
                             const tabTitle = TableauxTraductionsTabs.get(
                                 tab.tabType,
                             );

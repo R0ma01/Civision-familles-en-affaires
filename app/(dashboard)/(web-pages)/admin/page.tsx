@@ -69,6 +69,7 @@ export default function Admin() {
     } = usePageActions();
 
     useEffect(() => {
+        console.log(pagesData);
         if (pagesData !== null) setPages(pagesData);
     }, [pagesData]);
 
