@@ -73,6 +73,11 @@ export default function Admin() {
         if (pagesData !== null) setPages(pagesData);
     }, [pagesData]);
 
+    useEffect(() => {
+        console.log('pages is Set');
+        console.log(pages);
+    }, [pages]);
+
     async function submitDialog(page: PageTabContent) {
         console.log('Dialog submitted');
         await submitEditDialog(page);
