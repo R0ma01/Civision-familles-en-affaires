@@ -9,22 +9,26 @@ import DeleteItemDialog from '@/components/component/dialogs/delete-page-dialog'
 import { AddCircleSVG } from '@/components/component/svg-icons/svg-icons';
 import { ButtonType } from '@/components/enums/button-type-enum';
 import Button from '@/components/component/buttons/button';
-import PageContent from '@/components/interface/page-content';
+import PageTabContent from '@/components/interface/page-tabs-content';
 import useGlobalPageStore from '@/stores/global-page-store';
 import { usePageActions } from './use-page-actions'; // Import the custom hook
 import useMapStore from '@/stores/global-map-store';
 import { MapType } from '@/components/enums/map-type-enum';
-import useGlobalDataStore from '@/stores/global-data-store';
-
-const newPage: PageContent = {
-    title: 'Votre titre ICI',
-    description: 'Votre description ICI',
-    cards: [],
-    backgroundImage: '',
-    visible: false,
-};
+import { adminPromptsTranslations } from '@/constants/translations/admin-page-prompts';
+import useDataStore from '@/reducer/dataStore';
+import { AdminModal } from '@/components/component/admin-modal/admin-modal';
+import { Language } from '@/components/enums/language';
 
 export default function Admin() {
+    const lang: Language = useDataStore((state) => state.lang);
+
+    const newPage: PageTabContent = {
+        title: adminPromptsTranslations.new_page_title[lang],
+        description: adminPromptsTranslations.new_page_description[lang],
+        tabs: [],
+        backgroundImage: '',
+        visible: false,
+    };
     const { pagesData, pageLoading, pageError, refreshPageData } =
         useGlobalPageStore((state: any) => {
             return {
@@ -81,19 +85,23 @@ export default function Admin() {
             <div className="justify-center flex flex-col w-[80%] items-center">
                 <div className="justify-center flex flex-wrap">
                     {pagesData
-                        ? pagesData.map((page: PageContent, index: number) => (
-                              <ThemeCard
-                                  index={index.toString()}
-                                  key={page._id || page.title} // Ensure unique key
-                                  page={page}
-                                  admin={user === UserType.ADMIN} // Correct comparison with user
-                                  onClickEdit={() => openEditDialog(page)} // Pass page data to openEditDialog
-                                  onClickDelete={() => openDeleteDialog(page)}
-                                  onClickVisible={() =>
-                                      togglePageVisibility(page)
-                                  }
-                              />
-                          ))
+                        ? pagesData.map(
+                              (page: PageTabContent, index: number) => (
+                                  <ThemeCard
+                                      index={index.toString()}
+                                      key={page._id || page.title} // Ensure unique key
+                                      page={page}
+                                      admin={user === UserType.ADMIN} // Correct comparison with user
+                                      onClickEdit={() => openEditDialog(page)} // Pass page data to openEditDialog
+                                      onClickDelete={() =>
+                                          openDeleteDialog(page)
+                                      }
+                                      onClickVisible={() =>
+                                          togglePageVisibility(page)
+                                      }
+                                  />
+                              ),
+                          )
                         : 'No pages available'}
                 </div>
                 <Button
@@ -104,11 +112,16 @@ export default function Admin() {
                 </Button>
             </div>
             {isEditDialogOpen && currentPage && (
-                <PageEditDialog
+                // <PageEditDialog
+                //     closeDialog={closeEditDialog}
+                //     submitDialog={submitEditDialog}
+                //     page={currentPage}
+                // />
+                <AdminModal
+                    page={currentPage}
                     closeDialog={closeEditDialog}
                     submitDialog={submitEditDialog}
-                    page={currentPage}
-                />
+                ></AdminModal>
             )}
             {isDeleteDialogOpen && currentPage && (
                 <DeleteItemDialog

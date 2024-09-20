@@ -45,13 +45,12 @@ body {
     border-radius: 10px;
 }
 
-/* Handle */
 ::-webkit-scrollbar-thumb {
     background: #8dd0cf;
     border-radius: 10px;
 }
 
-/* For Firefox */
+/* For Firefox 
 html {
     scrollbar-width: thin;
 
@@ -62,7 +61,7 @@ html {
 
 * {
     -ms-overflow-style: -ms-autohiding-scrollbar;
-}
+} */
 
 .scroll-hide::-webkit-scrollbar {
     display: none; /* Safari and Chrome */

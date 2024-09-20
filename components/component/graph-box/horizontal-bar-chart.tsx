@@ -61,8 +61,7 @@ const HorizontalBarChart: React.FC<SimpleHorizontalBarChartProps> = ({
             setChartData(chartContent.data);
 
             // Calculate the longest label's width and set the Y-axis width
-
-            const calculatedWidth = 150; // Adjust as needed
+            const calculatedWidth = size / 3;
             setYAxisWidth(calculatedWidth);
         }
     }, [chartContent.data, chartContent.donnees]);
@@ -88,7 +87,7 @@ const HorizontalBarChart: React.FC<SimpleHorizontalBarChartProps> = ({
 
     return (
         <div className="dark:text-white text-wrap">
-            <ResponsiveContainer width={size + 100} height={calculateHeight()}>
+            <ResponsiveContainer width={size} height={calculateHeight()}>
                 <BarChart layout="vertical" data={chartData}>
                     <XAxis
                         type="number"

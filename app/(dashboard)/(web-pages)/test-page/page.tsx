@@ -22,6 +22,9 @@ import { DataCardType } from '@/components/enums/data-card-type-enum';
 import { GraphDataHttpRequestService } from '@/services/data-http-request-service';
 
 import useGlobalFilterStore from '@/stores/global-filter-store';
+import { AdminModal } from '@/components/component/admin-modal/admin-modal';
+import { ButtonType } from '@/components/enums/button-type-enum';
+import Button from '@/components/component/buttons/button';
 
 function PageContentComponent() {
     const [page, setPage] = useState<PageTabContent | undefined>(undefined);
@@ -39,7 +42,7 @@ function PageContentComponent() {
             };
         },
     );
-
+    const [adminOpen, setAdminOpen] = useState<boolean>(false);
     const { mapType, setMapStyle } = useMapStore((state) => {
         return { mapType: state.mapType, setMapStyle: state.setMapStyle };
     });
@@ -59,11 +62,14 @@ function PageContentComponent() {
         if (!page) {
             fetchMe();
         }
-        console.log(page);
     }, [page, pagesData, _id]);
 
     if (pageLoading) return <div>Loading...</div>;
     if (pageError) return <div>Error: {pageError}</div>;
+
+    function toggleDialog() {
+        setAdminOpen(!adminOpen);
+    }
 
     return (
         <>
@@ -71,27 +77,24 @@ function PageContentComponent() {
                 className="overflow-auto pb-10 pl-[30px]"
                 filterMenu={true}
             >
-                <h1 className="text-2xl tracking-wide text-black dark:text-white z-10 mt-12 mb-2 cursor-default">
-                    {page?.title}
-                </h1>
-
-                <DataCard
-                    content={{
-                        type: DataCardType.SIMPLE_GRAPH,
-                        title: IndexeDataFieldsB.QREP5,
-                        description: '',
-                        graphData: [
-                            {
-                                graphType: GraphBoxType.DOUGHNUT,
-                                donnes: [IndexeDataFieldsB.AGER],
-                                dataOrigin: DataBaseOrigin.INDEX_VOLETB,
-                            },
-                        ],
-                    }}
-                ></DataCard>
-
-                {/* {page && <TabContainer tabs={page?.tabs ?? []}></TabContainer>} */}
+                <Button
+                    buttonType={ButtonType.CONFIRM}
+                    onClick={toggleDialog}
+                    className=""
+                >
+                    chlick me
+                </Button>
             </PageContentContainer>
+            {adminOpen && page && (
+                <AdminModal
+                    page={page}
+                    closeDialog={toggleDialog}
+                    submitDialog={(page: PageTabContent) => {
+                        console.log(page);
+                        toggleDialog();
+                    }}
+                ></AdminModal>
+            )}
         </>
     );
 }
@@ -104,21 +107,3 @@ export default function PageInformation() {
     );
 }
 
-{
-    /* return (
-                    <DataCard
-                        content={{
-                            type: DataCardType.SIMPLE_GRAPH,
-                            title: value,
-                            description: '',
-                            graphData: [
-                                {
-                                    graphType:
-                                        GraphBoxType.VERTICAL_BARCHART,
-                                    donnes: [value],
-                                },
-                            ],
-                        }}
-                    ></DataCard>
-                ); */
-}

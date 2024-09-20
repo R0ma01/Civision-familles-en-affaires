@@ -79,7 +79,7 @@ const GraphBox: React.FC<GraphBoxProps> = ({ content, chartSize }) => {
             setLoading(false);
         }
 
-        async function fetch(donnes: AlbumDataFields[]) {
+        async function fetch(donnes: any[]) {
             const result = await GraphDataHttpRequestService.getChartData(
                 donnes,
                 matchStage,
@@ -104,7 +104,7 @@ const GraphBox: React.FC<GraphBoxProps> = ({ content, chartSize }) => {
                     value: 1,
                 },
             ];
-            setChartData(result ? result : tempResult);
+            setChartData(result ?? tempResult);
             setLoading(false);
         }
 

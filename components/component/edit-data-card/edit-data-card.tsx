@@ -13,6 +13,7 @@ import {
 import { ButtonType } from '@/components/enums/button-type-enum';
 import Button from '@/components/component/buttons/button';
 import DataCardContent from '@/components/interface/data-card-content';
+import { DataBaseOrigin } from '@/components/enums/data-types-enum';
 
 interface EditDataCardProps {
     card: DataCardContent;
@@ -29,6 +30,7 @@ interface EditDataCardProps {
     handleGraphAdd: (e: any, cardIndex: number) => void;
     handleSectionDelete: (e: any, cardIndex: number) => void;
     handleGraphOrderChange: (cardIndex: number, newOrder: any[]) => void;
+    tabType: DataBaseOrigin;
 }
 
 const EditDataCard: React.FC<EditDataCardProps> = ({
@@ -40,6 +42,7 @@ const EditDataCard: React.FC<EditDataCardProps> = ({
     handleGraphAdd,
     handleSectionDelete,
     handleGraphOrderChange,
+    tabType,
 }) => {
     const onDragEnd = (result: DropResult) => {
         const { destination, source } = result;
@@ -55,21 +58,18 @@ const EditDataCard: React.FC<EditDataCardProps> = ({
     };
 
     return (
-        <div className="mb-8 p-2 bg-custom-turquoise bg-opacity-50 dark:bg-gray-800 rounded-xl shadow-lg w-[900px] max-w-[90%] relative">
+        <div className="mb-8 p-2 bg-custom-turquoise bg-opacity-50 bg-[#f5ebe0] dark:bg-[#363636] dark:bg-opacity-50 rounded-xl shadow-lg w-[500px] relative">
             <span className="text-black dark:text-white absolute">
                 {cardIndex + 1}
             </span>
             <form className="space-y-2">
                 <div>
-                    <label className="block text-md font-normal text-gray-700 dark:text-white ml-[6%]">
-                        Titre de la section
-                    </label>
                     <Button
                         buttonType={ButtonType.ICON}
                         onClick={(e) => {
                             handleSectionDelete(e, cardIndex);
                         }}
-                        className="absolute right-3 top-0 hover:scale-125"
+                        className="absolute right-0 top-0 hover:scale-125"
                     >
                         <TrashSVG className="fill-red-600"></TrashSVG>
                     </Button>
@@ -80,19 +80,18 @@ const EditDataCard: React.FC<EditDataCardProps> = ({
                         onChange={(e) =>
                             handleCardChange(cardIndex, 'title', e.target.value)
                         }
-                        className="border border-gray-300 dark:border-gray-600 p-1 rounded-md shadow-sm 
-                        focus:outline-none focus:ring-2 focus:ring-blue-500 dark:text-white dark:bg-gray-700 
-                        transition duration-300 text-sm w-[90%] ml-[5%]"
+                        className="ml-8 w-[70%] rounded-md text-sm m-2 tracking-wide text-black shadow-sm mb-2 p-1 dark:text-white bg-transparent focus:outline-none focus:ring-2 focus:ring-blue-500"
                     />
                 </div>
 
                 <div>
-                    <label className="block text-md font-normal text-gray-700 dark:text-white ml-[6%]">
-                        Description
-                    </label>
                     <input
                         type="text"
-                        value={card.description}
+                        value={
+                            card.description.length > 0
+                                ? card.description
+                                : 'Description'
+                        }
                         name="description"
                         onChange={(e) =>
                             handleCardChange(
@@ -101,21 +100,16 @@ const EditDataCard: React.FC<EditDataCardProps> = ({
                                 e.target.value,
                             )
                         }
-                        className="border border-gray-300 dark:border-gray-600 p-1 rounded-md shadow-sm 
-                        focus:outline-none focus:ring-2 focus:ring-blue-500 dark:text-white dark:bg-gray-700 
-                        transition duration-300 text-sm w-[90%] ml-[5%]"
+                        className="ml-8 w-[70%] rounded-md text-xs tracking-wide text-black shadow-sm mb-2 p-1 dark:text-white bg-transparent focus:outline-none focus:ring-2 focus:ring-blue-500"
                     />
                 </div>
 
                 <div className="space-y-1">
-                    <label className="block text-md font-normal text-gray-700 dark:text-white ml-[6%]">
-                        Graphiques
-                    </label>
                     <DragDropContext onDragEnd={onDragEnd}>
                         <Droppable droppableId={`droppable-${cardIndex}`}>
                             {(provided: any) => (
                                 <div
-                                    className="flex flex-col justify-center items-center space-y-5 w-[96%] ml-[2%] bg-gray-50 dark:bg-gray-600 broder rounded-3xl pt-[2%] pb-[2%]"
+                                    className="flex flex-col justify-center items-center space-y-5 broder rounded-3xl pt-2 pb-2"
                                     {...provided.droppableProps}
                                     ref={provided.innerRef}
                                 >
@@ -151,6 +145,9 @@ const EditDataCard: React.FC<EditDataCardProps> = ({
                                                                 }
                                                                 handleGraphDelete={
                                                                     handleGraphDelete
+                                                                }
+                                                                tabType={
+                                                                    tabType
                                                                 }
                                                             />
                                                         </div>

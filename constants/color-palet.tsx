@@ -1,3 +1,5 @@
+import { DataBaseOrigin } from '@/components/enums/data-types-enum';
+
 const logoPalette = {
     custom_gray: '#D6DBDC',
     logo_turquoise: '#43BFB0',
@@ -110,6 +112,16 @@ const clusterColors = [
     3000,
     mapColors.colorValue3000,
 ];
+type AdminPromptsTranslations = {
+    [key in DataBaseOrigin]: string;
+};
+
+// Example usage
+const tabColors: AdminPromptsTranslations = {
+    [DataBaseOrigin.ALBUM_FAMILLE]: chartPalette[0],
+    [DataBaseOrigin.INDEX_VOLETA]: chartPalette[1],
+    [DataBaseOrigin.INDEX_VOLETB]: chartPalette[2],
+};
 
 export {
     logoPalette,
@@ -118,4 +130,5 @@ export {
     mapColors,
     choroplethColors,
     clusterColors,
+    tabColors,
 };

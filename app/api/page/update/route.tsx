@@ -7,7 +7,7 @@ export async function PATCH(req: Request) {
     try {
         // Connect to the database
         const db = (await connectToDatabaseStudy()).db;
-        const collection = db.collection(MongoDBPaths.COLLECTION_PAGES);
+        const collection = db.collection(MongoDBPaths.COLLECTION_PAGES_TABS);
 
         // Parse the request body as JSON
         const body = await req.json();

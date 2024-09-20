@@ -163,7 +163,7 @@ export enum IndexeDataFieldsA {
 }
 
 export enum DataBaseOrigin {
-    ALBUM_FAMILLE = 0,
-    INDEX_VOLETA = 1,
-    INDEX_VOLETB = 2,
+    ALBUM_FAMILLE = 'Album_Famille',
+    INDEX_VOLETA = 'Index_VoletA',
+    INDEX_VOLETB = 'Index_VoletB',
 }

@@ -5,14 +5,17 @@ import { value_constants } from '@/constants/constants';
 interface DropdownProps {
     inputValue?: any;
     options: any;
+    color?: boolean;
     onChange?: (value: any) => void;
     displayValue?: (value: any) => string; // Function to display the value
     className?: string;
+    style?: any;
 }
 
 const Dropdown = ({
     inputValue,
     options,
+    color = false,
     onChange = () => {},
     displayValue = (value: any) => {
         if (TableauxTraductionsMainDataFields.get(value as string)) {
@@ -22,6 +25,7 @@ const Dropdown = ({
         return value as string;
     },
     className = '',
+    style = {},
 }: DropdownProps) => {
     const [selectedValue, setSelectedValue] = useState<any | undefined>(
         inputValue,
@@ -69,16 +73,25 @@ const Dropdown = ({
             <button
                 ref={buttonRef}
                 onClick={toggleDropdown}
-                className={`flex items-center justify-between w-48 px-2 py-1 bg-gray-100 border max-h-8 h-8 
-                border-gray-300 rounded-lg shadow-sm hover:bg-gray-200 focus:outline-none focus:ring-2
-                 focus:ring-blue-500 focus:ring-opacity-50 text-xs dark:bg-gray-700 dark:text-white dark:hover:bg-black ${className}`}
+                className={`flex items-center justify-between ${color ? 'w-10' : 'w-48'} px-2 py-1 bg-gray-100 border max-h-8 h-8 
+                border-gray-300 rounded-lg hover:bg-gray-200 focus:outline-none focus:ring-2
+                 focus:ring-blue-500 focus:ring-opacity-50 text-xs dark:bg-gray-700 dark:text-white dark:hover:bg-black ${className} shadow-sm`}
+                style={style}
             >
-                <span className="overflow-hidden w-40 max-h-8">
-                    {displayValue(
-                        selectedValue ??
-                            value_constants.all_values_string_filter,
-                    )}
-                </span>
+                {!color && (
+                    <span className="overflow-hidden w-40 max-h-8">
+                        {displayValue(
+                            selectedValue ??
+                                value_constants.all_values_string_filter,
+                        )}
+                    </span>
+                )}
+                {color && (
+                    <div
+                        className="w-4 pl-1 h-3 hover:border-2 hover:border-black cursor-pointer transition-colors"
+                        style={{ backgroundColor: selectedValue }}
+                    ></div>
+                )}
                 <svg
                     className={`w-4 h-4 transition-transform ${dropdownOpen ? 'rotate-180' : 'rotate-0'}`}
                     xmlns="http://www.w3.org/2000/svg"
@@ -97,19 +110,32 @@ const Dropdown = ({
             {dropdownOpen && (
                 <div
                     ref={dropdownRef}
-                    className="absolute right-0 mt-2 bg-white border border-gray-300 rounded-lg shadow-lg z-10 w-52"
+                    className={`absolute mt-1 p-1 bg-white border border-gray-300 dark:bg-gray-700 rounded-lg shadow-lg z-10  ${color ? 'w-10' : 'w-52'}`}
                 >
-                    <ul className="py-1 max-h-64 overflow-y-auto dark:bg-gray-700">
+                    <ul className="max-h-64 rounded-lg overflow-y-auto dark:bg-gray-700">
                         {options.map((option: any) => {
-                            return (
-                                <li
-                                    key={option as unknown as string}
-                                    className="w-48 pl-1 text-gray-700 hover:bg-gray-100 cursor-pointer transition-colors text-wrap text-xs dark:text-white dark:hover:bg-black"
-                                    onClick={() => handleSelection(option)}
-                                >
-                                    {displayValue(option)}
-                                </li>
-                            );
+                            if (!color) {
+                                return (
+                                    <li
+                                        key={option as unknown as string}
+                                        className="w-48 pl-1 text-gray-700 hover:bg-gray-100 cursor-pointer transition-colors text-wrap text-xs dark:text-white dark:hover:bg-black"
+                                        onClick={() => handleSelection(option)}
+                                    >
+                                        {displayValue(option)}
+                                    </li>
+                                );
+                            } else {
+                                return (
+                                    <li
+                                        key={option as unknown as string}
+                                        className="w-4 m-1 h-3 hover:border-2 hover:border-black cursor-pointer transition-colors"
+                                        style={{ backgroundColor: option }}
+                                        onClick={() => handleSelection(option)}
+                                    >
+                                        {' '}
+                                    </li>
+                                );
+                            }
                         })}
                     </ul>
                 </div>

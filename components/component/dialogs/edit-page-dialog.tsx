@@ -4,7 +4,10 @@ import PageContent from '@/components/interface/page-content';
 import EditDataCard from '@/components/component/edit-data-card/edit-data-card';
 import { ButtonType } from '@/components/enums/button-type-enum';
 import { GraphBoxType } from '@/components/enums/graph-box-enum';
-import { AlbumDataFields } from '@/components/enums/data-types-enum';
+import {
+    AlbumDataFields,
+    DataBaseOrigin,
+} from '@/components/enums/data-types-enum';
 import { DataCardType } from '@/components/enums/data-card-type-enum';
 import { AddCircleSVG } from '@/components/component/svg-icons/svg-icons';
 import {
@@ -333,6 +336,9 @@ const PageEditDialog: React.FC<EditDialogProps> = ({
                                                                         }
                                                                         handleGraphOrderChange={
                                                                             handleGraphOrderChange
+                                                                        }
+                                                                        tabType={
+                                                                            DataBaseOrigin.ALBUM_FAMILLE
                                                                         }
                                                                     />
                                                                 </div>

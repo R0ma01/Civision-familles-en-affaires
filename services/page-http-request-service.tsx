@@ -23,7 +23,7 @@ async function insertPage(pageData: any) {
     }
 }
 
-async function updatePage(pageData: PageContent) {
+async function updatePage(pageData: PageTabContent) {
     try {
         const response = await axios.patch(APIPaths.PAGE_UPDATE, pageData);
     } catch (error: any) {
@@ -47,7 +47,7 @@ async function deletePage(_id: any) {
     }
 }
 
-async function getAllPages(): Promise<PageContent[]> {
+async function getAllPages(): Promise<PageTabContent[]> {
     try {
         const response = await axios.get(APIPaths.PAGE_GET_ALL);
         return response.data.pages;
@@ -60,7 +60,7 @@ async function getAllPages(): Promise<PageContent[]> {
     return [];
 }
 
-async function getPage(_id: string): Promise<PageContent | undefined> {
+async function getPage(_id: string): Promise<PageTabContent | undefined> {
     try {
         const response = await axios.get(APIPaths.PAGE_GET_ONE, {
             params: { _id },

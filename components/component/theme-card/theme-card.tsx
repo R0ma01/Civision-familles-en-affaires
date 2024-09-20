@@ -7,11 +7,16 @@ import {
 } from '../svg-icons/svg-icons';
 import Button from '../buttons/button';
 import { ButtonType } from '@/components/enums/button-type-enum';
-import PageContent from '@/components/interface/page-content';
+import PageTabContent from '@/components/interface/page-tabs-content';
+import { TabContent } from '@/components/interface/tab-content';
+import { tabColors } from '@/constants/color-palet';
+import useDataStore from '@/reducer/dataStore';
+import { TableauxTraductionsTabs } from '@/services/translations';
+import { Language } from '@/components/enums/language';
 
 interface ThemeCardProps {
     index: string;
-    page: PageContent;
+    page: PageTabContent;
     admin?: boolean;
     onClickEdit?: (e: any) => void;
     onClickDelete?: (e: any) => void;
@@ -30,6 +35,7 @@ const ThemeCard: React.FC<ThemeCardProps> = ({
     const reference = admin
         ? ''
         : `/thematiques/page-information?_id=${page._id}`;
+
     return (
         <Link href={reference}>
             <article
@@ -47,10 +53,14 @@ const ThemeCard: React.FC<ThemeCardProps> = ({
                         key={index}
                         className="group-hover:overflow-y-auto max-h-[250px] top-0"
                     >
+                        <TabNotches
+                            tabs={page.tabs}
+                            className="absolute top-3 right-0"
+                        />
+
                         <h2 className="text-white text-2xl xl:text-3xl mb-7">
                             {page.title}
                         </h2>
-
                         <p className="hidden mb-5 text-white text-sm xl:text-medium group-hover:block">
                             {page.description}
                         </p>
@@ -92,3 +102,39 @@ const ThemeCard: React.FC<ThemeCardProps> = ({
 };
 
 export default ThemeCard;
+
+interface TabNotchesProps {
+    className?: string;
+    tabs: TabContent[];
+}
+function TabNotches({ className, tabs }: TabNotchesProps) {
+    const lang: Language = useDataStore((state) => state.lang);
+    return (
+        <div className={`${className} flex flex-col space-y-1`}>
+            {tabs.map((tab, index) => {
+                const tabTitle = TableauxTraductionsTabs.get(tab.tabType);
+                const title = tabTitle
+                    ? tabTitle.titre[lang] || 'No title'
+                    : 'No title';
+                const acronym = tabTitle
+                    ? tabTitle.acronym[lang] || '??'
+                    : '??';
+                const color = tabColors[tab.tabType];
+                return (
+                    <>
+                        <div
+                            key={index}
+                            style={{
+                                backgroundColor: color + 'AA',
+                            }}
+                            className={`p-2 flex items-center bg-opacity-40 border-none rounded-l-full text-white w-9 h-7 overflow-hidden`}
+                            title={title}
+                        >
+                            <p className="text-xs">{acronym}</p>
+                        </div>
+                    </>
+                );
+            })}
+        </div>
+    );
+}

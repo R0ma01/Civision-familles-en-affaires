@@ -1,6 +1,9 @@
 import { TabContent } from '@/components/interface/tab-content';
 import { useEffect, useState } from 'react';
 import DataCard from '../data-card/data-card';
+import Button from '../buttons/button';
+import { ButtonType } from '@/components/enums/button-type-enum';
+import { EditSVG } from '../svg-icons/svg-icons';
 
 interface TabProps {
     content: TabContent;

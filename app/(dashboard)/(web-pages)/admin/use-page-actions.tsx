@@ -1,12 +1,12 @@
 import { useState } from 'react';
 import { PageHttpRequestService } from '@/services/page-http-request-service';
 import useGlobalPageStore from '@/stores/global-page-store';
-import PageContent from '@/components/interface/page-content';
+import PageTabContent from '@/components/interface/page-tabs-content';
 
 export function usePageActions() {
     const [isEditDialogOpen, setEditDialogOpen] = useState(false);
     const [isDeleteDialogOpen, setDeleteDialogOpen] = useState(false);
-    const [currentPage, setCurrentPage] = useState<PageContent | null>(null);
+    const [currentPage, setCurrentPage] = useState<PageTabContent | null>(null);
 
     const { refreshPageData } = useGlobalPageStore((state: any) => {
         return {
@@ -14,7 +14,7 @@ export function usePageActions() {
         };
     });
 
-    const openEditDialog = (page: PageContent) => {
+    const openEditDialog = (page: PageTabContent) => {
         setCurrentPage(page);
         setEditDialogOpen(true);
     };
@@ -24,7 +24,7 @@ export function usePageActions() {
         setCurrentPage(null);
     };
 
-    const submitEditDialog = async (page: PageContent) => {
+    const submitEditDialog = async (page: PageTabContent) => {
         if (page._id) {
             await PageHttpRequestService.update(page);
         } else {
@@ -34,7 +34,7 @@ export function usePageActions() {
         closeEditDialog();
     };
 
-    const openDeleteDialog = (page: PageContent) => {
+    const openDeleteDialog = (page: PageTabContent) => {
         setCurrentPage(page);
         setDeleteDialogOpen(true);
     };
@@ -52,7 +52,7 @@ export function usePageActions() {
         closeDeleteDialog();
     };
 
-    const togglePageVisibility = async (page: PageContent) => {
+    const togglePageVisibility = async (page: PageTabContent) => {
         if (page) {
             const newPage = { ...page, visible: !page.visible };
             await PageHttpRequestService.update(newPage);

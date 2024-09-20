@@ -1,6 +1,5 @@
 import React from 'react';
 import Dropdown from '@/components/component/drop-down-menu/drop-down-menu';
-import { AlbumDataFields } from '@/components/enums/data-types-enum';
 import { GraphBoxType } from '@/components/enums/graph-box-enum';
 import GraphBox from '../graph-box/graph-box';
 import { TrashSVG } from '../svg-icons/svg-icons';
@@ -8,11 +7,32 @@ import { ButtonType } from '@/components/enums/button-type-enum';
 import Button from '../buttons/button';
 import { ChartSize } from '@/components/enums/chart-size-enum';
 import GraphBoxContent from '@/components/interface/graph-box-content';
+import {
+    AlbumDataFields,
+    DataBaseOrigin,
+    IndexeDataFieldsA,
+    IndexeDataFieldsB,
+} from '@/components/enums/data-types-enum';
+function options(tabType: DataBaseOrigin) {
+    switch (tabType) {
+        case DataBaseOrigin.ALBUM_FAMILLE: {
+            return Object.values(AlbumDataFields);
+        }
+        case DataBaseOrigin.INDEX_VOLETA: {
+            return Object.values(IndexeDataFieldsA);
+        }
+        case DataBaseOrigin.INDEX_VOLETB: {
+            return Object.values(IndexeDataFieldsB);
+        }
+    }
+    return [];
+}
 
 interface GraphCardProps {
     graph: GraphBoxContent;
     graphIndex: number;
     cardIndex: number;
+    tabType: DataBaseOrigin;
     handleGraphDataChange: (
         cardIndex: number,
         graphIndex: number,
@@ -27,6 +47,7 @@ const EditGraphCard: React.FC<GraphCardProps> = ({
     graph,
     graphIndex,
     cardIndex,
+    tabType,
     handleGraphDataChange,
     handleGraphDelete,
 }) => {
@@ -40,7 +61,7 @@ const EditGraphCard: React.FC<GraphCardProps> = ({
                 onClick={(e: any) =>
                     handleGraphDelete(e, cardIndex, graphIndex)
                 }
-                className="absolute right-3 top-4 hover:scale-125"
+                className="absolute right-1 top-1 hover:scale-125"
             >
                 <TrashSVG className="fill-red-600" />
             </Button>
@@ -71,7 +92,7 @@ const EditGraphCard: React.FC<GraphCardProps> = ({
 
                         <Dropdown
                             inputValue={graph.donnes[0]}
-                            options={Object.values(AlbumDataFields)}
+                            options={options(tabType)}
                             onChange={(value: any) =>
                                 handleGraphDataChange(
                                     cardIndex,
@@ -84,7 +105,7 @@ const EditGraphCard: React.FC<GraphCardProps> = ({
                         {graph.donnes.length > 1 && (
                             <Dropdown
                                 inputValue={graph.donnes[1]}
-                                options={Object.values(AlbumDataFields)}
+                                options={options(tabType)}
                                 onChange={(value: any) =>
                                     handleGraphDataChange(
                                         cardIndex,

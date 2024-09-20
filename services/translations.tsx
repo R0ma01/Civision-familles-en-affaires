@@ -5,6 +5,7 @@ import {
 } from '@/components/enums/data-types-enum';
 import { GraphBoxType } from '@/components/enums/graph-box-enum';
 import { Language } from '@/components/enums/language';
+import { DataBaseOrigin } from '@/components/enums/data-types-enum';
 interface Traductions {
     FR: string;
     EN: string;
@@ -3608,3 +3609,54 @@ function getLabel(dataField: any, language: Language): string {
         TableauxTraductionsMainDataFields.get(dataField)?.label[language] ?? ''
     );
 }
+
+interface TabsProps {
+    titre: Traductions;
+    acronym: Traductions;
+}
+const keyValuePairsTabs: [string, TabsProps][] = [
+    [
+        DataBaseOrigin.ALBUM_FAMILLE,
+        {
+            titre: {
+                FR: 'Album de Familles',
+                EN: 'Family Album',
+            },
+            acronym: {
+                FR: 'AF',
+                EN: 'FA',
+            },
+        },
+    ],
+
+    [
+        DataBaseOrigin.INDEX_VOLETA,
+        {
+            titre: {
+                FR: 'Indexe Entrep., Volet A',
+                EN: 'Entrep. Index, Section A',
+            },
+            acronym: {
+                FR: 'IEVA',
+                EN: 'EISA',
+            },
+        },
+    ],
+    [
+        DataBaseOrigin.INDEX_VOLETB,
+        {
+            titre: {
+                FR: 'Indexe Entrep., Volet B',
+                EN: 'Entrep. Index, Section B',
+            },
+            acronym: {
+                FR: 'IEVB',
+                EN: 'EISB',
+            },
+        },
+    ],
+];
+
+export const TableauxTraductionsTabs = new Map<string, TabsProps>(
+    keyValuePairsTabs,
+);
