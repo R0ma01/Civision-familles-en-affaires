@@ -2,15 +2,18 @@
 import React, { useEffect, useState, Suspense } from 'react';
 import { useSearchParams } from 'next/navigation';
 import PageContentContainer from '@/components/component/page-content-container/page-content-container';
-
 import useGlobalPageStore from '@/stores/global-page-store';
-
 import useMapStore from '@/stores/global-map-store';
 import { MapType } from '@/components/enums/map-type-enum';
 import { TabContainer } from '@/components/component/tab/tab-container';
 import PageTabContent from '@/components/interface/page-tabs-content';
+import { Language } from '@/components/enums/language';
+import { SharedPromptsTranslations } from '@/constants/translations/page-prompts';
+import useDataStore from '@/reducer/dataStore';
 
 function PageContentComponent() {
+    const lang: Language = useDataStore((state) => state.lang);
+
     const [page, setPage] = useState<PageTabContent | undefined>(undefined);
     const searchParams = useSearchParams();
     const _id = searchParams.get('_id');
@@ -41,9 +44,16 @@ function PageContentComponent() {
         }
     }, [page, pagesData, _id]);
 
-    if (pageLoading) return <div>Loading...</div>;
-    if (pageError) return <div>Error: {pageError}</div>;
-    // console.log(page);
+    if (pageLoading)
+        return <div>{SharedPromptsTranslations.loading[lang]}</div>;
+    if (pageError)
+        return (
+            <div>
+                {SharedPromptsTranslations.error[lang]}
+                {pageError}
+            </div>
+        );
+
     return (
         <>
             <PageContentContainer
@@ -54,16 +64,6 @@ function PageContentComponent() {
                     {page?.title}
                 </h1>
 
-                {/* {page ? (
-                    <div className="flex flex-col space-y-4 dark:text-white">
-                        <p className="z-10 text-xs">{page?.description}</p>
-                        {page.cards.map((card) => (
-                            <DataCard key={card.title} content={card} />
-                        ))}
-                    </div>
-                ) : (
-                    <p>Loading...</p>
-                )} */}
                 {page && <TabContainer tabs={page?.tabs ?? []}></TabContainer>}
             </PageContentContainer>
         </>
@@ -71,8 +71,12 @@ function PageContentComponent() {
 }
 
 export default function PageInformation() {
+    const lang: Language = useDataStore((state) => state.lang);
+
     return (
-        <Suspense fallback={<div>Loading...</div>}>
+        <Suspense
+            fallback={<div>{SharedPromptsTranslations.loading[lang]}</div>}
+        >
             <PageContentComponent />
         </Suspense>
     );

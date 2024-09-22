@@ -6,7 +6,6 @@ export const revalidate = 0;
 export const dynamic = 'force-dynamic';
 
 export async function GET() {
-    console.error('hiiiiiiii');
     try {
         const db = (await connectToDatabaseStudy()).db;
         const collection = db.collection(MongoDBPaths.COLLECTION_PAGES_TABS);
@@ -19,7 +18,6 @@ export async function GET() {
                 { status: 404 },
             );
         }
-        console.log(result);
 
         // Create the response
         const response = NextResponse.json({

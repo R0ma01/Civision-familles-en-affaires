@@ -16,8 +16,11 @@ import { ButtonType } from '@/components/enums/button-type-enum';
 import useMapStore from '@/stores/global-map-store';
 import { html_object_constants, value_constants } from '@/constants/constants';
 import { MapType } from '@/components/enums/map-type-enum';
-
+import { Language } from '@/components/enums/language';
 import { PossibleDataFileds } from '@/services/tableaux-taitement';
+import useDataStore from '@/reducer/dataStore';
+import { SharedPromptsTranslations } from '@/constants/translations/page-prompts';
+import { TableauxTraductionsMainDataFields } from '@/services/translations';
 
 interface FilterMenuProps {
     toggleContentVisibility?: () => void;
@@ -26,6 +29,8 @@ interface FilterMenuProps {
 const FilterMenu: React.FC<FilterMenuProps> = ({
     toggleContentVisibility = () => {},
 }) => {
+    const lang: Language = useDataStore((state) => state.lang);
+
     const [isOpen, setIsOpen] = useState<boolean>(false);
     const [selectedTab, setSelectedTab] = useState<string>('general');
     const { matchStage, setFilter } = useGlobalFilterStore((state: any) => ({
@@ -129,7 +134,10 @@ const FilterMenu: React.FC<FilterMenuProps> = ({
                                             setSelectedTab('general')
                                         }
                                     >
-                                        Général
+                                        {
+                                            SharedPromptsTranslations
+                                                .general_filters[lang]
+                                        }
                                     </button>
                                     <button
                                         className={`flex-1 text-center py-2 ${
@@ -139,12 +147,21 @@ const FilterMenu: React.FC<FilterMenuProps> = ({
                                         }`}
                                         onClick={() => setSelectedTab('trend')}
                                     >
-                                        Avancé
+                                        {
+                                            SharedPromptsTranslations
+                                                .advanced_filters[lang]
+                                        }
                                     </button>
                                 </div>
                                 {selectedTab === 'general' ? (
                                     <div className="mt-4 flex flex-col">
-                                        <label>Taille Entreprise</label>
+                                        <label>
+                                            {
+                                                TableauxTraductionsMainDataFields.get(
+                                                    AlbumDataFields.TAILLE_ENTREPRISE,
+                                                )?.label[lang]
+                                            }
+                                        </label>
                                         <Dropdown
                                             inputValue={
                                                 matchStage[
@@ -170,7 +187,13 @@ const FilterMenu: React.FC<FilterMenuProps> = ({
                                                 )
                                             }
                                         />
-                                        <label>Année Fondation</label>
+                                        <label>
+                                            {
+                                                TableauxTraductionsMainDataFields.get(
+                                                    AlbumDataFields.ANNEE_FONDATION,
+                                                )?.label[lang]
+                                            }
+                                        </label>
                                         <Dropdown
                                             inputValue={
                                                 matchStage[
@@ -196,7 +219,13 @@ const FilterMenu: React.FC<FilterMenuProps> = ({
                                                 )
                                             }
                                         />
-                                        <label>Nombre Génération</label>
+                                        <label>
+                                            {
+                                                TableauxTraductionsMainDataFields.get(
+                                                    AlbumDataFields.DIRIGEANT_GENERATION,
+                                                )?.label[lang]
+                                            }
+                                        </label>
                                         <Dropdown
                                             inputValue={
                                                 matchStage[
@@ -226,7 +255,13 @@ const FilterMenu: React.FC<FilterMenuProps> = ({
                                     </div>
                                 ) : (
                                     <div className="mt-4 flex flex-col">
-                                        <label>Région</label>
+                                        <label>
+                                            {
+                                                TableauxTraductionsMainDataFields.get(
+                                                    AlbumDataFields.COORDONNES_REGION,
+                                                )?.label[lang]
+                                            }
+                                        </label>
                                         <Dropdown
                                             inputValue={
                                                 matchStage[
@@ -252,7 +287,13 @@ const FilterMenu: React.FC<FilterMenuProps> = ({
                                                 )
                                             }
                                         />
-                                        <label>Secteur Activité</label>
+                                        <label>
+                                            {
+                                                TableauxTraductionsMainDataFields.get(
+                                                    AlbumDataFields.SECTEUR_ACTIVITE,
+                                                )?.label[lang]
+                                            }
+                                        </label>
                                         <Dropdown
                                             inputValue={
                                                 matchStage[
@@ -278,7 +319,13 @@ const FilterMenu: React.FC<FilterMenuProps> = ({
                                                 )
                                             }
                                         />
-                                        <label>Revenu Annuel</label>
+                                        <label>
+                                            {
+                                                TableauxTraductionsMainDataFields.get(
+                                                    AlbumDataFields.REVENUS_RANG,
+                                                )?.label[lang]
+                                            }
+                                        </label>
                                         <Dropdown
                                             inputValue={
                                                 matchStage[

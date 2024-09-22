@@ -7,8 +7,13 @@ import PageTabContent from '@/components/interface/page-tabs-content';
 import { html_object_constants } from '@/constants/constants';
 import useMapStore from '@/stores/global-map-store';
 import { MapType } from '@/components/enums/map-type-enum';
+import { Language } from '@/components/enums/language';
+import { SharedPromptsTranslations } from '@/constants/translations/page-prompts';
+import useDataStore from '@/reducer/dataStore';
 
 export default function Thematiques() {
+    const lang: Language = useDataStore((state) => state.lang);
+
     const { pagesData, pageLoading, pageError } = useGlobalPageStore(
         (state: any) => {
             return {
@@ -37,9 +42,15 @@ export default function Thematiques() {
         }
     }, [pagesData]);
 
-    if (pageLoading) return <div>Loading...</div>;
-    if (pageError) return <div>Error: {pageError}</div>;
-
+    if (pageLoading)
+        return <div>{SharedPromptsTranslations.loading[lang]}</div>;
+    if (pageError)
+        return (
+            <div>
+                {SharedPromptsTranslations.error[lang]}
+                {pageError}
+            </div>
+        );
     return (
         <PageContentContainer className="h-screen overflow-y-auto relative flex items-center w-[100%]">
             <h1 className="text-2xl font-semibold tracking-wide text-black dark:text-white z-10 mt-10 mb-5 cursor-default">
@@ -58,7 +69,7 @@ export default function Thematiques() {
                             ),
                     )
                 ) : (
-                    <p>Loading...</p>
+                    <p>{SharedPromptsTranslations.loading[lang]}</p>
                 )}
             </div>
         </PageContentContainer>

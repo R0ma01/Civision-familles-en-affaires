@@ -5,6 +5,10 @@ import { useEffect, useRef, useState } from 'react';
 import { EditTabContainer } from '../tab/edit-tab-container';
 import { TabContent } from '@/components/interface/tab-content';
 import { DataBaseOrigin } from '@/components/enums/data-types-enum';
+import Image from 'next/image';
+import { SharedPromptsTranslations } from '@/constants/translations/page-prompts';
+import { Language } from '@/components/enums/language';
+import useDataStore from '@/reducer/dataStore';
 
 interface AdminModalProps {
     page: PageTabContent;
@@ -18,6 +22,7 @@ export function AdminModal({
 }: AdminModalProps) {
     const dialogRef = useRef<HTMLDivElement>(null);
     const [editPage, setEditPage] = useState<PageTabContent>(page);
+    const lang: Language = useDataStore((state) => state.lang);
 
     const [uploadedImage, setUploadedImage] = useState<File | null>(null);
 
@@ -132,9 +137,6 @@ export function AdminModal({
                     backgroundPosition: 'center',
                 }}
             >
-                {/* <h1 className="ml-4 text-2xl tracking-wide text-black dark:text-white z-10 mt-12 mb-2 cursor-default">
-                    {page?.title}
-                </h1> */}
                 <form className="w-full h-full flex flex-col overflow-auto">
                     <input
                         type="text"
@@ -175,7 +177,7 @@ export function AdminModal({
                     buttonType={ButtonType.CONFIRM}
                     className="absolute top-1 right-14  "
                 >
-                    Confirmer
+                    {SharedPromptsTranslations.save[lang]}
                 </Button>
             </div>
         </div>
@@ -225,7 +227,7 @@ export const ImageUpload: React.FC<ImageUploadProps> = ({
             {/* Display image preview */}
             {imagePreview && (
                 <div className="relative max-w-[245px] m-1">
-                    <img
+                    <Image
                         src={imagePreview}
                         alt="Selected"
                         className="w-full h-auto max-h-xs max-w-xs object-cover"

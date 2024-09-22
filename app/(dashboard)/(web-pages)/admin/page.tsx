@@ -10,11 +10,10 @@ import { AddCircleSVG } from '@/components/component/svg-icons/svg-icons';
 import { ButtonType } from '@/components/enums/button-type-enum';
 import Button from '@/components/component/buttons/button';
 import PageTabContent from '@/components/interface/page-tabs-content';
-import useGlobalPageStore from '@/stores/global-page-store';
 import { usePageActions } from './use-page-actions'; // Import the custom hook
 import useMapStore from '@/stores/global-map-store';
 import { MapType } from '@/components/enums/map-type-enum';
-import { adminPromptsTranslations } from '@/constants/translations/admin-page-prompts';
+import { AdminPromptsTranslations } from '@/constants/translations/page-prompts';
 import useDataStore from '@/reducer/dataStore';
 import { AdminModal } from '@/components/component/admin-modal/admin-modal';
 import { Language } from '@/components/enums/language';
@@ -24,8 +23,8 @@ export default function Admin() {
     const lang: Language = useDataStore((state) => state.lang);
     const [pages, setPages] = useState<PageTabContent[]>([]);
     const newPage: PageTabContent = {
-        title: adminPromptsTranslations.new_page_title[lang],
-        description: adminPromptsTranslations.new_page_description[lang],
+        title: AdminPromptsTranslations.new_page_title[lang],
+        description: AdminPromptsTranslations.new_page_description[lang],
         tabs: [],
         backgroundImage: '',
         visible: false,
@@ -77,35 +76,17 @@ export default function Admin() {
         closeDeleteDialog,
     } = usePageActions();
 
-    // useEffect(() => {
-    //     console.log(pages);
-    //     console.log(pagesData);
-    //     console.log('pagesData was refreshed');
-    //     if (pagesData !== null) setPages(pagesData);
-    //     console.log('new Pages', pages);
-    // }, [pagesData]);
-
     async function submitEditDialog(page: PageTabContent) {
         closeEditDialog();
         let resp = false;
         if (page._id) {
-            console.log('fuck youuuuu');
             resp = await PageHttpRequestService.update(page);
-            console.log(resp);
         } else {
-            console.log('error');
             resp = await PageHttpRequestService.insert(page);
-            console.log(resp);
         }
-        console.log(resp);
+
         if (resp) {
             setFetch(false);
-            // const newPages = await PageHttpRequestService.getAll();
-            // if (newPages) {
-            //     setPages(newPages);
-            //     console.log('should refresh pagesData');
-            // }
-            // setPages(newPages);
         }
     }
 
@@ -120,12 +101,6 @@ export default function Admin() {
 
         if (resp) {
             setFetch(false);
-            // const newPages = await PageHttpRequestService.getAll();
-            // if (newPages) {
-            //     setPages(newPages);
-            //     console.log('should refresh pagesData');
-            // }
-            // setPages(newPages);
         }
     }
 
@@ -143,19 +118,13 @@ export default function Admin() {
 
         if (resp) {
             setFetch(false);
-            // const newPages = await PageHttpRequestService.getAll();
-            // if (newPages) {
-            //     setPages(newPages);
-            //     console.log('should refresh pagesData');
-            // }
-            // setPages(newPages);
         }
     }
 
     return (
         <PageContentContainer className="h-screen overflow-y-auto relative flex items-center w-[100%]">
             <h1 className="text-2xl font-semibold tracking-wide text-black dark:text-white z-10 mt-10 mb-5 cursor-default">
-                Page Administrative
+                {AdminPromptsTranslations.page_title[lang]}
             </h1>
             <div className="justify-center flex flex-col w-[80%] items-center">
                 <div className="justify-center flex flex-wrap">
@@ -173,7 +142,7 @@ export default function Admin() {
                                   }
                               />
                           ))
-                        : 'No pages available'}
+                        : AdminPromptsTranslations.unavailable[lang]}
                 </div>
                 <Button
                     buttonType={ButtonType.ICON}
@@ -183,11 +152,6 @@ export default function Admin() {
                 </Button>
             </div>
             {isEditDialogOpen && currentPage && (
-                // <PageEditDialog
-                //     closeDialog={closeEditDialog}
-                //     submitDialog={submitEditDialog}
-                //     page={currentPage}
-                // />
                 <AdminModal
                     page={currentPage}
                     closeDialog={closeEditDialog}

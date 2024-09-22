@@ -8,86 +8,41 @@ import RepertoirePageTutorial from '@/components/component/tutorials/repertoire-
 import useMapStore from '@/stores/global-map-store';
 import { MapType } from '@/components/enums/map-type-enum';
 import { useEffect } from 'react';
+import { Language } from '@/components/enums/language';
+import { RepertoirePromptsTranslations } from '@/constants/translations/page-prompts';
+import useDataStore from '@/reducer/dataStore';
 
 function Repertoire() {
-    const tour = RepertoirePageTutorial();
+    const lang: Language = useDataStore((state) => state.lang);
 
-    //const matchStage = useGlobalFilterStore((state: any) => state.matchStage);
+    const tour = RepertoirePageTutorial();
 
     const { mapType, setMapStyle } = useMapStore((state) => ({
         setMapStyle: state.setMapStyle,
         mapType: state.mapType,
     }));
 
-    // const { repertoireDataFetched, fetchRepertoireData, loading } =
-    //     useGlobalDataStore((state: any) => ({
-    //         repertoireDataFetched: state.repertoireDataFetched,
-    //         fetchRepertoireData: state.fetchRepertoireData,
-    //         loading: state.loading,
-    //     }));
-
     useEffect(() => {
-        // async function fetch() {
-        //     await fetchRepertoireData(filterData);
-        // }
-
         if (mapType !== MapType.REPERTOIRE) {
             setMapStyle(MapType.REPERTOIRE);
         }
 
-        // if (!repertoireDataFetched && !loading) {
-        //     fetch();
-        // }
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [mapType, setMapStyle]);
-
-    // const {
-    //     repertoireData,
-
-    //     repertoireDataFetched,
-    //     fetchRepertoireData,
-    //     loading,
-    // } = useGlobalDataStore((state: any) => ({
-    //     repertoireData: state.repertoireData,
-
-    //     fetchRepertoireData: state.fetchRepertoireData,
-
-    //     repertoireDataFetched: state.repertoireDataFetched,
-    //     loading: state.loading,
-    // }));
-
-    // useEffect(() => {
-    //     async function repertoireFetch() {
-    //         await fetchRepertoireData(filterData);
-    //     }
-
-    //     if (!repertoireDataFetched && !loading) {
-    //         console.log('rep data');
-    //         repertoireFetch();
-    //         console.log(repertoireData);
-    //     }
-    // }, [repertoireData, repertoireDataFetched, fetchRepertoireData]);
-
-    // async function customComplete() {
-    //     const replacement = [true, ...tutorials.splice(1)];
-    //     await updateCompletedTutorials(replacement);
-    // }
-    // if (!tutorials[0]) {
-    //     customComplete();
-    //     // tour.start();
-    // }
 
     const fetchedData = {
         firstField: {
             type: DataCardType.SIMPLE,
-            title: 'Entreprises Familiales',
-            description: `$ représente le nombre d'entreprises familiales au Québec en 2023.`,
+            title: RepertoirePromptsTranslations.data_card1_title[lang],
+            description:
+                RepertoirePromptsTranslations.data_card1_description[lang],
             graphData: [],
         },
         secondField: {
             type: DataCardType.SIMPLE_GRAPH,
-            title: 'Proportion Privé',
-            description: `$ des entreprises privées sont des entreprises familiales.`,
+            title: RepertoirePromptsTranslations.data_card2_title[lang],
+            description:
+                RepertoirePromptsTranslations.data_card2_description[lang],
             graphData: [
                 {
                     graphType: GraphBoxType.DOUGHNUT,
@@ -97,7 +52,7 @@ function Repertoire() {
         },
         thirdField: {
             type: DataCardType.SEARCH,
-            title: 'Rechercher une Entreprise',
+            title: RepertoirePromptsTranslations.data_card3_title[lang],
             description: ``,
             graphData: [],
         },
@@ -108,7 +63,7 @@ function Repertoire() {
             className="overflow-auto pb-10 pl-[30px]"
         >
             <h1 className="text-2xl tracking-wide text-black dark:text-white z-10 mt-12 mb-2 cursor-default">
-                Repertoire
+                {RepertoirePromptsTranslations.page_title[lang]}
             </h1>
             <div className="flex flex-col space-y-4">
                 <DataCard content={fetchedData.firstField} />

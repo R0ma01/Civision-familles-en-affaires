@@ -8,6 +8,9 @@ import DisconnectDialog from '@/components/component/dialogs/disconnect-confirma
 import SideBarItem from './SidebarItem';
 import fullLogoFAE from '@/public/images/fea-full-logo.png';
 import logoFAE from '@/public/images/simple-logo-fae.png';
+import { Language } from '@/components/enums/language';
+import { SideBarPromptsTranslations } from '@/constants/translations/page-prompts';
+import useDataStore from '@/reducer/dataStore';
 
 import {
     AdminSVG,
@@ -31,6 +34,8 @@ enum hoverColor {
 }
 
 const Sidebar: React.FC = () => {
+    const lang: Language = useDataStore((state) => state.lang);
+
     const { user, setUser } = useGlobalUserStore((state: any) => ({
         user: state.user,
         setUser: state.setUser,
@@ -82,7 +87,7 @@ const Sidebar: React.FC = () => {
                     >
                         <HomeSVG className="w-6 h-6" />
                         <span className="ml-5 hidden group-hover:block ease-in-out duration-300 transition-all">
-                            Répertoire
+                            {SideBarPromptsTranslations.repertoire[lang]}
                         </span>
                     </SideBarItem>
 
@@ -92,7 +97,7 @@ const Sidebar: React.FC = () => {
                     >
                         <FournisseurSVG className="w-6 h-6 fill-black" />
                         <span className="ml-5 hidden group-hover:block ease-in-out duration-300 transition-all">
-                            Fournisseurs
+                            {SideBarPromptsTranslations.suppliers[lang]}
                         </span>
                     </SideBarItem>
 
@@ -102,7 +107,7 @@ const Sidebar: React.FC = () => {
                     >
                         <StatsSVG className="w-6 h-6" />
                         <span className="ml-5 hidden group-hover:block ease-in-out duration-300 transition-all">
-                            Thématiques
+                            {SideBarPromptsTranslations.thematiques[lang]}
                         </span>
                     </SideBarItem>
 
@@ -113,7 +118,7 @@ const Sidebar: React.FC = () => {
                     >
                         <ChercheurSVG className="w-6 h-6" />
                         <span className="ml-5 hidden group-hover:block ease-in-out duration-300 transition-all">
-                            Recherche Aca...
+                            {SideBarPromptsTranslations.acad_search[lang]}
                         </span>
                     </SideBarItem>
 
@@ -125,7 +130,7 @@ const Sidebar: React.FC = () => {
                         >
                             <AdminSVG className="w-6 h-6" />
                             <span className="ml-5 hidden group-hover:block duration-300 transition-all">
-                                Admin
+                                {SideBarPromptsTranslations.admin[lang]}
                             </span>
                         </SideBarItem>
                     )}
@@ -137,7 +142,7 @@ const Sidebar: React.FC = () => {
                     >
                         <InfoSVG className="w-6 h-6" />
                         <span className="ml-5 hidden group-hover:block duration-300 transition-all">
-                            À Propos
+                            {SideBarPromptsTranslations.a_propos[lang]}
                         </span>
                     </SideBarItem>
 
@@ -148,7 +153,7 @@ const Sidebar: React.FC = () => {
                         >
                             <LoginSVG className="w-6 h-6" />
                             <span className="ml-5 hidden group-hover:block duration-300 transition-all">
-                                Se Connecter
+                                {SideBarPromptsTranslations.connexion[lang]}
                             </span>
                         </SideBarItem>
                     )}
@@ -160,7 +165,7 @@ const Sidebar: React.FC = () => {
                         >
                             <LogoutSVG className="w-6 h-6" />
                             <span className="ml-5 hidden group-hover:block duration-300 transition-all">
-                                Se Déconnecter
+                                {SideBarPromptsTranslations.deconnexion[lang]}
                             </span>
                         </SideBarItem>
                     )}

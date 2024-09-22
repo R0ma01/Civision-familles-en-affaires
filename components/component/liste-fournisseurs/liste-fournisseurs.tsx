@@ -15,13 +15,18 @@ import {
     InvisibleSVG,
     LinkedInSVG,
     PhoneSVG,
-    ProfessionalSVG,
     ServiceSVG,
     TrashSVG,
     VisibleSVG,
 } from '../svg-icons/svg-icons';
 import { ButtonType } from '@/components/enums/button-type-enum';
 import Button from '../buttons/button';
+import { Language } from '@/components/enums/language';
+import {
+    SharedPromptsTranslations,
+    FournisseurPromptsTranslations,
+} from '@/constants/translations/page-prompts';
+import useDataStore from '@/reducer/dataStore';
 
 interface ListeFournisseurProps {
     admin?: boolean;
@@ -51,6 +56,7 @@ export default function ListeFournisseurs({
     toggleFournisseurVisibility = () => {},
 }: ListeFournisseurProps) {
     const [fournisseurs, setFournisseurs] = useState<Fournisseur[]>([]);
+    const lang: Language = useDataStore((state) => state.lang);
 
     const { fournisseurData, loading } = useGlobalDataStore((state: any) => ({
         fournisseurData: state.fournisseurData,
@@ -166,7 +172,7 @@ export default function ListeFournisseurs({
             {/* Search and Filters */}
             <div className="flex flex-col w-full space-y-4">
                 <h1 className="font-semibold text-xl">
-                    Liste et profil des fournisseurs
+                    {FournisseurPromptsTranslations.fournisseur_box_title[lang]}
                 </h1>
                 <div className="flex flex-col items-center justify-between">
                     {/* Search Input */}
@@ -183,7 +189,9 @@ export default function ListeFournisseurs({
                     {/* Dropdown Filters */}
                     <div className="flex flex-row justify-evenly space-x-4 mt-2">
                         <div className="flex flex-col">
-                            <p className="text-xs">Région</p>
+                            <p className="text-xs">
+                                {FournisseurPromptsTranslations.region[lang]}
+                            </p>
                             <Dropdown
                                 options={[
                                     'Toutes',
@@ -197,7 +205,9 @@ export default function ListeFournisseurs({
                             />
                         </div>
                         <div className="flex flex-col">
-                            <p className="text-xs">Service Offert</p>
+                            <p className="text-xs">
+                                {FournisseurPromptsTranslations.service[lang]}
+                            </p>
                             <Dropdown
                                 options={[
                                     'Toutes',

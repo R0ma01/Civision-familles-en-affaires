@@ -4,10 +4,17 @@ import { html_object_constants } from '@/constants/constants';
 import useGlobalDataStore from '@/stores/global-data-store';
 import { useEffect, useState } from 'react';
 import useMapStore from '@/stores/global-map-store';
-
+import { Language } from '@/components/enums/language';
+import {
+    SharedPromptsTranslations,
+    RepertoirePromptsTranslations,
+} from '@/constants/translations/page-prompts';
+import useDataStore from '@/reducer/dataStore';
 import { MapClusterPointData } from '@/components/interface/point-data';
 
 function SearchBox() {
+    const lang: Language = useDataStore((state) => state.lang);
+
     const { repertoireData, loading } = useGlobalDataStore((state: any) => ({
         repertoireData: state.repertoireData,
         loading: state.loading,
@@ -116,12 +123,12 @@ function SearchBox() {
     py-3 px-3 pointer-events-auto"
         >
             <h2 className="text-smaller md:text-small dark:text-white text-black py-4">
-                Liste des entreprises familiales recensées au Québec
+                {RepertoirePromptsTranslations.search_box_title[lang]}
             </h2>
 
             <input
                 type="text"
-                placeholder="Rechercher..."
+                placeholder={SharedPromptsTranslations.search[lang]}
                 value={searchTerm}
                 onChange={handleSearchChange}
                 className="mb-4 p-2 h-8 bg-transparent border border-logo-turquoise dark:border-logo-turquoise shadow-lg rounded cursor-pointer"
