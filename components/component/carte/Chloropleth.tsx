@@ -1,9 +1,8 @@
 import { useEffect, useState } from 'react';
-import useMapStore from '@/stores/global-map-store';
 import quebec_regions from '@/geojson/quebec_regions.json';
 import { choroplethColors } from '@/constants/color-palet';
-import { PossibleDataFileds } from '@/services/tableaux-taitement';
 import { AlbumDataFields } from '@/components/enums/data-types-enum';
+import { TableauxTraductionsMainDataFields } from '@/services/translations';
 
 interface ChloroplethProps {
     data: any[]; // GeoJSON data for regions
@@ -128,7 +127,11 @@ function createRegionFeatures(
 }
 
 function newRegionCount() {
-    const regions = PossibleDataFileds.get(AlbumDataFields.COORDONNES_REGION);
+    const regions = Object.keys(
+        TableauxTraductionsMainDataFields.get(AlbumDataFields.COORDONNES_REGION)
+            ?.dataLabels || {},
+    );
+
     const newRegionCounts: Record<string, number> = {};
     regions?.forEach((region) => (newRegionCounts[region] = 0));
 

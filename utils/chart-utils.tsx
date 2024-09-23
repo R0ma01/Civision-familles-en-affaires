@@ -4,8 +4,9 @@ import {
     ChartDataMultipleFileds,
 } from '@/components/interface/chart-data';
 import { AlbumDataFields } from '@/components/enums/data-types-enum';
-import { PossibleDataFileds } from '@/services/tableaux-taitement';
+
 import { CompanyInfo } from '@/components/interface/company';
+import { TableauxTraductionsMainDataFields } from '@/services/translations';
 
 export function translateData(data: any, donnes: AlbumDataFields): string {
     // Implement conversion logic based on donnes
@@ -36,9 +37,12 @@ export function useFilteredDataMultipleFields(
     const donnesX: string[] = donnesSplit(donnes[0]);
     const donnesY: string[] = donnesSplit(donnes[1]);
 
-    // Get the parameters for X and Y axes
-    const Xparams: any = PossibleDataFileds.get(donnes[0]);
-    const Yparams: any = PossibleDataFileds.get(donnes[1]);
+    const Xparams: any = Object.keys(
+        TableauxTraductionsMainDataFields.get(donnes[0])?.dataLabels || {},
+    );
+    const Yparams: any = Object.keys(
+        TableauxTraductionsMainDataFields.get(donnes[1])?.dataLabels || {},
+    );
 
     if (!Xparams || !Yparams) {
         return [
@@ -88,7 +92,9 @@ export function useFilteredData(
     data: CompanyInfo[],
 ): ChartData[] {
     const filters: string[] = donnesSplit(donnes);
-    const returnTableauFields = PossibleDataFileds.get(donnes);
+    const returnTableauFields = Object.keys(
+        TableauxTraductionsMainDataFields.get(donnes)?.dataLabels || {},
+    );
     if (!returnTableauFields) {
         return [
             { name: 'Group A', value: 400 },

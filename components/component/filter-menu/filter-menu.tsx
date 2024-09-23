@@ -19,7 +19,6 @@ import { ButtonType } from '@/components/enums/button-type-enum';
 import useMapStore from '@/stores/global-map-store';
 import { html_object_constants, value_constants } from '@/constants/constants';
 import { MapType } from '@/components/enums/map-type-enum';
-import { PossibleDataFileds } from '@/services/tableaux-taitement';
 import { Language } from '@/components/enums/language';
 import useDataStore from '@/reducer/dataStore';
 import { SharedPromptsTranslations } from '@/constants/translations/page-prompts';
@@ -179,10 +178,15 @@ const FilterMenu: React.FC<FilterMenuProps> = ({
                                             }
                                             options={[
                                                 'toutes',
-                                                ...(PossibleDataFileds.get(
-                                                    AlbumDataFields.TAILLE_ENTREPRISE,
-                                                ) || []),
+                                                ...Object.keys(
+                                                    TableauxTraductionsMainDataFields.get(
+                                                        AlbumDataFields.TAILLE_ENTREPRISE,
+                                                    )?.dataLabels || {}, // Fallback to an empty object if dataLabels is undefined
+                                                ),
                                             ]}
+                                            dataField={
+                                                AlbumDataFields.TAILLE_ENTREPRISE
+                                            }
                                             onChange={(value: any) =>
                                                 handleChange(
                                                     AlbumDataFields.TAILLE_ENTREPRISE,
@@ -211,10 +215,15 @@ const FilterMenu: React.FC<FilterMenuProps> = ({
                                             }
                                             options={[
                                                 'toutes',
-                                                ...(PossibleDataFileds.get(
-                                                    AlbumDataFields.ANNEE_FONDATION,
-                                                ) || []),
+                                                ...Object.keys(
+                                                    TableauxTraductionsMainDataFields.get(
+                                                        AlbumDataFields.ANNEE_FONDATION,
+                                                    )?.dataLabels || {}, // Fallback to an empty object if dataLabels is undefined
+                                                ),
                                             ]}
+                                            dataField={
+                                                AlbumDataFields.ANNEE_FONDATION
+                                            }
                                             onChange={(value: any) =>
                                                 handleChange(
                                                     AlbumDataFields.ANNEE_FONDATION,
@@ -243,10 +252,15 @@ const FilterMenu: React.FC<FilterMenuProps> = ({
                                             }
                                             options={[
                                                 'toutes',
-                                                ...(PossibleDataFileds.get(
-                                                    AlbumDataFields.DIRIGEANT_GENERATION,
-                                                ) || []),
+                                                ...Object.keys(
+                                                    TableauxTraductionsMainDataFields.get(
+                                                        AlbumDataFields.DIRIGEANT_GENERATION,
+                                                    )?.dataLabels || {}, // Fallback to an empty object if dataLabels is undefined
+                                                ),
                                             ]}
+                                            dataField={
+                                                AlbumDataFields.DIRIGEANT_GENERATION
+                                            }
                                             onChange={(value: any) =>
                                                 handleChange(
                                                     AlbumDataFields.DIRIGEANT_GENERATION,
@@ -279,10 +293,15 @@ const FilterMenu: React.FC<FilterMenuProps> = ({
                                             }
                                             options={[
                                                 'toutes',
-                                                ...(PossibleDataFileds.get(
-                                                    AlbumDataFields.COORDONNES_REGION,
-                                                ) || []),
+                                                ...Object.keys(
+                                                    TableauxTraductionsMainDataFields.get(
+                                                        AlbumDataFields.COORDONNES_REGION,
+                                                    )?.dataLabels || {}, // Fallback to an empty object if dataLabels is undefined
+                                                ),
                                             ]}
+                                            dataField={
+                                                AlbumDataFields.COORDONNES_REGION
+                                            }
                                             onChange={(value: any) =>
                                                 handleChange(
                                                     AlbumDataFields.COORDONNES_REGION,
@@ -311,10 +330,15 @@ const FilterMenu: React.FC<FilterMenuProps> = ({
                                             }
                                             options={[
                                                 'toutes',
-                                                ...(PossibleDataFileds.get(
-                                                    AlbumDataFields.SECTEUR_ACTIVITE,
-                                                ) || []),
+                                                ...Object.keys(
+                                                    TableauxTraductionsMainDataFields.get(
+                                                        AlbumDataFields.SECTEUR_ACTIVITE,
+                                                    )?.dataLabels || {}, // Fallback to an empty object if dataLabels is undefined
+                                                ),
                                             ]}
+                                            dataField={
+                                                AlbumDataFields.SECTEUR_ACTIVITE
+                                            }
                                             onChange={(value: any) =>
                                                 handleChange(
                                                     AlbumDataFields.SECTEUR_ACTIVITE,
@@ -340,11 +364,16 @@ const FilterMenu: React.FC<FilterMenuProps> = ({
                                                       ]['$in'][0]
                                                     : value_constants.all_values_string_filter
                                             }
+                                            dataField={
+                                                AlbumDataFields.REVENUS_RANG
+                                            }
                                             options={[
                                                 'toutes',
-                                                ...(PossibleDataFileds.get(
-                                                    AlbumDataFields.REVENUS_RANG,
-                                                ) || []),
+                                                ...Object.keys(
+                                                    TableauxTraductionsMainDataFields.get(
+                                                        AlbumDataFields.REVENUS_RANG,
+                                                    )?.dataLabels || {}, // Fallback to an empty object if dataLabels is undefined
+                                                ),
                                             ]}
                                             onChange={(value: any) =>
                                                 handleChange(
@@ -396,11 +425,17 @@ const FilterMenu: React.FC<FilterMenuProps> = ({
                                                   ]['$in'][0]
                                                 : value_constants.all_values_string_filter
                                         }
-                                        options={Object.keys(
-                                            TableauxTraductionsMainDataFields.get(
-                                                FournisseurDataFields.SECTEURS_GEOGRAPHIQUES,
-                                            )?.dataLabels || {}, // Fallback to an empty object if dataLabels is undefined
-                                        )}
+                                        dataField={
+                                            FournisseurDataFields.SECTEURS_GEOGRAPHIQUES
+                                        }
+                                        options={[
+                                            'toutes',
+                                            ...Object.keys(
+                                                TableauxTraductionsMainDataFields.get(
+                                                    FournisseurDataFields.SECTEURS_GEOGRAPHIQUES,
+                                                )?.dataLabels || {}, // Fallback to an empty object if dataLabels is undefined
+                                            ),
+                                        ]}
                                         onChange={(value: any) =>
                                             handleChange(
                                                 FournisseurDataFields.SECTEURS_GEOGRAPHIQUES,
@@ -428,11 +463,14 @@ const FilterMenu: React.FC<FilterMenuProps> = ({
                                                   ]['$in'][0]
                                                 : value_constants.all_values_string_filter
                                         }
-                                        options={Object.keys(
-                                            TableauxTraductionsMainDataFields.get(
-                                                FournisseurDataFields.SERVICES_OFFERTS,
-                                            )?.dataLabels || {}, // Fallback to an empty object if dataLabels is undefined
-                                        )}
+                                        options={[
+                                            'toutes',
+                                            ...Object.keys(
+                                                TableauxTraductionsMainDataFields.get(
+                                                    FournisseurDataFields.SERVICES_OFFERTS,
+                                                )?.dataLabels || {}, // Fallback to an empty object if dataLabels is undefined
+                                            ),
+                                        ]}
                                         dataField={
                                             FournisseurDataFields.SERVICES_OFFERTS
                                         }

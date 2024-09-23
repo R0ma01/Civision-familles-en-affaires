@@ -28,6 +28,10 @@ export const SharedPromptsTranslations: PromptsTranslations = {
         FR: 'Annuler',
         EN: 'Cancel',
     },
+    confirm: {
+        FR: 'Confirmer',
+        EN: 'Confirm',
+    },
     filters: { FR: 'Filtres', EN: 'Filters' },
     general_filters: { FR: 'Général', EN: 'General' },
     advanced_filters: { FR: 'Avancé', EN: 'Advanced' },
@@ -121,6 +125,13 @@ export const FournisseurPromptsTranslations: PromptsTranslations = {
     page_title: {
         FR: 'Fournisseurs',
         EN: 'Suppliers',
+    },
+};
+
+export const ConnexionDialogPromptsTranslations: PromptsTranslations = {
+    disconnect_confirmation: {
+        FR: 'Êtes-vous sur de vouloir vous déconnecter ?',
+        EN: 'Are you sure you want to disconnect ?',
     },
 };
 

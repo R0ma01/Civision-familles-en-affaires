@@ -7,9 +7,16 @@ import DisconnectDialogProps from '@/components/interface/auth/disconnect-confir
 import Modal from '@/components/component/modal/modal';
 import useGlobalUserStore from '@/stores/global-user-store';
 import { UserType } from '@/components/enums/user-type-enum';
+import {
+    SharedPromptsTranslations,
+    ConnexionDialogPromptsTranslations,
+} from '@/constants/translations/page-prompts';
+import { Language } from '@/components/enums/language';
+import useDataStore from '@/reducer/dataStore';
 
 const DisconnectDialog: React.FC<DisconnectDialogProps> = ({ closeDialog }) => {
     const router = useRouter();
+    const lang: Language = useDataStore((state) => state.lang);
 
     const { setUser, setLoginTutorials } = useGlobalUserStore((state: any) => ({
         setUser: state.setUser,
@@ -52,10 +59,18 @@ const DisconnectDialog: React.FC<DisconnectDialogProps> = ({ closeDialog }) => {
     };
 
     return (
-        <Modal title="Êtes-vous sûr de vouloir vous déconnecter?">
+        <Modal
+            title={
+                ConnexionDialogPromptsTranslations.disconnect_confirmation[lang]
+            }
+        >
             <div className="flex flex-row justify-evenly">
-                <Button onClick={closeDialog}>Annuler</Button>
-                <Button onClick={handleDisconnect}>Se Déconnecter</Button>
+                <Button onClick={closeDialog}>
+                    {SharedPromptsTranslations.cancel[lang]}
+                </Button>
+                <Button onClick={handleDisconnect}>
+                    {SharedPromptsTranslations.confirm[lang]}
+                </Button>
             </div>
         </Modal>
     );
