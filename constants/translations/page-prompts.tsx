@@ -59,6 +59,13 @@ export const ThematiquePromptsTranslations: PromptsTranslations = {
     },
 };
 
+export const RecherchePromptsTranslations: PromptsTranslations = {
+    page_title: {
+        FR: 'Recherche Académique',
+        EN: 'Academic Search',
+    },
+};
+
 export const RepertoirePromptsTranslations: PromptsTranslations = {
     search_box_title: {
         FR: 'Liste des entreprises familiales recensées au Québec',

@@ -9,8 +9,13 @@ import DataCard from '@/components/component/data-card/data-card';
 import DataCardContainer from '@/components/component/data-card/data-card-container';
 import { ChercheurDropdownItem } from '@/components/interface/chercheur-drop-down-content';
 import { MapType } from '@/components/enums/map-type-enum';
+import { Language } from '@/components/enums/language';
+import { RecherchePromptsTranslations } from '@/constants/translations/page-prompts';
+import useDataStore from '@/reducer/dataStore';
 
 export default function RechercheAcademique() {
+    const lang: Language = useDataStore((state) => state.lang);
+
     const [cards, setCards] = useState<Map<string, DataCardContent>>(new Map());
 
     const { mapType, setMapStyle } = useMapStore((state) => ({
@@ -64,7 +69,7 @@ export default function RechercheAcademique() {
             filterMenu={true}
         >
             <h1 className="text-5xl tracking-wide text-black dark:text-white z-10 mt-12 mb-10 cursor-default">
-                Recherche Académique
+                {RecherchePromptsTranslations.page_title[lang]}
             </h1>
             <div className="flex flex-col space-y-4 w-full">
                 <DataCard content={firstItem} className="z-10" />
