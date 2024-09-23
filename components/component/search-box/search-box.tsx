@@ -61,6 +61,7 @@ function SearchBox() {
         setSearchTerm(e.target.value);
     }
     async function flyToPoint(company: MapClusterPointData) {
+        console.log('i am called');
         // Handling RepertoireData type or any other type-specific logic
         // Assuming similar properties to CompanyInfo
 

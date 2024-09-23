@@ -49,7 +49,9 @@ const useGlobalDataStore = create(
                     set({ loading: true, error: null });
                     try {
                         const responseRepertoire =
-                            await GraphDataHttpRequestService.getAllRepertoireData();
+                            await GraphDataHttpRequestService.getAllRepertoireData(
+                                matchStage,
+                            );
 
                         set({
                             repertoireData: responseRepertoire,
@@ -83,7 +85,9 @@ const useGlobalDataStore = create(
                     set({ loading: true, error: null });
                     try {
                         const responseIndexe =
-                            await GraphDataHttpRequestService.getAllRepertoireData();
+                            await GraphDataHttpRequestService.getAllRepertoireData(
+                                matchStage,
+                            );
 
                         set({
                             indexeData: responseIndexe,

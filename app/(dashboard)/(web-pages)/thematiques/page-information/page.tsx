@@ -10,8 +10,18 @@ import PageTabContent from '@/components/interface/page-tabs-content';
 import { Language } from '@/components/enums/language';
 import { SharedPromptsTranslations } from '@/constants/translations/page-prompts';
 import useDataStore from '@/reducer/dataStore';
+import useGlobalFilterStore from '@/stores/global-filter-store';
+import { DataBaseOrigin } from '@/components/enums/data-types-enum';
 
 function PageContentComponent() {
+    const { resetFilters } = useGlobalFilterStore((state) => ({
+        resetFilters: state.resetFilters,
+    }));
+
+    useEffect(() => {
+        resetFilters();
+    }, [resetFilters]); // Empty dependency array ensures this runs only on mount
+
     const lang: Language = useDataStore((state) => state.lang);
 
     const [page, setPage] = useState<PageTabContent | undefined>(undefined);
@@ -27,22 +37,29 @@ function PageContentComponent() {
         },
     );
 
-    const { mapType, setMapStyle } = useMapStore((state) => {
-        return { mapType: state.mapType, setMapStyle: state.setMapStyle };
+    const { setMapStyle } = useMapStore((state) => {
+        return { setMapStyle: state.setMapStyle };
     });
-
-    useEffect(() => {
-        if (mapType !== MapType.PAGE_INFORMATION) {
-            setMapStyle(MapType.PAGE_INFORMATION);
-        }
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [mapType]);
 
     useEffect(() => {
         if (!page && pagesData) {
             setPage(pagesData.find((page: PageTabContent) => page._id === _id));
         }
     }, [page, pagesData, _id]);
+
+    function setMap(dataOrigin: DataBaseOrigin) {
+        switch (dataOrigin) {
+            case DataBaseOrigin.INDEX_VOLETA:
+                setMapStyle(MapType.PAGE_INFORMATION_INDEX_VOLETA);
+                break;
+            case DataBaseOrigin.INDEX_VOLETB:
+                setMapStyle(MapType.PAGE_INFORMATION_INDEX_VOLETB);
+                break;
+
+            default:
+                setMapStyle(MapType.PAGE_INFORMATION_ALBUM);
+        }
+    }
 
     if (pageLoading)
         return <div>{SharedPromptsTranslations.loading[lang]}</div>;
@@ -64,7 +81,12 @@ function PageContentComponent() {
                     {page?.title}
                 </h1>
 
-                {page && <TabContainer tabs={page?.tabs ?? []}></TabContainer>}
+                {page && (
+                    <TabContainer
+                        tabs={page?.tabs ?? []}
+                        setMap={setMap}
+                    ></TabContainer>
+                )}
             </PageContentContainer>
         </>
     );

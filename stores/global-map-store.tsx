@@ -21,7 +21,7 @@ const useMapStore = create<GlobalMapStoreProps>((set) => ({
     setMap: (map: any) => {
         set({ map });
     },
-    mapType: MapType.PAGE_INFORMATION,
+    mapType: MapType.PAGE_INFORMATION_ALBUM,
     setMapStyle: (type: MapType) => {
         set({ mapType: type });
     },

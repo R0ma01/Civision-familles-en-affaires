@@ -1490,6 +1490,7 @@ const keyValuePairs: [string, dataInformations][] = [
             },
         },
     ],
+
     [
         AlbumDataFields.NOMBRE_EMPLOYE,
         {
@@ -1503,61 +1504,61 @@ const keyValuePairs: [string, dataInformations][] = [
                     EN: '1 to 5',
                 },
                 aucun: {
-                    FR: '1 à 5',
-                    EN: '1 to 5',
+                    FR: 'aucun',
+                    EN: 'none',
                 },
 
                 '11 a 25': {
-                    FR: '1 à 5',
-                    EN: '1 to 5',
+                    FR: '11 à 25',
+                    EN: '11 to 25',
                 },
                 Aucun: {
-                    FR: '1 à 5',
-                    EN: '1 to 5',
+                    FR: 'aucun',
+                    EN: 'none',
                 },
                 '100 a 249': {
-                    FR: '1 à 5',
-                    EN: '1 to 5',
+                    FR: '100 à 249',
+                    EN: '100 to 249',
                 },
                 '500 a 749': {
-                    FR: '1 à 5',
-                    EN: '1 to 5',
+                    FR: '500 à 749',
+                    EN: '500 to 749',
                 },
                 inconnu: {
-                    FR: '1 à 5',
-                    EN: '1 to 5',
+                    FR: 'inconnu',
+                    EN: 'unknown',
                 },
                 AUCUN: {
-                    FR: '1 à 5',
-                    EN: '1 to 5',
+                    FR: 'aucun',
+                    EN: 'none',
                 },
                 '750 a 999': {
-                    FR: '1 à 5',
-                    EN: '1 to 5',
+                    FR: '750 à 999',
+                    EN: '750 to 999',
                 },
                 '6 a 10': {
-                    FR: '1 à 5',
-                    EN: '1 to 5',
+                    FR: '6 à 10',
+                    EN: '6 to 10',
                 },
                 '26 a 49': {
-                    FR: '1 à 5',
-                    EN: '1 to 5',
+                    FR: '26 à 49',
+                    EN: '26 to 49',
                 },
                 '250 a 499': {
-                    FR: '1 à 5',
-                    EN: '1 to 5',
+                    FR: '250 à 499',
+                    EN: '250 to 499',
                 },
                 '50 a 99': {
-                    FR: '1 à 5',
-                    EN: '1 to 5',
+                    FR: '50 à 99',
+                    EN: '50 to 99',
                 },
                 '1000 a 2499': {
-                    FR: '1 à 5',
-                    EN: '1 to 5',
+                    FR: '1000 à 2499',
+                    EN: '1000 to 2499',
                 },
                 '2500 a 4999': {
-                    FR: '1 à 5',
-                    EN: '1 to 5',
+                    FR: '2500 à 4999',
+                    EN: '2500 to 4999',
                 },
             },
         },

@@ -181,12 +181,12 @@ const GraphBox: React.FC<GraphBoxProps> = ({ content, chartSize }) => {
                         chartContent={chartContent}
                         chartSize={size}
                     />{' '}
-                    {size !== ChartSize.SMALL && (
+                    {/* {size !== ChartSize.SMALL && (
                         <p className="text-red-600 text-left">
                             *les {nanData.value} valeurs de {nanData.name} ne
                             sont pas prises en compte ici
                         </p>
-                    )}
+                    )} */}
                 </>
             );
         case GraphBoxType.DOUGHNUT:
@@ -199,12 +199,12 @@ const GraphBox: React.FC<GraphBoxProps> = ({ content, chartSize }) => {
                             filterData={filterNewData}
                         />{' '}
                     </div>
-                    {size !== ChartSize.SMALL && (
+                    {/* {size !== ChartSize.SMALL && (
                         <p className="text-red-600 text-left">
                             *les {nanData.value} valeurs de {nanData.name} ne
                             sont pas prises en compte ici
                         </p>
-                    )}
+                    )} */}
                 </>
             );
         case GraphBoxType.HORIZONTAL_BARCHART:
@@ -215,12 +215,12 @@ const GraphBox: React.FC<GraphBoxProps> = ({ content, chartSize }) => {
                         chartSize={size}
                         filterData={filterNewData}
                     />
-                    {size !== ChartSize.SMALL && (
+                    {/* {size !== ChartSize.SMALL && (
                         <p className="text-red-600 text-left">
                             *les {nanData.value} valeurs de {nanData.name} ne
                             sont pas prises en compte ici
                         </p>
-                    )}
+                    )} */}
                 </>
             );
         case GraphBoxType.VERTICAL_BARCHART:
@@ -231,12 +231,12 @@ const GraphBox: React.FC<GraphBoxProps> = ({ content, chartSize }) => {
                         chartSize={size}
                         filterData={filterNewData}
                     />
-                    {size !== ChartSize.SMALL && (
+                    {/* {size !== ChartSize.SMALL && (
                         <p className="text-red-600 text-left">
                             *les {nanData.value} valeurs de {nanData.name} ne
                             sont pas prises en compte ici
                         </p>
-                    )}
+                    )} */}
                 </>
             );
         case GraphBoxType.STACKED_BARCHART:
@@ -250,12 +250,12 @@ const GraphBox: React.FC<GraphBoxProps> = ({ content, chartSize }) => {
                         />
                     </div>
 
-                    {size !== ChartSize.SMALL && (
+                    {/* {size !== ChartSize.SMALL && (
                         <p className="text-red-600 text-left">
                             *les {nanData.value} valeurs de {nanData.name} ne
                             sont pas prises en compte ici
                         </p>
-                    )}
+                    )} */}
                 </>
             );
         default:

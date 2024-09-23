@@ -167,6 +167,11 @@ export enum FournisseurDataFields {
     SERVICES_OFFERTS = 'services_offerts',
 }
 
+export enum RepertoireDataFields {
+    NB_EMPLO = 'NB_EMPLO',
+    REGION = 'REGIO',
+}
+
 export enum DataBaseOrigin {
     ALBUM_FAMILLE = 'Album_Famille',
     INDEX_VOLETA = 'Index_VoletA',

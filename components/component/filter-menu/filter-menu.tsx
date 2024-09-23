@@ -12,6 +12,9 @@ import Dropdown from '@/components/component/drop-down-menu/drop-down-menu';
 import {
     AlbumDataFields,
     FournisseurDataFields,
+    RepertoireDataFields,
+    IndexeDataFieldsA,
+    IndexeDataFieldsB,
 } from '@/components/enums/data-types-enum';
 import useGlobalFilterStore from '@/stores/global-filter-store';
 import useGlobalDataStore from '@/stores/global-data-store';
@@ -23,6 +26,37 @@ import { Language } from '@/components/enums/language';
 import useDataStore from '@/reducer/dataStore';
 import { SharedPromptsTranslations } from '@/constants/translations/page-prompts';
 import { TableauxTraductionsMainDataFields } from '@/services/translations';
+
+const repertoireFilters = {
+    general: [RepertoireDataFields.NB_EMPLO, RepertoireDataFields.REGION],
+};
+const fournisseurFilters = {
+    general: [
+        FournisseurDataFields.SECTEURS_GEOGRAPHIQUES,
+        FournisseurDataFields.SERVICES_OFFERTS,
+    ],
+};
+
+const albumFilters = {
+    general: [
+        AlbumDataFields.TAILLE_ENTREPRISE,
+        AlbumDataFields.ANNEE_FONDATION,
+        AlbumDataFields.DIRIGEANT_GENERATION,
+    ],
+    avance: [
+        AlbumDataFields.COORDONNES_REGION,
+        AlbumDataFields.SECTEUR_ACTIVITE,
+        AlbumDataFields.REVENUS_RANG,
+    ],
+};
+
+const indexVoletAFilters = {
+    general: [IndexeDataFieldsA.QE6],
+};
+
+const indexVoletBFilters = {
+    general: [IndexeDataFieldsB.QZ19],
+};
 
 interface FilterMenuProps {
     toggleContentVisibility?: () => void;
@@ -68,7 +102,7 @@ const FilterMenu: React.FC<FilterMenuProps> = ({
             case MapType.REPERTOIRE:
                 filterRepertoireData();
                 break;
-            case MapType.PAGE_INFORMATION:
+            case MapType.PAGE_INFORMATION_ALBUM:
                 filterStudyData();
                 break;
             case MapType.FOURNISSEURS:
@@ -98,16 +132,26 @@ const FilterMenu: React.FC<FilterMenuProps> = ({
                 return (
                     <>
                         <div
-                            className={`fixed top-10 right-0 h-fit w-64 bg-[#f5ebe0] bg-opacity-75 p-4 transform ${
+                            className={`fixed top-10 right-0 h-[300px] w-64 bg-[#f5ebe0] bg-opacity-75 p-4 transform ${
                                 isOpen ? 'translate-x-0' : 'translate-x-full'
                             } transition-transform duration-300 ease-in-out`}
                         >
-                            <div>NO FILTERS YET</div>
+                            {repertoireFilters.general.map((filter, index) => {
+                                return (
+                                    <FilterItem
+                                        key={index}
+                                        filterData={filter}
+                                        lang={lang}
+                                        matchStage={matchStage}
+                                        handleChange={handleChange}
+                                    ></FilterItem>
+                                );
+                            })}
                         </div>
                     </>
                 );
 
-            case MapType.PAGE_INFORMATION:
+            case MapType.PAGE_INFORMATION_ALBUM:
                 return (
                     <>
                         {/* Side Filter Tab */}
@@ -157,231 +201,39 @@ const FilterMenu: React.FC<FilterMenuProps> = ({
                                 </div>
                                 {selectedTab === 'general' ? (
                                     <div className="mt-4 flex flex-col">
-                                        <label>
-                                            {
-                                                TableauxTraductionsMainDataFields.get(
-                                                    AlbumDataFields.TAILLE_ENTREPRISE,
-                                                )?.label[lang]
-                                            }
-                                        </label>
-                                        <Dropdown
-                                            inputValue={
-                                                matchStage[
-                                                    AlbumDataFields
-                                                        .TAILLE_ENTREPRISE
-                                                ]
-                                                    ? matchStage[
-                                                          AlbumDataFields
-                                                              .TAILLE_ENTREPRISE
-                                                      ]['$in'][0]
-                                                    : value_constants.all_values_string_filter
-                                            }
-                                            options={[
-                                                'toutes',
-                                                ...Object.keys(
-                                                    TableauxTraductionsMainDataFields.get(
-                                                        AlbumDataFields.TAILLE_ENTREPRISE,
-                                                    )?.dataLabels || {}, // Fallback to an empty object if dataLabels is undefined
-                                                ),
-                                            ]}
-                                            dataField={
-                                                AlbumDataFields.TAILLE_ENTREPRISE
-                                            }
-                                            onChange={(value: any) =>
-                                                handleChange(
-                                                    AlbumDataFields.TAILLE_ENTREPRISE,
-                                                    value,
-                                                )
-                                            }
-                                        />
-                                        <label>
-                                            {
-                                                TableauxTraductionsMainDataFields.get(
-                                                    AlbumDataFields.ANNEE_FONDATION,
-                                                )?.label[lang]
-                                            }
-                                        </label>
-                                        <Dropdown
-                                            inputValue={
-                                                matchStage[
-                                                    AlbumDataFields
-                                                        .ANNEE_FONDATION
-                                                ]
-                                                    ? matchStage[
-                                                          AlbumDataFields
-                                                              .ANNEE_FONDATION
-                                                      ]['$in'][0]
-                                                    : value_constants.all_values_string_filter
-                                            }
-                                            options={[
-                                                'toutes',
-                                                ...Object.keys(
-                                                    TableauxTraductionsMainDataFields.get(
-                                                        AlbumDataFields.ANNEE_FONDATION,
-                                                    )?.dataLabels || {}, // Fallback to an empty object if dataLabels is undefined
-                                                ),
-                                            ]}
-                                            dataField={
-                                                AlbumDataFields.ANNEE_FONDATION
-                                            }
-                                            onChange={(value: any) =>
-                                                handleChange(
-                                                    AlbumDataFields.ANNEE_FONDATION,
-                                                    value,
-                                                )
-                                            }
-                                        />
-                                        <label>
-                                            {
-                                                TableauxTraductionsMainDataFields.get(
-                                                    AlbumDataFields.DIRIGEANT_GENERATION,
-                                                )?.label[lang]
-                                            }
-                                        </label>
-                                        <Dropdown
-                                            inputValue={
-                                                matchStage[
-                                                    AlbumDataFields
-                                                        .DIRIGEANT_GENERATION
-                                                ]
-                                                    ? matchStage[
-                                                          AlbumDataFields
-                                                              .DIRIGEANT_GENERATION
-                                                      ]['$in'][0]
-                                                    : value_constants.all_values_string_filter
-                                            }
-                                            options={[
-                                                'toutes',
-                                                ...Object.keys(
-                                                    TableauxTraductionsMainDataFields.get(
-                                                        AlbumDataFields.DIRIGEANT_GENERATION,
-                                                    )?.dataLabels || {}, // Fallback to an empty object if dataLabels is undefined
-                                                ),
-                                            ]}
-                                            dataField={
-                                                AlbumDataFields.DIRIGEANT_GENERATION
-                                            }
-                                            onChange={(value: any) =>
-                                                handleChange(
-                                                    AlbumDataFields.DIRIGEANT_GENERATION,
-                                                    value,
-                                                )
-                                            }
-                                        />
-                                        {/* Add more filter options as needed */}
+                                        {albumFilters.general.map(
+                                            (filter, index) => {
+                                                return (
+                                                    <FilterItem
+                                                        key={index}
+                                                        filterData={filter}
+                                                        lang={lang}
+                                                        matchStage={matchStage}
+                                                        handleChange={
+                                                            handleChange
+                                                        }
+                                                    ></FilterItem>
+                                                );
+                                            },
+                                        )}
                                     </div>
                                 ) : (
                                     <div className="mt-4 flex flex-col">
-                                        <label>
-                                            {
-                                                TableauxTraductionsMainDataFields.get(
-                                                    AlbumDataFields.COORDONNES_REGION,
-                                                )?.label[lang]
-                                            }
-                                        </label>
-                                        <Dropdown
-                                            inputValue={
-                                                matchStage[
-                                                    AlbumDataFields
-                                                        .COORDONNES_REGION
-                                                ]
-                                                    ? matchStage[
-                                                          AlbumDataFields
-                                                              .COORDONNES_REGION
-                                                      ]['$in'][0]
-                                                    : value_constants.all_values_string_filter
-                                            }
-                                            options={[
-                                                'toutes',
-                                                ...Object.keys(
-                                                    TableauxTraductionsMainDataFields.get(
-                                                        AlbumDataFields.COORDONNES_REGION,
-                                                    )?.dataLabels || {}, // Fallback to an empty object if dataLabels is undefined
-                                                ),
-                                            ]}
-                                            dataField={
-                                                AlbumDataFields.COORDONNES_REGION
-                                            }
-                                            onChange={(value: any) =>
-                                                handleChange(
-                                                    AlbumDataFields.COORDONNES_REGION,
-                                                    value,
-                                                )
-                                            }
-                                        />
-                                        <label>
-                                            {
-                                                TableauxTraductionsMainDataFields.get(
-                                                    AlbumDataFields.SECTEUR_ACTIVITE,
-                                                )?.label[lang]
-                                            }
-                                        </label>
-                                        <Dropdown
-                                            inputValue={
-                                                matchStage[
-                                                    AlbumDataFields
-                                                        .SECTEUR_ACTIVITE
-                                                ]
-                                                    ? matchStage[
-                                                          AlbumDataFields
-                                                              .SECTEUR_ACTIVITE
-                                                      ]['$in'][0]
-                                                    : value_constants.all_values_string_filter
-                                            }
-                                            options={[
-                                                'toutes',
-                                                ...Object.keys(
-                                                    TableauxTraductionsMainDataFields.get(
-                                                        AlbumDataFields.SECTEUR_ACTIVITE,
-                                                    )?.dataLabels || {}, // Fallback to an empty object if dataLabels is undefined
-                                                ),
-                                            ]}
-                                            dataField={
-                                                AlbumDataFields.SECTEUR_ACTIVITE
-                                            }
-                                            onChange={(value: any) =>
-                                                handleChange(
-                                                    AlbumDataFields.SECTEUR_ACTIVITE,
-                                                    value,
-                                                )
-                                            }
-                                        />
-                                        <label>
-                                            {
-                                                TableauxTraductionsMainDataFields.get(
-                                                    AlbumDataFields.REVENUS_RANG,
-                                                )?.label[lang]
-                                            }
-                                        </label>
-                                        <Dropdown
-                                            inputValue={
-                                                matchStage[
-                                                    AlbumDataFields.REVENUS_RANG
-                                                ]
-                                                    ? matchStage[
-                                                          AlbumDataFields
-                                                              .REVENUS_RANG
-                                                      ]['$in'][0]
-                                                    : value_constants.all_values_string_filter
-                                            }
-                                            dataField={
-                                                AlbumDataFields.REVENUS_RANG
-                                            }
-                                            options={[
-                                                'toutes',
-                                                ...Object.keys(
-                                                    TableauxTraductionsMainDataFields.get(
-                                                        AlbumDataFields.REVENUS_RANG,
-                                                    )?.dataLabels || {}, // Fallback to an empty object if dataLabels is undefined
-                                                ),
-                                            ]}
-                                            onChange={(value: any) =>
-                                                handleChange(
-                                                    AlbumDataFields.REVENUS_RANG,
-                                                    value,
-                                                )
-                                            }
-                                        />
+                                        {albumFilters.avance.map(
+                                            (filter, index) => {
+                                                return (
+                                                    <FilterItem
+                                                        key={index}
+                                                        filterData={filter}
+                                                        lang={lang}
+                                                        matchStage={matchStage}
+                                                        handleChange={
+                                                            handleChange
+                                                        }
+                                                    ></FilterItem>
+                                                );
+                                            },
+                                        )}
                                     </div>
                                 )}
                             </div>
@@ -406,81 +258,19 @@ const FilterMenu: React.FC<FilterMenuProps> = ({
                                 </h2>
                                 {/* Add your filter options here */}
                                 <div className="flex flex-col">
-                                    <label>
-                                        {
-                                            TableauxTraductionsMainDataFields.get(
-                                                FournisseurDataFields.SECTEURS_GEOGRAPHIQUES,
-                                            )?.label[lang]
-                                        }
-                                    </label>
-                                    <Dropdown
-                                        inputValue={
-                                            matchStage[
-                                                FournisseurDataFields
-                                                    .SECTEURS_GEOGRAPHIQUES
-                                            ]
-                                                ? matchStage[
-                                                      FournisseurDataFields
-                                                          .SECTEURS_GEOGRAPHIQUES
-                                                  ]['$in'][0]
-                                                : value_constants.all_values_string_filter
-                                        }
-                                        dataField={
-                                            FournisseurDataFields.SECTEURS_GEOGRAPHIQUES
-                                        }
-                                        options={[
-                                            'toutes',
-                                            ...Object.keys(
-                                                TableauxTraductionsMainDataFields.get(
-                                                    FournisseurDataFields.SECTEURS_GEOGRAPHIQUES,
-                                                )?.dataLabels || {}, // Fallback to an empty object if dataLabels is undefined
-                                            ),
-                                        ]}
-                                        onChange={(value: any) =>
-                                            handleChange(
-                                                FournisseurDataFields.SECTEURS_GEOGRAPHIQUES,
-                                                value,
-                                            )
-                                        }
-                                    />
-                                    <label>
-                                        {' '}
-                                        {
-                                            TableauxTraductionsMainDataFields.get(
-                                                FournisseurDataFields.SERVICES_OFFERTS,
-                                            )?.label[lang]
-                                        }
-                                    </label>
-                                    <Dropdown
-                                        inputValue={
-                                            matchStage[
-                                                FournisseurDataFields
-                                                    .SERVICES_OFFERTS
-                                            ]
-                                                ? matchStage[
-                                                      FournisseurDataFields
-                                                          .SERVICES_OFFERTS
-                                                  ]['$in'][0]
-                                                : value_constants.all_values_string_filter
-                                        }
-                                        options={[
-                                            'toutes',
-                                            ...Object.keys(
-                                                TableauxTraductionsMainDataFields.get(
-                                                    FournisseurDataFields.SERVICES_OFFERTS,
-                                                )?.dataLabels || {}, // Fallback to an empty object if dataLabels is undefined
-                                            ),
-                                        ]}
-                                        dataField={
-                                            FournisseurDataFields.SERVICES_OFFERTS
-                                        }
-                                        onChange={(value: any) =>
-                                            handleChange(
-                                                FournisseurDataFields.SERVICES_OFFERTS,
-                                                value,
-                                            )
-                                        }
-                                    />
+                                    {fournisseurFilters.general.map(
+                                        (filter, index) => {
+                                            return (
+                                                <FilterItem
+                                                    key={index}
+                                                    filterData={filter}
+                                                    lang={lang}
+                                                    matchStage={matchStage}
+                                                    handleChange={handleChange}
+                                                ></FilterItem>
+                                            );
+                                        },
+                                    )}
                                 </div>
                             </div>
                         </div>
@@ -551,3 +341,43 @@ const FilterMenu: React.FC<FilterMenuProps> = ({
 };
 
 export default FilterMenu;
+
+interface FilterItemProps {
+    filterData: any;
+    lang: Language;
+    matchStage: any;
+    handleChange: (param1: any, param2: any) => void;
+}
+
+function FilterItem({
+    lang,
+    matchStage,
+    handleChange,
+    filterData,
+}: FilterItemProps) {
+    const labelTitle =
+        TableauxTraductionsMainDataFields.get(filterData)?.label[lang] ||
+        SharedPromptsTranslations.error[lang];
+
+    return (
+        <div>
+            <label>{labelTitle}</label>
+            <Dropdown
+                inputValue={
+                    matchStage[filterData]
+                        ? matchStage[filterData]['$in'][0]
+                        : value_constants.all_values_string_filter
+                }
+                options={[
+                    'toutes',
+                    ...Object.keys(
+                        TableauxTraductionsMainDataFields.get(filterData)
+                            ?.dataLabels || {}, // Fallback to an empty object if dataLabels is undefined
+                    ),
+                ]}
+                dataField={filterData}
+                onChange={(value: any) => handleChange(filterData, value)}
+            />
+        </div>
+    );
+}

@@ -59,8 +59,8 @@ export default function Admin() {
     }));
 
     useEffect(() => {
-        if (mapType !== MapType.PAGE_INFORMATION) {
-            setMapStyle(MapType.PAGE_INFORMATION);
+        if (mapType !== MapType.PAGE_INFORMATION_ALBUM) {
+            setMapStyle(MapType.PAGE_INFORMATION_ALBUM);
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [mapType, setMapStyle]);

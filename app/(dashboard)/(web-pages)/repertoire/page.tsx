@@ -7,10 +7,97 @@ import { AlbumDataFields } from '@/components/enums/data-types-enum';
 import RepertoirePageTutorial from '@/components/component/tutorials/repertoire-page-tutorial';
 import useMapStore from '@/stores/global-map-store';
 import { MapType } from '@/components/enums/map-type-enum';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { Language } from '@/components/enums/language';
 import { RepertoirePromptsTranslations } from '@/constants/translations/page-prompts';
 import useDataStore from '@/reducer/dataStore';
+import { chartPalette } from '@/constants/color-palet';
+import { PieChart, Pie, Cell, Label } from 'recharts';
+import useGlobalDataStore from '@/stores/global-data-store';
+
+const data = [
+    { name: 'Group A', value: 63.1 },
+    { name: 'Group B', value: 36.9 },
+];
+
+const findHighestValue = (data: any) => {
+    let highest = data[0].value;
+    data.forEach((item: any) => {
+        if (item.value > highest) {
+            highest = item.value;
+        }
+    });
+    return highest;
+};
+
+const highestValue = findHighestValue(data);
+
+const Donut = ({ size }: { size: number }) => {
+    return (
+        <PieChart width={size + 10} height={size + 10}>
+            <Pie
+                data={data}
+                cx={size / 2}
+                cy={size / 2}
+                innerRadius={size / 2.6}
+                outerRadius={size / 2.2}
+                fill="#8884d8"
+                paddingAngle={0}
+                dataKey="value"
+                isAnimationActive={false}
+                stroke="black" // Set the stroke to black for the edge
+            >
+                <Label
+                    value={highestValue + '%'}
+                    position="center"
+                    style={{ fontSize: `${size / 5.2}px` }}
+                    className=" dark:fill-white fill-black"
+                />
+                {data.map((entry, index) => (
+                    <Cell
+                        key={`cell-${index}`}
+                        fill={chartPalette[index % chartPalette.length]}
+                    />
+                ))}
+            </Pie>
+        </PieChart>
+    );
+};
+
+const DataCardDiv: React.FC<{
+    title: string;
+    children: React.ReactNode;
+}> = ({ children, title }) => {
+    const [isCollapsed, setIsCollapsed] = useState(false);
+    return (
+        <div
+            className={`w-[500px] bg-[#f5ebe0] dark:bg-[#363636] dark:bg-opacity-50 dark:text-white backdrop-filter
+                 backdrop-blur bg-opacity-50 saturate-100 backdrop-contrast-100 rounded-xl shadow-3xl py-8 px-8 pointer-events-auto
+                 flex flex-col items-center h-auto space-y-1`}
+        >
+            <button
+                onClick={() => setIsCollapsed((prev) => !prev)}
+                className="absolute top-2 right-2 z-20"
+            >
+                {isCollapsed ? (
+                    <span className="text-lg text-black dark:text-white">
+                        &#9650;
+                    </span>
+                ) : (
+                    <span className="text-lg text-black dark:text-white">
+                        &#9660;
+                    </span>
+                )}
+            </button>
+            <span
+                className={`text-md dark:font-semi-bold text-md text-center w-[80%]`}
+            >
+                {title}
+            </span>
+            {!isCollapsed && children}
+        </div>
+    );
+};
 
 function Repertoire() {
     const lang: Language = useDataStore((state) => state.lang);
@@ -21,6 +108,10 @@ function Repertoire() {
         setMapStyle: state.setMapStyle,
         mapType: state.mapType,
     }));
+
+    const repertoireData = useGlobalDataStore(
+        (state: any) => state.repertoireData,
+    );
 
     useEffect(() => {
         if (mapType !== MapType.REPERTOIRE) {
@@ -35,6 +126,8 @@ function Repertoire() {
             type: DataCardType.SIMPLE,
             title: RepertoirePromptsTranslations.data_card1_title[lang],
             description:
+                repertoireData.length +
+                ' ' +
                 RepertoirePromptsTranslations.data_card1_description[lang],
             graphData: [],
         },
@@ -67,7 +160,16 @@ function Repertoire() {
             </h1>
             <div className="flex flex-col space-y-4">
                 <DataCard content={fetchedData.firstField} />
-                <DataCard content={fetchedData.secondField} />
+                {/* <DataCard content={fetchedData.secondField} /> */}
+                <DataCardDiv title="Proportion d'entreprises familiales privées au Québec">
+                    <div className="flex flex-row items-center justify-center">
+                        <Donut size={90}></Donut>
+                        <p className="text-xs">
+                            {' '}
+                            des entreprises familiales au Québec sont privées
+                        </p>
+                    </div>
+                </DataCardDiv>
                 <DataCard content={fetchedData.thirdField} />
             </div>
         </PageContentContainer>

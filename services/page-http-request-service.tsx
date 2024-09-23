@@ -1,4 +1,3 @@
-import PageContent from '@/components/interface/page-content';
 import axios from 'axios';
 import { APIPaths } from '@/components/enums/page-api-paths-enum';
 import PageTabContent from '@/components/interface/page-tabs-content';
@@ -29,7 +28,7 @@ async function updatePage(pageData: PageTabContent): Promise<boolean> {
     console.log('update page');
     try {
         const response = await axios.patch(APIPaths.PAGE_UPDATE, pageData);
-        console.log('response for update', response.status === 200);
+
         return response.status === 200;
     } catch (error: any) {
         console.error(
@@ -47,7 +46,6 @@ async function deletePage(_id: any): Promise<boolean> {
         const response = await axios.delete(APIPaths.PAGE_DELETE, {
             params: { _id },
         });
-        console.log('response for delete', response.status === 200);
 
         return response.status === 200;
     } catch (error: any) {
@@ -67,7 +65,6 @@ async function getAllPages(): Promise<PageTabContent[]> {
                 'Cache-Control': 'no-cache', // Prevent caching
             },
         });
-        console.log(response.data.pages);
         return response.data.pages;
     } catch (error: any) {
         console.error(

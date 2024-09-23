@@ -62,14 +62,14 @@ export default function Carte() {
 
         if (
             !studyDataFetched &&
-            mapType === MapType.PAGE_INFORMATION &&
+            mapType === MapType.PAGE_INFORMATION_ALBUM &&
             !loading
         ) {
             studyFetch();
         }
 
         if (
-            (!repertoireDataFetched || repertoireData.length === 0) &&
+            !repertoireDataFetched &&
             mapType === MapType.REPERTOIRE &&
             !loading
         ) {
@@ -105,7 +105,7 @@ export default function Carte() {
     return (
         <div className={`relative h-full w-full z-40`}>
             <Mapbox />
-            {mapType == MapType.PAGE_INFORMATION && (
+            {mapType == MapType.PAGE_INFORMATION_ALBUM && (
                 <>
                     <Chloropleth
                         map={map}

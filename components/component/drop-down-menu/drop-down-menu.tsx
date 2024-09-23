@@ -35,7 +35,6 @@ const Dropdown = ({
                 return fieldData.dataLabels[value][lang];
             }
         } else {
-            console.log('hello');
             const fieldData = TableauxTraductionsMainDataFields.get(
                 value.toString(),
             );

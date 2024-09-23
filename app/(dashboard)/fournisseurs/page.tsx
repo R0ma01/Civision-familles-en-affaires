@@ -12,11 +12,9 @@ import DeleteItemDialog from '@/components/component/dialogs/delete-page-dialog'
 import ListeFournisseurs from '@/components/component/liste-fournisseurs/liste-fournisseurs';
 import useGlobalDataStore from '@/stores/global-data-store';
 import { Language } from '@/components/enums/language';
-import {
-    SharedPromptsTranslations,
-    FournisseurPromptsTranslations,
-} from '@/constants/translations/page-prompts';
+import { FournisseurPromptsTranslations } from '@/constants/translations/page-prompts';
 import useDataStore from '@/reducer/dataStore';
+import useGlobalFilterStore from '@/stores/global-filter-store';
 
 function Fournisseurs() {
     const lang: Language = useDataStore((state) => state.lang);
@@ -24,6 +22,14 @@ function Fournisseurs() {
     const { user } = useGlobalUserStore((state: any) => ({
         user: state.user,
     }));
+
+    const { resetFilters } = useGlobalFilterStore((state) => ({
+        resetFilters: state.resetFilters,
+    }));
+
+    useEffect(() => {
+        resetFilters();
+    }, [resetFilters]);
 
     const {
         isEditDialogOpen,

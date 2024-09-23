@@ -17,80 +17,62 @@ interface DashboardProps {
 
 const Dashboard = ({ children }: DashboardProps) => {
     const lang: Language = useDataStore((state) => state.lang);
-
-    const { pagesData, pageLoading, pageError, fetchPageData } =
-        useGlobalPageStore((state: any) => ({
-            pagesData: state.pagesData,
-            pageLoading: state.pageLoading,
-            pageError: state.pageError,
-            fetchPageData: state.fetchPageData,
-        }));
+    console.log('hello');
 
     const { user, setUser } = useGlobalUserStore((state: any) => ({
         user: state.user,
         setUser: state.setUser,
     }));
 
-    useEffect(() => {
-        async function fetchAll() {
-            if (!pagesData && !pageLoading) {
-                await fetchPageData();
-            }
-        }
+    // useEffect(() => {
+    //     const handleBeforeUnload = (event: BeforeUnloadEvent) => {
+    //         // Detect if this is a refresh
 
-        fetchAll();
-    }, [pagesData, pageLoading, fetchPageData]);
+    //         clearZustandStore();
+    //         const token = localStorage.getItem('token');
+    //         const adminToken = localStorage.getItem('adminToken');
 
-    useEffect(() => {
-        const handleBeforeUnload = (event: BeforeUnloadEvent) => {
-            // Detect if this is a refresh
+    //         console.log(token, adminToken);
 
-            clearZustandStore();
-            const token = localStorage.getItem('token');
-            const adminToken = localStorage.getItem('adminToken');
+    //         if (token && !adminToken) {
+    //             setUser(UserType.USER);
+    //         } else if (token && adminToken) {
+    //             setUser(UserType.ADMIN);
+    //         }
+    //     };
 
-            console.log(token, adminToken);
+    //     // Listen for the beforeunload event
+    //     window.addEventListener('beforeunload', handleBeforeUnload);
 
-            if (token && !adminToken) {
-                setUser(UserType.USER);
-            } else if (token && adminToken) {
-                setUser(UserType.ADMIN);
-            }
-        };
-
-        // Listen for the beforeunload event
-        window.addEventListener('beforeunload', handleBeforeUnload);
-
-        return () => {
-            // Clean up the event listener on component unmount
-            window.removeEventListener('beforeunload', handleBeforeUnload);
-        };
-    }, [setUser]);
+    //     return () => {
+    //         // Clean up the event listener on component unmount
+    //         window.removeEventListener('beforeunload', handleBeforeUnload);
+    //     };
+    // }, [setUser]);
 
     return (
         <>
             <MobileWarningPopup />
             <div className="relative h-screen overflow-hidden">
-                {pageLoading ? (
+                {/* {pageLoading ? (
                     <div>{SharedPromptsTranslations.loading[lang]}</div>
                 ) : pageError ? (
                     <div>
                         {SharedPromptsTranslations.error[lang]} {pageError}
                     </div>
-                ) : (
-                    <>
-                        <div className="relative w-full h-full">
-                            <LanguageToggle className="absolute top-1 right-1 z-20"></LanguageToggle>
-                            <div className="fixed top-0 left-0 w-full h-full">
-                                <Carte />
-                            </div>
-                            <div className="flex h-full absolute top-0">
-                                <Sidebar />
-                                {children}
-                            </div>
+                ) : ( */}
+                <>
+                    <div className="relative w-full h-full">
+                        <LanguageToggle className="absolute top-1 right-1 z-20"></LanguageToggle>
+                        <div className="fixed top-0 left-0 w-full h-full">
+                            <Carte />
                         </div>
-                    </>
-                )}
+                        <div className="flex h-full absolute top-0">
+                            <Sidebar />
+                            {children}
+                        </div>
+                    </div>
+                </>
             </div>
         </>
     );

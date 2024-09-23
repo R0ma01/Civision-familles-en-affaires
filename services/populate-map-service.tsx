@@ -134,7 +134,7 @@ export function populateMapLayers(
 ) {
     try {
         switch (mapType) {
-            case MapType.PAGE_INFORMATION:
+            case MapType.PAGE_INFORMATION_ALBUM:
                 //CLUSTERS DE COMPAGNIES POUR LE RÉPERTOIRE ET LES PAGES
                 // Add companies source
                 mapRef.current.addSource('compagnies', {

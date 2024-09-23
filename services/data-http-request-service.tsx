@@ -44,9 +44,15 @@ async function getAllStudyData(
     return [];
 }
 
-async function getAllRepertoireData(): Promise<MapClusterPointData[]> {
+async function getAllRepertoireData(
+    filters: Record<string, any>,
+): Promise<MapClusterPointData[]> {
     try {
-        const response = await axios.get(APIPaths.GRAPH_GET_ALL_REPERTOIRE);
+        const response = await axios.get(APIPaths.GRAPH_GET_ALL_REPERTOIRE, {
+            params: {
+                filters: JSON.stringify(filters),
+            },
+        });
 
         return response.data.points;
     } catch (error: any) {
@@ -94,7 +100,6 @@ async function getChartData(
                 },
             });
         } else if (dataOrigin === DataBaseOrigin.INDEX_VOLETB) {
-            console.log('shucks');
             response = await axios.get(APIPaths.GRAPH_GET_DATA_VOLETB, {
                 params: {
                     donnes: JSON.stringify(donnes),
@@ -129,7 +134,6 @@ async function getEntrepriseInformation(
                 id: id,
             },
         });
-
         return response.data.entreprise;
     } catch (error: any) {
         console.error(

@@ -1,16 +1,11 @@
 import { create } from 'zustand';
-import { produce } from 'immer';
-
-import { AlbumDataFields } from '@/components/enums/data-types-enum';
 import { value_constants } from '@/constants/constants';
 
 interface GlobalState {
     matchStage: Record<string, any>;
-    setFilter: (
-        filterName: AlbumDataFields | string,
-        filterValue: string | number,
-    ) => void;
-    getFilter: (filterName: AlbumDataFields | string) => any;
+    setFilter: (filterName: any | string, filterValue: string | number) => void;
+    getFilter: (filterName: any | string) => any;
+    resetFilters: () => void;
 }
 
 const useGlobalFilterStore = create<GlobalState>((set, get) => ({
@@ -43,6 +38,9 @@ const useGlobalFilterStore = create<GlobalState>((set, get) => ({
         return filters[filterPath]
             ? filters[filterPath]['$in'][0]
             : value_constants.all_values_string_filter;
+    },
+    resetFilters() {
+        set({ matchStage: {} });
     },
 }));
 

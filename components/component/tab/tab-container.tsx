@@ -4,14 +4,20 @@ import { Tab } from './tab';
 import { tabColors } from '@/constants/color-palet';
 import { TableauxTraductionsTabs } from '@/services/translations';
 import useDataStore from '@/reducer/dataStore';
+import { DataBaseOrigin } from '@/components/enums/data-types-enum';
 import { Language } from '@/components/enums/language';
 
 interface TabProps {
     tabs: TabContent[];
     className?: string;
+    setMap?: (dataType: DataBaseOrigin) => void;
 }
 
-export function TabContainer({ tabs, className }: TabProps) {
+export function TabContainer({
+    tabs,
+    className,
+    setMap = (temp) => {},
+}: TabProps) {
     const [containerContent, setContainerContent] = useState<
         TabContent[] | undefined
     >(undefined);
@@ -25,9 +31,16 @@ export function TabContainer({ tabs, className }: TabProps) {
 
             if (!selectedTab) {
                 setSelectedTab(tabs.findIndex((tab) => tab.visible)); // Set first tab as active if none is selected
+                setMap(tabs[selectedTab].tabType);
             }
         }
     }, [tabs, containerContent, selectedTab]);
+
+    useEffect(() => {
+        if (containerContent) {
+            setMap(containerContent[selectedTab].tabType);
+        }
+    }, [selectedTab]);
 
     return (
         <div className="w-fit z-10">
