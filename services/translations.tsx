@@ -1,11 +1,17 @@
 import {
     AlbumDataFields,
+    FournisseurDataFields,
     IndexeDataFieldsA,
     IndexeDataFieldsB,
 } from '@/components/enums/data-types-enum';
 import { GraphBoxType } from '@/components/enums/graph-box-enum';
 import { Language } from '@/components/enums/language';
 import { DataBaseOrigin } from '@/components/enums/data-types-enum';
+import {
+    SecteursGeographiques,
+    ServiceOffert,
+} from '@/components/enums/fournisseur-filter-enum';
+
 interface Traductions {
     FR: string;
     EN: string;
@@ -3527,6 +3533,253 @@ const keyValuePairs: [string, dataInformations][] = [
                 EN: 'To speed up the move to action, knowing the transfer (sale) intentions of the owner(s) of the company for which the respondent works is:',
             },
             dataLabels: { ...satisfactionChartValues },
+        },
+    ],
+
+    [
+        FournisseurDataFields.SECTEURS_GEOGRAPHIQUES,
+        {
+            label: {
+                FR: 'Secteur Géographique',
+                EN: 'Geographic Region',
+            },
+            dataLabels: {
+                [SecteursGeographiques.ABITIBI]: {
+                    FR: 'Abitibi-Témiscamingue',
+                    EN: 'Abitibi-Témiscamingue',
+                },
+                [SecteursGeographiques.BAS_ST_LAURENT]: {
+                    FR: 'Bas-Saint-Laurent',
+                    EN: 'Bas-Saint-Laurent',
+                },
+                [SecteursGeographiques.SAGUENEY]: {
+                    FR: 'Saguenay–Lac-Saint-Jean',
+                    EN: 'Saguenay–Lac-Saint-Jean',
+                },
+                [SecteursGeographiques.CAPITALE_NATIONALE]: {
+                    FR: 'Capitale-Nationale',
+                    EN: 'Capitale-Nationale',
+                },
+                [SecteursGeographiques.MAURICIE]: {
+                    FR: 'Mauricie',
+                    EN: 'Mauricie',
+                },
+                [SecteursGeographiques.ESTRIE]: {
+                    FR: 'Estrie',
+                    EN: 'Estrie',
+                },
+                [SecteursGeographiques.MONTREAL]: {
+                    FR: 'Montréal',
+                    EN: 'Montréal',
+                },
+                [SecteursGeographiques.OUTAOUAIS]: {
+                    FR: 'Outaouais',
+                    EN: 'Outaouais',
+                },
+                [SecteursGeographiques.COTE_NORD]: {
+                    FR: 'Côte-Nord',
+                    EN: 'Côte-Nord',
+                },
+                [SecteursGeographiques.NORD_QUEBEC]: {
+                    FR: 'Nord-du-Québec',
+                    EN: 'Nord-du-Québec',
+                },
+                [SecteursGeographiques.GASPESIE]: {
+                    FR: 'Gaspésie–Îles-de-la-Madeleine',
+                    EN: 'Gaspésie–Îles-de-la-Madeleine',
+                },
+                [SecteursGeographiques.CHAUDIERE_APALACHE]: {
+                    FR: 'Chaudière-Appalaches',
+                    EN: 'Chaudière-Appalaches',
+                },
+                [SecteursGeographiques.LAVAL]: {
+                    FR: 'Laval',
+                    EN: 'Laval',
+                },
+                [SecteursGeographiques.LANAUDIERE]: {
+                    FR: 'Lanaudière',
+                    EN: 'Lanaudière',
+                },
+                [SecteursGeographiques.LAURENTIDES]: {
+                    FR: 'Laurentides',
+                    EN: 'Laurentides',
+                },
+                [SecteursGeographiques.MONTEREGIE]: {
+                    FR: 'Montérégie',
+                    EN: 'Montérégie',
+                },
+                [SecteursGeographiques.CENTRE_QUEBEC]: {
+                    FR: 'Centre-du-Québec',
+                    EN: 'Centre-du-Québec',
+                },
+            },
+        },
+    ],
+    [
+        FournisseurDataFields.SERVICES_OFFERTS,
+        {
+            label: {
+                FR: 'Services Offerts',
+                EN: 'Offered Services',
+            },
+            dataLabels: {
+                [ServiceOffert.COMPTABILITE]: {
+                    FR: 'Comptabilité',
+                    EN: 'Acounting',
+                },
+                [ServiceOffert.PLANIF_FINANCIERE]: {
+                    FR: 'Planification financière',
+                    EN: 'Financial Planification',
+                },
+                [ServiceOffert.CONSEIL_ASSURANCES]: {
+                    FR: 'Conseiller en assurances',
+                    EN: 'Insurance Advisor',
+                },
+                [ServiceOffert.CONSEIL_INVESTISSEMENT]: {
+                    FR: 'Conseiller en investissement, gestionnaire de placements',
+                    EN: 'Investment Advisor, asset manager',
+                },
+                [ServiceOffert.FUSION_ACQUISITIONS]: {
+                    FR: 'Fusions et acquisitions',
+                    EN: 'Mergers and acquisitions',
+                },
+                [ServiceOffert.BANQUE_PRIVEE]: {
+                    FR: 'Banque privée',
+                    EN: 'Private banking',
+                },
+                [ServiceOffert.IMMOBILIER]: {
+                    FR: 'Immobilier',
+                    EN: 'Real estate',
+                },
+                [ServiceOffert.GESTION_PATRIMOINE]: {
+                    FR: 'Gestion de patrimoine',
+                    EN: 'Wealth management',
+                },
+                [ServiceOffert.PLANIF_SUCCESSORALE]: {
+                    FR: 'Planification successorale',
+                    EN: 'Succession advisor',
+                },
+                [ServiceOffert.PLANIF_FISCALE]: {
+                    FR: 'Planification fiscale',
+                    EN: 'Tax planning',
+                },
+                [ServiceOffert.CONSEIL_JURIDIQUE]: {
+                    FR: 'Conseils juridiques',
+                    EN: 'Legal advisor',
+                },
+                [ServiceOffert.PHLANTROPIE]: {
+                    FR: 'Philantropie',
+                    EN: 'Philantropy',
+                },
+                [ServiceOffert.DEV_DURABLE]: {
+                    FR: 'Développement durable et impact',
+                    EN: 'Sustainable development and impact',
+                },
+                [ServiceOffert.CONSEIL_GESTION_RISQUES]: {
+                    FR: 'Conseil en gestion de risque divers',
+                    EN: 'Consulting in various risk management',
+                },
+                [ServiceOffert.GOUV_CORPO]: {
+                    FR: 'Gouvernance corporative',
+                    EN: 'Corporative governance',
+                },
+                [ServiceOffert.GOUV_FAMILIALE]: {
+                    FR: 'Gouvernance familiale',
+                    EN: 'Family governance',
+                },
+                [ServiceOffert.ADMIN_INDEP]: {
+                    FR: 'Administrateur indépendant',
+                    EN: 'Independant administrator',
+                },
+                [ServiceOffert.PLANIF_STRAT]: {
+                    FR: 'Planification stratégique',
+                    EN: 'Strategic planning',
+                },
+                [ServiceOffert.BUREAU_AFFAIRES_FAM]: {
+                    FR: 'Bureau des affaires familiales',
+                    EN: 'Family Affairs Office',
+                },
+                [ServiceOffert.DEV_LEADERSHIP]: {
+                    FR: 'Développement du leadership',
+                    EN: 'Leadership development',
+                },
+                [ServiceOffert.CONSEIL_MANAGEMENT]: {
+                    FR: 'Conseil en management',
+                    EN: 'Management Advisor',
+                },
+                [ServiceOffert.RESSOURCE_HUMAINES]: {
+                    FR: 'Ressources humaines',
+                    EN: 'Human ressources',
+                },
+                [ServiceOffert.PLANIF_TRANSITION_DIRECTION]: {
+                    FR: 'Planification de la transition de direction',
+                    EN: 'Leadership transition planning',
+                },
+                [ServiceOffert.DIRIGEANT_NON_FAMILIAL]: {
+                    FR: 'Dirigeant non familial',
+                    EN: 'Non-family manager',
+                },
+                [ServiceOffert.PLANIF_STRAT_APPRENTISSAGE]: {
+                    FR: 'Planification des stratégies d’apprentissage',
+                    EN: 'Planning learning strategies',
+                },
+                [ServiceOffert.COACHING_FORMATIONS_SPE]: {
+                    FR: 'Coaching et formations spécifiques',
+                    EN: 'Coaching and specific training',
+                },
+                [ServiceOffert.ORIENTATION_PRO]: {
+                    FR: 'Orientation professionnelle',
+                    EN: 'Profesional goals',
+                },
+                [ServiceOffert.MENTORAT]: {
+                    FR: 'Mentorat',
+                    EN: 'Mentoring',
+                },
+                [ServiceOffert.PLAN_DEV_COMPETENCES]: {
+                    FR: 'Plan de développement de compétences',
+                    EN: 'Skill development plan',
+                },
+                [ServiceOffert.FACILITATION]: {
+                    FR: 'Facilitation',
+                    EN: 'Facilitation',
+                },
+                [ServiceOffert.MEDIATION_PRO]: {
+                    FR: 'Médiation professionnelle',
+                    EN: 'Profesionnal mediation',
+                },
+                [ServiceOffert.FAMILY_BUILDING]: {
+                    FR: 'Family building',
+                    EN: 'Family building',
+                },
+                [ServiceOffert.GESTION_EMOTIONS]: {
+                    FR: 'Gestion des émotions',
+                    EN: 'Emotion management',
+                },
+                [ServiceOffert.COMMUNICATION]: {
+                    FR: 'Communication',
+                    EN: 'Communication',
+                },
+                [ServiceOffert.THERAPIE_FAMILIALE]: {
+                    FR: 'Thérapie familiale',
+                    EN: 'Family Therapy',
+                },
+                [ServiceOffert.PSYCHOLOGIE]: {
+                    FR: 'Psychologie',
+                    EN: 'Psycology',
+                },
+                [ServiceOffert.GESTION_DEPENDANCES]: {
+                    FR: 'Gestion des dépendances',
+                    EN: 'Dependency management',
+                },
+                [ServiceOffert.SANTE_MENTALE]: {
+                    FR: 'Santé mentale',
+                    EN: 'Mental health',
+                },
+                [ServiceOffert.DIRECTION_STRATEGIQUE]: {
+                    FR: 'Direction stratégique',
+                    EN: 'Strategic direction',
+                },
+            },
         },
     ],
 ];

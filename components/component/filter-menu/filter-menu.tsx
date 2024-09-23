@@ -8,16 +8,19 @@ import {
     ZoomOutSVG,
 } from '@/components/component/svg-icons/svg-icons';
 import Dropdown from '@/components/component/drop-down-menu/drop-down-menu';
-import * as filters from '@/components/enums/filter-enum';
-import { AlbumDataFields } from '@/components/enums/data-types-enum';
+
+import {
+    AlbumDataFields,
+    FournisseurDataFields,
+} from '@/components/enums/data-types-enum';
 import useGlobalFilterStore from '@/stores/global-filter-store';
 import useGlobalDataStore from '@/stores/global-data-store';
 import { ButtonType } from '@/components/enums/button-type-enum';
 import useMapStore from '@/stores/global-map-store';
 import { html_object_constants, value_constants } from '@/constants/constants';
 import { MapType } from '@/components/enums/map-type-enum';
-import { Language } from '@/components/enums/language';
 import { PossibleDataFileds } from '@/services/tableaux-taitement';
+import { Language } from '@/components/enums/language';
 import useDataStore from '@/reducer/dataStore';
 import { SharedPromptsTranslations } from '@/constants/translations/page-prompts';
 import { TableauxTraductionsMainDataFields } from '@/services/translations';
@@ -59,7 +62,7 @@ const FilterMenu: React.FC<FilterMenuProps> = ({
         toggleContentVisibility();
     };
 
-    async function handleChange(field: AlbumDataFields, newFieldValue: any) {
+    async function handleChange(field: any, newFieldValue: any) {
         setFilter(field, newFieldValue);
 
         switch (mapType) {
@@ -76,8 +79,6 @@ const FilterMenu: React.FC<FilterMenuProps> = ({
                 filterFournisseurData();
                 break;
         }
-
-        // await fetchStudyData();
     }
 
     const zoomIn = () => {
@@ -121,7 +122,9 @@ const FilterMenu: React.FC<FilterMenuProps> = ({
                                 id={html_object_constants.filters_container_id}
                                 className="mt-2"
                             >
-                                <h2 className="text-2xl font-bold">Filtres</h2>
+                                <h2 className="text-2xl font-bold">
+                                    {SharedPromptsTranslations.filters[lang]}
+                                </h2>
                                 {/* Add your filter options here */}
                                 <div className="mt-2 flex border-b dark:border-white border-black">
                                     <button
@@ -369,49 +372,73 @@ const FilterMenu: React.FC<FilterMenuProps> = ({
                                 id={html_object_constants.filters_container_id}
                                 className="mt-2"
                             >
-                                <h2 className="text-2xl font-bold">Filtres</h2>
+                                <h2 className="text-2xl font-bold">
+                                    {SharedPromptsTranslations.filters[lang]}
+                                </h2>
                                 {/* Add your filter options here */}
                                 <div className="flex flex-col">
-                                    <label>Région</label>
+                                    <label>
+                                        {
+                                            TableauxTraductionsMainDataFields.get(
+                                                FournisseurDataFields.SECTEURS_GEOGRAPHIQUES,
+                                            )?.label[lang]
+                                        }
+                                    </label>
                                     <Dropdown
                                         inputValue={
                                             matchStage[
-                                                AlbumDataFields.REVENUS_RANG
+                                                FournisseurDataFields
+                                                    .SECTEURS_GEOGRAPHIQUES
                                             ]
                                                 ? matchStage[
-                                                      AlbumDataFields
-                                                          .REVENUS_RANG
+                                                      FournisseurDataFields
+                                                          .SECTEURS_GEOGRAPHIQUES
                                                   ]['$in'][0]
                                                 : value_constants.all_values_string_filter
                                         }
-                                        options={Object.values(
-                                            filters.AnneFondationFilters,
+                                        options={Object.keys(
+                                            TableauxTraductionsMainDataFields.get(
+                                                FournisseurDataFields.SECTEURS_GEOGRAPHIQUES,
+                                            )?.dataLabels || {}, // Fallback to an empty object if dataLabels is undefined
                                         )}
                                         onChange={(value: any) =>
                                             handleChange(
-                                                AlbumDataFields.ANNEE_FONDATION,
+                                                FournisseurDataFields.SECTEURS_GEOGRAPHIQUES,
                                                 value,
                                             )
                                         }
                                     />
-                                    <label>Services Offerts</label>
+                                    <label>
+                                        {' '}
+                                        {
+                                            TableauxTraductionsMainDataFields.get(
+                                                FournisseurDataFields.SERVICES_OFFERTS,
+                                            )?.label[lang]
+                                        }
+                                    </label>
                                     <Dropdown
                                         inputValue={
                                             matchStage[
-                                                AlbumDataFields.REVENUS_RANG
+                                                FournisseurDataFields
+                                                    .SERVICES_OFFERTS
                                             ]
                                                 ? matchStage[
-                                                      AlbumDataFields
-                                                          .REVENUS_RANG
+                                                      FournisseurDataFields
+                                                          .SERVICES_OFFERTS
                                                   ]['$in'][0]
                                                 : value_constants.all_values_string_filter
                                         }
-                                        options={Object.values(
-                                            filters.NombreGenerationsFilters,
+                                        options={Object.keys(
+                                            TableauxTraductionsMainDataFields.get(
+                                                FournisseurDataFields.SERVICES_OFFERTS,
+                                            )?.dataLabels || {}, // Fallback to an empty object if dataLabels is undefined
                                         )}
+                                        dataField={
+                                            FournisseurDataFields.SERVICES_OFFERTS
+                                        }
                                         onChange={(value: any) =>
                                             handleChange(
-                                                AlbumDataFields.DIRIGEANT_GENERATION,
+                                                FournisseurDataFields.SERVICES_OFFERTS,
                                                 value,
                                             )
                                         }

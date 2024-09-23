@@ -162,6 +162,11 @@ export enum IndexeDataFieldsA {
     QE8r19 = 'QE8r19',
 }
 
+export enum FournisseurDataFields {
+    SECTEURS_GEOGRAPHIQUES = 'secteurs_geographique',
+    SERVICES_OFFERTS = 'services_offerts',
+}
+
 export enum DataBaseOrigin {
     ALBUM_FAMILLE = 'Album_Famille',
     INDEX_VOLETA = 'Index_VoletA',

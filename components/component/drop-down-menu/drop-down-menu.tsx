@@ -1,13 +1,16 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { TableauxTraductionsMainDataFields } from '@/services/translations';
 import { value_constants } from '@/constants/constants';
+import { Language } from '@/components/enums/language';
+import useDataStore from '@/reducer/dataStore';
 
 interface DropdownProps {
     inputValue?: any;
     options: any;
+    dataField?: any;
     color?: boolean;
     onChange?: (value: any) => void;
-    displayValue?: (value: any) => string; // Function to display the value
+    displayValue?: (value: any, lang: Language, field?: any) => string; // Function to display the value
     className?: string;
     style?: any;
 }
@@ -16,13 +19,35 @@ const Dropdown = ({
     inputValue,
     options,
     color = false,
+    dataField = undefined,
     onChange = () => {},
-    displayValue = (value: any) => {
-        if (TableauxTraductionsMainDataFields.get(value as string)) {
-            return TableauxTraductionsMainDataFields.get(value as string)?.label
-                .FR as string;
+    displayValue = (
+        value: string | number, // Assuming value is either a string or a number
+        lang: Language = Language.FR, // Default language is French
+        field?: string, // field can be undefined, hence using `?`
+    ): string => {
+        // If field is provided
+        if (field) {
+            const fieldData = TableauxTraductionsMainDataFields.get(field);
+
+            // Check if field exists in the map and if dataLabels exist for the given value and language
+            if (fieldData?.dataLabels?.[value]?.[lang]) {
+                return fieldData.dataLabels[value][lang];
+            }
+        } else {
+            console.log('hello');
+            const fieldData = TableauxTraductionsMainDataFields.get(
+                value.toString(),
+            );
+
+            // Check if field exists in the map and if dataLabels exist for the given value and language
+            if (fieldData?.label) {
+                return fieldData.label[lang];
+            }
         }
-        return value as string;
+
+        // Return the value as a string if no translation is found or if no field is provided
+        return value.toString();
     },
     className = '',
     style = {},
@@ -30,6 +55,8 @@ const Dropdown = ({
     const [selectedValue, setSelectedValue] = useState<any | undefined>(
         inputValue,
     );
+    const lang: Language = useDataStore((state) => state.lang);
+
     const [dropdownOpen, setDropdownOpen] = useState(false);
     const dropdownRef = useRef<HTMLDivElement>(null);
     const buttonRef = useRef<HTMLButtonElement>(null);
@@ -83,6 +110,8 @@ const Dropdown = ({
                         {displayValue(
                             selectedValue ??
                                 value_constants.all_values_string_filter,
+                            lang,
+                            dataField,
                         )}
                     </span>
                 )}
@@ -121,7 +150,7 @@ const Dropdown = ({
                                         className="w-48 pl-1 text-gray-700 hover:bg-gray-100 cursor-pointer transition-colors text-wrap text-xs dark:text-white dark:hover:bg-black"
                                         onClick={() => handleSelection(option)}
                                     >
-                                        {displayValue(option)}
+                                        {displayValue(option, lang, dataField)}
                                     </li>
                                 );
                             } else {

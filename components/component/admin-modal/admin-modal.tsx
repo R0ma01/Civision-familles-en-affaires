@@ -231,6 +231,8 @@ export const ImageUpload: React.FC<ImageUploadProps> = ({
                         src={imagePreview}
                         alt="Selected"
                         className="w-full h-auto max-h-xs max-w-xs object-cover"
+                        width={200}
+                        height={200}
                     />
                     <button
                         onClick={clearImage}

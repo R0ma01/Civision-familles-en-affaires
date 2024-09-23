@@ -103,6 +103,11 @@ export const FournisseurPromptsTranslations: PromptsTranslations = {
         EN: 'List and profiles of all suppliers',
     },
 
+    rechercher_fournisseur: {
+        FR: 'Rechercher un Fournisseur',
+        EN: 'Search for a Supplier',
+    },
+
     region: {
         FR: 'Régions',
         EN: 'Regions',

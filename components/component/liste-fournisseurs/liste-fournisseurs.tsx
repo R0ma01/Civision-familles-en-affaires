@@ -178,7 +178,10 @@ export default function ListeFournisseurs({
                     {/* Search Input */}
                     <input
                         type="text"
-                        placeholder="Rechercher un fournisseur"
+                        placeholder={
+                            FournisseurPromptsTranslations
+                                .rechercher_fournisseur[lang]
+                        }
                         value={searchString}
                         onChange={handleSearchChange}
                         className="w-full p-3 bg-white dark:bg-[#3a3a3a] border border-logo-turquoise dark:border-[#4fc3f7] 
