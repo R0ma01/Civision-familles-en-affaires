@@ -125,8 +125,8 @@ export const SideBarPromptsTranslations: PromptsTranslations = {
         EN: 'Repertory',
     },
     suppliers: {
-        FR: 'Suppliers',
-        EN: 'Féournisseurs',
+        FR: 'Fournisseurs',
+        EN: 'Suppliers',
     },
     thematiques: {
         FR: 'Thématiques',
