@@ -156,7 +156,7 @@ const FilterMenu: React.FC<FilterMenuProps> = ({
                     <>
                         {/* Side Filter Tab */}
                         <div
-                            className={`fixed top-10 right-0 h-fit w-64 bg-[#f5ebe0] bg-opacity-75 p-4 transform ${
+                            className={`fixed top-10 h-[300px] right-0 w-64 bg-[#f5ebe0] bg-opacity-75 p-4 transform ${
                                 isOpen ? 'translate-x-0' : 'translate-x-full'
                             } transition-transform duration-300 ease-in-out`}
                         >
@@ -244,7 +244,7 @@ const FilterMenu: React.FC<FilterMenuProps> = ({
                 return (
                     <>
                         <div
-                            className={`fixed top-10 right-0 h-fit w-64 bg-[#f5ebe0] bg-opacity-75 p-4 transform ${
+                            className={`fixed top-10 right-0 h-[300px] w-64 bg-[#f5ebe0] bg-opacity-75 p-4 transform ${
                                 isOpen ? 'translate-x-0' : 'translate-x-full'
                             } transition-transform duration-300 ease-in-out`}
                         >
@@ -285,7 +285,7 @@ const FilterMenu: React.FC<FilterMenuProps> = ({
     return (
         <div
             id={html_object_constants.filter_menu_id}
-            className="relative z-20 h-[400px]"
+            className="relative z-20 h-[300px]"
         >
             {/* Toggle Button */}
             <Button
