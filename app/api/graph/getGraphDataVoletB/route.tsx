@@ -212,17 +212,6 @@ function generateDualFieldAggregationQuery(
             count: number;
         }[] = await collection.aggregate(aggregationPipeline).toArray();
 
-        const dataMap = new Map();
-
-        possibleValues[field1].map((value1) =>
-            possibleValues[field2].map((value2) =>
-                dataMap.set([`${value1}-${value2}`], {
-                    name: { field1: value1, field2: value2 },
-                    count: 0,
-                }),
-            ),
-        );
-
         const resultMap = dualDataFormatting(
             result,
             field1,

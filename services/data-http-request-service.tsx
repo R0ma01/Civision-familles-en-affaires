@@ -15,21 +15,21 @@ import axios from 'axios';
 export const GraphDataHttpRequestService = {
     getAllStudyData: getAllStudyData,
     getAllRepertoireData: getAllRepertoireData,
+    getAllIndexVoletAData: getAllIndexeAData,
+    getAllIndexVoletBData: getAllIndexeBData,
     getChartData: getChartData,
     getEntrepriseInformation: getEntrepriseInformation,
-    getAllIndexeData: getAllIndexeData,
 };
 
 async function getAllStudyData(
     filters: Record<string, any>,
 ): Promise<MapChloroplethePointData[]> {
     try {
-        const response = await axios.get(APIPaths.GRAPH_GET_ALL_STUDY, {
+        const response = await axios.get(APIPaths.MAP_GET_ALL_STUDY, {
             params: {
                 filters: JSON.stringify(filters),
             },
         });
-
         return response.data.points;
     } catch (error: any) {
         console.error(
@@ -44,7 +44,7 @@ async function getAllRepertoireData(
     filters: Record<string, any>,
 ): Promise<MapClusterPointData[]> {
     try {
-        const response = await axios.get(APIPaths.GRAPH_GET_ALL_REPERTOIRE, {
+        const response = await axios.get(APIPaths.MAP_GET_ALL_REPERTOIRE, {
             params: {
                 filters: JSON.stringify(filters),
             },
@@ -60,11 +60,56 @@ async function getAllRepertoireData(
     return [];
 }
 
-async function getAllIndexeData(
+async function getAllIndexeAData(
     filters: Record<string, any>,
 ): Promise<MapChloroplethePointData[]> {
     try {
-        const response = await axios.get(APIPaths.GRAPH_GET_ALL_INDEXE, {
+        const response = await axios.get(APIPaths.MAP_GET_ALL_INDEXEA, {
+            params: {
+                filters: JSON.stringify(filters),
+            },
+        });
+
+        return response.data.points;
+    } catch (error: any) {
+        console.error(
+            'Error fetching points:',
+            error.response?.data?.error || error.message,
+        );
+    }
+    return [];
+}
+async function getAllIndexeBData(
+    filters: Record<string, any>,
+): Promise<MapChloroplethePointData[]> {
+    try {
+        const response = await axios.get(APIPaths.MAP_GET_ALL_INDEXEB, {
+            params: {
+                filters: JSON.stringify(filters),
+            },
+        });
+
+        return response.data.points;
+    } catch (error: any) {
+        console.error(
+            'Error fetching points:',
+            error.response?.data?.error || error.message,
+        );
+    }
+    return [];
+}
+
+async function getMapData(
+    filters: Record<string, any>,
+    dataOrigin: DataBaseOrigin,
+): Promise<MapChloroplethePointData[]> {
+    try {
+        switch (dataOrigin) {
+            case DataBaseOrigin.INDEX_VOLETA:
+            case DataBaseOrigin.INDEX_VOLETB:
+            case DataBaseOrigin.ALBUM_FAMILLE:
+        }
+        const response = await axios.get(APIPaths.MAP_GET_ALL_INDEXEB, {
             params: {
                 filters: JSON.stringify(filters),
             },

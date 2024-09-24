@@ -23,23 +23,35 @@ export default function Carte() {
         studyData,
         repertoireData,
         fournisseurData,
+        indexeAData,
+        indexeBData,
         fetchStudyData,
         fetchRepertoireData,
         fetchFournisseurData,
+        fetchIndexeAData,
+        fetchIndexeBData,
         studyDataFetched,
         loading,
         fournisseurDataFetched,
         repertoireDataFetched,
+        indexeADataFetched,
+        indexeBDataFetched,
     } = useGlobalDataStore((state: any) => ({
         studyData: state.studyData,
         repertoireData: state.repertoireData,
         fournisseurData: state.fournisseurData,
+        indexeAData: state.indexeAData,
+        indexeBData: state.indexeBData,
         fetchStudyData: state.fetchStudyData,
         fetchRepertoireData: state.fetchRepertoireData,
         fetchFournisseurData: state.fetchFournisseurData,
+        fetchIndexeAData: state.fetchIndexeAData,
+        fetchIndexeBData: state.fetchIndexeBData,
         studyDataFetched: state.studyDataFetched,
         fournisseurDataFetched: state.fournisseurDataFetched,
         repertoireDataFetched: state.repertoireDataFetched,
+        indexeADataFetched: state.indexeADataFetched,
+        indexeBDataFetched: state.indexeBDataFetched,
         loading: state.loading,
     }));
 
@@ -58,6 +70,14 @@ export default function Carte() {
 
         async function fournisseurFetch() {
             await fetchFournisseurData(matchStage);
+        }
+
+        async function indexeAFetch() {
+            await fetchIndexeAData(matchStage);
+        }
+
+        async function indexeBFetch() {
+            await fetchIndexeBData(matchStage);
         }
 
         if (
@@ -83,17 +103,39 @@ export default function Carte() {
         ) {
             fournisseurFetch();
         }
+
+        if (
+            !indexeADataFetched &&
+            mapType === MapType.PAGE_INFORMATION_INDEX_VOLETA &&
+            !loading
+        ) {
+            indexeAFetch();
+        }
+
+        if (
+            !indexeBDataFetched &&
+            mapType === MapType.PAGE_INFORMATION_INDEX_VOLETB &&
+            !loading
+        ) {
+            indexeBFetch();
+        }
     }, [
         studyData,
         repertoireData,
-        fetchRepertoireData,
-        studyDataFetched,
-        fetchStudyData,
-        fetchFournisseurData,
-        fournisseurDataFetched,
         fournisseurData,
-        repertoireDataFetched,
+        indexeAData,
+        indexeBData,
+        fetchStudyData,
+        fetchRepertoireData,
+        fetchFournisseurData,
+        fetchIndexeAData,
+        fetchIndexeBData,
+        studyDataFetched,
         loading,
+        fournisseurDataFetched,
+        repertoireDataFetched,
+        indexeADataFetched,
+        indexeBDataFetched,
         mapType,
         matchStage,
     ]);
@@ -142,6 +184,34 @@ export default function Carte() {
                     <Chloropleth
                         map={map}
                         data={fournisseurMapData}
+                        dataField="count"
+                    ></Chloropleth>
+                    <ColorLegend
+                        gradientValues={choroplethColors}
+                        className="absolute bottom-0 right-1 z-50"
+                        mapType={mapType}
+                    ></ColorLegend>
+                </>
+            )}
+            {mapType == MapType.PAGE_INFORMATION_INDEX_VOLETA && (
+                <>
+                    <Chloropleth
+                        map={map}
+                        data={indexeAData}
+                        dataField="count"
+                    ></Chloropleth>
+                    <ColorLegend
+                        gradientValues={choroplethColors}
+                        className="absolute bottom-0 right-1 z-50"
+                        mapType={mapType}
+                    ></ColorLegend>
+                </>
+            )}
+            {mapType == MapType.PAGE_INFORMATION_INDEX_VOLETB && (
+                <>
+                    <Chloropleth
+                        map={map}
+                        data={indexeBData}
                         dataField="count"
                     ></Chloropleth>
                     <ColorLegend

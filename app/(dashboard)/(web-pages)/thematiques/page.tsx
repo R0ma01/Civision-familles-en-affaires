@@ -63,36 +63,40 @@ export default function Thematiques() {
         }
     }, [pagesData]);
 
-    if (pageLoading)
-        return <div>{SharedPromptsTranslations.loading[lang]}</div>;
     if (pageError)
         return (
-            <div>
-                {SharedPromptsTranslations.error[lang]}
-                {pageError}
-            </div>
+            <PageContentContainer className="h-screen overflow-y-auto relative flex items-center w-screen">
+                <div className="absolute top-[50vh] w-fit dark:text-white text-xl">
+                    {SharedPromptsTranslations.error[lang]}
+                    {pageError}
+                </div>
+            </PageContentContainer>
         );
     return (
-        <PageContentContainer className="h-screen overflow-y-auto relative flex items-center w-[100%]">
+        <PageContentContainer className="h-screen overflow-y-auto relative flex items-center w-screen">
             <h1 className="text-2xl font-semibold tracking-wide text-black dark:text-white z-10 mt-10 mb-5 cursor-default">
                 {ThematiquePromptsTranslations.page_title[lang]}
             </h1>
-            <div className="justify-center flex flex-wrap w-[80%]">
-                {pages.length > 0 ? (
-                    pages.map(
-                        (card, index) =>
-                            card.visible && (
-                                <ThemeCard
-                                    key={`${html_object_constants.theme_card_id}-${index}`}
-                                    index={`${html_object_constants.theme_card_id}-${index}`}
-                                    page={card}
-                                />
-                            ),
-                    )
-                ) : (
-                    <p>{SharedPromptsTranslations.loading[lang]}</p>
-                )}
-            </div>
+            {!pageLoading ? (
+                <div className="justify-center flex flex-wrap w-[80%]">
+                    {pages.length > 0 ? (
+                        pages.map(
+                            (card, index) =>
+                                card.visible && (
+                                    <ThemeCard
+                                        key={`${html_object_constants.theme_card_id}-${index}`}
+                                        index={`${html_object_constants.theme_card_id}-${index}`}
+                                        page={card}
+                                    />
+                                ),
+                        )
+                    ) : (
+                        <p>{SharedPromptsTranslations.loading[lang]}</p>
+                    )}
+                </div>
+            ) : (
+                <div className="loader-circle absolute top-[35vh] w-fit"></div>
+            )}
         </PageContentContainer>
     );
 }

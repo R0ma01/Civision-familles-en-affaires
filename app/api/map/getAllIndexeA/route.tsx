@@ -1,7 +1,9 @@
 import { NextResponse } from 'next/server';
-import { connectToDatabaseStudy } from '@/utils/mongodb';
+import { connectToDatabaseIndexe } from '@/utils/mongodb';
 import { MongoDBPaths } from '@/components/enums/mongodb-paths-enum';
-
+import { GraphTextService } from '@/services/translations';
+import { IndexeDataFieldsA } from '@/components/enums/data-types-enum';
+import { Language } from '@/components/enums/language';
 // Define interfaces for the aggregation results
 interface AggregationResult {
     name: string;
@@ -10,8 +12,8 @@ interface AggregationResult {
 
 export async function GET(req: Request) {
     try {
-        const db = (await connectToDatabaseStudy()).db;
-        const collection = db.collection(MongoDBPaths.COLLECTION_DATA);
+        const db = (await connectToDatabaseIndexe()).db;
+        const collection = db.collection(MongoDBPaths.VOLETA_2022);
 
         // Parse request parameters
         const url = new URL(req.url!);
@@ -35,36 +37,13 @@ export async function GET(req: Request) {
 
         const matchStage: any = { ...filtersObj };
 
-        // Apply filters to the match stage
-        // for (const [key, value] of Object.entries(filtersObj)) {
-        //     if (value === 'toutes' || value === null) continue;
-
-        //     if (typeof value === 'object' && value !== null) {
-        //         for (const [nestedKey, nestedValue] of Object.entries(value)) {
-        //             if (
-        //                 nestedValue !== 'toutes' &&
-        //                 nestedValue !== null &&
-        //                 nestedValue !== -1
-        //             ) {
-        //                 matchStage[`${key}.${nestedKey}`] = nestedValue;
-        //             }
-        //         }
-        //     } else {
-        //         matchStage[key] = value;
-        //     }
-        // }
-
-        // Add conditions for fields to exist
-        matchStage['NEQ'] = { $exists: true };
-        matchStage['coordonnees.longitude'] = { $exists: true };
-
         const aggregationPipeline = [
             {
                 $match: matchStage,
             },
             {
                 $group: {
-                    _id: '$coordonnees.region',
+                    _id: '$Q0QC',
                     count: { $sum: 1 },
                 },
             },
@@ -88,9 +67,24 @@ export async function GET(req: Request) {
             );
         }
 
+        const resultat: { region: string; count: number }[] = [];
+
+        aggregationResult.map((result) => {
+            if (result.region) {
+                const label = GraphTextService.getFieldLabel(
+                    IndexeDataFieldsA.Q0QC,
+                    result.region,
+                    Language.FR,
+                );
+                if (label) {
+                    resultat.push({ region: label, count: result.count });
+                }
+            }
+        });
+        console.log(resultat);
         return NextResponse.json({
             message: 'Regions counted successfully',
-            points: aggregationResult,
+            points: resultat,
         });
     } catch (e: any) {
         console.error(e.message);
@@ -98,3 +92,6 @@ export async function GET(req: Request) {
         return NextResponse.json({ error: e.message }, { status: 500 });
     }
 }
+// function removeAccents(str: string): string {
+//     return str.normalize('NFD').replace(/[\u0300-\u036f]/g, '');
+// }

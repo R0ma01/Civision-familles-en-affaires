@@ -9,12 +9,14 @@ const useGlobalDataStore = create(
         persist(
             (set, get) => ({
                 studyData: [],
-                indexeData: [],
+                indexeAData: [],
+                indexeBData: [],
                 repertoireData: [],
                 fournisseurData: [],
 
                 studyDataFetched: false,
-                indexeDataFetched: false,
+                indexeADataFetched: false,
+                indexeBDataFetched: false,
                 repertoireDataFetched: false,
                 fournisseurDataFetched: false,
 
@@ -82,19 +84,40 @@ const useGlobalDataStore = create(
                     }
                 },
 
-                fetchIndexeData: async (matchStage: Record<string, any>) => {
-                    if ((get() as any).indexeData) return;
+                fetchIndexeAData: async (matchStage: Record<string, any>) => {
+                    if ((get() as any).indexeADataFetched) return;
                     set({ loading: true, error: null });
                     try {
+                        console.log('Indexe A');
                         const responseIndexe =
-                            await GraphDataHttpRequestService.getAllRepertoireData(
+                            await GraphDataHttpRequestService.getAllIndexVoletAData(
                                 matchStage,
                             );
-
+                        console.log(responseIndexe);
                         set({
-                            indexeData: responseIndexe,
+                            indexeAData: responseIndexe,
                             loading: false,
-                            indexeDataFetched: true,
+                            indexeADataFetched: true,
+                        });
+                    } catch (err: any) {
+                        set({ error: err.message, loading: false });
+                    }
+                },
+
+                fetchIndexeBData: async (matchStage: Record<string, any>) => {
+                    if ((get() as any).indexeBDataFetched) return;
+                    set({ loading: true, error: null });
+                    try {
+                        console.log('Indexe B');
+                        const responseIndexe =
+                            await GraphDataHttpRequestService.getAllIndexVoletBData(
+                                matchStage,
+                            );
+                        console.log(responseIndexe);
+                        set({
+                            indexeBData: responseIndexe,
+                            loading: false,
+                            indexeBDataFetched: true,
                         });
                     } catch (err: any) {
                         set({ error: err.message, loading: false });
@@ -119,9 +142,14 @@ const useGlobalDataStore = create(
                     }
                 },
 
-                filterIndexeData: () => {
+                filterIndexeAData: () => {
                     if ((get() as any).indexeDataFetched) {
-                        set({ indexeDataFetched: false });
+                        set({ indexeADataFetched: false });
+                    }
+                },
+                filterIndexeBData: () => {
+                    if ((get() as any).indexeDataFetched) {
+                        set({ indexeBDataFetched: false });
                     }
                 },
             }),

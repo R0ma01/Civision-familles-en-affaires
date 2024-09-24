@@ -1,6 +1,9 @@
 import { NextResponse } from 'next/server';
 import { connectToDatabaseIndexe } from '@/utils/mongodb';
 import { MongoDBPaths } from '@/components/enums/mongodb-paths-enum';
+import { GraphTextService } from '@/services/translations';
+import { IndexeDataFieldsB } from '@/components/enums/data-types-enum';
+import { Language } from '@/components/enums/language';
 
 // Define interfaces for the aggregation results
 interface AggregationResult {
@@ -11,7 +14,7 @@ interface AggregationResult {
 export async function GET(req: Request) {
     try {
         const db = (await connectToDatabaseIndexe()).db;
-        const collection = db.collection(MongoDBPaths.VOLETA_2022);
+        const collection = db.collection(MongoDBPaths.VOLETB_2022);
 
         // Parse request parameters
         const url = new URL(req.url!);
@@ -41,7 +44,7 @@ export async function GET(req: Request) {
             },
             {
                 $group: {
-                    _id: '$REGIO',
+                    _id: '$Q0QC',
                     count: { $sum: 1 },
                 },
             },
@@ -65,9 +68,24 @@ export async function GET(req: Request) {
             );
         }
 
+        const resultat: { region: string; count: number }[] = [];
+
+        aggregationResult.map((result) => {
+            if (result.region) {
+                const label = GraphTextService.getFieldLabel(
+                    IndexeDataFieldsB.Q0QC,
+                    result.region,
+                    Language.FR,
+                );
+                if (label) {
+                    resultat.push({ region: label, count: result.count });
+                }
+            }
+        });
+        console.log(resultat);
         return NextResponse.json({
             message: 'Regions counted successfully',
-            points: aggregationResult,
+            points: resultat,
         });
     } catch (e: any) {
         console.error(e.message);
