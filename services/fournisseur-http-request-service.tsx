@@ -9,9 +9,16 @@ export const FournisseursHttpRequestService = {
     delete: deleteOne,
 };
 
-async function getAllData(): Promise<Fournisseur[]> {
+async function getAllData(
+    filters: Record<string, any>,
+): Promise<Fournisseur[]> {
     try {
-        const response = await axios.get(APIPaths.FOURNISSEURS_GET_ALL);
+        console.log(filters);
+        const response = await axios.get(APIPaths.FOURNISSEURS_GET_ALL, {
+            params: {
+                filters: JSON.stringify(filters),
+            },
+        });
         return response.data.pages;
     } catch (error: any) {
         console.error(

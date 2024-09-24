@@ -1,13 +1,9 @@
-import {
-    AlbumDataFields,
-    DataBaseOrigin,
-} from '@/components/enums/data-types-enum';
+import { DataBaseOrigin } from '@/components/enums/data-types-enum';
 import { APIPaths } from '@/components/enums/page-api-paths-enum';
 import {
     ChartData,
     ChartDataMultipleFileds,
 } from '@/components/interface/chart-data';
-import { CompanyInfo } from '@/components/interface/company';
 import {
     EntreprisePointData,
     MapChloroplethePointData,

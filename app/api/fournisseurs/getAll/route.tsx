@@ -5,12 +5,33 @@ import { MongoDBPaths } from '@/components/enums/mongodb-paths-enum';
 export const revalidate = 0;
 export const dynamic = 'force-dynamic';
 
-export async function GET() {
+export async function GET(req: Request) {
+    console.log('Dynamic get for fournisseurs');
     try {
         const db = (await connectToDatabaseStudy()).db;
         const collection = db.collection(MongoDBPaths.FOURNISSEURS);
+        const url = new URL(req.url!);
+        let filters = url.searchParams.get('filters');
+        if (!filters) {
+            return NextResponse.json(
+                { error: 'Missing filters parameter' },
+                { status: 400 },
+            );
+        }
 
-        const result = await collection.find({}).toArray();
+        const filtersObj: Record<string, any> = JSON.parse(filters);
+
+        if (!filtersObj) {
+            return NextResponse.json(
+                { error: 'Format of filters param is wrong' },
+                { status: 400 },
+            );
+        }
+        const result = await collection
+            .find({
+                ...filtersObj, // This will inject the filters object into the query
+            })
+            .toArray();
 
         if (!result) {
             return NextResponse.json(

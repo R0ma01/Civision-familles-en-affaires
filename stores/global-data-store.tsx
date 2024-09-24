@@ -63,12 +63,14 @@ const useGlobalDataStore = create(
                     }
                 },
 
-                fetchFournisseurData: async () => {
+                fetchFournisseurData: async (filters: Record<string, any>) => {
                     if ((get() as any).fournisseurDataFetched) return;
                     set({ loading: true, error: null });
                     try {
                         const responseFournisseur =
-                            await FournisseursHttpRequestService.getAll();
+                            await FournisseursHttpRequestService.getAll(
+                                filters,
+                            );
 
                         set({
                             fournisseurData: responseFournisseur,

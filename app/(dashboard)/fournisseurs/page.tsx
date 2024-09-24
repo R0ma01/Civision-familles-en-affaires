@@ -15,6 +15,7 @@ import { Language } from '@/components/enums/language';
 import { FournisseurPromptsTranslations } from '@/constants/translations/page-prompts';
 import useDataStore from '@/reducer/dataStore';
 import useGlobalFilterStore from '@/stores/global-filter-store';
+import { Fournisseur } from '@/components/interface/fournisseur';
 
 function Fournisseurs() {
     const lang: Language = useDataStore((state) => state.lang);
@@ -23,8 +24,9 @@ function Fournisseurs() {
         user: state.user,
     }));
 
-    const { resetFilters } = useGlobalFilterStore((state) => ({
+    const { matchStage, resetFilters } = useGlobalFilterStore((state) => ({
         resetFilters: state.resetFilters,
+        matchStage: state.matchStage,
     }));
 
     useEffect(() => {
@@ -49,16 +51,22 @@ function Fournisseurs() {
         mapType: state.mapType,
     }));
 
-    const { fournisseurDataFetched, fetchFournisseurData, loading } =
-        useGlobalDataStore((state: any) => ({
-            fournisseurDataFetched: state.fournisseurDataFetched,
-            fetchFournisseurData: state.fetchFournisseurData,
-            loading: state.loading,
-        }));
+    const {
+        fournisseurDataFetched,
+        fetchFournisseurData,
+        loading,
+        filterFournisseurData,
+    } = useGlobalDataStore((state: any) => ({
+        fournisseurDataFetched: state.fournisseurDataFetched,
+        fetchFournisseurData: state.fetchFournisseurData,
+        loading: state.loading,
+        filterFournisseurData: state.filterFournisseurData,
+    }));
 
     useEffect(() => {
         async function fetch() {
-            await fetchFournisseurData();
+            console.log(matchStage);
+            await fetchFournisseurData(matchStage);
         }
 
         if (mapType !== MapType.FOURNISSEURS) {
@@ -91,7 +99,10 @@ function Fournisseurs() {
                 {isEditDialogOpen && currentFournisseur && (
                     <EditFournisseurDialog
                         closeDialog={closeEditDialog}
-                        submitDialog={submitEditDialog}
+                        submitDialog={(fournisseur: Fournisseur) => {
+                            submitEditDialog(fournisseur);
+                            filterFournisseurData();
+                        }}
                         fournisseur={currentFournisseur}
                     />
                 )}

@@ -57,7 +57,7 @@ export default function Carte() {
         }
 
         async function fournisseurFetch() {
-            await fetchFournisseurData();
+            await fetchFournisseurData(matchStage);
         }
 
         if (

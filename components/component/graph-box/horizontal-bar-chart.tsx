@@ -64,7 +64,7 @@ const HorizontalBarChart: React.FC<SimpleHorizontalBarChartProps> = ({
             const calculatedWidth = size / 3;
             setYAxisWidth(calculatedWidth);
         }
-    }, [chartContent.data, chartContent.donnees]);
+    }, [chartContent.data, chartContent.donnees, size]);
 
     const CustomTooltip = ({ active, payload }: any) => {
         if (active && payload && payload.length) {
