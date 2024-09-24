@@ -64,6 +64,7 @@ const ThemeCard: React.FC<ThemeCardProps> = ({
                             tabs={localContent.tabs}
                             className="absolute top-3 right-0"
                             admin={admin}
+                            index={index}
                         />
 
                         <h2 className="text-white text-2xl xl:text-3xl mb-7">
@@ -115,12 +116,17 @@ interface TabNotchesProps {
     className?: string;
     tabs: TabContent[];
     admin: boolean;
+    index: any;
 }
-function TabNotches({ className, tabs, admin }: TabNotchesProps) {
+function TabNotches({ className, tabs, admin, index }: TabNotchesProps) {
     const lang: Language = useDataStore((state) => state.lang);
+
     return (
-        <div className={`${className} flex flex-col space-y-1`}>
-            {tabs.map((tab, index) => {
+        <div
+            key={'notches-' + index}
+            className={`${className} flex flex-col space-y-1`}
+        >
+            {tabs.map((tab, indexNotch) => {
                 const tabTitle = TableauxTraductionsTabs.get(tab.tabType);
                 const title = tabTitle
                     ? tabTitle.titre[lang] || 'No title'
@@ -133,23 +139,21 @@ function TabNotches({ className, tabs, admin }: TabNotchesProps) {
                         ? tabColors[tab.tabType]
                         : '#374151AA'
                     : tabColors[tab.tabType];
+
+                // Ensure the key is unique and present in every iteration
                 return (
-                    <>
-                        {tab.visible || admin ? (
-                            <div
-                                key={index}
-                                style={{
-                                    backgroundColor: color + 'AA',
-                                }}
-                                className={`p-2 flex items-center bg-opacity-40 border-none rounded-l-full text-white w-9 h-7 overflow-hidden ${admin && !tab.visible ? 'opacity-35' : ''}`}
-                                title={title}
-                            >
-                                <p className="text-xs">{acronym}</p>
-                            </div>
-                        ) : (
-                            ''
-                        )}
-                    </>
+                    (tab.visible || admin) && (
+                        <div
+                            key={`${index}-tabNotch-${indexNotch}`} // Use a unique key here
+                            style={{
+                                backgroundColor: color + 'AA',
+                            }}
+                            className={`p-2 flex items-center bg-opacity-40 border-none rounded-l-full text-white w-9 h-7 overflow-hidden ${admin && !tab.visible ? 'opacity-35' : ''}`}
+                            title={title}
+                        >
+                            <p className="text-xs">{acronym}</p>
+                        </div>
+                    )
                 );
             })}
         </div>

@@ -2,6 +2,9 @@ import { NextResponse } from 'next/server';
 import { connectToDatabaseStudy } from '@/utils/mongodb';
 import { MongoDBPaths } from '@/components/enums/mongodb-paths-enum';
 
+export const revalidate = 0;
+export const dynamic = 'force-dynamic';
+
 export async function GET() {
     try {
         const db = (await connectToDatabaseStudy()).db;
