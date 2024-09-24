@@ -285,7 +285,7 @@ const FilterMenu: React.FC<FilterMenuProps> = ({
     return (
         <div
             id={html_object_constants.filter_menu_id}
-            className="relative z-20 h-[300px]"
+            className="relative z-20 h-[400px]"
         >
             {/* Toggle Button */}
             <Button
