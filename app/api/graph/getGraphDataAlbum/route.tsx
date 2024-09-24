@@ -14,7 +14,7 @@ interface AggregationResult {
 function generateAggregationQuery(
     field: string,
     filters: Record<string, any>,
-    possibleValues: string[] | number[],
+    possibleValues: (string | number)[],
 ) {
     if (
         typeof filters[field] === 'number' ||
@@ -88,7 +88,7 @@ function generateDualFieldAggregationQuery(
     field1: string,
     field2: string,
     filters: Record<string, any>,
-    possibleValues: { [key: string]: string[] | number[] },
+    possibleValues: { [key: string]: (string | number)[] },
 ) {
     if (
         typeof filters[field1] === 'number' ||

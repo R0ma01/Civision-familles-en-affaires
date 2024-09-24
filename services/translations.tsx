@@ -3834,10 +3834,16 @@ export const GraphTextService = {
     getLabel: getLabel,
 };
 
-function getKeys(dataField: any): number[] | string[] {
-    return Object.keys(
+function getKeys(dataField: any): (number | string)[] {
+    const keys = Object.keys(
         TableauxTraductionsMainDataFields.get(dataField)?.dataLabels ?? {},
     );
+
+    return keys.map((key) => {
+        const numKey = Number(key);
+        // Check if the key is a valid number
+        return isNaN(numKey) ? key : numKey;
+    });
 }
 function getFieldLabels(dataField: any, language: Language): string[] {
     return Object.values(

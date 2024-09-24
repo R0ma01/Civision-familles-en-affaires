@@ -15,6 +15,7 @@ export async function verifyToken(token) {
     try {
         const secret = new TextEncoder().encode(process.env.JWT_SECRET);
         const { payload } = await jwtVerify(token, secret);
+
         return payload;
     } catch (err) {
         console.error('Token verification error:', err);
@@ -44,6 +45,10 @@ export async function decodeToken(token) {
 
 export async function verifyAdminToken(token) {
     try {
+        console.log(
+            'AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA',
+        );
+        console.log(token);
         const secret = new TextEncoder().encode(process.env.JWT_SECRET_ADMIN);
         const { payload } = await jwtVerify(token, secret);
         return payload;

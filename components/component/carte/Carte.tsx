@@ -17,7 +17,10 @@ export default function Carte() {
     const mapRef = useRef(null);
     const map = useMapStore((state) => state.map);
     const mapType = useMapStore((state) => state.mapType);
-    const matchStage = useGlobalFilterStore((state: any) => state.matchStage);
+    const { matchStage, resetFilters } = useGlobalFilterStore((state: any) => ({
+        matchStage: state.matchStage,
+        resetFilters: state.resetFilters,
+    }));
     const [fournisseurMapData, setFournisseurMapData] = useState<any>({});
     const {
         studyData,
@@ -36,6 +39,11 @@ export default function Carte() {
         repertoireDataFetched,
         indexeADataFetched,
         indexeBDataFetched,
+        filterRepertoireData,
+        filterStudyData,
+        filterIndexeAData,
+        filterIndexeBData,
+        filterFournisseurData,
     } = useGlobalDataStore((state: any) => ({
         studyData: state.studyData,
         repertoireData: state.repertoireData,
@@ -53,6 +61,11 @@ export default function Carte() {
         indexeADataFetched: state.indexeADataFetched,
         indexeBDataFetched: state.indexeBDataFetched,
         loading: state.loading,
+        filterRepertoireData: state.filterRepertoireData,
+        filterStudyData: state.filterStudyData,
+        filterIndexeAData: state.filterIndexeAData,
+        filterIndexeBData: state.filterIndexeBData,
+        filterFournisseurData: state.filterFournisseurData,
     }));
 
     useEffect(() => {

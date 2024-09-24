@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import quebec_regions from '@/geojson/quebec_regions.json';
 import { choroplethColors } from '@/constants/color-palet';
 import { AlbumDataFields } from '@/components/enums/data-types-enum';
-import { TableauxTraductionsMainDataFields } from '@/services/translations';
+import { GraphTextService } from '@/services/translations';
 
 interface ChloroplethProps {
     data: any[]; // GeoJSON data for regions
@@ -127,10 +127,7 @@ function createRegionFeatures(
 }
 
 function newRegionCount() {
-    const regions = Object.keys(
-        TableauxTraductionsMainDataFields.get(AlbumDataFields.COORDONNES_REGION)
-            ?.dataLabels || {},
-    );
+    const regions = GraphTextService.getKeys(AlbumDataFields.COORDONNES_REGION);
 
     const newRegionCounts: Record<string, number> = {};
     regions?.forEach((region) => (newRegionCounts[region] = 0));

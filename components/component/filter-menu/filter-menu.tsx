@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Button from '@/components/component/buttons/button';
 import {
     FilterSVG,
@@ -25,7 +25,7 @@ import { MapType } from '@/components/enums/map-type-enum';
 import { Language } from '@/components/enums/language';
 import useDataStore from '@/reducer/dataStore';
 import { SharedPromptsTranslations } from '@/constants/translations/page-prompts';
-import { TableauxTraductionsMainDataFields } from '@/services/translations';
+import { GraphTextService } from '@/services/translations';
 
 const filterConfigurations = {
     [MapType.REPERTOIRE]: {
@@ -78,10 +78,13 @@ const FilterMenu: React.FC<FilterMenuProps> = ({
     const [isOpen, setIsOpen] = useState<boolean>(false);
     const [selectedTab, setSelectedTab] = useState<string>('general');
 
-    const { matchStage, setFilter } = useGlobalFilterStore((state: any) => ({
-        matchStage: state.matchStage,
-        setFilter: state.setFilter,
-    }));
+    const { matchStage, setFilter, resetFilters } = useGlobalFilterStore(
+        (state: any) => ({
+            matchStage: state.matchStage,
+            setFilter: state.setFilter,
+            resetFilters: state.resetFilters,
+        }),
+    );
 
     const { mapType, map } = useMapStore((state) => ({
         mapType: state.mapType,
@@ -100,12 +103,19 @@ const FilterMenu: React.FC<FilterMenuProps> = ({
         }
     };
 
-    const { filterStudyData, filterRepertoireData, filterFournisseurData } =
-        useGlobalDataStore((state: any) => ({
-            filterStudyData: state.filterStudyData,
-            filterRepertoireData: state.filterRepertoireData,
-            filterFournisseurData: state.filterFournisseurData,
-        }));
+    const {
+        filterStudyData,
+        filterRepertoireData,
+        filterFournisseurData,
+        filterIndexeAData,
+        filterIndexeBData,
+    } = useGlobalDataStore((state: any) => ({
+        filterStudyData: state.filterStudyData,
+        filterRepertoireData: state.filterRepertoireData,
+        filterFournisseurData: state.filterFournisseurData,
+        filterIndexeAData: state.filterIndexeAData,
+        filterIndexeBData: state.filterIndexeBData,
+    }));
 
     const [visible, setVisible] = useState<boolean>(true);
 
@@ -127,10 +137,16 @@ const FilterMenu: React.FC<FilterMenuProps> = ({
             case MapType.PAGE_INFORMATION_ALBUM:
                 filterStudyData();
                 break;
+            case MapType.PAGE_INFORMATION_INDEX_VOLETA:
+                filterIndexeAData();
+                break;
+            case MapType.PAGE_INFORMATION_INDEX_VOLETB:
+                filterIndexeBData();
+                break;
             case MapType.FOURNISSEURS:
+                filterFournisseurData();
                 break;
             default:
-                filterFournisseurData();
                 break;
         }
     }
@@ -241,7 +257,7 @@ function FilterItem({
     filterData,
 }: FilterItemProps) {
     const labelTitle =
-        TableauxTraductionsMainDataFields.get(filterData)?.label[lang] ||
+        GraphTextService.getLabel(filterData, lang) ||
         SharedPromptsTranslations.error[lang];
 
     return (
@@ -253,15 +269,13 @@ function FilterItem({
                         ? matchStage[filterData]['$in'][0]
                         : value_constants.all_values_string_filter
                 }
-                options={[
-                    'toutes',
-                    ...Object.keys(
-                        TableauxTraductionsMainDataFields.get(filterData)
-                            ?.dataLabels || {}, // Fallback to an empty object if dataLabels is undefined
-                    ),
-                ]}
+                options={['toutes', ...GraphTextService.getKeys(filterData)]}
                 dataField={filterData}
-                onChange={(value: any) => handleChange(filterData, value)}
+                onChange={(value: any) => {
+                    console.log(GraphTextService.getKeys(filterData));
+                    console.log(typeof value === 'number');
+                    handleChange(filterData, value);
+                }}
             />
         </div>
     );

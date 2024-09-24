@@ -2,13 +2,10 @@
 import React, { useEffect } from 'react';
 import Carte from '@/components/component/carte/Carte';
 import Sidebar from '@/components/component/sidebar/sidebar';
-import useGlobalPageStore from '@/stores/global-page-store';
 import MobileWarningPopup from '@/components/component/mobile-popup/mobile-popup';
 import { LanguageToggle } from '@/components/component/language-toggle/language-toggle';
 import useGlobalUserStore from '@/stores/global-user-store';
-import { UserType } from '@/components/enums/user-type-enum';
 import { Language } from '@/components/enums/language';
-import { SharedPromptsTranslations } from '@/constants/translations/page-prompts';
 import useDataStore from '@/reducer/dataStore';
 
 interface DashboardProps {
@@ -17,50 +14,42 @@ interface DashboardProps {
 
 const Dashboard = ({ children }: DashboardProps) => {
     const lang: Language = useDataStore((state) => state.lang);
-    console.log('hello');
 
     const { user, setUser } = useGlobalUserStore((state: any) => ({
         user: state.user,
         setUser: state.setUser,
     }));
 
-    // useEffect(() => {
-    //     const handleBeforeUnload = (event: BeforeUnloadEvent) => {
-    //         // Detect if this is a refresh
+    useEffect(() => {
+        const handleBeforeUnload = async (event: BeforeUnloadEvent) => {
+            event.preventDefault();
 
-    //         clearZustandStore();
-    //         const token = localStorage.getItem('token');
-    //         const adminToken = localStorage.getItem('adminToken');
+            localStorage.setItem('isClosing', 'true');
+            clearZustandStore();
+            clearCookies();
 
-    //         console.log(token, adminToken);
+            event.returnValue = ''; // Some browsers need this for confirmation
+            return ''; // Detect if this is a refresh
+        };
 
-    //         if (token && !adminToken) {
-    //             setUser(UserType.USER);
-    //         } else if (token && adminToken) {
-    //             setUser(UserType.ADMIN);
-    //         }
-    //     };
+        const handleLoad = () => {
+            const isClosing = localStorage.getItem('isClosing');
+            localStorage.removeItem('isClosing'); // Reset flag on page load
+        };
 
-    //     // Listen for the beforeunload event
-    //     window.addEventListener('beforeunload', handleBeforeUnload);
+        window.addEventListener('beforeunload', handleBeforeUnload);
+        window.addEventListener('load', handleLoad);
 
-    //     return () => {
-    //         // Clean up the event listener on component unmount
-    //         window.removeEventListener('beforeunload', handleBeforeUnload);
-    //     };
-    // }, [setUser]);
+        return () => {
+            window.removeEventListener('beforeunload', handleBeforeUnload);
+            window.removeEventListener('load', handleLoad);
+        };
+    }, [setUser]);
 
     return (
         <>
             <MobileWarningPopup />
             <div className="relative h-screen overflow-hidden">
-                {/* {pageLoading ? (
-                    <div>{SharedPromptsTranslations.loading[lang]}</div>
-                ) : pageError ? (
-                    <div>
-                        {SharedPromptsTranslations.error[lang]} {pageError}
-                    </div>
-                ) : ( */}
                 <>
                     <div className="relative w-full h-full">
                         <LanguageToggle className="absolute top-1 right-1 z-20"></LanguageToggle>

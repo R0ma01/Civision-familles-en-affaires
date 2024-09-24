@@ -6,6 +6,7 @@ import { TableauxTraductionsTabs } from '@/services/translations';
 import useDataStore from '@/reducer/dataStore';
 import { DataBaseOrigin } from '@/components/enums/data-types-enum';
 import { Language } from '@/components/enums/language';
+import useGlobalFilterStore from '@/stores/global-filter-store';
 
 interface TabProps {
     tabs: TabContent[];
@@ -24,20 +25,25 @@ export function TabContainer({
     const [selectedTab, setSelectedTab] = useState<number>(0); // Initialize with 0
 
     const lang: Language = useDataStore((state) => state.lang);
-
+    const { resetFilters } = useGlobalFilterStore((state) => ({
+        resetFilters: state.resetFilters,
+    }));
     useEffect(() => {
         if (tabs !== containerContent && tabs) {
             setContainerContent(tabs);
 
             if (!selectedTab) {
+                resetFilters();
                 setSelectedTab(tabs.findIndex((tab) => tab.visible)); // Set first tab as active if none is selected
                 setMap(tabs[selectedTab].tabType);
             }
         }
-    }, [tabs, containerContent, selectedTab]);
+    }, [tabs, containerContent, selectedTab, resetFilters, setMap]);
 
     useEffect(() => {
         if (containerContent) {
+            resetFilters();
+
             setMap(containerContent[selectedTab].tabType);
         }
     }, [selectedTab]);
