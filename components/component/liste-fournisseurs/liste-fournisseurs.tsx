@@ -285,157 +285,103 @@ function FournisseurListElement({
     return (
         <tr
             key={index}
-            className={`border-b border-gray-400 dark:border-gray-700 hover:shadow-lg dark:hover:shadow-md flex items-center overflow-hidden cursor-pointer w-full relative transition-all ease-in-out duration-300 transform ${
+            className={`border-b border-gray-400 dark:border-gray-700 hover:shadow-lg dark:hover:shadow-md cursor-pointer relative transition-all ease-in-out duration-300 transform ${
                 isOpen ? 'h-auto' : 'h-12'
-            } group`}
+            } group flex flex-col`}
             onClick={handleRowClick}
         >
             {/* Main Row */}
-            <tr className="w-full flex flex-col justify-between items-center">
-                {!isOpen && (
-                    <td className="w-full p-2">
-                        <div className="flex flex-row space-x-4 w-full">
-                            {' '}
+            {!isOpen ? (
+                <td colSpan={2} className="p-2">
+                    <div className="flex space-x-4 w-full">
+                        <p className="font-bold">
+                            {fournisseur.contact.firstName +
+                                ' ' +
+                                fournisseur.contact.lastName.toUpperCase()}
+                        </p>
+                    </div>
+                </td>
+            ) : (
+                <>
+                    <td className="p-2 align-top flex flex-row justify-between">
+                        <div className="flex flex-col">
                             <p className="font-bold">
                                 {fournisseur.contact.firstName +
                                     ' ' +
-                                    fournisseur.contact.lastName.toUpperCase()}{' '}
+                                    fournisseur.contact.lastName.toUpperCase()}
                             </p>
+                            <p>{fournisseur.contact.company}</p>
+                        </div>
+
+                        <div className="flex flex-row justify-end space-x-2">
+                            <a
+                                href={`tel:+1${fournisseur.contact.cellPhone}`}
+                                onClick={(e: any) => {
+                                    handleButtonClick(e);
+                                }}
+                            >
+                                <PhoneSVG className="bg-black fill-white p-1" />
+                            </a>
+                            <a
+                                href={`mailto:${fournisseur.contact.email}`}
+                                className="text-blue-500 underline"
+                                onClick={(e: any) => {
+                                    handleButtonClick(e);
+                                }}
+                            >
+                                <EmailSVG className="bg-black fill-white p-1" />
+                            </a>
+                            <a
+                                href={fournisseur.contact.linkedIn}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                onClick={(e: any) => {
+                                    handleButtonClick(e);
+                                }}
+                            >
+                                <LinkedInSVG className="bg-black fill-white p-1" />
+                            </a>
                         </div>
                     </td>
-                )}
-
-                {isOpen && (
-                    <td className="w-full flex flex-col transition-all transform duration-300 p-2">
-                        <div className="flex flex-row items-center justify-between">
-                            <div className="flex flex-col w-full">
-                                <div className="flex w-[60%]">
-                                    <p className="font-bold text-left">
-                                        {fournisseur.contact.firstName +
-                                            ' ' +
-                                            fournisseur.contact.lastName.toUpperCase()}{' '}
-                                    </p>
-                                </div>
-                                <p className="text-left">
-                                    {fournisseur.contact.company}
-                                </p>
-                            </div>
-                            <div className="flex flex-col w-[40%]">
-                                <div className="flex flex-row justify-end space-x-2">
-                                    <div className="flex flex-col">
-                                        <a
-                                            href={`tel:+1${fournisseur.contact.cellPhone}`}
-                                            onClick={(e: any) => {
-                                                handleButtonClick(e);
-                                            }}
-                                        >
-                                            <div className="border rounded-full w-fit h-fit overflow-hidden">
-                                                <PhoneSVG className="bg-black fill-white p-1"></PhoneSVG>
-                                            </div>
-                                        </a>
-                                    </div>
-                                    <div className="flex flex-col">
-                                        <a
-                                            href={`mailto:${fournisseur.contact.email}`}
-                                            className="text-blue-500 underline"
-                                            onClick={(e: any) => {
-                                                handleButtonClick(e);
-                                            }}
-                                        >
-                                            <div className="border rounded-full w-fit h-fit overflow-hidden">
-                                                <EmailSVG className="bg-black fill-white p-1"></EmailSVG>
-                                            </div>{' '}
-                                        </a>
-                                    </div>
-                                    <div className="flex flex-col">
-                                        <a
-                                            href={fournisseur.contact.linkedIn}
-                                            target="_blank"
-                                            rel="noopener noreferrer"
-                                            onClick={(e: any) => {
-                                                handleButtonClick(e);
-                                            }}
-                                        >
-                                            <div className="border rounded-full w-fit h-fit overflow-hidden">
-                                                <LinkedInSVG className="bg-black fill-white p-1"></LinkedInSVG>
-                                            </div>
-                                        </a>
+                    {/* Expandable content */}
+                    {isOpen && (
+                        <td colSpan={2} className="p-2">
+                            <div className="flex flex-col space-y-2">
+                                <div className="flex space-x-1">
+                                    <GlobeSVG className="bg-black fill-white p-1" />
+                                    <div className="flex flex-wrap">
+                                        {fournisseur.secteurs_geographique.map(
+                                            (secteur, i) => (
+                                                <span
+                                                    key={`${secteur}-${i}`}
+                                                    className="mr-2"
+                                                >
+                                                    {secteur}
+                                                </span>
+                                            ),
+                                        )}
                                     </div>
                                 </div>
-                                <p className="text-right">
-                                    {fournisseur.contact.cellPhone}
-                                </p>
+                                <div className="flex space-x-1">
+                                    <ServiceSVG className="bg-black fill-white p-1" />
+                                    <div className="flex flex-wrap">
+                                        {fournisseur.services_offerts.map(
+                                            (service, i) => (
+                                                <span
+                                                    key={`${service}-${i}`}
+                                                    className="mr-2"
+                                                >
+                                                    {service}
+                                                </span>
+                                            ),
+                                        )}
+                                    </div>
+                                </div>
                             </div>
-                        </div>
-                        <div className="flex flex-row space-x-1">
-                            <div className="border rounded-full w-fit h-fit overflow-hidden">
-                                <GlobeSVG className="bg-black fill-white p-1"></GlobeSVG>
-                            </div>
-                            <p className="max-h-12 overflow-auto flex flex-col">
-                                {fournisseur.secteurs_geographique.map(
-                                    (secteur: any) => {
-                                        return <p key={index}>{secteur}</p>;
-                                    },
-                                )}
-                            </p>
-                        </div>
-                        <div className="flex flex-row space-x-1">
-                            <ServiceSVG></ServiceSVG>
-                            <p className="max-h-12 overflow-auto flex flex-col">
-                                {fournisseur.services_offerts.map(
-                                    (service: any) => {
-                                        return <p key={index}>{service}</p>;
-                                    },
-                                )}
-                            </p>
-                        </div>
-                    </td>
-                )}
-            </tr>
-
-            {/* Admin Actions */}
-            <div className="absolute right-0 top-0 z-50 flex-row justify-evenly w-fit mb-4 hidden group-hover:flex">
-                {admin && (
-                    <>
-                        {/* Edit Button */}
-                        <Button
-                            buttonType={ButtonType.ICON}
-                            onClick={(e) => {
-                                handleButtonClick(e);
-                                onClickEdit(fournisseur);
-                            }}
-                        >
-                            <EditSVG className="hover:scale-105 hover:fill-black dark:hover:fill-white fill-gray-500 dark:fill-custom-grey transition-all duration-200" />
-                        </Button>
-
-                        {/* Delete Button */}
-                        <Button
-                            buttonType={ButtonType.ICON}
-                            onClick={(e) => {
-                                handleButtonClick(e);
-                                onClickDelete(fournisseur);
-                            }}
-                        >
-                            <TrashSVG className="hover:scale-105 hover:fill-black dark:hover:fill-white fill-gray-500 dark:fill-custom-grey transition-all duration-200" />
-                        </Button>
-
-                        {/* Visibility Button */}
-                        <Button
-                            buttonType={ButtonType.ICON}
-                            onClick={(e) => {
-                                handleButtonClick(e);
-                                onClickVisible(fournisseur);
-                            }}
-                        >
-                            {fournisseur.visible ? (
-                                <VisibleSVG className="hover:scale-105 hover:fill-black dark:hover:fill-white fill-gray-500 dark:fill-custom-grey transition-all duration-200" />
-                            ) : (
-                                <InvisibleSVG className="hover:scale-105 hover:fill-black dark:hover:fill-white fill-gray-500 dark:fill-custom-grey transition-all duration-200" />
-                            )}
-                        </Button>
-                    </>
-                )}
-            </div>
+                        </td>
+                    )}
+                </>
+            )}
         </tr>
     );
 }
