@@ -4,10 +4,6 @@ import 'mapbox-gl/dist/mapbox-gl.css';
 import useGlobalDataStore from '@/stores/global-data-store';
 import useMapStore from '@/stores/global-map-store';
 import constants from '@/constants/constants';
-
-import useGlobalFournisseursStore from '@/stores/global-fournisseur-store';
-import { populateMapLayers } from '@/services/populate-map-service';
-
 const MapBox = () => {
     const { mapType, setMap } = useMapStore((state) => {
         return { mapType: state.mapType, setMap: state.setMap };
@@ -15,18 +11,8 @@ const MapBox = () => {
     const { point } = useMapStore();
     const mapContainerRef = useRef(null);
     const mapRef = useRef(null);
-    const { studyFilteredData, repertoireFilteredData } = useGlobalDataStore(
-        (state) => ({
-            studyFilteredData: state.studyFilteredData,
-            repertoireFilteredData: state.repertoireFilteredData,
-        }),
-    );
 
-    const { filteredFournisseurData } = useGlobalFournisseursStore((state) => ({
-        filteredFournisseurData: state.filteredFournisseurData,
-    }));
     const [isDarkMode, setIsDarkMode] = useState(false);
-    const hoveredStateId = useRef(null); // To keep track of the hovered region
 
     useEffect(() => {
         const darkModeQuery = window.matchMedia('(prefers-color-scheme: dark)');
@@ -53,15 +39,6 @@ const MapBox = () => {
 
             mapRef.current.on('load', () => {
                 setMap(mapRef.current);
-                populateMapLayers(
-                    mapRef,
-                    mapType,
-                    filteredFournisseurData,
-                    studyFilteredData,
-                    isDarkMode,
-                    hoveredStateId,
-                    repertoireFilteredData,
-                );
             });
         }
 
@@ -100,15 +77,6 @@ const MapBox = () => {
                 .addTo(mapRef.current);
         }
     }, [point]);
-
-    useEffect(() => {
-        if (mapRef.current) {
-            const source = mapRef.current.getSource('compagnies');
-            if (source) {
-                source.setData(convertData(studyFilteredData));
-            }
-        }
-    }, [studyFilteredData]);
 
     return <div id="map" ref={mapContainerRef} style={{ height: '100%' }} />;
 };
