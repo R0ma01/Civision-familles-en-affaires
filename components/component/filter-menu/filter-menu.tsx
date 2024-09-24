@@ -27,35 +27,44 @@ import useDataStore from '@/reducer/dataStore';
 import { SharedPromptsTranslations } from '@/constants/translations/page-prompts';
 import { TableauxTraductionsMainDataFields } from '@/services/translations';
 
-const repertoireFilters = {
-    general: [RepertoireDataFields.NB_EMPLO, RepertoireDataFields.REGION],
-};
-const fournisseurFilters = {
-    general: [
-        FournisseurDataFields.SECTEURS_GEOGRAPHIQUES,
-        FournisseurDataFields.SERVICES_OFFERTS,
-    ],
-};
-
-const albumFilters = {
-    general: [
-        AlbumDataFields.TAILLE_ENTREPRISE,
-        AlbumDataFields.ANNEE_FONDATION,
-        AlbumDataFields.DIRIGEANT_GENERATION,
-    ],
-    avance: [
-        AlbumDataFields.COORDONNES_REGION,
-        AlbumDataFields.SECTEUR_ACTIVITE,
-        AlbumDataFields.REVENUS_RANG,
-    ],
-};
-
-const indexVoletAFilters = {
-    general: [IndexeDataFieldsA.QE6],
-};
-
-const indexVoletBFilters = {
-    general: [IndexeDataFieldsB.QZ19],
+const filterConfigurations = {
+    [MapType.REPERTOIRE]: {
+        general: [RepertoireDataFields.NB_EMPLO, RepertoireDataFields.REGION],
+    },
+    [MapType.PAGE_INFORMATION_ALBUM]: {
+        general: [
+            AlbumDataFields.TAILLE_ENTREPRISE,
+            AlbumDataFields.ANNEE_FONDATION,
+            AlbumDataFields.DIRIGEANT_GENERATION,
+        ],
+        advanced: [
+            AlbumDataFields.COORDONNES_REGION,
+            AlbumDataFields.SECTEUR_ACTIVITE,
+            AlbumDataFields.REVENUS_RANG,
+        ],
+    },
+    [MapType.FOURNISSEURS]: {
+        general: [
+            FournisseurDataFields.SECTEURS_GEOGRAPHIQUES,
+            FournisseurDataFields.SERVICES_OFFERTS,
+        ],
+    },
+    [MapType.PAGE_INFORMATION_INDEX_VOLETA]: {
+        general: [IndexeDataFieldsA.Q0QC, IndexeDataFieldsA.QE6],
+        advanced: [
+            IndexeDataFieldsA.QE1x,
+            IndexeDataFieldsA.QE1Cx,
+            IndexeDataFieldsA.QE3,
+        ],
+    },
+    [MapType.PAGE_INFORMATION_INDEX_VOLETB]: {
+        general: [
+            IndexeDataFieldsB.Q0QC,
+            IndexeDataFieldsB.QD8,
+            IndexeDataFieldsB.QZ19,
+        ],
+        advanced: [IndexeDataFieldsB.QDA1r6, IndexeDataFieldsB.QD11],
+    },
 };
 
 interface FilterMenuProps {
@@ -66,53 +75,18 @@ const FilterMenu: React.FC<FilterMenuProps> = ({
     toggleContentVisibility = () => {},
 }) => {
     const lang: Language = useDataStore((state) => state.lang);
-
     const [isOpen, setIsOpen] = useState<boolean>(false);
     const [selectedTab, setSelectedTab] = useState<string>('general');
+
     const { matchStage, setFilter } = useGlobalFilterStore((state: any) => ({
         matchStage: state.matchStage,
         setFilter: state.setFilter,
     }));
-    const { mapType, map } = useMapStore((state) => {
-        return { mapType: state.mapType, map: state.map };
-    });
-    const { filterStudyData, filterRepertoireData, filterFournisseurData } =
-        useGlobalDataStore((state: any) => ({
-            fetchStudyData: state.fetchStudyData,
-            filterStudyData: state.filterStudyData,
-            filterRepertoireData: state.filterRepertoireData,
-            filterFournisseurData: state.filterFournisseurData,
-        }));
 
-    const [visible, setVisible] = useState<boolean>(true);
-
-    const toggleTab = () => {
-        setIsOpen(!isOpen);
-    };
-
-    const toggleVicibility = () => {
-        setVisible(!visible);
-        toggleContentVisibility();
-    };
-
-    async function handleChange(field: any, newFieldValue: any) {
-        setFilter(field, newFieldValue);
-
-        switch (mapType) {
-            case MapType.REPERTOIRE:
-                filterRepertoireData();
-                break;
-            case MapType.PAGE_INFORMATION_ALBUM:
-                filterStudyData();
-                break;
-            case MapType.FOURNISSEURS:
-                break;
-
-            default:
-                filterFournisseurData();
-                break;
-        }
-    }
+    const { mapType, map } = useMapStore((state) => ({
+        mapType: state.mapType,
+        map: state.map,
+    }));
 
     const zoomIn = () => {
         if (map) {
@@ -126,168 +100,62 @@ const FilterMenu: React.FC<FilterMenuProps> = ({
         }
     };
 
-    function filterEntrails() {
+    const { filterStudyData, filterRepertoireData, filterFournisseurData } =
+        useGlobalDataStore((state: any) => ({
+            filterStudyData: state.filterStudyData,
+            filterRepertoireData: state.filterRepertoireData,
+            filterFournisseurData: state.filterFournisseurData,
+        }));
+
+    const [visible, setVisible] = useState<boolean>(true);
+
+    const toggleTab = () => {
+        setIsOpen(!isOpen);
+    };
+
+    const toggleVisibility = () => {
+        setVisible(!visible);
+        toggleContentVisibility();
+    };
+
+    async function handleChange(field: any, newFieldValue: any) {
+        setFilter(field, newFieldValue);
         switch (mapType) {
             case MapType.REPERTOIRE:
-                return (
-                    <>
-                        <div
-                            className={`fixed top-10 right-0 h-[300px] w-64 bg-[#f5ebe0] bg-opacity-75 p-4 transform ${
-                                isOpen ? 'translate-x-0' : 'translate-x-full'
-                            } transition-transform duration-300 ease-in-out`}
-                        >
-                            {repertoireFilters.general.map((filter, index) => {
-                                return (
-                                    <FilterItem
-                                        key={index}
-                                        filterData={filter}
-                                        lang={lang}
-                                        matchStage={matchStage}
-                                        handleChange={handleChange}
-                                    ></FilterItem>
-                                );
-                            })}
-                        </div>
-                    </>
-                );
-
+                filterRepertoireData();
+                break;
             case MapType.PAGE_INFORMATION_ALBUM:
-                return (
-                    <>
-                        {/* Side Filter Tab */}
-                        <div
-                            className={`fixed top-10 h-[300px] right-0 w-64 bg-[#f5ebe0] bg-opacity-75 p-4 transform ${
-                                isOpen ? 'translate-x-0' : 'translate-x-full'
-                            } transition-transform duration-300 ease-in-out`}
-                        >
-                            {/* Filter Content */}
-                            <div
-                                id={html_object_constants.filters_container_id}
-                                className="mt-2"
-                            >
-                                <h2 className="text-2xl font-bold">
-                                    {SharedPromptsTranslations.filters[lang]}
-                                </h2>
-                                {/* Add your filter options here */}
-                                <div className="mt-2 flex border-b dark:border-white border-black">
-                                    <button
-                                        className={`flex-1 text-center py-2 ${
-                                            selectedTab === 'general'
-                                                ? 'border-b-2 dark:border-white border-black dark:text-white text-black'
-                                                : 'text-gray-500'
-                                        }`}
-                                        onClick={() =>
-                                            setSelectedTab('general')
-                                        }
-                                    >
-                                        {
-                                            SharedPromptsTranslations
-                                                .general_filters[lang]
-                                        }
-                                    </button>
-                                    <button
-                                        className={`flex-1 text-center py-2 ${
-                                            selectedTab === 'trend'
-                                                ? 'border-b-2 dark:border-white border-black dark:text-white text-black'
-                                                : 'text-gray-500'
-                                        }`}
-                                        onClick={() => setSelectedTab('trend')}
-                                    >
-                                        {
-                                            SharedPromptsTranslations
-                                                .advanced_filters[lang]
-                                        }
-                                    </button>
-                                </div>
-                                {selectedTab === 'general' ? (
-                                    <div className="mt-4 flex flex-col">
-                                        {albumFilters.general.map(
-                                            (filter, index) => {
-                                                return (
-                                                    <FilterItem
-                                                        key={index}
-                                                        filterData={filter}
-                                                        lang={lang}
-                                                        matchStage={matchStage}
-                                                        handleChange={
-                                                            handleChange
-                                                        }
-                                                    ></FilterItem>
-                                                );
-                                            },
-                                        )}
-                                    </div>
-                                ) : (
-                                    <div className="mt-4 flex flex-col">
-                                        {albumFilters.avance.map(
-                                            (filter, index) => {
-                                                return (
-                                                    <FilterItem
-                                                        key={index}
-                                                        filterData={filter}
-                                                        lang={lang}
-                                                        matchStage={matchStage}
-                                                        handleChange={
-                                                            handleChange
-                                                        }
-                                                    ></FilterItem>
-                                                );
-                                            },
-                                        )}
-                                    </div>
-                                )}
-                            </div>
-                        </div>
-                    </>
-                );
+                filterStudyData();
+                break;
             case MapType.FOURNISSEURS:
-                return (
-                    <>
-                        <div
-                            className={`fixed top-10 right-0 h-[300px] w-64 bg-[#f5ebe0] bg-opacity-75 p-4 transform ${
-                                isOpen ? 'translate-x-0' : 'translate-x-full'
-                            } transition-transform duration-300 ease-in-out`}
-                        >
-                            {/* Filter Content */}
-                            <div
-                                id={html_object_constants.filters_container_id}
-                                className="mt-2"
-                            >
-                                <h2 className="text-2xl font-bold">
-                                    {SharedPromptsTranslations.filters[lang]}
-                                </h2>
-                                {/* Add your filter options here */}
-                                <div className="flex flex-col">
-                                    {fournisseurFilters.general.map(
-                                        (filter, index) => {
-                                            return (
-                                                <FilterItem
-                                                    key={index}
-                                                    filterData={filter}
-                                                    lang={lang}
-                                                    matchStage={matchStage}
-                                                    handleChange={handleChange}
-                                                ></FilterItem>
-                                            );
-                                        },
-                                    )}
-                                </div>
-                            </div>
-                        </div>
-                    </>
-                );
-
+                break;
             default:
+                filterFournisseurData();
                 break;
         }
     }
 
+    const renderFilters = () => {
+        const filters: Record<string, string[]> = filterConfigurations[mapType];
+        if (!filters) return null;
+
+        return (
+            <div className="mt-2 flex flex-col">
+                {filters[selectedTab]?.map((filter: any, index: number) => (
+                    <FilterItem
+                        key={index}
+                        filterData={filter}
+                        lang={lang}
+                        matchStage={matchStage}
+                        handleChange={handleChange}
+                    />
+                ))}
+            </div>
+        );
+    };
+
     return (
-        <div
-            id={html_object_constants.filter_menu_id}
-            className="relative z-20 h-[300px]"
-        >
-            {/* Toggle Button */}
+        <div className="relative z-20 h-[300px]">
             <Button
                 id={html_object_constants.toggle_filter_tab_id}
                 buttonType={ButtonType.ICON}
@@ -321,11 +189,10 @@ const FilterMenu: React.FC<FilterMenuProps> = ({
             >
                 <ZoomOutSVG />
             </Button>
-
             <Button
                 id={html_object_constants.hide_content_tab_id}
                 buttonType={ButtonType.ICON}
-                onClick={toggleVicibility}
+                onClick={toggleVisibility}
                 scaleOnHover={false}
                 className={`fixed top-1/4 transform translate-y-[35px] bg-[#f5ebe0] bg-opacity-75 right-0 p-2 rounded-l-md rounded-r-none ${
                     isOpen ? '-translate-x-64' : 'block'
@@ -334,8 +201,26 @@ const FilterMenu: React.FC<FilterMenuProps> = ({
                 {visible && <VisibleSVG className="fill-gray-500" />}
                 {!visible && <InvisibleSVG className="fill-gray-500" />}
             </Button>
-            {/* FILTER CONTENT */}
-            {filterEntrails()}
+
+            <div
+                className={`fixed top-10 right-0 h-[350px] w-64 bg-[#f5ebe0] bg-opacity-75 p-4 transform ${isOpen ? 'translate-x-0' : 'translate-x-full'} transition-transform duration-300 ease-in-out`}
+            >
+                <h2 className="text-2xl font-bold">
+                    {SharedPromptsTranslations.filters[lang]}
+                </h2>
+                <div className="mt-2 flex border-b dark:border-white border-black">
+                    {Object.keys(filterConfigurations[mapType]).map((tab) => (
+                        <button
+                            key={tab}
+                            className={`flex-1 text-center py-2 ${selectedTab === tab ? 'border-b-2 dark:border-white border-black dark:text-white text-black' : 'text-gray-500'}`}
+                            onClick={() => setSelectedTab(tab)}
+                        >
+                            {SharedPromptsTranslations[`${tab}_filters`][lang]}
+                        </button>
+                    ))}
+                </div>
+                {renderFilters()}
+            </div>
         </div>
     );
 };
