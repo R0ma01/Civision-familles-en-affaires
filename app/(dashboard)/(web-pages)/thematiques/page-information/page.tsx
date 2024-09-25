@@ -12,6 +12,7 @@ import { SharedPromptsTranslations } from '@/constants/translations/page-prompts
 import useDataStore from '@/reducer/dataStore';
 import useGlobalFilterStore from '@/stores/global-filter-store';
 import { DataBaseOrigin } from '@/components/enums/data-types-enum';
+import useGlobalDataStore from '@/stores/global-data-store';
 
 function PageContentComponent() {
     const { resetFilters } = useGlobalFilterStore((state) => ({
@@ -37,6 +38,13 @@ function PageContentComponent() {
         },
     );
 
+    const { filterStudyData, filterIndexeAData, filterIndexeBData } =
+        useGlobalDataStore((state: any) => ({
+            filterStudyData: state.filterStudyData,
+            filterIndexeAData: state.filterIndexeAData,
+            filterIndexeBData: state.filterIndexeBData,
+        }));
+
     const { setMapStyle } = useMapStore((state) => {
         return { setMapStyle: state.setMapStyle };
     });
@@ -50,13 +58,16 @@ function PageContentComponent() {
     function setMap(dataOrigin: DataBaseOrigin) {
         switch (dataOrigin) {
             case DataBaseOrigin.INDEX_VOLETA:
+                filterIndexeAData();
                 setMapStyle(MapType.PAGE_INFORMATION_INDEX_VOLETA);
                 break;
             case DataBaseOrigin.INDEX_VOLETB:
+                filterIndexeBData();
                 setMapStyle(MapType.PAGE_INFORMATION_INDEX_VOLETB);
                 break;
 
             default:
+                filterStudyData();
                 setMapStyle(MapType.PAGE_INFORMATION_ALBUM);
         }
     }

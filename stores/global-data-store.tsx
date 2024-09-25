@@ -86,6 +86,7 @@ const useGlobalDataStore = create(
 
                 fetchIndexeAData: async (matchStage: Record<string, any>) => {
                     if ((get() as any).indexeADataFetched) return;
+                    console.log('fetch A');
                     set({ loading: true, error: null });
                     try {
                         console.log('Indexe A');
@@ -106,6 +107,8 @@ const useGlobalDataStore = create(
 
                 fetchIndexeBData: async (matchStage: Record<string, any>) => {
                     if ((get() as any).indexeBDataFetched) return;
+                    console.log('fetch B');
+
                     set({ loading: true, error: null });
                     try {
                         console.log('Indexe B');
@@ -143,12 +146,12 @@ const useGlobalDataStore = create(
                 },
 
                 filterIndexeAData: () => {
-                    if ((get() as any).indexeDataFetched) {
+                    if ((get() as any).indexeADataFetched) {
                         set({ indexeADataFetched: false });
                     }
                 },
                 filterIndexeBData: () => {
-                    if ((get() as any).indexeDataFetched) {
+                    if ((get() as any).indexeBDataFetched) {
                         set({ indexeBDataFetched: false });
                     }
                 },

@@ -10,7 +10,8 @@ interface AggregationResult {
     name: string;
     value: number;
 }
-
+export const revalidate = 0;
+export const dynamic = 'force-dynamic';
 export async function GET(req: Request) {
     try {
         const db = (await connectToDatabaseIndexe()).db;
@@ -61,7 +62,7 @@ export async function GET(req: Request) {
             .aggregate(aggregationPipeline)
             .toArray();
 
-        if (!aggregationResult || aggregationResult.length === 0) {
+        if (!aggregationResult) {
             return NextResponse.json(
                 { error: 'No regions found' },
                 { status: 404 },
@@ -69,27 +70,59 @@ export async function GET(req: Request) {
         }
 
         const resultat: { region: string; count: number }[] = [];
+        const possiblevalues = GraphTextService.getKeys(IndexeDataFieldsB.Q0QC);
+        console.log(possiblevalues, aggregationResult);
 
-        aggregationResult.map((result) => {
-            if (result.region) {
-                const label = GraphTextService.getFieldLabel(
-                    IndexeDataFieldsB.Q0QC,
-                    result.region,
-                    Language.FR,
-                );
-                if (label) {
-                    resultat.push({ region: label, count: result.count });
-                }
+        possiblevalues.map((value) => {
+            const possibleResult = aggregationResult.find(
+                (item) => item.region === value,
+            );
+            const label = GraphTextService.getFieldLabel(
+                IndexeDataFieldsB.Q0QC,
+                value,
+                Language.FR,
+            );
+            if (label) {
+                resultat.push({
+                    region: label,
+                    count: possibleResult ? possibleResult.count : 0,
+                });
             }
         });
+        // aggregationResult.map((result) => {
+        //     if (result.region) {
+        //         const label = GraphTextService.getFieldLabel(
+        //             IndexeDataFieldsB.Q0QC,
+        //             result.region,
+        //             Language.FR,
+        //         );
+        //         if (label) {
+        //             resultat.push({ region: label, count: result.count });
+        //         }
+        //     }
+        // });
+
         console.log(resultat);
-        return NextResponse.json({
-            message: 'Regions counted successfully',
+
+        const response = NextResponse.json({
+            message: 'Regions found successfully',
             points: resultat,
         });
+
+        // Add Cache-Control headers to prevent caching
+        response.headers.set('Cache-Control', 'no-store, max-age=0');
+
+        return response;
     } catch (e: any) {
         console.error(e.message);
 
-        return NextResponse.json({ error: e.message }, { status: 500 });
+        // Return an error response with no-cache headers as well
+        const errorResponse = NextResponse.json(
+            { error: e.message },
+            { status: 500 },
+        );
+        errorResponse.headers.set('Cache-Control', 'no-store, max-age=0');
+
+        return errorResponse;
     }
 }

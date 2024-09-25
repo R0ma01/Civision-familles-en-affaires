@@ -99,32 +99,6 @@ async function getAllIndexeBData(
     return [];
 }
 
-async function getMapData(
-    filters: Record<string, any>,
-    dataOrigin: DataBaseOrigin,
-): Promise<MapChloroplethePointData[]> {
-    try {
-        switch (dataOrigin) {
-            case DataBaseOrigin.INDEX_VOLETA:
-            case DataBaseOrigin.INDEX_VOLETB:
-            case DataBaseOrigin.ALBUM_FAMILLE:
-        }
-        const response = await axios.get(APIPaths.MAP_GET_ALL_INDEXEB, {
-            params: {
-                filters: JSON.stringify(filters),
-            },
-        });
-
-        return response.data.points;
-    } catch (error: any) {
-        console.error(
-            'Error fetching points:',
-            error.response?.data?.error || error.message,
-        );
-    }
-    return [];
-}
-
 async function getChartData(
     donnes: any[],
     filters: Record<string, any>,

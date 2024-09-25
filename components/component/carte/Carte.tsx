@@ -39,11 +39,6 @@ export default function Carte() {
         repertoireDataFetched,
         indexeADataFetched,
         indexeBDataFetched,
-        filterRepertoireData,
-        filterStudyData,
-        filterIndexeAData,
-        filterIndexeBData,
-        filterFournisseurData,
     } = useGlobalDataStore((state: any) => ({
         studyData: state.studyData,
         repertoireData: state.repertoireData,
@@ -74,6 +69,8 @@ export default function Carte() {
     }, [map]);
 
     useEffect(() => {
+        console.log('i am activated');
+        console.log(indexeADataFetched);
         async function studyFetch() {
             await fetchStudyData(matchStage);
         }
@@ -122,6 +119,7 @@ export default function Carte() {
             mapType === MapType.PAGE_INFORMATION_INDEX_VOLETA &&
             !loading
         ) {
+            console.log('helo');
             indexeAFetch();
         }
 

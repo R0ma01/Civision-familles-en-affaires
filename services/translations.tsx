@@ -1418,8 +1418,8 @@ const keyValuePairs: [string, dataInformations][] = [
         AlbumDataFields.TEMPS_NOUVELLE_ENTREPRISE,
         {
             label: {
-                FR: 'Le répondant aurait-il le temps de créer une nouvelle entreprise?',
-                EN: 'Would the respondent have time to start a new business?',
+                FR: 'Temps pour créer une nouvelle entreprise',
+                EN: 'Time to start a new business?',
             },
             dataLabels: {
                 0: {
@@ -1437,8 +1437,8 @@ const keyValuePairs: [string, dataInformations][] = [
         AlbumDataFields.BENEVOLAT,
         {
             label: {
-                FR: 'Le répondant aurait-il le temps de faire du bénévolat ou travailler pour une oeuvre caritative?',
-                EN: 'Would the respondent have time to volunteer or work for charity?',
+                FR: 'Bénévolat/activités caritatives',
+                EN: 'Volunteering/charity work',
             },
             dataLabels: {
                 0: {
@@ -1456,8 +1456,8 @@ const keyValuePairs: [string, dataInformations][] = [
         AlbumDataFields.ROLE_INFORMEL,
         {
             label: {
-                FR: 'Le répondant souhaite-t-il asumer un rôle informel auprès des entreprenneurs qui reprendront son entreprise?',
-                EN: 'Does the respondent wish to take on an informal role with the entrepreneurs who will take over his business?',
+                FR: 'Rôle informel aprèes vente',
+                EN: 'informal role after sales',
             },
             dataLabels: {
                 0: {
@@ -1475,8 +1475,8 @@ const keyValuePairs: [string, dataInformations][] = [
         AlbumDataFields.APRES_VENTE,
         {
             label: {
-                FR: "Le répondant souhaite-t-il suivre l'évolution de son entreprise suite à sa vente ou son transfert?",
-                EN: 'Does the respondent wish to follow the evolution of his business following its sale or transfer?',
+                FR: "Suivi de l'évolution après vente",
+                EN: 'Follow the growth after sale',
             },
             dataLabels: {
                 0: {
@@ -1568,8 +1568,8 @@ const keyValuePairs: [string, dataInformations][] = [
         IndexeDataFieldsB.GENRE,
         {
             label: {
-                FR: 'Comment décrivez-vous votre identité de genre?',
-                EN: 'How do you describe your gender identity?',
+                FR: 'Identité de genre',
+                EN: 'Gender identity',
             },
             dataLabels: {
                 1: {
@@ -1690,8 +1690,8 @@ const keyValuePairs: [string, dataInformations][] = [
         IndexeDataFieldsB.QZ13,
         {
             label: {
-                FR: "Dernier niveau de scolarité complété par l'entrepreneur",
-                EN: 'Last degree obtained but the entrepreneur',
+                FR: 'Dernier niveau de scolarité complété',
+                EN: 'Last degree obtained',
             },
             dataLabels: {
                 1: {
@@ -1841,8 +1841,8 @@ const keyValuePairs: [string, dataInformations][] = [
         IndexeDataFieldsB.QD8,
         {
             label: {
-                FR: "Nombre d'employés permanents travaillant pour la compagnie",
-                EN: 'Number of employees working full time for the company',
+                FR: "Nombre d'employés permanents",
+                EN: 'Number of full time employees',
             },
             dataLabels: {
                 1: {
@@ -1880,8 +1880,8 @@ const keyValuePairs: [string, dataInformations][] = [
         IndexeDataFieldsB.QDA1r6, //TODO DIMINUE MOI
         {
             label: {
-                FR: 'QDA1r6: Est une entreprise familiale (dans laquelle au moins deux membres de la famille participent à la gestion ainsi qu’à l’orientation stratégique et qui appartient en majorité ou en totalité à la même famille - au moins à deux de ses membr',
-                EN: 'How old are you ?',
+                FR: 'Entreprise Familiale ?',
+                EN: 'Family Company ?',
             },
             dataLabels: {
                 1: {
@@ -1899,8 +1899,8 @@ const keyValuePairs: [string, dataInformations][] = [
         IndexeDataFieldsB.QDD3x,
         {
             label: {
-                FR: "Le propriétaire de l'entreprise a : ",
-                EN: "The company's current owner has : ",
+                FR: 'Création / reprise',
+                EN: 'creation / take over',
             },
             dataLabels: {
                 1: {
@@ -1918,8 +1918,8 @@ const keyValuePairs: [string, dataInformations][] = [
         IndexeDataFieldsB.QDD3Cx,
         {
             label: {
-                FR: "Le propriétaire a créé / reprise l'entreprise : ",
-                EN: "The company's ower created / took over the company : ",
+                FR: 'Création/ reprise seule / en équipe',
+                EN: 'Creation/ take over alone / team ',
             },
             dataLabels: {
                 1: {
@@ -1937,8 +1937,8 @@ const keyValuePairs: [string, dataInformations][] = [
         IndexeDataFieldsB.QD2,
         {
             label: {
-                FR: "Le propriétaire possède l'entreprise depuis : ",
-                EN: 'The owner has owned the company for : ',
+                FR: 'Années de possession',
+                EN: 'Years of ownership',
             },
             dataLabels: {
                 1: {
@@ -1980,8 +1980,8 @@ const keyValuePairs: [string, dataInformations][] = [
         IndexeDataFieldsB.QDD3Ar1, // TODO FIX ME // needs number filtering function
         {
             label: {
-                FR: "En excluant l'entreprise visée par l'étude, le propriétaire à créé :",
-                EN: 'Excluing their current company, the owner has created : ',
+                FR: "Nombre d'entreprises crées par le propriétaire",
+                EN: 'Number of compagnies created by the owner ',
             },
             dataLabels: {
                 0: {
@@ -2015,8 +2015,8 @@ const keyValuePairs: [string, dataInformations][] = [
         IndexeDataFieldsB.QDD3Ar2,
         {
             label: {
-                FR: "En excluant l'entreprise visée par l'étude, le nombre d'entreprises toujours en activité crées par le propriétaire est :",
-                EN: 'Excluing their current company, the number of companies still in operation created by the owner is:',
+                FR: "Nombre d'entreprises crées toujours actives",
+                EN: 'Number of companies created still active',
             },
             dataLabels: {
                 0: {
@@ -2137,8 +2137,8 @@ const keyValuePairs: [string, dataInformations][] = [
         IndexeDataFieldsB.QD14A,
         {
             label: {
-                FR: "L'entreprise est-elle active à l'exterieur de sa région administrative ?",
-                EN: 'Is the company active outside of its administrative region ?',
+                FR: "Activité à l'exterieur de la zone administrative",
+                EN: 'Activity outside of administrative region',
             },
             dataLabels: {
                 ...oui1non2,
@@ -2149,8 +2149,8 @@ const keyValuePairs: [string, dataInformations][] = [
         IndexeDataFieldsB.QD14B,
         {
             label: {
-                FR: "L'entreprise est-elle active à l'exterieur de sa province ?",
-                EN: 'Is the company active outside of its provice ?',
+                FR: "Activité à l'exterieur de sa province",
+                EN: 'Activity outside of its province',
             },
             dataLabels: {
                 ...oui1non2,
@@ -2161,8 +2161,8 @@ const keyValuePairs: [string, dataInformations][] = [
         IndexeDataFieldsB.QD14C,
         {
             label: {
-                FR: "L'entreprise est-elle active à l'exterieur du Canada ?",
-                EN: 'Is the company active outside of Canada ?',
+                FR: "Activité à l'exterieur du Canada",
+                EN: 'Activity outside of Canada',
             },
             dataLabels: {
                 ...oui1non2,
@@ -2328,8 +2328,8 @@ const keyValuePairs: [string, dataInformations][] = [
         IndexeDataFieldsB.QH1,
         {
             label: {
-                FR: 'Le propriétaire souhaite prendre sa retraite dans : ',
-                EN: 'The owner wishes to retire in:',
+                FR: 'Horizons de retraite propriétaire',
+                EN: 'Retierement horizons owner',
             },
             dataLabels: {
                 1: {
@@ -2368,8 +2368,8 @@ const keyValuePairs: [string, dataInformations][] = [
         IndexeDataFieldsB.QH2,
         {
             label: {
-                FR: 'Après sa retraite, le propriétaire souhaite : ',
-                EN: 'After retirement, the owner wishes to :',
+                FR: 'Plans après retraite, propriétaire',
+                EN: 'Post retierment plans, owner',
             },
             dataLabels: {
                 1: {
@@ -2443,8 +2443,8 @@ const keyValuePairs: [string, dataInformations][] = [
         IndexeDataFieldsB.QREP2B,
         {
             label: {
-                FR: "Le propriétaire a-t-il un/des successeur(s) en tête pour l'entreprise ?",
-                EN: 'Does the owner have perspective buyers/successors for their buisness ?',
+                FR: 'Achteurs/successeurs potentiels',
+                EN: 'Perspective buyers/successors',
             },
             dataLabels: {
                 1: {
@@ -2466,8 +2466,8 @@ const keyValuePairs: [string, dataInformations][] = [
         IndexeDataFieldsB.QREP1x,
         {
             label: {
-                FR: "Le plan de succession de l'entreprise est : ",
-                EN: 'The succession plan for the company is ?',
+                FR: 'Plan de succession',
+                EN: 'Succession plan',
             },
             dataLabels: {
                 0: {
@@ -2528,8 +2528,8 @@ const keyValuePairs: [string, dataInformations][] = [
         IndexeDataFieldsB.QREP5, // Wait for answer
         {
             label: {
-                FR: 'Le propriétaire a-t-il déjà eut recours à du support externe pour des conseils juridiques ?',
-                EN: 'Has the owner used external support for legal advice ?',
+                FR: 'Support externe',
+                EN: 'External support',
             },
             dataLabels: {
                 QREP5r1: { FR: 'Conseil Légal', EN: 'Legal Advice' },
@@ -2645,8 +2645,8 @@ const keyValuePairs: [string, dataInformations][] = [
         IndexeDataFieldsB.QREP7, // Wait for answer
         {
             label: {
-                FR: 'Le propriétaire souhaite vendre/transmettre son entreprise. Comment envisage-t-il sa vie ensuite ?',
-                EN: 'The owner wishes to sell/transfer his company. How does he envision his life afterwards ?',
+                FR: 'Plans après vente/transfert, propriétaire',
+                EN: 'Plans post sale/transfert, owner',
             },
             dataLabels: {
                 QREP5r1: {
@@ -2830,8 +2830,8 @@ const keyValuePairs: [string, dataInformations][] = [
         IndexeDataFieldsB.QREP8, // Wait for answer
         {
             label: {
-                FR: 'Le propriétaire souhaite vendre/transmettre son entreprise. Quel sera son rôle ensuite?',
-                EN: 'The owner wishes to sell/transfer his company. What role will he asume afterwards ?',
+                FR: 'Role après vente/transfert, propriétaire',
+                EN: 'Role post sale/transfert, owner',
             },
             dataLabels: {
                 QREP5r1: {
@@ -3028,8 +3028,8 @@ const keyValuePairs: [string, dataInformations][] = [
         IndexeDataFieldsB.QD16,
         {
             label: {
-                FR: "L'entreprise a-t-elle un jour l'envie d'être active au niveau international ?",
-                EN: 'Does the company want to, one day, be active on an international level ?',
+                FR: "Plans d'être actif à l'international",
+                EN: 'Plans for international activity',
             },
             dataLabels: {
                 1: {
@@ -3051,8 +3051,8 @@ const keyValuePairs: [string, dataInformations][] = [
         IndexeDataFieldsB.QD16A,
         {
             label: {
-                FR: "Les raisons qui expliquent la non-considération d'une possible activité internationale : ",
-                EN: 'The reasons which explain the non-consideration of a possible international activity : ',
+                FR: "Raisons pour la non-considération de l'acivité internationale",
+                EN: 'Reasonsexplain the non-consideration of international activity',
             },
             dataLabels: {
                 1: {
@@ -3102,8 +3102,8 @@ const keyValuePairs: [string, dataInformations][] = [
         IndexeDataFieldsB.QZ19,
         {
             label: {
-                FR: "Chiffre d'affaire annuel au courrant de la dernière année",
-                EN: 'Annual revenue during the last year',
+                FR: "Chiffre d'affaire annuel",
+                EN: 'Annual revenue',
             },
             dataLabels: {
                 1: {
@@ -3169,8 +3169,8 @@ const keyValuePairs: [string, dataInformations][] = [
         IndexeDataFieldsA.QE1x,
         {
             label: {
-                FR: 'Intensions du répondant',
-                EN: "respondents' intentions",
+                FR: 'Intentions du répondant',
+                EN: "Respondents' intentions",
             },
             dataLabels: {
                 1: {
@@ -3196,8 +3196,8 @@ const keyValuePairs: [string, dataInformations][] = [
         IndexeDataFieldsA.QE1Cx,
         {
             label: {
-                FR: "Le répondant a l'intention de créer une nouvelle entreprise :",
-                EN: 'The respondent want to create a new company : ',
+                FR: "Intention de création d'entreprise",
+                EN: 'Company creation intentions',
             },
             dataLabels: {
                 1: {
@@ -3220,7 +3220,7 @@ const keyValuePairs: [string, dataInformations][] = [
         IndexeDataFieldsA.QE3,
         {
             label: {
-                FR: 'Délais envisagés pour créer ou reprendre une entreprise',
+                FR: 'Délais pour créer ou reprendre une entreprise',
                 EN: 'Timeline for Starting or Acquiring a Business',
             },
             dataLabels: {
@@ -3263,8 +3263,8 @@ const keyValuePairs: [string, dataInformations][] = [
         IndexeDataFieldsA.QE6,
         {
             label: {
-                FR: "Les secteurs d'activité considérés par le répondant sont : ",
-                EN: 'The sectors of activity considered by the respondent are:',
+                FR: "Les secteurs d'activité considérés",
+                EN: 'The sectors of activity considered',
             },
             dataLabels: {
                 1: {
@@ -3350,8 +3350,8 @@ const keyValuePairs: [string, dataInformations][] = [
         IndexeDataFieldsA.QE8r1,
         {
             label: {
-                FR: "Pour accélérer le passage à l'action, la présence d'un mentor pour accompagner durant les premières années d'activités est :",
-                EN: 'To accelerate the move to action, the presence of a mentor to support during the first years of activities is :',
+                FR: "Importance d'un mentor",
+                EN: 'Importance of a mentor',
             },
             dataLabels: { ...satisfactionChartValues },
         },
@@ -3360,8 +3360,8 @@ const keyValuePairs: [string, dataInformations][] = [
         IndexeDataFieldsA.QE8r2,
         {
             label: {
-                FR: "Pour accélérer le passage à l'action, un partenaire d'affaires afin de partager les coûts et les risques est :",
-                EN: 'To accelerate the move to action, having a buisness partner to share cost and risk is :',
+                FR: "Importance d'un partenaire d'affaires",
+                EN: 'Importance of a buisness partner',
             },
             dataLabels: { ...satisfactionChartValues },
         },
@@ -3370,8 +3370,8 @@ const keyValuePairs: [string, dataInformations][] = [
         IndexeDataFieldsA.QE8r3,
         {
             label: {
-                FR: "Pour accélérer le passage à l'action, avoir de l'information sur des entreprises existantes à reprendre est :",
-                EN: 'To accelerate the move to action, having information on existing companies in need of a successor is :',
+                FR: "Importance de l'information sur des entreprises existantes à reprendre",
+                EN: 'Importance of  information on existing companies in need of a successor',
             },
             dataLabels: { ...satisfactionChartValues },
         },
@@ -3380,8 +3380,8 @@ const keyValuePairs: [string, dataInformations][] = [
         IndexeDataFieldsA.QE8r4,
         {
             label: {
-                FR: "Pour accélérer le passage à l'action, avoir une occasion d'affaires est :",
-                EN: 'To accelerate the move to action, having a business opportunity is :',
+                FR: "Inportance d'une occasion d'affaires",
+                EN: 'Importance of a business opportunity ',
             },
             dataLabels: { ...satisfactionChartValues },
         },
@@ -3390,8 +3390,8 @@ const keyValuePairs: [string, dataInformations][] = [
         IndexeDataFieldsA.QE8r5,
         {
             label: {
-                FR: "Pour accélérer le passage à l'action, avoir de l'information sur le démarrage d'entreprises est :",
-                EN: 'To accelerate the move to action, having information on starting a business is :',
+                FR: "Importance de l'information sur le démarrage d'entreprises",
+                EN: 'Importance of information on starting a business',
             },
             dataLabels: { ...satisfactionChartValues },
         },
@@ -3400,8 +3400,8 @@ const keyValuePairs: [string, dataInformations][] = [
         IndexeDataFieldsA.QE8r6,
         {
             label: {
-                FR: "Pour accélérer le passage à l'action, avoir de l'aide gouvernementale/le financement public sous toutes formes est :",
-                EN: 'To accelerate the move to action, having governmental/public financing is :',
+                FR: "Importance de l'aide gouvernementale/le financement public sous toutes formes",
+                EN: 'Importance of governmental/public financing',
             },
             dataLabels: { ...satisfactionChartValues },
         },
@@ -3410,8 +3410,8 @@ const keyValuePairs: [string, dataInformations][] = [
         IndexeDataFieldsA.QE8r7,
         {
             label: {
-                FR: "Pour accélérer le passage à l'action, avoir de l'aide aux entreprises/le financement privé (taux bancaire réduit, services professionnels avantageux, etc.) est :",
-                EN: 'To accelerate the move to action, having business assistance/private financing (reduced bank rates, advantageous professional services, etc.) is:',
+                FR: "Importance de l'aide aux entreprises/le financement privé (taux bancaire réduit, services professionnels avantageux, etc.)",
+                EN: 'Importance of business assistance/private financing (reduced bank rates, advantageous professional services, etc.)',
             },
             dataLabels: { ...satisfactionChartValues },
         },
@@ -3420,8 +3420,8 @@ const keyValuePairs: [string, dataInformations][] = [
         IndexeDataFieldsA.QE8r8,
         {
             label: {
-                FR: "Pour accélérer le passage à l'action, le changement dans le contexte économique (perte massive d'emploi, dégradation des conditions de travail, etc.) est :",
-                EN: 'To accelerate the move to action, the change in the economic context (massive loss of jobs, including mine, deterioration of working conditions, etc.) is:',
+                FR: "Importance du changement dans le contexte économique (perte massive d'emploi, dégradation des conditions de travail, etc.)",
+                EN: 'Importance of the change in the economic context (massive loss of jobs, including mine, deterioration of working conditions, etc.)',
             },
             dataLabels: { ...satisfactionChartValues },
         },
@@ -3430,8 +3430,8 @@ const keyValuePairs: [string, dataInformations][] = [
         IndexeDataFieldsA.QE8r9,
         {
             label: {
-                FR: "Pour accélérer le passage à l'action, avoir l'accompagnement d'un conseiller pour aider à démarrer ou reprendre une entreprise est :",
-                EN: 'To accelerate the move to action, having the support of an advisor to help start or take over a business is:',
+                FR: "Importance de l'accompagnement d'un conseiller pour aider à démarrer ou reprendre une entreprise",
+                EN: 'Importance of the support of an advisor to help start or take over a business',
             },
             dataLabels: { ...satisfactionChartValues },
         },
@@ -3440,8 +3440,8 @@ const keyValuePairs: [string, dataInformations][] = [
         IndexeDataFieldsA.QE8r10,
         {
             label: {
-                FR: "Pour accélérer le passage à l'action, avoir de la motivation personnelle à passer à l'action est :",
-                EN: 'To accelerate action, having personal motivation to take action is:',
+                FR: "Importance de la motivation personnelle à passer à l'action",
+                EN: 'Importance of having personal motivation to take action',
             },
             dataLabels: { ...satisfactionChartValues },
         },
@@ -3450,8 +3450,8 @@ const keyValuePairs: [string, dataInformations][] = [
         IndexeDataFieldsA.QE8r11,
         {
             label: {
-                FR: "Pour accélérer le passage à l'action, l'augmentation des compétences / expériences du répondant est :",
-                EN: "To accelerate the move to action, increasing the respondent's skills/experience is:",
+                FR: "Importance l'augmentation des compétences / expériences du répondant",
+                EN: "Importance of the move to action, increasing the respondent's skills/experience",
             },
             dataLabels: { ...satisfactionChartValues },
         },
@@ -3460,8 +3460,8 @@ const keyValuePairs: [string, dataInformations][] = [
         IndexeDataFieldsA.QE8r12,
         {
             label: {
-                FR: "Pour accélérer le passage à l'action, la perte d'emploi du répondant est :",
-                EN: "To accelerate the move to action, the respondent's job loss is:",
+                FR: "Importance de la perte d'emploi du répondant",
+                EN: "Importance of the respondent's job loss",
             },
             dataLabels: { ...satisfactionChartValues },
         },
@@ -3470,8 +3470,8 @@ const keyValuePairs: [string, dataInformations][] = [
         IndexeDataFieldsA.QE8r13,
         {
             label: {
-                FR: "Pour accélérer le passage à l'action, le soutien de l'entourage du répondant est :",
-                EN: 'To accelerate the move to action, support from those around the respondent is:',
+                FR: "Importance du soutien de l'entourage du répondant",
+                EN: 'Importance the support from those around the respondent',
             },
             dataLabels: { ...satisfactionChartValues },
         },
@@ -3480,8 +3480,8 @@ const keyValuePairs: [string, dataInformations][] = [
         IndexeDataFieldsA.QE8r14,
         {
             label: {
-                FR: "Pour accélérer le passage à l'action, finir les études en cours du répondant est :",
-                EN: "To accelerate the move to action, finishing the respondent's current studies is:",
+                FR: 'Importance de finir les études en cours du répondant',
+                EN: "Importance of finishing the respondent's current studies",
             },
             dataLabels: { ...satisfactionChartValues },
         },
@@ -3490,8 +3490,8 @@ const keyValuePairs: [string, dataInformations][] = [
         IndexeDataFieldsA.QE8r15,
         {
             label: {
-                FR: "Pour accélérer le passage à l'action, la situation familiale (que les enfants grandissent, etc.) du répondant est :",
-                EN: 'To accelerate the move to action, the family situation (whether the children are growing up, etc.) of the respondent is:',
+                FR: 'Importance de la situation familiale (que les enfants grandissent, etc.) du répondant',
+                EN: 'Importance of the family situation (whether the children are growing up, etc.) of the respondent',
             },
             dataLabels: { ...satisfactionChartValues },
         },
@@ -3500,8 +3500,8 @@ const keyValuePairs: [string, dataInformations][] = [
         IndexeDataFieldsA.QE8r16,
         {
             label: {
-                FR: "Pour accélérer le passage à l'action, mieux définir et évaluer l'idée du répondant est :",
-                EN: "To accelerate the move to action, better define and evaluate the respondent's idea is:",
+                FR: "Importance de mieux définir et évaluer l'idée du répondant",
+                EN: "Importance of better define and evaluate the respondent's idea",
             },
             dataLabels: { ...satisfactionChartValues },
         },
@@ -3510,8 +3510,8 @@ const keyValuePairs: [string, dataInformations][] = [
         IndexeDataFieldsA.QE8r17,
         {
             label: {
-                FR: "Pour accélérer le passage à l'action, des conditions économiques davantage favorables est :",
-                EN: 'To accelerate the move to action, more favorable economic conditions are:',
+                FR: 'Importance des conditions économiques davantage favorables',
+                EN: 'Importance of more favorable economic conditions',
             },
             dataLabels: { ...satisfactionChartValues },
         },
@@ -3520,8 +3520,8 @@ const keyValuePairs: [string, dataInformations][] = [
         IndexeDataFieldsA.QE8r18,
         {
             label: {
-                FR: "Pour accélérer le passage à l'action, avoir de l’information sur les avantages et inconvénients des différentes formes juridiques d’une entreprise est :",
-                EN: 'To speed up the move to action, having information on the advantages and disadvantages of the different legal forms of a business is:',
+                FR: 'Importance de l’information sur les avantages et inconvénients des différentes formes juridiques',
+                EN: 'Importance of information on the advantages and disadvantages of the different legal forms',
             },
             dataLabels: { ...satisfactionChartValues },
         },
@@ -3530,8 +3530,8 @@ const keyValuePairs: [string, dataInformations][] = [
         IndexeDataFieldsA.QE8r19,
         {
             label: {
-                FR: "Pour accélérer le passage à l'action, connaître les intentions de transfert (vente) de la(des) propriétaire(s) de l'entreprise pour laquelle le répondant travaille est :",
-                EN: 'To speed up the move to action, knowing the transfer (sale) intentions of the owner(s) of the company for which the respondent works is:',
+                FR: "Importance de connaître les intentions de transfert (vente) de la(des) propriétaire(s) de l'entreprise pour laquelle le répondant travaille",
+                EN: 'Importance of knowing the transfer (sale) intentions of the owner(s) of the company for which the respondent works',
             },
             dataLabels: { ...satisfactionChartValues },
         },
@@ -3851,11 +3851,7 @@ function getFieldLabels(dataField: any, language: Language): string[] {
     ).map((value) => value[language]);
 }
 
-function getFieldLabel(
-    dataField: any,
-    field: string,
-    language: Language,
-): string {
+function getFieldLabel(dataField: any, field: any, language: Language): string {
     const dataLabels =
         TableauxTraductionsMainDataFields.get(dataField)?.dataLabels;
     const fieldLabel = dataLabels?.[field]?.[language];
