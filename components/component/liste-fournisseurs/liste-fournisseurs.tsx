@@ -150,17 +150,31 @@ export default function ListeFournisseurs({
 
     function populateTable() {
         return fournisseurs.map((fournisseur, index) => {
-            return (
-                <FournisseurListElement
-                    key={index}
-                    fournisseur={fournisseur}
-                    index={index}
-                    admin={admin}
-                    onClickEdit={openEditDialog}
-                    onClickDelete={openDeleteDialog}
-                    onClickVisible={toggleFournisseurVisibility}
-                ></FournisseurListElement>
-            );
+            if (fournisseur.visible)
+                return (
+                    <FournisseurListElement
+                        key={index}
+                        fournisseur={fournisseur}
+                        index={index}
+                        admin={admin}
+                        onClickEdit={openEditDialog}
+                        onClickDelete={openDeleteDialog}
+                        onClickVisible={toggleFournisseurVisibility}
+                    ></FournisseurListElement>
+                );
+
+            if (admin)
+                return (
+                    <FournisseurListElement
+                        key={index}
+                        fournisseur={fournisseur}
+                        index={index}
+                        admin={admin}
+                        onClickEdit={openEditDialog}
+                        onClickDelete={openDeleteDialog}
+                        onClickVisible={toggleFournisseurVisibility}
+                    ></FournisseurListElement>
+                );
         });
     }
 
@@ -293,6 +307,45 @@ function FournisseurListElement({
             {/* Main Row */}
             {!isOpen ? (
                 <td colSpan={2} className="p-2">
+                    <div className="flex-row justify-evenly mb-4 hidden group-hover:flex absolute top-[25%] right-3 space-x-4">
+                        {admin && (
+                            <Button
+                                buttonType={ButtonType.ICON}
+                                onClick={(e) => {
+                                    handleButtonClick(e);
+                                    onClickEdit(fournisseur);
+                                }}
+                            >
+                                <EditSVG className="hover:scale-150 hover:fill-white fill-custom-grey"></EditSVG>
+                            </Button>
+                        )}
+                        {admin && (
+                            <Button
+                                buttonType={ButtonType.ICON}
+                                onClick={(e) => {
+                                    handleButtonClick(e);
+                                    onClickDelete(fournisseur);
+                                }}
+                            >
+                                <TrashSVG className="hover:scale-150 hover:fill-white fill-custom-grey"></TrashSVG>
+                            </Button>
+                        )}
+                        {admin && (
+                            <Button
+                                buttonType={ButtonType.ICON}
+                                onClick={(e) => {
+                                    handleButtonClick(e);
+                                    onClickVisible(fournisseur);
+                                }}
+                            >
+                                {fournisseur.visible ? (
+                                    <VisibleSVG className="hover:scale-150 hover:fill-white fill-custom-grey"></VisibleSVG>
+                                ) : (
+                                    <InvisibleSVG className="hover:scale-150 hover:fill-white fill-custom-grey"></InvisibleSVG>
+                                )}
+                            </Button>
+                        )}
+                    </div>
                     <div className="flex space-x-4 w-full">
                         <p className="font-bold">
                             {fournisseur.contact.firstName +
@@ -304,6 +357,45 @@ function FournisseurListElement({
             ) : (
                 <>
                     <td className="p-2 align-top flex flex-row justify-between">
+                        <div className="flex-row justify-evenly mb-4 hidden group-hover:flex absolute top-[25%] right-3 space-x-4">
+                            {admin && (
+                                <Button
+                                    buttonType={ButtonType.ICON}
+                                    onClick={(e) => {
+                                        handleButtonClick(e);
+                                        onClickEdit(fournisseur);
+                                    }}
+                                >
+                                    <EditSVG className="hover:scale-150 hover:fill-white fill-custom-grey"></EditSVG>
+                                </Button>
+                            )}
+                            {admin && (
+                                <Button
+                                    buttonType={ButtonType.ICON}
+                                    onClick={(e) => {
+                                        handleButtonClick(e);
+                                        onClickDelete(fournisseur);
+                                    }}
+                                >
+                                    <TrashSVG className="hover:scale-150 hover:fill-white fill-custom-grey"></TrashSVG>
+                                </Button>
+                            )}
+                            {admin && (
+                                <Button
+                                    buttonType={ButtonType.ICON}
+                                    onClick={(e) => {
+                                        handleButtonClick(e);
+                                        onClickVisible(fournisseur);
+                                    }}
+                                >
+                                    {fournisseur.visible ? (
+                                        <VisibleSVG className="hover:scale-150 hover:fill-white fill-custom-grey"></VisibleSVG>
+                                    ) : (
+                                        <InvisibleSVG className="hover:scale-150 hover:fill-white fill-custom-grey"></InvisibleSVG>
+                                    )}
+                                </Button>
+                            )}
+                        </div>
                         <div className="flex flex-col">
                             <p className="font-bold">
                                 {fournisseur.contact.firstName +

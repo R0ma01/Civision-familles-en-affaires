@@ -6,7 +6,7 @@ import {
 import { FournisseurDataFields } from '@/components/enums/data-types-enum';
 
 export interface Fournisseur {
-    _id: string;
+    _id?: string;
     contact: {
         lastName: string;
         firstName: string;
