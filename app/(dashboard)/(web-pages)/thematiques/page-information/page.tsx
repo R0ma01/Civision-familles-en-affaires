@@ -13,6 +13,9 @@ import useDataStore from '@/reducer/dataStore';
 import useGlobalFilterStore from '@/stores/global-filter-store';
 import { DataBaseOrigin } from '@/components/enums/data-types-enum';
 import useGlobalDataStore from '@/stores/global-data-store';
+import useGlobalUserStore from '@/stores/global-user-store';
+import InformationPageTutorial from '@/components/component/tutorials/information-page-tutorial';
+import { TutorialPages, UserType } from '@/components/enums/user-type-enum';
 
 function PageContentComponent() {
     const { resetFilters } = useGlobalFilterStore((state) => ({
@@ -37,6 +40,29 @@ function PageContentComponent() {
             };
         },
     );
+
+    const { user, tutorials, updateCompletedTutorials } = useGlobalUserStore(
+        (state: any) => ({
+            user: state.user,
+            tutorials: state.tutorials,
+            updateCompletedTutorials: state.updateCompletedTutorials,
+        }),
+    );
+
+    function onComplete() {
+        const newTuts = [...tutorials];
+        newTuts[TutorialPages.PAGE_INFORMATION] = true;
+        updateCompletedTutorials(newTuts);
+    }
+
+    useEffect(() => {
+        if (user !== UserType.VISITOR) {
+            if (!tutorials[TutorialPages.PAGE_INFORMATION]) {
+                const tour = InformationPageTutorial(onComplete);
+                tour.start();
+            }
+        }
+    }, []);
 
     const { filterStudyData, filterIndexeAData, filterIndexeBData } =
         useGlobalDataStore((state: any) => ({

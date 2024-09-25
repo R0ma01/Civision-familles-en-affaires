@@ -7,6 +7,7 @@ import useDataStore from '@/reducer/dataStore';
 import { DataBaseOrigin } from '@/components/enums/data-types-enum';
 import { Language } from '@/components/enums/language';
 import useGlobalFilterStore from '@/stores/global-filter-store';
+import { html_object_constants } from '@/constants/constants';
 
 interface TabProps {
     tabs: TabContent[];
@@ -69,6 +70,7 @@ export function TabContainer({
 
                             return (
                                 <div
+                                    id={`${html_object_constants.tab_notch_id}-${index}`}
                                     key={`${tab.tabType}-${index}`} // Unique key
                                     onClick={() => setSelectedTab(index)} // Set the active tab
                                     className={`dark:text-white hover:bg-gray-700 dark:hover:bg-gray-300 text-black bg-opacity-75 cursor-pointer border-black dark:border-white md:text-xs lg:tx-sm px-4 py-2 transition-all duration-200 rounded-t-xl border-b-0 ${className}`}

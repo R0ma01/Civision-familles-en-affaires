@@ -4,8 +4,6 @@ import PageContentContainer from '@/components/component/page-content-container/
 import useMapStore from '@/stores/global-map-store';
 import { useEffect, useState } from 'react';
 import { EditFournisseurDialog } from '@/components/component/dialogs/edit-fournisseur-dialog';
-import useGlobalUserStore from '@/stores/global-user-store';
-import { UserType } from '@/components/enums/user-type-enum';
 import { MapType } from '@/components/enums/map-type-enum';
 import { useFournisseurActions } from './use-fournisseur-actions';
 import DeleteItemDialog from '@/components/component/dialogs/delete-page-dialog';
@@ -16,13 +14,14 @@ import { FournisseurPromptsTranslations } from '@/constants/translations/page-pr
 import useDataStore from '@/reducer/dataStore';
 import useGlobalFilterStore from '@/stores/global-filter-store';
 import { Fournisseur } from '@/components/interface/fournisseur';
+import useGlobalUserStore from '@/stores/global-user-store';
+import FournisseurPageTutorial from '@/components/component/tutorials/fournisseur-page-tutorial';
+import { TutorialPages, UserType } from '@/components/enums/user-type-enum';
+import { ButtonType } from '@/components/enums/button-type-enum';
+import Button from '@/components/component/buttons/button';
 
 function Fournisseurs() {
     const lang: Language = useDataStore((state) => state.lang);
-
-    const { user } = useGlobalUserStore((state: any) => ({
-        user: state.user,
-    }));
 
     const { matchStage, resetFilters } = useGlobalFilterStore((state) => ({
         resetFilters: state.resetFilters,
@@ -63,6 +62,28 @@ function Fournisseurs() {
         filterFournisseurData: state.filterFournisseurData,
     }));
 
+    const { user, tutorials, updateCompletedTutorials } = useGlobalUserStore(
+        (state: any) => ({
+            user: state.user,
+            tutorials: state.tutorials,
+            updateCompletedTutorials: state.updateCompletedTutorials,
+        }),
+    );
+
+    function onComplete() {
+        const newTuts = [...tutorials];
+        newTuts[TutorialPages.FOURNISSEUR] = true;
+        updateCompletedTutorials(newTuts);
+    }
+    useEffect(() => {
+        if (user !== UserType.VISITOR) {
+            if (!tutorials[TutorialPages.FOURNISSEUR]) {
+                const tour = FournisseurPageTutorial(onComplete);
+                tour.start();
+            }
+        }
+    }, []);
+
     useEffect(() => {
         async function fetch() {
             console.log(matchStage);
@@ -95,6 +116,20 @@ function Fournisseurs() {
                     openDeleteDialog={openDeleteDialog}
                     toggleFournisseurVisibility={toggleFournisseurVisibility}
                 ></ListeFournisseurs>
+
+                <Button
+                    buttonType={ButtonType.CONFIRM}
+                    onClick={() =>
+                        window.open(
+                            'https://forms.gle/VtgaNgAnswbNTUHT8',
+                            '_blank',
+                        )
+                    }
+                    className="m-3 self-center"
+                    title="redirect:https://forms.gle/VtgaNgAnswbNTUHT8"
+                >
+                    Inscrivez-vous sur la liste
+                </Button>
 
                 {isEditDialogOpen && currentFournisseur && (
                     <EditFournisseurDialog

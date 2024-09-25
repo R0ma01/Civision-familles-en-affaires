@@ -8,6 +8,7 @@ export const html_object_constants = {
     filter_menu_id: 'filter-menu',
     search_box_id: 'search-box',
     theme_card_id: 'theme-card',
+    tab_notch_id: 'tab-notch',
     offset: -0.045,
 };
 

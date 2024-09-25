@@ -1,8 +1,7 @@
 import Shepherd from 'shepherd.js';
 import 'shepherd.js/dist/css/shepherd.css';
-import { html_object_constants } from '@/constants/constants';
 
-const AdminPageTutorial = (onComplete: any) => {
+const FournisseurPageTutorial = (onComplete: any) => {
     const tour = new Shepherd.Tour({
         useModalOverlay: true,
         defaultStepOptions: {
@@ -11,17 +10,13 @@ const AdminPageTutorial = (onComplete: any) => {
         },
         steps: [
             {
-                id: 'prompt-1',
-                text: 'Si vous survolez les cartes, de nouvelles options aparaissent',
-                attachTo: {
-                    element:
-                        '#' + html_object_constants.theme_card_id + '-' + 0,
-                    on: 'left',
-                },
+                id: 'prompt-6',
+                text: "Sur cette page vous pourez trouver une liste ainsi que les coordonnées d'une sélection de fournissurs de services utiles pour les entreprises familiales du Québec. Si vous avez des services à offrir, vous pourrez vous inscrire suir la liste via le formulaire sur la page.",
+
                 classes: 'shepeard-modal',
                 buttons: [
                     {
-                        text: 'Terminer',
+                        text: 'Termimer',
                         action: () => {
                             onComplete();
                             tour.complete();
@@ -35,4 +30,4 @@ const AdminPageTutorial = (onComplete: any) => {
     return tour;
 };
 
-export default AdminPageTutorial;
+export default FournisseurPageTutorial;

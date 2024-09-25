@@ -14,6 +14,8 @@ import useDataStore from '@/reducer/dataStore';
 import { chartPalette } from '@/constants/color-palet';
 import { PieChart, Pie, Cell, Label } from 'recharts';
 import useGlobalDataStore from '@/stores/global-data-store';
+import useGlobalUserStore from '@/stores/global-user-store';
+import { TutorialPages, UserType } from '@/components/enums/user-type-enum';
 
 const data = [
     { name: 'Group A', value: 63.1 },
@@ -102,12 +104,33 @@ const DataCardDiv: React.FC<{
 function Repertoire() {
     const lang: Language = useDataStore((state) => state.lang);
 
-    const tour = RepertoirePageTutorial();
-
     const { mapType, setMapStyle } = useMapStore((state) => ({
         setMapStyle: state.setMapStyle,
         mapType: state.mapType,
     }));
+
+    const { user, tutorials, updateCompletedTutorials } = useGlobalUserStore(
+        (state: any) => ({
+            user: state.user,
+            tutorials: state.tutorials,
+            updateCompletedTutorials: state.updateCompletedTutorials,
+        }),
+    );
+
+    function onComplete() {
+        const newTuts = [...tutorials];
+        newTuts[TutorialPages.REPERTOIRE] = true;
+        updateCompletedTutorials(newTuts);
+    }
+
+    useEffect(() => {
+        if (user !== UserType.VISITOR) {
+            if (!tutorials[TutorialPages.REPERTOIRE]) {
+                const tour = RepertoirePageTutorial(onComplete);
+                tour.start();
+            }
+        }
+    }, []);
 
     const repertoireData = useGlobalDataStore(
         (state: any) => state.repertoireData,

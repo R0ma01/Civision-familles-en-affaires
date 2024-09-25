@@ -23,6 +23,19 @@ const DisconnectDialog: React.FC<DisconnectDialogProps> = ({ closeDialog }) => {
         setLoginTutorials: state.setLoginTutorials,
     }));
 
+    function clearCookies() {
+        localStorage.removeItem('token');
+        localStorage.removeItem('adminToken');
+    }
+
+    function clearZustandStore() {
+        // Replace 'zustand_store_key' with the actual key used by Zustand in localStorage
+        console.log('i am called');
+        localStorage.removeItem('global-data-store');
+        localStorage.removeItem('global-page-store');
+        localStorage.removeItem('global-user-store');
+    }
+
     useEffect(() => {
         const handleEsc = (event: any) => {
             if (event.keyCode === 27) {
@@ -43,9 +56,12 @@ const DisconnectDialog: React.FC<DisconnectDialogProps> = ({ closeDialog }) => {
             const response = await axios.post(`/api/auth/logout`, {});
 
             if (response.status === 200) {
+                clearCookies();
+                clearZustandStore();
                 router.push(PagePaths.HOME);
                 setUser(UserType.VISITOR);
                 setLoginTutorials([]);
+
                 closeDialog();
             } else {
                 console.error('Failed to log out');
@@ -77,3 +93,4 @@ const DisconnectDialog: React.FC<DisconnectDialogProps> = ({ closeDialog }) => {
 };
 
 export default DisconnectDialog;
+// Helper to clear cookies

@@ -3,7 +3,6 @@ import React, { useCallback, useEffect, useState } from 'react';
 import PageContentContainer from '@/components/component/page-content-container/page-content-container';
 import ThemeCard from '@/components/component/theme-card/theme-card';
 import useGlobalUserStore from '@/stores/global-user-store';
-import { UserType } from '@/components/enums/user-type-enum';
 import DeleteItemDialog from '@/components/component/dialogs/delete-page-dialog';
 import { AddCircleSVG } from '@/components/component/svg-icons/svg-icons';
 import { ButtonType } from '@/components/enums/button-type-enum';
@@ -17,6 +16,9 @@ import useDataStore from '@/reducer/dataStore';
 import { AdminModal } from '@/components/component/admin-modal/admin-modal';
 import { Language } from '@/components/enums/language';
 import { PageHttpRequestService } from '@/services/page-http-request-service';
+import AdminPageTutorial from '@/components/component/tutorials/admin-page-tutorial';
+import { TutorialPages, UserType } from '@/components/enums/user-type-enum';
+import { html_object_constants } from '@/constants/constants';
 
 export default function Admin() {
     const lang: Language = useDataStore((state) => state.lang);
@@ -28,10 +30,29 @@ export default function Admin() {
         backgroundImage: '',
         visible: false,
     };
+    const { user, tutorials, updateCompletedTutorials } = useGlobalUserStore(
+        (state: any) => ({
+            user: state.user,
+            tutorials: state.tutorials,
+            updateCompletedTutorials: state.updateCompletedTutorials,
+        }),
+    );
 
-    const { user } = useGlobalUserStore((state: any) => ({
-        user: state.user,
-    }));
+    function onComplete() {
+        const newTuts = [...tutorials];
+        newTuts[TutorialPages.ADMIN] = true;
+        updateCompletedTutorials(newTuts);
+    }
+
+    useEffect(() => {
+        if (user !== UserType.VISITOR) {
+            if (!tutorials[TutorialPages.ADMIN]) {
+                const tour: any = AdminPageTutorial(onComplete);
+                tour.start();
+            }
+        }
+    }, []);
+
     const [fetchData, setFetch] = useState<boolean>(false);
     const [loading, setLoading] = useState<boolean>(false);
 
@@ -93,7 +114,6 @@ export default function Admin() {
         closeDeleteDialog();
         let resp = false;
         if (id) {
-            console.log('fuck youuuuu');
             resp = await PageHttpRequestService.delete(id);
             console.log(resp);
         }
@@ -130,7 +150,7 @@ export default function Admin() {
                     {pages
                         ? pages.map((page: PageTabContent, index: number) => (
                               <ThemeCard
-                                  index={index.toString()}
+                                  index={`${html_object_constants.theme_card_id}-${index}`}
                                   key={page._id || page.title} // Ensure unique key
                                   page={page}
                                   admin={user === UserType.ADMIN} // Correct comparison with user

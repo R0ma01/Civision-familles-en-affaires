@@ -167,7 +167,7 @@ export default function ListeFournisseurs({
     return (
         <div
             className={`w-[500px] bg-[#fefefe] dark:bg-[#2a2a2a] dark:text-white backdrop-blur-md bg-opacity-50 shadow-3xl
-                    rounded-xl py-8 px-10 pointer-events-auto flex flex-col items-center space-y-6 h-auto max-h-[90%] `}
+                    rounded-xl py-8 px-10 pointer-events-auto flex flex-col items-center space-y-6 h-auto max-h-[80%] `}
         >
             {/* Search and Filters */}
             <div className="flex flex-col w-full space-y-4">
@@ -229,7 +229,7 @@ export default function ListeFournisseurs({
             {/* Table with Suppliers */}
             {!loading ? (
                 <>
-                    <div className="w-full overflow-y-auto max-h-[70%] rounded-md">
+                    <div className="w-full overflow-y-auto max-h-[60%] rounded-md">
                         <table className="min-w-full">
                             <tbody>{populateTable()}</tbody>
                         </table>

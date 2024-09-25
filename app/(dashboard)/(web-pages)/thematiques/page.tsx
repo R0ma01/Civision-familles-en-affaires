@@ -13,6 +13,9 @@ import {
     ThematiquePromptsTranslations,
 } from '@/constants/translations/page-prompts';
 import useDataStore from '@/reducer/dataStore';
+import useGlobalUserStore from '@/stores/global-user-store';
+import ThematiquePageTutorial from '@/components/component/tutorials/thematique-page-tutorial';
+import { TutorialPages, UserType } from '@/components/enums/user-type-enum';
 
 export default function Thematiques() {
     const lang: Language = useDataStore((state) => state.lang);
@@ -34,6 +37,27 @@ export default function Thematiques() {
             fetchPageData: state.fetchPageData,
         };
     });
+    const { user, tutorials, updateCompletedTutorials } = useGlobalUserStore(
+        (state: any) => ({
+            user: state.user,
+            tutorials: state.tutorials,
+            updateCompletedTutorials: state.updateCompletedTutorials,
+        }),
+    );
+
+    function onComplete() {
+        const newTuts = [...tutorials];
+        newTuts[TutorialPages.THEMATIQUE] = true;
+        updateCompletedTutorials(newTuts);
+    }
+    useEffect(() => {
+        if (user !== UserType.VISITOR) {
+            if (!tutorials[TutorialPages.THEMATIQUE]) {
+                const tour = ThematiquePageTutorial(onComplete);
+                tour.start();
+            }
+        }
+    }, []);
 
     useEffect(() => {
         async function fetchPages() {

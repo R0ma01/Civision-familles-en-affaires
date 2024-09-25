@@ -44,7 +44,7 @@ const ThemeCard: React.FC<ThemeCardProps> = ({
         : `/thematiques/page-information?_id=${localContent._id}`;
 
     return (
-        <Link href={reference}>
+        <Link href={reference} id={`${index}`}>
             <article
                 className={`inline-block m-2 w-[245px] xl:w-[300px] rounded-xl shadow-xl bg-cover bg-center transform 
                     duration-500 hover:-translate-y-2 ${adminArticleCss} group`}
