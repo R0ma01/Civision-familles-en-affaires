@@ -78,6 +78,6 @@ function clearCookies() {
 function clearZustandStore() {
     // Replace 'zustand_store_key' with the actual key used by Zustand in localStorage
     localStorage.removeItem('global-data-store');
-    localStorage.removeItem('global-page-store');
+    //localStorage.removeItem('global-page-store');
     localStorage.removeItem('global-user-store');
 }
