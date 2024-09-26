@@ -24,13 +24,12 @@ export async function GET(req: Request) {
                 { status: 400 },
             );
         }
-        console.log('hello');
+
         const result = await collection
             .find(
                 {
-                    // Apply dynamic filters here using the spread operator
-                    ...filtersObj, // This will inject the filters object into the query
-                    ENT_FAM: { $exists: true }, // Ensure the existing condition is still applied
+                    ...filtersObj, // Dynamic filters
+                    ENT_FAM: true, // Query based on the indexed field, not index name
                 },
                 {
                     projection: {
@@ -40,13 +39,14 @@ export async function GET(req: Request) {
                 },
             )
             .toArray();
-        console.log('the request is taking for ever');
+
         if (!result) {
             return NextResponse.json(
                 { error: 'Document not found' },
                 { status: 404 },
             );
         }
+
         const newResult: MapClusterPointData[] = result.map((item: any) => {
             return {
                 _id: item._id,

@@ -151,7 +151,10 @@ export default function Carte() {
     ]);
 
     useEffect(() => {
-        setFournisseurMapData(convertFournisseurData(fournisseurData));
+        setFournisseurMapData(
+            convertFournisseurData(fournisseurData, matchStage),
+        );
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [fournisseurData]);
 
     return (
@@ -235,7 +238,14 @@ export default function Carte() {
     );
 }
 
-function convertFournisseurData(fournisseurs: Fournisseur[]) {
+function convertFournisseurData(
+    fournisseurs: Fournisseur[],
+    matchStage: Record<any, any>,
+) {
+    const regions = matchStage['secteurs_geographique']?.secteurs_geographique;
+    const services = matchStage['services_offerts']?.services_offerts;
+    console.log(regions);
+    console.log(services);
     const secteurCount = fournisseurs.reduce(
         (acc: any, fournisseur: Fournisseur) => {
             fournisseur.secteurs_geographique.forEach((secteur) => {
