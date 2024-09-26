@@ -1499,7 +1499,7 @@ const keyValuePairs: [string, dataInformations][] = [
                 EN: 'Number of employees',
             },
             dataLabels: {
-                '1 a 5': {
+                '1 à 5': {
                     FR: '1 à 5',
                     EN: '1 to 5',
                 },
@@ -1508,7 +1508,7 @@ const keyValuePairs: [string, dataInformations][] = [
                     EN: 'none',
                 },
 
-                '11 a 25': {
+                '11 à 25': {
                     FR: '11 à 25',
                     EN: '11 to 25',
                 },
@@ -1516,7 +1516,7 @@ const keyValuePairs: [string, dataInformations][] = [
                     FR: 'aucun',
                     EN: 'none',
                 },
-                '100 a 249': {
+                '100 à 249': {
                     FR: '100 à 249',
                     EN: '100 to 249',
                 },
@@ -1536,11 +1536,11 @@ const keyValuePairs: [string, dataInformations][] = [
                     FR: '750 à 999',
                     EN: '750 to 999',
                 },
-                '6 a 10': {
+                '6 à 10': {
                     FR: '6 à 10',
                     EN: '6 to 10',
                 },
-                '26 a 49': {
+                '26 à 49': {
                     FR: '26 à 49',
                     EN: '26 to 49',
                 },
@@ -1548,7 +1548,7 @@ const keyValuePairs: [string, dataInformations][] = [
                     FR: '250 à 499',
                     EN: '250 to 499',
                 },
-                '50 a 99': {
+                '50 à 99': {
                     FR: '50 à 99',
                     EN: '50 to 99',
                 },

@@ -70,7 +70,6 @@ export async function GET(req: Request) {
             { error: e.message },
             { status: 500 },
         );
-        errorResponse.headers.set('Cache-Control', 'no-store, max-age=0');
 
         return errorResponse;
     }
