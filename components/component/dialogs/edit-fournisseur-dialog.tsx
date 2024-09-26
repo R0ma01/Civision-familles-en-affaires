@@ -8,8 +8,13 @@ import {
     SecteursGeographiques,
     ServiceOffert,
 } from '@/components/enums/fournisseur-filter-enum';
-import ListeFournisseurs from '../liste-fournisseurs/liste-fournisseurs';
+import useDataStore from '@/reducer/dataStore';
 import { Fournisseur } from '@/components/interface/fournisseur';
+import {
+    FournisseurPromptsTranslations,
+    SharedPromptsTranslations,
+} from '@/constants/translations/page-prompts';
+import { AddCircleSVG } from '../svg-icons/svg-icons';
 
 interface EditFournisseurDialogProps {
     closeDialog: (e: any) => void;
@@ -22,6 +27,7 @@ export function EditFournisseurDialog({
     submitDialog,
     fournisseur,
 }: EditFournisseurDialogProps) {
+    const lang = useDataStore((state) => state.lang);
     const [secteursOptions, setSecteursOptions] = useState<
         SecteursGeographiques[]
     >(fournisseur.secteurs_geographique);
@@ -36,6 +42,8 @@ export function EditFournisseurDialog({
     const dialogRef = useRef<HTMLDivElement>(null);
     const secteurDropdownRef = useRef<HTMLDivElement>(null);
     const serviceDropdownRef = useRef<HTMLDivElement>(null);
+    const secteurButtonRef = useRef<HTMLButtonElement>(null);
+    const serviceButtonRef = useRef<HTMLButtonElement>(null);
 
     const addSecteur = (secteur: string) => {
         if (!secteursOptions.includes(secteur as SecteursGeographiques)) {
@@ -45,6 +53,10 @@ export function EditFournisseurDialog({
             ]);
         }
         setSecteurDropdownVisible(false); // Close the dropdown after selection
+    };
+
+    const addAllSecteur = () => {
+        setSecteursOptions(Object.values(SecteursGeographiques));
     };
 
     const removeSecteur = (secteur: string) => {
@@ -62,6 +74,10 @@ export function EditFournisseurDialog({
         setServicesOptions(servicesOptions.filter((s) => s !== service));
     };
 
+    const handleButtonClick = (e: React.MouseEvent<HTMLButtonElement>) => {
+        e.stopPropagation();
+    };
+
     useEffect(() => {
         const handleEsc = (event: KeyboardEvent) => {
             if (event.keyCode === 27) {
@@ -73,13 +89,17 @@ export function EditFournisseurDialog({
             const target = event.target as Node;
             if (
                 secteurDropdownRef.current &&
-                !secteurDropdownRef.current.contains(target)
+                !secteurDropdownRef.current.contains(target) &&
+                secteurButtonRef.current &&
+                !secteurButtonRef.current.contains(event.target as Node)
             ) {
                 setSecteurDropdownVisible(false);
             }
             if (
                 serviceDropdownRef.current &&
-                !serviceDropdownRef.current.contains(target)
+                !serviceDropdownRef.current.contains(target) &&
+                serviceButtonRef.current &&
+                !serviceButtonRef.current.contains(event.target as Node)
             ) {
                 setServiceDropdownVisible(false);
             }
@@ -177,132 +197,178 @@ export function EditFournisseurDialog({
                             </div>
                             <Field
                                 name="courriel"
-                                className="input-field w-full p-2 border border-gray-300 dark:border-gray-700 rounded-md focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400 focus:outline-none"
+                                className="w-[50%] input-field p-2 border border-gray-300 dark:border-gray-700 rounded-md focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400 focus:outline-none"
                                 placeholder="Courriel"
                                 type="email"
                             />
                             <Field
                                 name="telephone"
-                                className="input-field w-full p-2 border border-gray-300 dark:border-gray-700 rounded-md focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400 focus:outline-none"
+                                className="input-field w-[50%] p-2 border border-gray-300 dark:border-gray-700 rounded-md focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400 focus:outline-none"
                                 placeholder="Telephone"
                                 type="tel"
                             />
 
                             {/* Secteurs Geographiques */}
-                            <div className="mb-4">
-                                <label className="block text-sm font-medium dark:text-gray-300 text-gray-800 mb-1">
-                                    Secteurs Géographiques
-                                </label>
-                                <div className="flex flex-wrap gap-2">
-                                    {secteursOptions.map((secteur) => (
-                                        <div
-                                            key={secteur}
-                                            className="bg-gray-200 dark:bg-gray-700 rounded-md p-2 flex items-center space-x-2"
-                                        >
-                                            <span className="text-sm">
-                                                {secteur}
-                                            </span>
-                                            <button
-                                                type="button"
-                                                className="text-red-600 dark:text-red-400 hover:text-red-800 dark:hover:text-red-500"
-                                                onClick={() =>
-                                                    removeSecteur(secteur)
-                                                }
-                                            >
-                                                &times;
-                                            </button>
+                            <div className="w-full flex flex-row">
+                                <div className="mb-4 w-[50%] flex flex-col items-center">
+                                    <label className="block text-sm font-medium dark:text-gray-300 text-gray-800 mb-1">
+                                        {FournisseurPromptsTranslations.region[
+                                            lang
+                                        ].toString()}
+                                    </label>
+                                    <div className="flex flex-col items-center">
+                                        <div className="flex flex-wrap gap-2 items-center h-[200px] max-h-[200px] overflow-y-auto">
+                                            {secteursOptions.map((secteur) => (
+                                                <div
+                                                    key={secteur}
+                                                    className="bg-gray-200 dark:bg-gray-700 rounded-md p-2 flex items-center space-x-2"
+                                                >
+                                                    <span className="text-sm">
+                                                        {secteur}
+                                                    </span>
+                                                    <button
+                                                        type="button"
+                                                        className="text-red-600 dark:text-red-400 hover:text-red-800 dark:hover:text-red-500"
+                                                        onClick={() =>
+                                                            removeSecteur(
+                                                                secteur,
+                                                            )
+                                                        }
+                                                    >
+                                                        &times;
+                                                    </button>
+                                                </div>
+                                            ))}
                                         </div>
-                                    ))}
+                                        <div className="relative">
+                                            <button
+                                                ref={secteurButtonRef}
+                                                type="button"
+                                                className="text-white p-2 rounded-md hover:bg-blue-700 w-fit mt-2"
+                                                onClick={(e: any) => {
+                                                    handleButtonClick(e);
+                                                    setSecteurDropdownVisible(
+                                                        (prev) => !prev,
+                                                    );
+                                                }}
+                                            >
+                                                <AddCircleSVG className="dark:fill-white"></AddCircleSVG>
+                                            </button>
+                                            {isSecteurDropdownVisible && (
+                                                <DropDownSelector
+                                                    ref={secteurDropdownRef}
+                                                    values={Object.values(
+                                                        SecteursGeographiques,
+                                                    ).filter(
+                                                        (secteur: string) =>
+                                                            !secteursOptions.includes(
+                                                                secteur as SecteursGeographiques,
+                                                            ),
+                                                    )}
+                                                    select={addSecteur}
+                                                />
+                                            )}
+                                        </div>
+                                    </div>
                                     <button
                                         type="button"
-                                        className="bg-blue-600 text-white p-2 rounded-md hover:bg-blue-700"
-                                        onClick={() =>
-                                            setSecteurDropdownVisible(true)
-                                        }
+                                        className="bg-blue-600 text-white p-2 rounded-md hover:bg-blue-700 w-fit mt-2"
+                                        onClick={(e: any) => {
+                                            handleButtonClick(e);
+                                            addAllSecteur();
+                                        }}
                                     >
-                                        + Ajouter un secteur
+                                        {lang == 'FR'
+                                            ? 'Toutes les régions'
+                                            : 'All regions'}
                                     </button>
                                 </div>
-                                {isSecteurDropdownVisible && (
-                                    <DropDownSelector
-                                        ref={secteurDropdownRef}
-                                        values={Object.values(
-                                            SecteursGeographiques,
-                                        ).filter(
-                                            (secteur: string) =>
-                                                !secteursOptions.includes(
-                                                    secteur as SecteursGeographiques,
-                                                ),
-                                        )}
-                                        select={addSecteur}
-                                    />
-                                )}
-                            </div>
 
-                            {/* Services Offerts */}
-                            <div className="mb-4">
-                                <label className="block text-sm font-medium dark:text-gray-300 text-gray-800 mb-1">
-                                    Services Offerts
-                                </label>
-                                <div className="flex flex-wrap gap-2">
-                                    {servicesOptions.map((service) => (
-                                        <div
-                                            key={service}
-                                            className="bg-gray-200 dark:bg-gray-700 rounded-md p-2 flex items-center space-x-2"
-                                        >
-                                            <span className="text-sm">
-                                                {service}
-                                            </span>
-                                            <button
-                                                type="button"
-                                                className="text-red-600 dark:text-red-400 hover:text-red-800 dark:hover:text-red-500"
-                                                onClick={() =>
-                                                    removeService(service)
-                                                }
-                                            >
-                                                &times;
-                                            </button>
+                                {/* Services Offerts */}
+                                <div className="mb-4 w-[50%] flex flex-col items-center">
+                                    <label className="block text-sm font-medium dark:text-gray-300 text-gray-800 mb-1">
+                                        {FournisseurPromptsTranslations.service[
+                                            lang
+                                        ].toString()}
+                                    </label>
+                                    <div className="flex flex-col items-center space-y-4">
+                                        <div className="flex flex-wrap gap-2 items-center   h-[200px] max-h-[200px] overflow-y-auto">
+                                            {servicesOptions.map((service) => (
+                                                <div
+                                                    key={service}
+                                                    className="bg-gray-200 dark:bg-gray-700 rounded-md p-2 flex items-center space-x-2"
+                                                >
+                                                    <span className="text-sm">
+                                                        {service}
+                                                    </span>
+                                                    <button
+                                                        type="button"
+                                                        className="text-red-600 dark:text-red-400 hover:text-red-800 dark:hover:text-red-500"
+                                                        onClick={() => {
+                                                            removeService(
+                                                                service,
+                                                            );
+                                                        }}
+                                                    >
+                                                        &times;
+                                                    </button>
+                                                </div>
+                                            ))}
                                         </div>
-                                    ))}
-                                    <button
-                                        type="button"
-                                        className="bg-blue-600 text-white p-2 rounded-md hover:bg-blue-700"
-                                        onClick={() =>
-                                            setServiceDropdownVisible(true)
-                                        }
-                                    >
-                                        + Ajouter un service
-                                    </button>
+                                        <div className="relative">
+                                            <button
+                                                ref={serviceButtonRef}
+                                                type="button"
+                                                className="text-white p-2 rounded-md hover:bg-blue-700 w-fit mt-2"
+                                                onClick={(e: any) => {
+                                                    handleButtonClick(e);
+                                                    setServiceDropdownVisible(
+                                                        (prev) => !prev,
+                                                    );
+                                                }}
+                                            >
+                                                <AddCircleSVG className="dark:fill-white"></AddCircleSVG>
+                                            </button>
+                                            {isServiceDropdownVisible && (
+                                                <DropDownSelector
+                                                    ref={serviceDropdownRef}
+                                                    values={Object.values(
+                                                        ServiceOffert,
+                                                    ).filter(
+                                                        (service: string) =>
+                                                            !servicesOptions.includes(
+                                                                service as ServiceOffert,
+                                                            ),
+                                                    )}
+                                                    select={addService}
+                                                />
+                                            )}
+                                        </div>
+                                    </div>
                                 </div>
-                                {isServiceDropdownVisible && (
-                                    <DropDownSelector
-                                        ref={serviceDropdownRef}
-                                        values={Object.values(
-                                            ServiceOffert,
-                                        ).filter(
-                                            (service: string) =>
-                                                !servicesOptions.includes(
-                                                    service as ServiceOffert,
-                                                ),
-                                        )}
-                                        select={addService}
-                                    />
-                                )}
                             </div>
-
-                            <div className="flex justify-center">
+                            <div className="flex justify-evenly flex-row w-[50%]">
                                 <Button
                                     onClick={closeDialog}
                                     buttonType={ButtonType.CANCEL}
                                 >
-                                    Cancel
+                                    <p>
+                                        {SharedPromptsTranslations.cancel[
+                                            lang
+                                        ].toString()}
+                                    </p>
                                 </Button>
                                 <Button
                                     type="submit"
                                     disabled={isSubmitting}
                                     buttonType={ButtonType.CONFIRM}
                                 >
-                                    Submit
+                                    <p>
+                                        {' '}
+                                        {SharedPromptsTranslations.save[
+                                            lang
+                                        ].toString()}
+                                    </p>
                                 </Button>
                             </div>
                         </Form>
@@ -327,7 +393,7 @@ const DropDownSelector = React.forwardRef(
         return (
             <div
                 ref={ref}
-                className="bg-white dark:bg-gray-800 shadow-md p-2 rounded-lg space-y-2 absolute z-50"
+                className="bg-white dark:bg-gray-800 shadow-md p-2 rounded-lg space-y-2 absolute z-50 w-64"
             >
                 {values.map((value: string) => (
                     <div
