@@ -24,6 +24,7 @@ export async function GET(req: Request) {
                 { status: 400 },
             );
         }
+        console.log('hello');
         const result = await collection
             .find(
                 {
@@ -39,7 +40,7 @@ export async function GET(req: Request) {
                 },
             )
             .toArray();
-
+        console.log('the request is taking for ever');
         if (!result) {
             return NextResponse.json(
                 { error: 'Document not found' },
