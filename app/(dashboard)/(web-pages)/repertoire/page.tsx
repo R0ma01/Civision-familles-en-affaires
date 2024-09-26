@@ -130,6 +130,7 @@ function Repertoire() {
                 tour.start();
             }
         }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
     const repertoireData = useGlobalDataStore(

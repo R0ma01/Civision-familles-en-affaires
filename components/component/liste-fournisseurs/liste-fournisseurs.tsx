@@ -316,7 +316,7 @@ function FournisseurListElement({
                                     onClickEdit(fournisseur);
                                 }}
                             >
-                                <EditSVG className="hover:scale-150 hover:fill-white fill-custom-grey"></EditSVG>
+                                <EditSVG className="hover:scale-150 hover:fill-black dark:hover:fill-white dark:fill-custom-grey"></EditSVG>
                             </Button>
                         )}
                         {admin && (
@@ -327,7 +327,7 @@ function FournisseurListElement({
                                     onClickDelete(fournisseur);
                                 }}
                             >
-                                <TrashSVG className="hover:scale-150 hover:fill-white fill-custom-grey"></TrashSVG>
+                                <TrashSVG className="hover:scale-150 hover:fill-black dark:hover:fill-white dark:fill-custom-grey"></TrashSVG>
                             </Button>
                         )}
                         {admin && (
@@ -339,9 +339,9 @@ function FournisseurListElement({
                                 }}
                             >
                                 {fournisseur.visible ? (
-                                    <VisibleSVG className="hover:scale-150 hover:fill-white fill-custom-grey"></VisibleSVG>
+                                    <VisibleSVG className="hover:scale-150 hover:fill-black dark:hover:fill-white dark:fill-custom-grey"></VisibleSVG>
                                 ) : (
-                                    <InvisibleSVG className="hover:scale-150 hover:fill-white fill-custom-grey"></InvisibleSVG>
+                                    <InvisibleSVG className="hover:scale-150 hover:fill-black dark:hover:fill-white dark:fill-custom-grey"></InvisibleSVG>
                                 )}
                             </Button>
                         )}
@@ -366,7 +366,7 @@ function FournisseurListElement({
                                         onClickEdit(fournisseur);
                                     }}
                                 >
-                                    <EditSVG className="hover:scale-150 hover:fill-white fill-custom-grey"></EditSVG>
+                                    <EditSVG className="hover:scale-150 hover:fill-black dark:hover:fill-white dark:fill-custom-grey"></EditSVG>
                                 </Button>
                             )}
                             {admin && (
@@ -377,7 +377,7 @@ function FournisseurListElement({
                                         onClickDelete(fournisseur);
                                     }}
                                 >
-                                    <TrashSVG className="hover:scale-150 hover:fill-white fill-custom-grey"></TrashSVG>
+                                    <TrashSVG className="hover:scale-150 hover:fill-black dark:hover:fill-white dark:fill-custom-grey"></TrashSVG>
                                 </Button>
                             )}
                             {admin && (
@@ -389,9 +389,9 @@ function FournisseurListElement({
                                     }}
                                 >
                                     {fournisseur.visible ? (
-                                        <VisibleSVG className="hover:scale-150 hover:fill-white fill-custom-grey"></VisibleSVG>
+                                        <VisibleSVG className="hover:scale-150 hover:fill-black dark:hover:fill-white dark:fill-custom-grey"></VisibleSVG>
                                     ) : (
-                                        <InvisibleSVG className="hover:scale-150 hover:fill-white fill-custom-grey"></InvisibleSVG>
+                                        <InvisibleSVG className="hover:scale-150 hover:fill-black dark:hover:fill-white dark:fill-custom-grey"></InvisibleSVG>
                                     )}
                                 </Button>
                             )}

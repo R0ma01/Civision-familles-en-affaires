@@ -126,6 +126,34 @@ export const FournisseurPromptsTranslations: PromptsTranslations = {
         FR: 'Fournisseurs',
         EN: 'Suppliers',
     },
+    prenom: {
+        FR: 'Prénom',
+        EN: 'Name',
+    },
+    nom: {
+        FR: 'Nom de Famille',
+        EN: 'Last Name',
+    },
+    entreprise: {
+        FR: 'Entreprise',
+        EN: 'Comapny',
+    },
+    titre: {
+        FR: 'Titre de Poste',
+        EN: 'Title',
+    },
+    courriel: {
+        FR: 'Courriel',
+        EN: 'Email',
+    },
+    telephone: {
+        FR: 'Téléphone',
+        EN: 'Phone number',
+    },
+    toutes_regions: {
+        FR: 'Toutes les régions',
+        EN: 'All regions',
+    },
 };
 
 export const ConnexionDialogPromptsTranslations: PromptsTranslations = {

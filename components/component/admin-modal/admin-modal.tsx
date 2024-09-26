@@ -25,10 +25,27 @@ export function AdminModal({
     const lang: Language = useDataStore((state) => state.lang);
 
     const [uploadedImage, setUploadedImage] = useState<File | null>(null);
+    const [binaryString, setBinaryString] = useState<any>(null);
+
+    function uploadFile(file: File | null) {
+        var file = file;
+        var reader = new FileReader();
+        reader.onloadend = function () {
+            console.log('Encoded Base 64 File String:', reader.result);
+
+            /******************* for Binary ***********************/
+            var data = reader.result?.split(',')[1];
+            var binaryBlob = atob(data);
+            setBinaryString(binaryBlob);
+            console.log('Encoded Binary File String:', binaryBlob);
+        };
+        reader.readAsDataURL(file);
+    }
 
     const handleImageUpload = (file: File | null) => {
         setUploadedImage(file);
         console.log(file);
+        uploadFile(file);
         const updatedPage = { ...editPage };
         updatedPage.backgroundImage = file ? file.name : '';
         setEditPage(updatedPage);
@@ -158,6 +175,16 @@ export function AdminModal({
                         className="absolute top-[30%] right-[18%]"
                         imageURL={editPage.backgroundImage ?? null}
                     />
+                    {binaryString && (
+                        <div>
+                            <textarea
+                                value={binaryString}
+                                readOnly
+                                rows={10}
+                                cols={50}
+                            />
+                        </div>
+                    )}
                     <EditTabContainer
                         tabs={editPage.tabs}
                         handleInputChange={handleTabChange}

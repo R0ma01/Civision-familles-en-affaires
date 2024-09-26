@@ -69,8 +69,6 @@ export default function Carte() {
     }, [map]);
 
     useEffect(() => {
-        console.log('i am activated');
-        console.log(indexeADataFetched);
         async function studyFetch() {
             await fetchStudyData(matchStage);
         }
@@ -103,6 +101,7 @@ export default function Carte() {
             mapType === MapType.REPERTOIRE &&
             !loading
         ) {
+            console.log('hi');
             repertoireFetch();
         }
 

@@ -170,47 +170,69 @@ export function EditFournisseurDialog({
                     }}
                 >
                     {({ isSubmitting }) => (
-                        <Form className="space-y-4 flex flex-col items-center">
-                            <div className="flex gap-4 mb-3">
+                        <Form className="space-y-4 flex flex-col items-center w-[90%]">
+                            <div className="flex gap-4 w-full">
                                 <Field
                                     name="firstName"
-                                    className="input-field w-full p-2 border border-gray-300 dark:border-gray-700 rounded-md focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400 focus:outline-none"
-                                    placeholder="First Name"
+                                    className="input-field w-full p-2 dark:text-white border border-gray-300 dark:border-gray-700 rounded-md focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400 focus:outline-none"
+                                    placeholder={
+                                        FournisseurPromptsTranslations.prenom[
+                                            lang
+                                        ]
+                                    }
                                 />
                                 <Field
                                     name="lastName"
-                                    className="input-field w-full p-2 border border-gray-300 dark:border-gray-700 rounded-md focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400 focus:outline-none"
-                                    placeholder="Last Name"
+                                    className="input-field w-full p-2 border dark:text-white border-gray-300 dark:border-gray-700 rounded-md focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400 focus:outline-none"
+                                    placeholder={
+                                        FournisseurPromptsTranslations.nom[lang]
+                                    }
                                 />
                             </div>
-                            <div className="flex gap-4 mb-3">
+                            <div className="flex gap-4 w-full">
                                 <Field
                                     name="compagnie"
-                                    className="input-field w-full p-2 border border-gray-300 dark:border-gray-700 rounded-md focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400 focus:outline-none"
-                                    placeholder="Compagnie"
+                                    className="input-field w-full p-2 border dark:text-white border-gray-300 dark:border-gray-700 rounded-md focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400 focus:outline-none"
+                                    placeholder={
+                                        FournisseurPromptsTranslations
+                                            .entreprise[lang]
+                                    }
                                 />
                                 <Field
                                     name="titre"
-                                    className="input-field w-full p-2 border border-gray-300 dark:border-gray-700 rounded-md focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400 focus:outline-none"
-                                    placeholder="Titre"
+                                    className="input-field w-full p-2 border dark:text-white border-gray-300 dark:border-gray-700 rounded-md focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400 focus:outline-none"
+                                    placeholder={
+                                        FournisseurPromptsTranslations.titre[
+                                            lang
+                                        ]
+                                    }
                                     type="text"
                                 />
                             </div>
-                            <Field
-                                name="courriel"
-                                className="w-[50%] input-field p-2 border border-gray-300 dark:border-gray-700 rounded-md focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400 focus:outline-none"
-                                placeholder="Courriel"
-                                type="email"
-                            />
-                            <Field
-                                name="telephone"
-                                className="input-field w-[50%] p-2 border border-gray-300 dark:border-gray-700 rounded-md focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400 focus:outline-none"
-                                placeholder="Telephone"
-                                type="tel"
-                            />
+                            <div className="flex gap-4 w-full">
+                                <Field
+                                    name="courriel"
+                                    className="w-[50%] input-field p-2 border dark:text-white border-gray-300 dark:border-gray-700 rounded-md focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400 focus:outline-none"
+                                    placeholder="Courriel"
+                                    type={
+                                        FournisseurPromptsTranslations.courriel[
+                                            lang
+                                        ]
+                                    }
+                                />
+                                <Field
+                                    name="telephone"
+                                    className="input-field w-[50%] p-2 border dark:text-white border-gray-300 dark:border-gray-700 rounded-md focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400 focus:outline-none"
+                                    placeholder={
+                                        FournisseurPromptsTranslations
+                                            .telephone[lang]
+                                    }
+                                    type="tel"
+                                />
+                            </div>
 
                             {/* Secteurs Geographiques */}
-                            <div className="w-full flex flex-row">
+                            <div className="w-[100%] flex flex-row">
                                 <div className="mb-4 w-[50%] flex flex-col items-center">
                                     <label className="block text-sm font-medium dark:text-gray-300 text-gray-800 mb-1">
                                         {FournisseurPromptsTranslations.region[
@@ -224,7 +246,7 @@ export function EditFournisseurDialog({
                                                     key={secteur}
                                                     className="bg-gray-200 dark:bg-gray-700 rounded-md p-2 flex items-center space-x-2"
                                                 >
-                                                    <span className="text-sm">
+                                                    <span className="text-sm dark:text-custom-grey">
                                                         {secteur}
                                                     </span>
                                                     <button
@@ -241,48 +263,51 @@ export function EditFournisseurDialog({
                                                 </div>
                                             ))}
                                         </div>
-                                        <div className="relative">
+                                        <div className="flex flex-row">
+                                            <div className="relative">
+                                                <button
+                                                    ref={secteurButtonRef}
+                                                    type="button"
+                                                    className="text-white p-2 rounded-md hover:bg-blue-700 w-fit mt-2"
+                                                    onClick={(e: any) => {
+                                                        handleButtonClick(e);
+                                                        setSecteurDropdownVisible(
+                                                            (prev) => !prev,
+                                                        );
+                                                    }}
+                                                >
+                                                    <AddCircleSVG className="dark:fill-white"></AddCircleSVG>
+                                                </button>
+                                                {isSecteurDropdownVisible && (
+                                                    <DropDownSelector
+                                                        ref={secteurDropdownRef}
+                                                        values={Object.values(
+                                                            SecteursGeographiques,
+                                                        ).filter(
+                                                            (secteur: string) =>
+                                                                !secteursOptions.includes(
+                                                                    secteur as SecteursGeographiques,
+                                                                ),
+                                                        )}
+                                                        select={addSecteur}
+                                                    />
+                                                )}
+                                            </div>
                                             <button
-                                                ref={secteurButtonRef}
                                                 type="button"
-                                                className="text-white p-2 rounded-md hover:bg-blue-700 w-fit mt-2"
+                                                className="bg-blue-600 text-white p-2 rounded-md hover:bg-blue-700 w-fit mt-2 text-xs"
                                                 onClick={(e: any) => {
                                                     handleButtonClick(e);
-                                                    setSecteurDropdownVisible(
-                                                        (prev) => !prev,
-                                                    );
+                                                    addAllSecteur();
                                                 }}
                                             >
-                                                <AddCircleSVG className="dark:fill-white"></AddCircleSVG>
+                                                {
+                                                    FournisseurPromptsTranslations
+                                                        .toutes_regions[lang]
+                                                }
                                             </button>
-                                            {isSecteurDropdownVisible && (
-                                                <DropDownSelector
-                                                    ref={secteurDropdownRef}
-                                                    values={Object.values(
-                                                        SecteursGeographiques,
-                                                    ).filter(
-                                                        (secteur: string) =>
-                                                            !secteursOptions.includes(
-                                                                secteur as SecteursGeographiques,
-                                                            ),
-                                                    )}
-                                                    select={addSecteur}
-                                                />
-                                            )}
                                         </div>
                                     </div>
-                                    <button
-                                        type="button"
-                                        className="bg-blue-600 text-white p-2 rounded-md hover:bg-blue-700 w-fit mt-2"
-                                        onClick={(e: any) => {
-                                            handleButtonClick(e);
-                                            addAllSecteur();
-                                        }}
-                                    >
-                                        {lang == 'FR'
-                                            ? 'Toutes les régions'
-                                            : 'All regions'}
-                                    </button>
                                 </div>
 
                                 {/* Services Offerts */}
@@ -292,14 +317,14 @@ export function EditFournisseurDialog({
                                             lang
                                         ].toString()}
                                     </label>
-                                    <div className="flex flex-col items-center space-y-4">
-                                        <div className="flex flex-wrap gap-2 items-center   h-[200px] max-h-[200px] overflow-y-auto">
+                                    <div className="flex flex-col items-center space-y-2">
+                                        <div className="flex flex-wrap gap-2 items-center h-[200px] max-h-[200px] overflow-y-auto">
                                             {servicesOptions.map((service) => (
                                                 <div
                                                     key={service}
                                                     className="bg-gray-200 dark:bg-gray-700 rounded-md p-2 flex items-center space-x-2"
                                                 >
-                                                    <span className="text-sm">
+                                                    <span className="text-sm dark:text-custom-grey">
                                                         {service}
                                                     </span>
                                                     <button
@@ -320,7 +345,7 @@ export function EditFournisseurDialog({
                                             <button
                                                 ref={serviceButtonRef}
                                                 type="button"
-                                                className="text-white p-2 rounded-md hover:bg-blue-700 w-fit mt-2"
+                                                className="text-white p-2 rounded-md hover:bg-blue-700 w-fit"
                                                 onClick={(e: any) => {
                                                     handleButtonClick(e);
                                                     setServiceDropdownVisible(
