@@ -15,6 +15,7 @@ import {
     SharedPromptsTranslations,
 } from '@/constants/translations/page-prompts';
 import { AddCircleSVG } from '../svg-icons/svg-icons';
+import { Language } from '@/components/enums/language';
 
 interface EditFournisseurDialogProps {
     closeDialog: (e: any) => void;
@@ -27,7 +28,7 @@ export function EditFournisseurDialog({
     submitDialog,
     fournisseur,
 }: EditFournisseurDialogProps) {
-    const lang = useDataStore((state) => state.lang);
+    const lang: Language = useDataStore((state) => state.lang);
     const [secteursOptions, setSecteursOptions] = useState<
         SecteursGeographiques[]
     >(fournisseur.secteurs_geographique);
