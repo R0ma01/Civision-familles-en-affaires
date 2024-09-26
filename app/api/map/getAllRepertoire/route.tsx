@@ -2,8 +2,7 @@ import { NextResponse } from 'next/server';
 import { connectToDatabaseRepertoire } from '@/utils/mongodb';
 import { MongoDBPaths } from '@/components/enums/mongodb-paths-enum';
 import { MapClusterPointData } from '@/components/interface/point-data';
-export const revalidate = 0;
-export const dynamic = 'force-dynamic';
+
 export async function GET(req: Request) {
     try {
         const db = (await connectToDatabaseRepertoire()).db;
@@ -60,9 +59,6 @@ export async function GET(req: Request) {
             message: 'Repertoire Points found successfully',
             points: newResult,
         });
-
-        // Add Cache-Control headers to prevent caching
-        response.headers.set('Cache-Control', 'no-store, max-age=0');
 
         return response;
     } catch (e: any) {
