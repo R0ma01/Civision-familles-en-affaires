@@ -27,25 +27,25 @@ export function AdminModal({
     const [uploadedImage, setUploadedImage] = useState<File | null>(null);
     const [binaryString, setBinaryString] = useState<any>(null);
 
-    function uploadFile(file: File | null) {
-        var file = file;
-        var reader = new FileReader();
-        reader.onloadend = function () {
-            console.log('Encoded Base 64 File String:', reader.result);
+    // function uploadFile(file: File | null) {
+    //     var file = file;
+    //     var reader = new FileReader();
+    //     reader.onloadend = function () {
+    //         console.log('Encoded Base 64 File String:', reader.result);
 
-            /******************* for Binary ***********************/
-            var data = reader.result?.split(',')[1];
-            var binaryBlob = atob(data);
-            setBinaryString(binaryBlob);
-            console.log('Encoded Binary File String:', binaryBlob);
-        };
-        reader.readAsDataURL(file);
-    }
+    //         /******************* for Binary ***********************/
+    //         var data = reader.result?.split(',')[1];
+    //         var binaryBlob = atob(data);
+    //         setBinaryString(binaryBlob);
+    //         console.log('Encoded Binary File String:', binaryBlob);
+    //     };
+    //     reader.readAsDataURL(file);
+    // }
 
     const handleImageUpload = (file: File | null) => {
         setUploadedImage(file);
         console.log(file);
-        uploadFile(file);
+        //uploadFile(file);
         const updatedPage = { ...editPage };
         updatedPage.backgroundImage = file ? file.name : '';
         setEditPage(updatedPage);
