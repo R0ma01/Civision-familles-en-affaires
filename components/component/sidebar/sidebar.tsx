@@ -56,7 +56,7 @@ const Sidebar: React.FC = () => {
             <div
                 id="side-bar"
                 className={`overflow-hidden group bg-gradient-to-b from-custom-grey to-white justify-between
-        flex-col flex h-full flex-shrink-0 z-50 transition-all ease-in-out duration-500 transform absolute w-10 hover:w-56 hover:shadow-r`}
+        flex-col flex h-full flex-shrink-0 z-50 transition-all ease-in-out duration-500 transform absolute w-10 hover:w-[230px] hover:shadow-r`}
             >
                 <Link
                     href={PagePaths.HOME}
@@ -74,7 +74,7 @@ const Sidebar: React.FC = () => {
                         src={fullLogoFAE}
                         alt="Logo Familles en Affaires"
                         className={`min-w-[224px] absolute top-2 cursor-pointer transition-all ease-in-out duration-300 opacity-0 group-hover:opacity-100`}
-                        width={220}
+                        width={218}
                         height={80}
                     />
                 </Link>
