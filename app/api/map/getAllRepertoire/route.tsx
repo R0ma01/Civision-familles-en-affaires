@@ -24,8 +24,8 @@ export async function GET(req: Request) {
                 { status: 400 },
             );
         }
-        const result = [
-            await collection.findOne(
+        const result = await collection
+            .find(
                 {
                     // Apply dynamic filters here using the spread operator
                     ...filtersObj, // This will inject the filters object into the query
@@ -37,9 +37,8 @@ export async function GET(req: Request) {
                         NOM_ASSUJ: 1,
                     },
                 },
-            ),
-        ];
-        // .toArray();
+            )
+            .toArray();
 
         if (!result) {
             return NextResponse.json(
