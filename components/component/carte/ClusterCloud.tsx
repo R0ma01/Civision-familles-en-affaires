@@ -1,5 +1,4 @@
 import { useEffect, useState } from 'react';
-import useMapStore from '@/stores/global-map-store';
 import { clusterColors } from '@/constants/color-palet';
 import { MapClusterPointData } from '@/components/interface/point-data';
 import { GraphDataHttpRequestService } from '@/services/data-http-request-service';
