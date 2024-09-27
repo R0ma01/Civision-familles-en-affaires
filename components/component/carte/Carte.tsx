@@ -11,9 +11,12 @@ import { MapType } from '@/components/enums/map-type-enum';
 import { Fournisseur } from '@/components/interface/fournisseur';
 import ColorLegend from './Color-Legend';
 import { choroplethColors, clusterColors } from '@/constants/color-palet';
+import useGlobalUserStore from '@/stores/global-user-store';
+import { UserType } from '@/components/enums/user-type-enum';
 
 export default function Carte() {
     // global variables
+    const user = useGlobalUserStore((state: any) => state.user);
     const mapRef = useRef(null);
     const map = useMapStore((state) => state.map);
     const mapType = useMapStore((state) => state.mapType);
@@ -101,7 +104,6 @@ export default function Carte() {
             mapType === MapType.REPERTOIRE &&
             !loading
         ) {
-            console.log('hi');
             repertoireFetch();
         }
 
@@ -118,7 +120,6 @@ export default function Carte() {
             mapType === MapType.PAGE_INFORMATION_INDEX_VOLETA &&
             !loading
         ) {
-            console.log('helo');
             indexeAFetch();
         }
 
@@ -152,7 +153,11 @@ export default function Carte() {
 
     useEffect(() => {
         setFournisseurMapData(
-            convertFournisseurData(fournisseurData, matchStage),
+            convertFournisseurData(
+                fournisseurData,
+                matchStage,
+                user === UserType.ADMIN,
+            ),
         );
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [fournisseurData]);
@@ -241,19 +246,24 @@ export default function Carte() {
 function convertFournisseurData(
     fournisseurs: Fournisseur[],
     matchStage: Record<any, any>,
+    admin: boolean,
 ) {
-    const regions = matchStage['secteurs_geographique']?.secteurs_geographique;
-    const services = matchStage['services_offerts']?.services_offerts;
-    console.log(regions);
-    console.log(services);
+    const regions: string[] = matchStage['secteurs_geographique']?.$in;
+
     const secteurCount = fournisseurs.reduce(
         (acc: any, fournisseur: Fournisseur) => {
-            fournisseur.secteurs_geographique.forEach((secteur) => {
-                if (!acc[secteur]) {
-                    acc[secteur] = 0;
-                }
-                acc[secteur] += 1;
-            });
+            if (fournisseur.visible || admin)
+                fournisseur.secteurs_geographique.forEach((secteur) => {
+                    if (!acc[secteur]) {
+                        acc[secteur] = 0;
+                    }
+                    if (
+                        !regions ||
+                        regions.findIndex((region) => region === secteur) >= 0
+                    ) {
+                        acc[secteur] += 1;
+                    }
+                });
             return acc;
         },
         {},
