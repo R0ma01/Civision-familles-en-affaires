@@ -449,8 +449,11 @@ const Chloropleth: React.FC<ChloroplethProps> = ({
                     if (e.features.length > 0) {
                         const hoveredRegion = e.features[0].properties.region;
 
-                        // Update hovered region ID via ref
-                        hoveredRegionIdRef.current = hoveredRegion;
+                        if (hoveredRegion !== hoveredRegionIdRef.current) {
+                            hoveredRegionIdRef.current = hoveredRegion;
+                        } else {
+                            hoveredRegionIdRef.current = null;
+                        }
 
                         map.setPaintProperty(
                             'chloropleth-hover-layer',
