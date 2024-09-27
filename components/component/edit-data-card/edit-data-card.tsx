@@ -81,9 +81,6 @@ const EditDataCard: React.FC<EditDataCardProps> = ({
 
     return (
         <div className="mb-8 p-2 bg-custom-turquoise bg-opacity-50 bg-[#f5ebe0] dark:bg-[#363636] dark:bg-opacity-50 rounded-xl shadow-lg w-[500px] relative">
-            <span className="text-black dark:text-white absolute">
-                {cardIndex + 1}
-            </span>
             <form className="space-y-2">
                 <div>
                     <Button
@@ -96,7 +93,7 @@ const EditDataCard: React.FC<EditDataCardProps> = ({
                         <TrashSVG className="fill-red-600"></TrashSVG>
                     </Button>
                     <div className="flex flex-row items-center">
-                        <label className="text-black dark:text-white">
+                        <label className="text-black dark:text-white text-xs">
                             {Language.FR}
                         </label>
                         <input
@@ -111,7 +108,7 @@ const EditDataCard: React.FC<EditDataCardProps> = ({
                         />
                     </div>
                     <div className="flex flex-row items-center">
-                        <label className="text-black dark:text-white">
+                        <label className="text-black dark:text-white text-xs">
                             {Language.EN}
                         </label>
                         <input
@@ -129,7 +126,9 @@ const EditDataCard: React.FC<EditDataCardProps> = ({
 
                 <div>
                     <div className="flex flex-row items-center">
-                        <label>{Language.FR}</label>
+                        <label className="text-black dark:text-white text-xs">
+                            {Language.FR}
+                        </label>
                         <input
                             type="text"
                             value={card.description[Language.FR]}
@@ -142,7 +141,9 @@ const EditDataCard: React.FC<EditDataCardProps> = ({
                         />
                     </div>
                     <div className="flex flex-row items-center">
-                        <label>{Language.EN}</label>
+                        <label className="text-black dark:text-white text-xs">
+                            {Language.EN}
+                        </label>
                         <input
                             type="text"
                             value={card.description[Language.EN]}

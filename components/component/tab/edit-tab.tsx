@@ -321,7 +321,7 @@ export function EditTab({
             className={`p-4 space-y-6 rounded-lg shadow-sm transition-all duration-300 ${className} max-w-[600px]`}
         >
             <div className="flex flex-row items-center">
-                <label className="text-black dark:text-white">
+                <label className="text-black dark:text-white text-xs">
                     {Language.FR}
                 </label>
                 <input
@@ -334,7 +334,7 @@ export function EditTab({
                 />
             </div>
             <div className="flex flex-row items-center">
-                <label className="text-black dark:text-white">
+                <label className="text-black dark:text-white text-xs">
                     {Language.EN}
                 </label>
                 <input

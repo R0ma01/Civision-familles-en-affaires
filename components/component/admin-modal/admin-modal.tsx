@@ -172,7 +172,7 @@ export function AdminModal({
                 <form className="w-full h-full flex flex-col overflow-auto">
                     <div className="flex flex-col w-full">
                         <div className="flex flex-row items-center w-full">
-                            <label className="text-black dark:text-white">
+                            <label className="text-black dark:text-white text-xs">
                                 {Language.FR}
                             </label>
                             <input
@@ -187,7 +187,7 @@ export function AdminModal({
                             />
                         </div>
                         <div className="flex flex-row items-center">
-                            <label className="text-black dark:text-white">
+                            <label className="text-black dark:text-white text-xs">
                                 {Language.EN}
                             </label>
                             <input
@@ -204,7 +204,7 @@ export function AdminModal({
                     </div>
                     <div>
                         <div className="flex flex-row items-center">
-                            <label className="text-black dark:text-white">
+                            <label className="text-black dark:text-white text-xs">
                                 {Language.FR}
                             </label>
                             <input
@@ -219,7 +219,7 @@ export function AdminModal({
                             />
                         </div>
                         <div className="flex flex-row items-center">
-                            <label className="text-black dark:text-white">
+                            <label className="text-black dark:text-white text-xs">
                                 {Language.EN}
                             </label>
                             <input
