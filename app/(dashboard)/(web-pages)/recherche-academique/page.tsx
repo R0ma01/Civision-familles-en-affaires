@@ -56,8 +56,8 @@ export default function RechercheAcademique() {
     }
 
     const firstItem: DataCardContent = {
-        title: 'Sélecteur de données',
-        description: '',
+        title: { FR: 'Sélecteur de données', EN: '' },
+        description: { FR: '', EN: '' },
         graphData: [],
         chercheurDropdownOnCLick: showGraph,
         type: DataCardType.CHERCHEUR_DROPDOWN,
