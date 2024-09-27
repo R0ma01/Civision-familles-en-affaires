@@ -19,6 +19,7 @@ import {
     IndexeDataFieldsA,
     IndexeDataFieldsB,
 } from '@/components/enums/data-types-enum';
+import { Language, Traductions } from '@/components/enums/language';
 interface TabProps {
     content: TabContent;
     className?: string;
@@ -47,11 +48,7 @@ export function EditTab({
         setEditTabContent(content);
     }, [content]);
 
-    const handleCardChange = (
-        cardIndex: number,
-        field: string,
-        value: string,
-    ) => {
+    const handleCardChange = (cardIndex: number, field: string, value: any) => {
         if (!editTabContent) return;
 
         let updatedTab = { ...editTabContent };
@@ -145,7 +142,6 @@ export function EditTab({
     };
 
     const handleGraphOrderChange = (cardIndex: number, newOrder: any[]) => {
-        console.log(cardIndex, newOrder);
         if (!editTabContent) return;
         let updatedTab = { ...editTabContent };
         const updatedCards = [...updatedTab.cards];
@@ -265,8 +261,8 @@ export function EditTab({
 
         if (updatedCards) {
             updatedCards.push({
-                title: '',
-                description: '',
+                title: { FR: '', EN: '' },
+                description: { FR: '', EN: '' },
                 type: DataCardType.SIMPLE,
                 graphData: [],
             });
@@ -305,12 +301,17 @@ export function EditTab({
         setEditTabContent(updatedTab);
     };
 
-    const handleDescriptionChange = (
+    const handleTextInputChange = (
         e: React.ChangeEvent<HTMLInputElement>,
+        lang: Language, // 'EN' or 'FR'
     ) => {
         const { name, value } = e.target;
+        const updatedTab = { ...editTabContent };
+        if (name === 'description') {
+            updatedTab['description'][lang] = value;
+        }
 
-        let updatedTab = { ...editTabContent, [name]: value };
+        // Call the parent handlers for state updates
         handleInputChange(updatedTab);
         setEditTabContent(updatedTab);
     };
@@ -319,14 +320,32 @@ export function EditTab({
         <div
             className={`p-4 space-y-6 rounded-lg shadow-sm transition-all duration-300 ${className} max-w-[600px]`}
         >
-            <input
-                type="text"
-                name="description"
-                value={editTabContent.description}
-                onChange={handleDescriptionChange} // Uncomment and implement this function
-                className="rounded-md text-md m-2 tracking-wide text-black shadow-sm mb-2 p-1 dark:text-white bg-transparent focus:outline-none focus:ring-2 focus:ring-blue-500 w-full"
-            />
-
+            <div className="flex flex-row items-center">
+                <label className="text-black dark:text-white">
+                    {Language.FR}
+                </label>
+                <input
+                    placeholder="description"
+                    type="text"
+                    name="description"
+                    value={editTabContent.description[Language.FR]}
+                    onChange={(e) => handleTextInputChange(e, Language.FR)} // Uncomment and implement this function
+                    className="rounded-md text-md m-2 tracking-wide text-black shadow-sm mb-2 p-1 dark:text-white bg-transparent focus:outline-none focus:ring-2 focus:ring-blue-500 w-full"
+                />
+            </div>
+            <div className="flex flex-row items-center">
+                <label className="text-black dark:text-white">
+                    {Language.EN}
+                </label>
+                <input
+                    type="text"
+                    placeholder="description"
+                    name="description"
+                    value={editTabContent.description[Language.EN]}
+                    onChange={(e) => handleTextInputChange(e, Language.EN)} // Uncomment and implement this function
+                    className="rounded-md text-md m-2 tracking-wide text-black shadow-sm mb-2 p-1 dark:text-white bg-transparent focus:outline-none focus:ring-2 focus:ring-blue-500 w-full"
+                />
+            </div>
             {/* Render Data Cards */}
             <div className="flex flex-col items-center">
                 <DragDropContext onDragEnd={onDragEnd}>

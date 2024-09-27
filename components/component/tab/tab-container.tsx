@@ -47,6 +47,7 @@ export function TabContainer({
 
             setMap(containerContent[selectedTab].tabType);
         }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [selectedTab]);
 
     return (

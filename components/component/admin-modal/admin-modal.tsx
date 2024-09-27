@@ -81,7 +81,22 @@ export function AdminModal({
         const { name, value } = e.target;
         setEditPage((prev) => (prev ? { ...prev, [name]: value } : prev));
     };
+    const handleTextInputChange = (
+        e: React.ChangeEvent<HTMLInputElement>,
+        lang: Language, // 'EN' or 'FR'
+    ) => {
+        const { name, value } = e.target;
 
+        const updatedPage = { ...editPage };
+
+        if (name === 'title') {
+            updatedPage.title[lang] = value;
+        } else if (name === 'description') {
+            updatedPage.description[lang] = value;
+        }
+
+        setEditPage(updatedPage);
+    };
     function handleTabChange(index: number, tab: TabContent | undefined) {
         const updatedPage = { ...editPage };
         let updatedTabs = [...updatedPage.tabs];
@@ -111,7 +126,7 @@ export function AdminModal({
         let updatedTabs = [...updatedPage.tabs];
         updatedTabs.push({
             tabType: DataBaseOrigin.INDEX_VOLETA,
-            description: '',
+            description: { FR: '', EN: '' },
             cards: [],
             visible: false,
         });
@@ -155,21 +170,70 @@ export function AdminModal({
                 }}
             >
                 <form className="w-full h-full flex flex-col overflow-auto">
-                    <input
-                        type="text"
-                        name="title"
-                        value={editPage.title}
-                        onChange={handleInputChange} // Uncomment and implement this function
-                        className="rounded-md text-2xl m-2 tracking-wide text-black shadow-sm mb-2 p-1 dark:text-white bg-transparent focus:outline-none focus:ring-2 focus:ring-blue-500"
-                    />
-
-                    <input
-                        type="text"
-                        name="description"
-                        value={editPage.description}
-                        onChange={handleInputChange}
-                        className="rounded-md text-md m-2 tracking-wide text-black shadow-sm mb-2 p-1 dark:text-white bg-transparent focus:outline-none focus:ring-2 focus:ring-blue-500"
-                    />
+                    <div className="flex flex-col w-full">
+                        <div className="flex flex-row items-center w-full">
+                            <label className="text-black dark:text-white">
+                                {Language.FR}
+                            </label>
+                            <input
+                                type="text"
+                                placeholder="titre"
+                                name="title"
+                                value={editPage.title[Language.FR]}
+                                onChange={(e) =>
+                                    handleTextInputChange(e, Language.FR)
+                                } // Uncomment and implement this function
+                                className="rounded-md text-2xl m-2 tracking-wide w-[80%] text-black shadow-sm mb-2 p-1 dark:text-white bg-transparent focus:outline-none focus:ring-2 focus:ring-blue-500"
+                            />
+                        </div>
+                        <div className="flex flex-row items-center">
+                            <label className="text-black dark:text-white">
+                                {Language.EN}
+                            </label>
+                            <input
+                                type="text"
+                                placeholder="title"
+                                name="title"
+                                value={editPage.title[Language.EN]}
+                                onChange={(e) =>
+                                    handleTextInputChange(e, Language.EN)
+                                } // Uncomment and implement this function
+                                className="rounded-md text-2xl m-2 tracking-wide text-black shadow-sm mb-2 p-1 dark:text-white bg-transparent focus:outline-none focus:ring-2 focus:ring-blue-500"
+                            />
+                        </div>
+                    </div>
+                    <div>
+                        <div className="flex flex-row items-center">
+                            <label className="text-black dark:text-white">
+                                {Language.FR}
+                            </label>
+                            <input
+                                placeholder="description"
+                                type="text"
+                                name="description"
+                                value={editPage.description[Language.FR]}
+                                onChange={(e) =>
+                                    handleTextInputChange(e, Language.FR)
+                                }
+                                className="rounded-md text-md m-2 tracking-wide text-black shadow-sm mb-2 p-1 dark:text-white bg-transparent focus:outline-none focus:ring-2 focus:ring-blue-500"
+                            />
+                        </div>
+                        <div className="flex flex-row items-center">
+                            <label className="text-black dark:text-white">
+                                {Language.EN}
+                            </label>
+                            <input
+                                placeholder="description"
+                                type="text"
+                                name="description"
+                                value={editPage.description[Language.EN]}
+                                onChange={(e) =>
+                                    handleTextInputChange(e, Language.EN)
+                                }
+                                className="rounded-md text-md m-2 tracking-wide text-black shadow-sm mb-2 p-1 dark:text-white bg-transparent focus:outline-none focus:ring-2 focus:ring-blue-500"
+                            />
+                        </div>
+                    </div>
                     <ImageUpload
                         onImageUpload={handleImageUpload}
                         className="absolute top-[30%] right-[18%]"

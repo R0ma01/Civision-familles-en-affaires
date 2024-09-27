@@ -34,7 +34,7 @@ const ThemeCard: React.FC<ThemeCardProps> = ({
     onClickVisible = () => {},
 }) => {
     const [localContent, setLocalContent] = useState<PageTabContent>(page);
-
+    const lang: Language = useDataStore((state) => state.lang);
     useEffect(() => {
         setLocalContent(page);
     }, [page]);
@@ -68,10 +68,10 @@ const ThemeCard: React.FC<ThemeCardProps> = ({
                         />
 
                         <h2 className="text-white text-2xl xl:text-3xl mb-7">
-                            {localContent.title}
+                            {localContent.title[lang]}
                         </h2>
                         <p className="hidden mb-5 text-white text-sm xl:text-medium group-hover:block">
-                            {localContent.description}
+                            {localContent.description[lang]}
                         </p>
                     </div>
                     <div className="flex-row justify-evenly mb-4 hidden group-hover:flex">

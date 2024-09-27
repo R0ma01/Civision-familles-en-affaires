@@ -14,11 +14,12 @@ import { ButtonType } from '@/components/enums/button-type-enum';
 import Button from '@/components/component/buttons/button';
 import DataCardContent from '@/components/interface/data-card-content';
 import { DataBaseOrigin } from '@/components/enums/data-types-enum';
+import { Language } from '@/components/enums/language';
 
 interface EditDataCardProps {
     card: DataCardContent;
     cardIndex: number;
-    handleCardChange: (index: number, field: string, value: string) => void;
+    handleCardChange: (index: number, field: string, value: any) => void;
     handleGraphDataChange: (
         cardIndex: number,
         graphIndex: number,
@@ -57,6 +58,27 @@ const EditDataCard: React.FC<EditDataCardProps> = ({
         handleGraphOrderChange(cardIndex, reorderedGraphs);
     };
 
+    const handleTextInputChange = (
+        e: React.ChangeEvent<HTMLInputElement>,
+        lang: Language,
+        index: number,
+    ) => {
+        const { name, value } = e.target;
+        const updatedCard = { ...card };
+        let field: any = undefined;
+        if (name === 'description') {
+            updatedCard['description'][lang] = value;
+            field = updatedCard.description;
+        }
+        if (name === 'title') {
+            updatedCard['title'][lang] = value;
+            field = updatedCard.title;
+        }
+        if (field) {
+            handleCardChange(index, name, field);
+        }
+    };
+
     return (
         <div className="mb-8 p-2 bg-custom-turquoise bg-opacity-50 bg-[#f5ebe0] dark:bg-[#363636] dark:bg-opacity-50 rounded-xl shadow-lg w-[500px] relative">
             <span className="text-black dark:text-white absolute">
@@ -73,35 +95,65 @@ const EditDataCard: React.FC<EditDataCardProps> = ({
                     >
                         <TrashSVG className="fill-red-600"></TrashSVG>
                     </Button>
-                    <input
-                        type="text"
-                        value={card.title}
-                        name="title"
-                        onChange={(e) =>
-                            handleCardChange(cardIndex, 'title', e.target.value)
-                        }
-                        className="ml-8 w-[70%] rounded-md text-sm m-2 tracking-wide text-black shadow-sm mb-2 p-1 dark:text-white bg-transparent focus:outline-none focus:ring-2 focus:ring-blue-500"
-                    />
+                    <div className="flex flex-row items-center">
+                        <label className="text-black dark:text-white">
+                            {Language.FR}
+                        </label>
+                        <input
+                            type="text"
+                            value={card.title[Language.FR]}
+                            placeholder="titre"
+                            name="title"
+                            onChange={(e) =>
+                                handleTextInputChange(e, Language.FR, cardIndex)
+                            }
+                            className="ml-8 w-[70%] rounded-md text-sm m-2 tracking-wide text-black shadow-sm mb-2 p-1 dark:text-white bg-transparent focus:outline-none focus:ring-2 focus:ring-blue-500"
+                        />
+                    </div>
+                    <div className="flex flex-row items-center">
+                        <label className="text-black dark:text-white">
+                            {Language.EN}
+                        </label>
+                        <input
+                            type="text"
+                            value={card.title[Language.EN]}
+                            placeholder="title"
+                            name="title"
+                            onChange={(e) =>
+                                handleTextInputChange(e, Language.EN, cardIndex)
+                            }
+                            className="ml-8 w-[70%] rounded-md text-sm m-2 tracking-wide text-black shadow-sm mb-2 p-1 dark:text-white bg-transparent focus:outline-none focus:ring-2 focus:ring-blue-500"
+                        />
+                    </div>
                 </div>
 
                 <div>
-                    <input
-                        type="text"
-                        value={
-                            card.description.length > 0
-                                ? card.description
-                                : 'Description'
-                        }
-                        name="description"
-                        onChange={(e) =>
-                            handleCardChange(
-                                cardIndex,
-                                'description',
-                                e.target.value,
-                            )
-                        }
-                        className="ml-8 w-[70%] rounded-md text-xs tracking-wide text-black shadow-sm mb-2 p-1 dark:text-white bg-transparent focus:outline-none focus:ring-2 focus:ring-blue-500"
-                    />
+                    <div className="flex flex-row items-center">
+                        <label>{Language.FR}</label>
+                        <input
+                            type="text"
+                            value={card.description[Language.FR]}
+                            placeholder="description"
+                            name="description"
+                            onChange={(e) =>
+                                handleTextInputChange(e, Language.FR, cardIndex)
+                            }
+                            className="ml-8 w-[70%] rounded-md text-xs tracking-wide text-black shadow-sm mb-2 p-1 dark:text-white bg-transparent focus:outline-none focus:ring-2 focus:ring-blue-500"
+                        />
+                    </div>
+                    <div className="flex flex-row items-center">
+                        <label>{Language.EN}</label>
+                        <input
+                            type="text"
+                            value={card.description[Language.EN]}
+                            placeholder="description"
+                            name="description"
+                            onChange={(e) =>
+                                handleTextInputChange(e, Language.EN, cardIndex)
+                            }
+                            className="ml-8 w-[70%] rounded-md text-xs tracking-wide text-black shadow-sm mb-2 p-1 dark:text-white bg-transparent focus:outline-none focus:ring-2 focus:ring-blue-500"
+                        />
+                    </div>
                 </div>
 
                 <div className="space-y-1">

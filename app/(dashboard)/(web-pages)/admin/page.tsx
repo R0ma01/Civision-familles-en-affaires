@@ -24,8 +24,8 @@ export default function Admin() {
     const lang: Language = useDataStore((state) => state.lang);
     const [pages, setPages] = useState<PageTabContent[]>([]);
     const newPage: PageTabContent = {
-        title: AdminPromptsTranslations.new_page_title[lang],
-        description: AdminPromptsTranslations.new_page_description[lang],
+        title: { FR: 'Nouvelle Page', EN: 'New Page' },
+        description: { FR: 'Nouvelle Description', EN: 'New Description' },
         tabs: [],
         backgroundImage: '',
         visible: false,
@@ -51,6 +51,7 @@ export default function Admin() {
                 tour.start();
             }
         }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
     const [fetchData, setFetch] = useState<boolean>(false);

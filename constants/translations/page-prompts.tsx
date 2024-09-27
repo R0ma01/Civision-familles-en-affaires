@@ -1,7 +1,4 @@
-interface Traductions {
-    FR: string;
-    EN: string;
-}
+import { Traductions } from '@/components/enums/language';
 
 type PromptsTranslations = {
     [key: string]: Traductions;
@@ -98,6 +95,10 @@ export const RepertoirePromptsTranslations: PromptsTranslations = {
     data_card3_title: {
         FR: 'Rechercher une Entreprise',
         EN: 'Search for a company',
+    },
+    graph_description: {
+        FR: 'des entreprises privées au Québec sont familiales',
+        EN: 'of the private companies in Quebec are family owned',
     },
 };
 

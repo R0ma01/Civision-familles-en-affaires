@@ -62,6 +62,7 @@ function PageContentComponent() {
                 tour.start();
             }
         }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
     const { filterStudyData, filterIndexeAData, filterIndexeBData } =
@@ -115,7 +116,7 @@ function PageContentComponent() {
                 filterMenu={true}
             >
                 <h1 className="text-2xl tracking-wide text-black dark:text-white z-10 mt-12 mb-2 cursor-default">
-                    {page?.title}
+                    {page?.title[lang]}
                 </h1>
 
                 {page && (

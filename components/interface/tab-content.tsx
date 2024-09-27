@@ -1,11 +1,10 @@
 import { DataBaseOrigin } from '../enums/data-types-enum';
+import { Traductions } from '../enums/language';
 import DataCardContent from './data-card-content';
 
 export interface TabContent {
-    // title: string;
-    // acronym?: string;
     tabType: DataBaseOrigin;
-    description: string;
+    description: Traductions;
     cards: DataCardContent[];
     visible: boolean;
 }

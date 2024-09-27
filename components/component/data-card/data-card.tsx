@@ -7,6 +7,8 @@ import SearchBox from '@/components/component/search-box/search-box';
 import ListeFournisseurs from '@/components/component/liste-fournisseurs/liste-fournisseurs';
 import StaticDropdown from '../drop-down-menu/chercheur-drop-down';
 import { UserType } from '@/components/enums/user-type-enum';
+import useDataStore from '@/reducer/dataStore';
+import { Language } from '@/components/enums/language';
 
 interface DataCardProps {
     className?: string;
@@ -20,6 +22,7 @@ const DataCard: React.FC<DataCardProps> = ({
     admin = false,
 }) => {
     const [isCollapsed, setIsCollapsed] = useState(false);
+    const lang: Language = useDataStore((state) => state.lang);
 
     const DataCardDiv: React.FC<{
         children: React.ReactNode;
@@ -67,18 +70,18 @@ const DataCard: React.FC<DataCardProps> = ({
     switch (content.type) {
         case DataCardType.SIMPLE:
             return (
-                <DataCardDiv title={content.title}>
+                <DataCardDiv title={content.title[lang]}>
                     <DescriptionComponent>
-                        {content.description}
+                        {content.description[lang]}
                     </DescriptionComponent>
                 </DataCardDiv>
             );
 
         case DataCardType.SIMPLE_GRAPH:
             return (
-                <DataCardDiv title={content.title}>
+                <DataCardDiv title={content.title[lang]}>
                     <DescriptionComponent>
-                        {content.description}
+                        {content.description[lang]}
                     </DescriptionComponent>
                     <GraphBox content={content.graphData[0]} />
                 </DataCardDiv>
@@ -86,9 +89,9 @@ const DataCard: React.FC<DataCardProps> = ({
 
         case DataCardType.MULTIPLE_GRAPH:
             return (
-                <DataCardDiv title={content.title}>
+                <DataCardDiv title={content.title[lang]}>
                     <DescriptionComponent>
-                        {content.description}
+                        {content.description[lang]}
                     </DescriptionComponent>
                     {content.graphData?.map((graph, index) => (
                         <GraphBox key={index} content={graph} />
@@ -98,9 +101,9 @@ const DataCard: React.FC<DataCardProps> = ({
 
         case DataCardType.SEARCH:
             return (
-                <DataCardDiv title={content.title}>
+                <DataCardDiv title={content.title[lang]}>
                     <DescriptionComponent>
-                        {content.description}
+                        {content.description[lang]}
                     </DescriptionComponent>
                     <SearchBox />
                 </DataCardDiv>
@@ -108,7 +111,7 @@ const DataCard: React.FC<DataCardProps> = ({
 
         case DataCardType.SOLO_GRAPH:
             return (
-                <DataCardDiv title={content.title}>
+                <DataCardDiv title={content.title[lang]}>
                     {content.graphData !== undefined && (
                         <GraphBox content={content.graphData[0]} />
                     )}
@@ -117,7 +120,7 @@ const DataCard: React.FC<DataCardProps> = ({
 
         case DataCardType.CHERCHEUR_DROPDOWN:
             return (
-                <DataCardDiv title={content.title}>
+                <DataCardDiv title={content.title[lang]}>
                     <StaticDropdown
                         onClick={content.chercheurDropdownOnCLick}
                     />

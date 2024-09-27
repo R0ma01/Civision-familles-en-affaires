@@ -11,11 +11,8 @@ import {
     SecteursGeographiques,
     ServiceOffert,
 } from '@/components/enums/fournisseur-filter-enum';
+import { Traductions } from '@/components/enums/language';
 
-interface Traductions {
-    FR: string;
-    EN: string;
-}
 interface dataInformations {
     label: Traductions;
     dataLabels: Record<any, Traductions>;
@@ -3889,7 +3886,7 @@ const keyValuePairsTabs: [string, TabsProps][] = [
         DataBaseOrigin.INDEX_VOLETA,
         {
             titre: {
-                FR: 'Indexe Entrep., Volet A',
+                FR: 'Indice Entrep., Volet A',
                 EN: 'Entrep. Index, Section A',
             },
             acronym: {
@@ -3902,7 +3899,7 @@ const keyValuePairsTabs: [string, TabsProps][] = [
         DataBaseOrigin.INDEX_VOLETB,
         {
             titre: {
-                FR: 'Indexe Entrep., Volet B',
+                FR: 'Indice Entrep., Volet B',
                 EN: 'Entrep. Index, Section B',
             },
             acronym: {

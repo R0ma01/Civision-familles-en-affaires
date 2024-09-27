@@ -1,9 +1,8 @@
 import { TabContent } from '@/components/interface/tab-content';
 import { useEffect, useState } from 'react';
 import DataCard from '../data-card/data-card';
-import Button from '../buttons/button';
-import { ButtonType } from '@/components/enums/button-type-enum';
-import { EditSVG } from '../svg-icons/svg-icons';
+import useDataStore from '@/reducer/dataStore';
+import { Language } from '@/components/enums/language';
 
 interface TabProps {
     content: TabContent;
@@ -12,7 +11,7 @@ interface TabProps {
 //some comment
 export function Tab({ content, className }: TabProps) {
     const [tabContent, setTabContent] = useState<TabContent>(content);
-
+    const lang: Language = useDataStore((state) => state.lang);
     useEffect(() => {
         setTabContent(content);
     }, [content]);
@@ -22,7 +21,7 @@ export function Tab({ content, className }: TabProps) {
             className={`p-4 space-y-6 rounded-lg shadow-sm transition-all duration-300 ${className}`}
         >
             <p className="text-base text-gray-600 dark:text-gray-300">
-                {tabContent.description}
+                {tabContent.description[lang]}
             </p>
 
             {/* Render Data Cards */}

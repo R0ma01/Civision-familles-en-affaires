@@ -148,18 +148,24 @@ function Repertoire() {
     const fetchedData = {
         firstField: {
             type: DataCardType.SIMPLE,
-            title: RepertoirePromptsTranslations.data_card1_title[lang],
-            description:
-                repertoireData.length +
-                ' ' +
-                RepertoirePromptsTranslations.data_card1_description[lang],
+            title: RepertoirePromptsTranslations.data_card1_title,
+            description: {
+                FR:
+                    repertoireData.length +
+                    ' ' +
+                    RepertoirePromptsTranslations.data_card1_description['FR'],
+                EN:
+                    repertoireData.length +
+                    ' ' +
+                    RepertoirePromptsTranslations.data_card1_description['EN'],
+            },
+
             graphData: [],
         },
         secondField: {
             type: DataCardType.SIMPLE_GRAPH,
-            title: RepertoirePromptsTranslations.data_card2_title[lang],
-            description:
-                RepertoirePromptsTranslations.data_card2_description[lang],
+            title: RepertoirePromptsTranslations.data_card2_title,
+            description: RepertoirePromptsTranslations.data_card2_description,
             graphData: [
                 {
                     graphType: GraphBoxType.DOUGHNUT,
@@ -169,8 +175,8 @@ function Repertoire() {
         },
         thirdField: {
             type: DataCardType.SEARCH,
-            title: RepertoirePromptsTranslations.data_card3_title[lang],
-            description: ``,
+            title: RepertoirePromptsTranslations.data_card3_title,
+            description: { FR: '', EN: '' },
             graphData: [],
         },
     };
@@ -190,7 +196,11 @@ function Repertoire() {
                         <Donut size={90}></Donut>
                         <p className="text-xs">
                             {' '}
-                            des entreprises familiales au Québec sont privées
+                            {
+                                RepertoirePromptsTranslations.graph_description[
+                                    lang
+                                ]
+                            }
                         </p>
                     </div>
                 </DataCardDiv>

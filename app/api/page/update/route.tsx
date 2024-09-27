@@ -4,7 +4,6 @@ import { ObjectId } from 'mongodb';
 import { MongoDBPaths } from '@/components/enums/mongodb-paths-enum';
 
 export async function PATCH(req: Request) {
-    console.error('update is Called');
     try {
         // Connect to the database
         const db = (await connectToDatabaseStudy()).db;
@@ -15,7 +14,7 @@ export async function PATCH(req: Request) {
 
         // Extract _id and updateData from the body
         const { _id, ...updateData } = body;
-        console.log(_id, updateData);
+
         // Validate the presence of _id and updateData
         if (!_id || !updateData) {
             return NextResponse.json(
