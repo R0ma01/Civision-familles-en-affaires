@@ -13,12 +13,8 @@ const DataCardContainer: React.FC<DataCardContainerProps> = ({
 }) => {
     return (
         <div className={`flex z-10 justify-center items-center ${className}`}>
-            {cards.map((content) => (
-                <DataCard
-                    key={content.title}
-                    content={content}
-                    className="m-4"
-                />
+            {cards.map((content, index) => (
+                <DataCard key={index} content={content} className="m-4" />
             ))}
         </div>
     );
