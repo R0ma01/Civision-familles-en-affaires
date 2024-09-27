@@ -152,7 +152,7 @@ export default function Admin() {
                         ? pages.map((page: PageTabContent, index: number) => (
                               <ThemeCard
                                   index={`${html_object_constants.theme_card_id}-${index}`}
-                                  key={page._id || page.title} // Ensure unique key
+                                  key={index} // Ensure unique key
                                   page={page}
                                   admin={user === UserType.ADMIN} // Correct comparison with user
                                   onClickEdit={() => openEditDialog(page)} // Pass page data to openEditDialog
