@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useRef, useMemo } from 'react';
 import quebec_regions from '@/geojson/quebec_regions.json';
 import { choroplethColors } from '@/constants/color-palet';
 import { AlbumDataFields } from '@/components/enums/data-types-enum';
@@ -8,92 +8,119 @@ interface ChloroplethProps {
     data: any[]; // GeoJSON data for regions
     dataField: string; // Field in the GeoJSON properties to base the color on
     map: any;
+    filterFunction: (region: any) => void;
 }
 
-const Chloropleth: React.FC<ChloroplethProps> = ({ data, dataField, map }) => {
-    const [feature, setFeature] = useState<any>(null);
-    const [chloroData, setchloroData] = useState<any>([]);
+const Chloropleth: React.FC<ChloroplethProps> = ({
+    data,
+    dataField,
+    map,
+    filterFunction,
+}) => {
+    const [chloroData, setChloroData] = useState<any>([]);
+    const hoveredRegionIdRef = useRef<string | null>(null); // Use ref for hovered region ID
 
     useEffect(() => {
-        setchloroData(data);
+        setChloroData(data);
     }, [data]);
 
-    useEffect(() => {
-        if (!map) return;
-
-        const handleMapLoad = () => {
-            const newRegionCounts: Record<string, number> = newRegionCount();
-            chloroData.forEach((item: any) => {
-                newRegionCounts[item.region] = item.count;
-            });
-            const newFeature = createRegionFeatures(
-                newRegionCounts,
-                quebec_regions,
-            );
-            setFeature(newFeature);
-        };
-
-        if (map.isStyleLoaded()) {
-            handleMapLoad();
-        } else {
-            map.on('load', handleMapLoad);
-        }
-
-        return () => {
-            if (map && handleMapLoad) {
-                map.off('load', handleMapLoad);
-            }
-        };
-    }, [chloroData, map]);
+    // Memoized function to create region features based on chloroData
+    const regionFeatures = useMemo(() => {
+        const newRegionCounts: Record<string, number> = newRegionCount();
+        chloroData.forEach((item: any) => {
+            newRegionCounts[item.region] = item.count;
+        });
+        return createRegionFeatures(newRegionCounts, quebec_regions);
+    }, [chloroData]);
 
     useEffect(() => {
-        if (!map || !feature) return;
+        if (!map || !regionFeatures) return;
 
         const source = map.getSource('chloropleth-source');
-        if (!source) {
-            console.warn(
-                "Source 'chloropleth-source' not found. Skipping update.",
-            );
+
+        // If the source already exists, just update the data
+        if (source) {
+            (source as any).setData(regionFeatures);
         } else {
-            if (map.getLayer('chloropleth-layer')) {
-                map.removeLayer('chloropleth-layer');
-            }
-            if (map.getLayer('chloropleth-outline-layer')) {
-                map.removeLayer('chloropleth-outline-layer');
-            }
-            map.removeSource('chloropleth-source');
+            // If the source doesn't exist, create it and the necessary layers
+            map.addSource('chloropleth-source', {
+                type: 'geojson',
+                data: regionFeatures,
+            });
+
+            map.addLayer({
+                id: 'chloropleth-layer',
+                type: 'fill',
+                source: 'chloropleth-source',
+                paint: {
+                    'fill-color': [
+                        'interpolate',
+                        ['linear'],
+                        ['get', dataField],
+                        ...choroplethColors,
+                    ],
+                    'fill-opacity': 0.45,
+                },
+            });
+
+            map.addLayer({
+                id: 'chloropleth-outline-layer',
+                type: 'line',
+                source: 'chloropleth-source',
+                paint: {
+                    'line-color': '#000',
+                    'line-width': 0.5,
+                },
+            });
+
+            map.addLayer({
+                id: 'chloropleth-hover-layer',
+                type: 'line',
+                source: 'chloropleth-source',
+                paint: {
+                    'line-color': [
+                        'case',
+                        ['==', ['get', 'region'], hoveredRegionIdRef.current],
+                        '#FFCC00', // Highlight color on hover
+                        'rgba(0, 0, 0, 0)', // Transparent when not hovered
+                    ],
+                    'line-width': 2,
+                },
+            });
+
+            // Add mouseup listener for hover effects and filtering
+            map.on('mouseup', 'chloropleth-layer', (e: any) => {
+                if (e.features.length > 0) {
+                    const hoveredRegion = e.features[0].properties.region;
+                    if (hoveredRegionIdRef.current !== hoveredRegion) {
+                        hoveredRegionIdRef.current = hoveredRegion;
+                    } else {
+                        hoveredRegionIdRef.current = null;
+                    }
+                    // Update hovered region ID via ref
+
+                    map.setPaintProperty(
+                        'chloropleth-hover-layer',
+                        'line-color',
+                        [
+                            'case',
+                            [
+                                '==',
+                                ['get', 'region'],
+                                hoveredRegionIdRef.current,
+                            ],
+                            '#FFCC00', // Highlight color on hover
+                            'rgba(0, 0, 0, 0)', // Transparent when not hovered
+                        ],
+                    );
+
+                    filterFunction(hoveredRegionIdRef.current);
+                } else {
+                    hoveredRegionIdRef.current = null;
+                }
+            });
         }
-
-        map.addSource('chloropleth-source', {
-            type: 'geojson',
-            data: feature,
-        });
-
-        map.addLayer({
-            id: 'chloropleth-layer',
-            type: 'fill',
-            source: 'chloropleth-source',
-            paint: {
-                'fill-color': [
-                    'interpolate',
-                    ['linear'],
-                    ['get', dataField],
-                    ...choroplethColors,
-                ],
-                'fill-opacity': 0.45,
-            },
-        });
-
-        map.addLayer({
-            id: 'chloropleth-outline-layer',
-            type: 'line',
-            source: 'chloropleth-source',
-            paint: {
-                'line-color': '#000',
-                'line-width': 0.5,
-            },
-        });
-    }, [map, feature, dataField]);
+    }, [map, regionFeatures, dataField]);
 
     return null;
 };
@@ -104,25 +131,16 @@ function createRegionFeatures(
     regionCounts: Record<string, number>,
     regionsGeoJSON: any,
 ) {
-    const features: any[] = [];
-
-    regionsGeoJSON.features.forEach((region: any) => {
-        const regionName = region.properties.res_nm_reg;
-        const count = regionCounts[regionName] || 0;
-
-        features.push({
+    return {
+        type: 'FeatureCollection',
+        features: regionsGeoJSON.features.map((region: any) => ({
             type: 'Feature',
             geometry: region.geometry,
             properties: {
-                region: regionName,
-                count: count,
+                region: region.properties.res_nm_reg,
+                count: regionCounts[region.properties.res_nm_reg] || 0,
             },
-        });
-    });
-
-    return {
-        type: 'FeatureCollection',
-        features: features,
+        })),
     };
 }
 

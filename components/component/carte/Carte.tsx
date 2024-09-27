@@ -13,6 +13,13 @@ import ColorLegend from './Color-Legend';
 import { choroplethColors, clusterColors } from '@/constants/color-palet';
 import useGlobalUserStore from '@/stores/global-user-store';
 import { UserType } from '@/components/enums/user-type-enum';
+import { setDefaultHighWaterMark } from 'stream';
+import {
+    AlbumDataFields,
+    FournisseurDataFields,
+    IndexeDataFieldsB,
+} from '@/components/enums/data-types-enum';
+import { GraphTextService } from '@/services/translations';
 
 export default function Carte() {
     // global variables
@@ -20,10 +27,13 @@ export default function Carte() {
     const mapRef = useRef(null);
     const map = useMapStore((state) => state.map);
     const mapType = useMapStore((state) => state.mapType);
-    const { matchStage, resetFilters } = useGlobalFilterStore((state: any) => ({
-        matchStage: state.matchStage,
-        resetFilters: state.resetFilters,
-    }));
+    const { matchStage, resetFilters, setFilter } = useGlobalFilterStore(
+        (state: any) => ({
+            matchStage: state.matchStage,
+            resetFilters: state.resetFilters,
+            setFilter: state.setFilter,
+        }),
+    );
     const [fournisseurMapData, setFournisseurMapData] = useState<any>({});
     const {
         studyData,
@@ -42,6 +52,11 @@ export default function Carte() {
         repertoireDataFetched,
         indexeADataFetched,
         indexeBDataFetched,
+        filterRepertoireData,
+        filterFournisseurData,
+        filterIndexeBData,
+        filterIndexeAData,
+        filterStudyData,
     } = useGlobalDataStore((state: any) => ({
         studyData: state.studyData,
         repertoireData: state.repertoireData,
@@ -162,6 +177,32 @@ export default function Carte() {
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [fournisseurData]);
 
+    function filter(region: any, field: any) {
+        console.log('I am called ?');
+
+        setFilter(field, region);
+        console.log(matchStage);
+        switch (mapType) {
+            case MapType.REPERTOIRE:
+                filterRepertoireData();
+                break;
+            case MapType.PAGE_INFORMATION_ALBUM:
+                filterStudyData();
+                break;
+            case MapType.PAGE_INFORMATION_INDEX_VOLETA:
+                filterIndexeAData();
+                break;
+            case MapType.PAGE_INFORMATION_INDEX_VOLETB:
+                filterIndexeBData();
+                break;
+            case MapType.FOURNISSEURS:
+                filterFournisseurData();
+                break;
+            default:
+                break;
+        }
+    }
+
     return (
         <div className={`relative h-full w-full z-40`}>
             <Mapbox />
@@ -171,6 +212,15 @@ export default function Carte() {
                         map={map}
                         data={studyData}
                         dataField="count"
+                        filterFunction={(region: any) => {
+                            filter(
+                                GraphTextService.getKey(
+                                    AlbumDataFields.COORDONNES_REGION,
+                                    region,
+                                ),
+                                AlbumDataFields.COORDONNES_REGION,
+                            );
+                        }}
                     ></Chloropleth>
                     <ColorLegend
                         gradientValues={choroplethColors}
@@ -203,6 +253,12 @@ export default function Carte() {
                         map={map}
                         data={fournisseurMapData}
                         dataField="count"
+                        filterFunction={(region: any) => {
+                            filter(
+                                region,
+                                FournisseurDataFields.SECTEURS_GEOGRAPHIQUES,
+                            );
+                        }}
                     ></Chloropleth>
                     <ColorLegend
                         gradientValues={choroplethColors}
@@ -217,6 +273,15 @@ export default function Carte() {
                         map={map}
                         data={indexeAData}
                         dataField="count"
+                        filterFunction={(region: any) => {
+                            filter(
+                                GraphTextService.getKey(
+                                    IndexeDataFieldsB.Q0QC,
+                                    region,
+                                ),
+                                IndexeDataFieldsB.Q0QC,
+                            );
+                        }}
                     ></Chloropleth>
                     <ColorLegend
                         gradientValues={choroplethColors}
@@ -231,6 +296,15 @@ export default function Carte() {
                         map={map}
                         data={indexeBData}
                         dataField="count"
+                        filterFunction={(region: any) => {
+                            filter(
+                                GraphTextService.getKey(
+                                    IndexeDataFieldsB.Q0QC,
+                                    region,
+                                ),
+                                IndexeDataFieldsB.Q0QC,
+                            );
+                        }}
                     ></Chloropleth>
                     <ColorLegend
                         gradientValues={choroplethColors}
