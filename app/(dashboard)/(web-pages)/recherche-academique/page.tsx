@@ -38,8 +38,8 @@ export default function RechercheAcademique() {
                 newCards.delete(item.label);
             } else {
                 const newDataCard: DataCardContent = {
-                    title: item.label,
-                    description: '',
+                    title: { FR: item.label, EN: '' },
+                    description: { FR: '', EN: '' },
                     type: DataCardType.SIMPLE_GRAPH,
                     graphData: [
                         {
