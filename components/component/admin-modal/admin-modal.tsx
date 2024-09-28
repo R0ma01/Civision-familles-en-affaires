@@ -24,32 +24,38 @@ export function AdminModal({
     const [editPage, setEditPage] = useState<PageTabContent>(page);
     const lang: Language = useDataStore((state) => state.lang);
 
-    const [uploadedImage, setUploadedImage] = useState<File | null>(null);
     const [binaryString, setBinaryString] = useState<any>(null);
+    const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        const { name, value } = e.target;
+        setEditPage((prev) => (prev ? { ...prev, [name]: value } : prev));
+    };
 
-    // function uploadFile(file: File | null) {
-    //     var file = file;
-    //     var reader = new FileReader();
-    //     reader.onloadend = function () {
-    //         console.log('Encoded Base 64 File String:', reader.result);
-
-    //         /******************* for Binary ***********************/
-    //         var data = reader.result?.split(',')[1];
-    //         var binaryBlob = atob(data);
-    //         setBinaryString(binaryBlob);
-    //         console.log('Encoded Binary File String:', binaryBlob);
-    //     };
-    //     reader.readAsDataURL(file);
-    // }
+    useEffect(() => {
+        if (binaryString) {
+            setEditPage((prev) =>
+                prev ? { ...prev, ['backgroundImage']: binaryString } : prev,
+            );
+        }
+    }, [binaryString]);
 
     const handleImageUpload = (file: File | null) => {
-        setUploadedImage(file);
-        console.log(file);
-        //uploadFile(file);
-        const updatedPage = { ...editPage };
-        updatedPage.backgroundImage = file ? file.name : '';
-        setEditPage(updatedPage);
-        // Perform further actions, like uploading the file to a server, etc.
+        if (!file) {
+            setBinaryString(null);
+            return;
+        }
+        const reader = new FileReader();
+        reader.onloadend = () => {
+            // Get binary string (Base64 encoded)
+            const base64Data = reader.result as string;
+            const binaryData = base64Data.split(',')[1]; // Get the binary part from data URL
+            setBinaryString(binaryData);
+        };
+        reader.readAsDataURL(file);
+    };
+
+    const getImageSRC = () => {
+        if (!binaryString) return '';
+        return `data:image/jpeg;base64,${binaryStr}`; // Replace "jpeg" with the correct image format if necessary
     };
 
     useEffect(() => {
@@ -77,10 +83,6 @@ export function AdminModal({
         };
     }, [closeDialog]);
 
-    const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        const { name, value } = e.target;
-        setEditPage((prev) => (prev ? { ...prev, [name]: value } : prev));
-    };
     const handleTextInputChange = (
         e: React.ChangeEvent<HTMLInputElement>,
         lang: Language, // 'EN' or 'FR'
@@ -237,17 +239,16 @@ export function AdminModal({
                     <ImageUpload
                         onImageUpload={handleImageUpload}
                         className="absolute top-[30%] right-[18%]"
-                        imageURL={editPage.backgroundImage ?? null}
                     />
+
                     {binaryString && (
-                        <div>
-                            <textarea
-                                value={binaryString}
-                                readOnly
-                                rows={10}
-                                cols={50}
-                            />
-                        </div>
+                        <Image
+                            src={getImageSRC()}
+                            alt="Uploaded Image"
+                            width={200}
+                            height={200}
+                            className="m-4"
+                        />
                     )}
                     <EditTabContainer
                         tabs={editPage.tabs}
@@ -277,63 +278,25 @@ export function AdminModal({
 
 interface ImageUploadProps {
     onImageUpload: (file: File | null) => void;
-    label?: string;
     className?: string;
-    imageURL?: string;
 }
 
 export const ImageUpload: React.FC<ImageUploadProps> = ({
     onImageUpload,
-    label = 'Upload Image',
-    className = '',
-    imageURL = null,
+    className,
 }) => {
     const [selectedImage, setSelectedImage] = useState<File | null>(null);
-    const [imagePreview, setImagePreview] = useState<string | null>(imageURL);
 
     const handleImageChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         const file = event.target.files?.[0] || null;
-
-        if (file) {
-            setSelectedImage(file);
-            setImagePreview(URL.createObjectURL(file));
-            onImageUpload(file); // Send the file back to parent component
-        } else {
-            setSelectedImage(null);
-            setImagePreview(null);
-            onImageUpload(null); // Clear the uploaded file if no file is selected
-        }
-    };
-
-    const clearImage = () => {
-        setSelectedImage(null);
-        setImagePreview(null);
-        onImageUpload(null);
+        setSelectedImage(file);
+        onImageUpload(file); // Pass the file back to parent component
     };
 
     return (
         <div
-            className={`image-upload-container ${className} w-72 flex flex-col items-center`}
+            className={`image-upload-container ${className} flex flex-col items-center`}
         >
-            {/* Display image preview */}
-            {imagePreview && (
-                <div className="relative max-w-[245px] m-1">
-                    <Image
-                        src={imagePreview}
-                        alt="Selected"
-                        className="w-full h-auto max-h-xs max-w-xs object-cover"
-                        width={200}
-                        height={200}
-                    />
-                    <button
-                        onClick={clearImage}
-                        className="absolute -top-3 -right-3 bg-red-500 text-white px-2 py-1 rounded-full text-xs"
-                    >
-                        X
-                    </button>
-                </div>
-            )}
-
             <input
                 type="file"
                 accept="image/*"
