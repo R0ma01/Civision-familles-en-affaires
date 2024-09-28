@@ -24,6 +24,10 @@ export async function GET() {
             message: 'Documents found successfully',
             pages: result,
         });
+
+        result.map((page)=> {
+            console.log(page)
+        })
         console.log(result);
         // Add Cache-Control headers to prevent caching
         response.headers.set('Cache-Control', 'no-store, max-age=0');

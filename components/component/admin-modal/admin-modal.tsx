@@ -24,19 +24,19 @@ export function AdminModal({
     const [editPage, setEditPage] = useState<PageTabContent>(page);
     const lang: Language = useDataStore((state) => state.lang);
 
-    const [binaryString, setBinaryString] = useState<any>(null);
+    const [binaryString, setBinaryString] = useState<any>('');
     const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const { name, value } = e.target;
         setEditPage((prev) => (prev ? { ...prev, [name]: value } : prev));
     };
 
-    useEffect(() => {
-        if (binaryString) {
-            setEditPage((prev) =>
-                prev ? { ...prev, ['backgroundImage']: binaryString } : prev,
-            );
-        }
-    }, [binaryString]);
+    // useEffect(() => {
+    //     if (binaryString) {
+    //         setEditPage((prev) =>
+    //             prev ? { ...prev, ['backgroundImage']: binaryString } : prev,
+    //         );
+    //     }
+    // }, [binaryString]);
 
     const handleImageUpload = (file: File | null) => {
         if (!file) {
@@ -158,6 +158,7 @@ export function AdminModal({
 
         return () =>
             darkModeQuery.removeEventListener('change', handleDarkModeChange);
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
     return (
@@ -188,7 +189,7 @@ export function AdminModal({
                                 className="rounded-md text-2xl m-2 tracking-wide w-[80%] text-black shadow-sm mb-2 p-1 dark:text-white bg-transparent focus:outline-none focus:ring-2 focus:ring-blue-500"
                             />
                         </div>
-                        <div className="flex flex-row items-center">
+                        <div className="flex flex-row items-center w-full">
                             <label className="text-black dark:text-white text-xs">
                                 {Language.EN}
                             </label>
@@ -200,12 +201,12 @@ export function AdminModal({
                                 onChange={(e) =>
                                     handleTextInputChange(e, Language.EN)
                                 } // Uncomment and implement this function
-                                className="rounded-md text-2xl m-2 tracking-wide text-black shadow-sm mb-2 p-1 dark:text-white bg-transparent focus:outline-none focus:ring-2 focus:ring-blue-500"
+                                className="rounded-md text-2xl m-2 tracking-wide w-[80%] text-black shadow-sm mb-2 p-1 dark:text-white bg-transparent focus:outline-none focus:ring-2 focus:ring-blue-500"
                             />
                         </div>
                     </div>
-                    <div>
-                        <div className="flex flex-row items-center">
+                    <div className="flex flex-col w-full">
+                        <div className="flex flex-row items-center w-full">
                             <label className="text-black dark:text-white text-xs">
                                 {Language.FR}
                             </label>
@@ -217,10 +218,10 @@ export function AdminModal({
                                 onChange={(e) =>
                                     handleTextInputChange(e, Language.FR)
                                 }
-                                className="rounded-md text-md m-2 tracking-wide text-black shadow-sm mb-2 p-1 dark:text-white bg-transparent focus:outline-none focus:ring-2 focus:ring-blue-500"
+                                className="rounded-md text-md m-2 tracking-wide w-[60%] text-black shadow-sm mb-2 p-1 dark:text-white bg-transparent focus:outline-none focus:ring-2 focus:ring-blue-500"
                             />
                         </div>
-                        <div className="flex flex-row items-center">
+                        <div className="flex flex-row items-center w-full">
                             <label className="text-black dark:text-white text-xs">
                                 {Language.EN}
                             </label>
@@ -232,24 +233,20 @@ export function AdminModal({
                                 onChange={(e) =>
                                     handleTextInputChange(e, Language.EN)
                                 }
-                                className="rounded-md text-md m-2 tracking-wide text-black shadow-sm mb-2 p-1 dark:text-white bg-transparent focus:outline-none focus:ring-2 focus:ring-blue-500"
+                                className="rounded-md text-md m-2 tracking-wide w-[60%] text-black shadow-sm mb-2 p-1 dark:text-white bg-transparent focus:outline-none focus:ring-2 focus:ring-blue-500"
                             />
                         </div>
                     </div>
-                    <div className="flex flex-col">
-                        {binaryString && (
+                    <div className="flex flex-col items-baseline">
+                        {binaryString !== '' && (
                             <Image
                                 src={getImageSRC()}
                                 alt="Uploaded Image"
                                 width={200}
                                 height={200}
-                                className="m-4"
                             />
                         )}
-                        <ImageUpload
-                            onImageUpload={handleImageUpload}
-                            className="absolute top-[30%] right-[18%]"
-                        />
+                        <ImageUpload onImageUpload={handleImageUpload} />
                     </div>
                     <EditTabContainer
                         tabs={editPage.tabs}
