@@ -96,13 +96,13 @@ function generateDualFieldAggregationQuery(
     ) {
         filters[field1] = {
             $exists: true,
-            $nin: [null, NaN],
+            $nin: [null, NaN, 'NaN'],
             $in: [filters[field1]],
         };
     } else {
         filters[field1] = {
             $exists: true,
-            $nin: [null, NaN],
+            $nin: [null, NaN, 'NaN'],
         };
     }
     if (
@@ -111,21 +111,18 @@ function generateDualFieldAggregationQuery(
     ) {
         filters[field2] = {
             $exists: true,
-            $nin: [null, NaN],
+            $nin: [null, NaN, 'NaN'],
             $in: [filters[field2]],
         };
     } else {
         filters[field2] = {
             $exists: true,
-            $nin: [null, NaN],
+            $nin: [null, NaN, 'NaN'],
         };
     }
     const aggregationPipeline = [
         {
             $match: {
-                // ...generateMatchStage(filters, [field1, field2]),
-                // [field1]: { $exists: true, $ne: null },
-                // [field2]: { $exists: true, $ne: null },
                 ...filters,
             },
         },
@@ -249,6 +246,7 @@ export async function GET(req: Request) {
 
         if (donnesObj.length > 1) {
             const tableau1 = GraphTextService.getKeys(donnesObj[0]);
+
             const tableau2 = GraphTextService.getKeys(donnesObj[1]);
 
             const dynamicObject = {
@@ -464,7 +462,6 @@ function dualDataFormatting(
 
     if (Array.isArray(result[0].name.field1)) {
         if (Array.isArray(result[0].name.field2)) {
-            console.log(' array array');
             // F1 -> [] F2 -> []
             result.map((item: any) => {
                 item.name.field1.map((value1: any) => {
@@ -478,7 +475,6 @@ function dualDataFormatting(
                 });
             });
         } else if (needsNumberFiltering(field2)) {
-            console.log('array - number');
             // F1 -> [] F2 -> number
             result.map((item: any) => {
                 item.name.field1.map((value1: any) => {
@@ -495,15 +491,22 @@ function dualDataFormatting(
                 });
             });
         } else {
-            console.log('array - string');
             // F1 -> [] F2 -> string
             result.map((item: any) => {
                 item.name.field1.map((value1: any) => {
-                    returnMap.set(`${value1}-${item.name.field2}`, {
-                        count:
-                            returnMap.get(`${value1}-${item.name.field2}`)
-                                .count + item.count,
-                    });
+                    if (
+                        possibleValues[field2].find(
+                            (something) =>
+                                something.toString() ===
+                                item.name.field2.toString(),
+                        )
+                    ) {
+                        returnMap.set(`${value1}-${item.name.field2}`, {
+                            count:
+                                returnMap.get(`${value1}-${item.name.field2}`)
+                                    .count + item.count,
+                        });
+                    }
                 });
             });
         }
@@ -553,25 +556,41 @@ function dualDataFormatting(
                     item.name.field1,
                     possibleValues[field1],
                 );
-
-                returnMap.set(`${value1}-${item.name.field2}`, {
-                    count:
-                        returnMap.get(`${value1}-${item.name.field2}`).count +
-                        item.count,
-                });
+                if (
+                    possibleValues[field2].find(
+                        (something) =>
+                            something.toString() ===
+                            item.name.field2.toString(),
+                    )
+                ) {
+                    returnMap.set(`${value1}-${item.name.field2}`, {
+                        count:
+                            returnMap.get(`${value1}-${item.name.field2}`)
+                                .count + item.count,
+                    });
+                }
             });
         }
     } else {
         if (Array.isArray(result[0].name.field2)) {
             // F1 -> string F2 -> []
-            console.log('strinf - array');
+
+            console.log('string - array');
             result.map((item: any) => {
                 item.name.field2.map((value2: any) => {
-                    returnMap.set(`${item.name.field1}-${value2}`, {
-                        count:
-                            returnMap.get(`${item.name.field1}-${value2}`)
-                                .count + item.count,
-                    });
+                    if (
+                        possibleValues[field1].find(
+                            (something) =>
+                                something.toString() ===
+                                item.name.field1.toString(),
+                        )
+                    ) {
+                        returnMap.set(`${item.name.field1}-${value2}`, {
+                            count:
+                                returnMap.get(`${item.name.field1}-${value2}`)
+                                    .count + item.count,
+                        });
+                    }
                 });
             });
         } else if (needsNumberFiltering(field2)) {
@@ -583,27 +602,47 @@ function dualDataFormatting(
                     item.name.field2,
                     possibleValues[field2],
                 );
-
-                returnMap.set(`${item.name.field1}-${value2}`, {
-                    count:
-                        returnMap.get(`${item.name.field1}-${value2}`).count +
-                        item.count,
-                });
+                if (
+                    possibleValues[field1].find(
+                        (something) =>
+                            something.toString() ===
+                            item.name.field1.toString(),
+                    )
+                ) {
+                    returnMap.set(`${item.name.field1}-${value2}`, {
+                        count:
+                            returnMap.get(`${item.name.field1}-${value2}`)
+                                .count + item.count,
+                    });
+                }
             });
         } else {
             // F1 -> string F2 -> string
             console.log('string - string');
 
             result.map((item: any) => {
-                returnMap.set(
-                    `${item.name.field1.toString()}-${item.name.field2.toString()}`,
-                    {
-                        count:
-                            returnMap.get(
-                                `${item.name.field1.toString()}-${item.name.field2.toString()}`,
-                            ).count + item.count,
-                    },
-                );
+                if (
+                    possibleValues[field1].findIndex(
+                        (something) =>
+                            something.toString() ===
+                            item.name.field1.toString(),
+                    ) >= 0 &&
+                    possibleValues[field2].findIndex(
+                        (something) =>
+                            something.toString() ===
+                            item.name.field2.toString(),
+                    ) >= 0
+                ) {
+                    returnMap.set(
+                        `${item.name.field1.toString()}-${item.name.field2.toString()}`,
+                        {
+                            count:
+                                returnMap.get(
+                                    `${item.name.field1.toString()}-${item.name.field2.toString()}`,
+                                ).count + item.count,
+                        },
+                    );
+                }
             });
         }
     }

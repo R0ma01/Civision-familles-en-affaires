@@ -7,16 +7,15 @@ import {
     ResponsiveContainer,
     Tooltip,
     Cell,
-    Legend,
 } from 'recharts';
 import { chartPalette } from '@/constants/color-palet';
-import { ChartContent } from '@/components/interface/chart-content';
 import { ChartSize } from '@/components/enums/chart-size-enum';
-import { AlbumDataFields } from '@/components/enums/data-types-enum';
+import { ChartContent } from '@/components/interface/chart-content';
 import {
     ChartData,
     ChartDataMultipleFileds,
 } from '@/components/interface/chart-data';
+import { AlbumDataFields } from '@/components/enums/data-types-enum';
 import { GraphTextService } from '@/services/translations';
 import { Language } from '@/components/enums/language';
 import useDataStore from '@/reducer/dataStore';
@@ -30,73 +29,46 @@ interface VerticalBarChartProps {
 const VerticalBarChart: React.FC<VerticalBarChartProps> = ({
     chartContent,
     chartSize = ChartSize.SMALL,
-    filterData = (entry: any) => {},
+    filterData = () => {},
 }) => {
     const [chartData, setChartData] = useState<
-        ChartData[] | ChartDataMultipleFileds[] | undefined
-    >(undefined);
-
-    const originalOrder = useRef<
-        ChartData[] | ChartDataMultipleFileds[] | undefined
+        (ChartData | ChartDataMultipleFileds)[] | undefined
     >(undefined);
 
     const [size, setSize] = useState<ChartSize>(chartSize);
+    const [xAxisHeight, setXAxisHeight] = useState<number>(40);
 
-    useEffect(() => {
-        setSize(chartSize);
-    }, [chartSize]);
-
-    const [language, setLanguage] = useState<Language>(Language.FR);
     const { lang } = useDataStore((state) => ({
         lang: state.lang,
     }));
 
-    useEffect(() => {
-        setLanguage(lang);
-    }, [lang]);
+
+
+    // Calculate dynamic width based on the number of data points
+    const calculateWidth = () => {
+        const dataLength = chartContent.data.length;
+        const baseWidth = size === ChartSize.SMALL ? 200 : 400;
+        return size === ChartSize.SMALL
+            ? baseWidth
+            : Math.max(baseWidth, dataLength * 60);
+    };
 
     useEffect(() => {
-        if (chartContent.data.length > 0) {
-            if (!originalOrder.current) {
-                // Save the initial order on first render
-                originalOrder.current = chartContent.data as ChartData[];
-            } else {
-                // Reorder new data to match the original order
-                const updatedData = originalOrder.current.map(
-                    (originalItem) => {
-                        const newItem = chartContent.data.find(
-                            (newItem) => newItem.name === originalItem.name,
-                        );
-                        return newItem
-                            ? { ...originalItem, ...newItem } // Merge values from new data
-                            : { ...originalItem, value: 0 };
-                    },
-                );
+        if (chartContent.data?.length > 0) {
+            setChartData(chartContent.data);
 
-                // Add new items that were not in the original data
-                chartContent.data.forEach((newItem) => {
-                    if (
-                        !originalOrder.current!.some(
-                            (originalItem) =>
-                                originalItem.name === newItem.name,
-                        )
-                    ) {
-                        updatedData.push(newItem);
-                    }
-                });
-
-                setChartData(updatedData);
-                originalOrder.current = updatedData;
-            }
+            // Calculate the longest label's height and set the X-axis height
+            const calculatedHeight = size / 3;
+            setXAxisHeight(calculatedHeight);
         }
-    }, [chartContent.data]);
+    }, [chartContent.data, chartContent.donnees, size]);
 
     const CustomTooltip = ({ active, payload }: any) => {
         if (active && payload && payload.length) {
             const customLabel = GraphTextService.getFieldLabel(
                 chartContent.donnees[0],
                 payload[0].payload.name,
-                language,
+                lang,
             );
 
             return (
@@ -111,51 +83,38 @@ const VerticalBarChart: React.FC<VerticalBarChartProps> = ({
     };
 
     return (
-        <div className="flex flex-col h-auto dark:text-white">
-            <ResponsiveContainer width={size} height={size}>
-                <BarChart data={chartContent.data}>
-                    {size === ChartSize.SMALL ? (
-                        <>
-                            <YAxis
-                                type="number"
-                                fontSize={8}
-                                stroke="currentColor"
-                                width={25}
-                            />
-                            <XAxis
-                                dataKey="name"
-                                type="category"
-                                fontSize={8}
-                                stroke="currentColor"
-                            />
-                        </>
-                    ) : (
-                        <>
-                            <YAxis
-                                type="number"
-                                fontSize={12}
-                                stroke="currentColor"
-                                width={25}
-                            />
-                            <XAxis
-                                dataKey="name"
-                                type="category"
-                                fontSize={12}
-                                stroke="currentColor"
-                                tickFormatter={(value: any, index: number) =>
-                                    GraphTextService.getFieldLabel(
-                                        chartContent.donnees[0],
-                                        value,
-                                        language,
-                                    ).toString()
-                                }
-                            />
-                        </>
-                    )}
+        <div className="dark:text-white text-wrap">
+            <ResponsiveContainer width={calculateWidth()} height={size}>
+                <BarChart data={chartData}>
+                    <XAxis
+                        dataKey="name"
+                        type="category"
+                        height={xAxisHeight}
+                        fontSize={size === ChartSize.SMALL ? 6 : 10}
+                        stroke="currentColor"
+                        tickFormatter={(value: any, index: number) =>
+                            GraphTextService.getFieldLabel(
+                                chartContent.donnees[0],
+                                value,
+                                language,
+                            ).toString()
+                        }
+                    />
+                    <YAxis
+                        type="number"
+                        fontSize={size === ChartSize.SMALL ? 6 : 10}
+                        stroke="currentColor"
+                    />
                     <Tooltip content={<CustomTooltip />} />
                     <Bar
                         dataKey="value"
-                        barSize={size / (10 + chartContent.data.length)}
+                        barSize={
+                            size === ChartSize.SMALL
+                                ? 10
+                                : size === ChartSize.MEDIUM
+                                  ? 15
+                                  : 20
+                        }
                     >
                         {chartData &&
                             chartData.map((entry, index) => (
@@ -166,15 +125,14 @@ const VerticalBarChart: React.FC<VerticalBarChartProps> = ({
                                             index % chartPalette.length
                                         ]
                                     }
-                                    onClick={() => {
+                                    onClick={() =>
                                         filterData(
                                             chartContent.donnees[0],
                                             entry,
-                                        );
-                                    }}
+                                        )
+                                    }
                                 />
                             ))}
-                        {!chartData && <div className="loader-circle"></div>}
                     </Bar>
                 </BarChart>
             </ResponsiveContainer>

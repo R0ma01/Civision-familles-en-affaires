@@ -1,5 +1,5 @@
 import { ChartSize } from '@/components/enums/chart-size-enum';
-import React, { useEffect, useState, useRef } from 'react';
+import React, { useEffect, useState } from 'react';
 import {
     BarChart,
     Bar,
@@ -14,6 +14,8 @@ import {
     ChartData,
     ChartDataMultipleFileds,
 } from '@/components/interface/chart-data';
+import { GraphTextService } from '@/services/translations';
+import useDataStore from '@/reducer/dataStore';
 
 interface SimpleDoubleHorizontalBarChartProps {
     chartContent: ChartContent;
@@ -46,48 +48,49 @@ const DoubleHorizontalBarChart: React.FC<
     SimpleDoubleHorizontalBarChartProps
 > = ({ chartContent, chartSize = ChartSize.SMALL }) => {
     const [chartData, setChartData] = useState<
-        ChartData[] | ChartDataMultipleFileds[] | undefined
-    >(undefined);
-
-    const originalOrder = useRef<
         (ChartData | ChartDataMultipleFileds)[] | undefined
     >(undefined);
+    const { lang } = useDataStore((state) => ({
+        lang: state.lang,
+    }));
 
+    // Update the chart data whenever chartContent.data changes
     useEffect(() => {
         if (chartContent.data.length > 0) {
-            if (!originalOrder.current) {
-                // Save the initial order on first render
-                originalOrder.current = chartContent.data;
-            } else {
-                // Reorder new data to match the original order
-                const updatedData = originalOrder.current.map(
-                    (originalItem) => {
-                        const newItem = chartContent.data.find(
-                            (newItem) => newItem.name === originalItem.name,
-                        );
-                        return newItem
-                            ? { ...originalItem, ...newItem } // Merge values from new data
-                            : { ...originalItem, value: 0 };
-                    },
-                );
-
-                // Add new items that were not in the original data
-                chartContent.data.forEach((newItem) => {
-                    if (
-                        !originalOrder.current!.some(
-                            (originalItem) =>
-                                originalItem.name === newItem.name,
-                        )
-                    ) {
-                        updatedData.push(newItem);
-                    }
-                });
-
-                setChartData(updatedData);
-                originalOrder.current = updatedData;
-            }
+            // Simply set the new data directly, discarding previous state
+            setChartData(chartContent.data);
         }
     }, [chartContent.data]);
+
+    const CustomTooltip = ({ active, payload }: any) => {
+        if (active && payload && payload.length) {
+            const customLabel = GraphTextService.getFieldLabel(
+                chartContent.donnees[0],
+                payload[0].payload.name,
+                lang,
+            );
+
+            return (
+                <div className="custom-tooltip bg-white p-2 shadow-lg rounded text-black max-w-[200px] text-wrap">
+                    <p className="label font-bold text-black">{customLabel}</p>
+                    {payload.map((item: any) => {
+                        const customLabel2 = GraphTextService.getFieldLabel(
+                            chartContent.donnees[1],
+                            item.name,
+                            lang,
+                        );
+                        return (
+                            <>
+                                <p className="intro text-black">{`${customLabel2} : ${item.value}`}</p>
+                            </>
+                        );
+                    })}
+                </div>
+            );
+        }
+
+        return null;
+    };
 
     return (
         <div className="dark:text-white">
@@ -105,7 +108,7 @@ const DoubleHorizontalBarChart: React.FC<
                         tick={<CustomYAxisLabel fill="currentColor" />}
                         stroke="currentColor"
                     />
-                    <Tooltip />
+                    <Tooltip content={<CustomTooltip />} />
                     {chartData &&
                         chartData.length > 0 &&
                         Object.keys(chartData[0])

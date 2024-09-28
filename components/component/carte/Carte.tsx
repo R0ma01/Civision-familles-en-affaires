@@ -88,6 +88,7 @@ export default function Carte() {
 
     useEffect(() => {
         async function studyFetch() {
+            console.log('I am called');
             await fetchStudyData(matchStage);
         }
         async function repertoireFetch() {

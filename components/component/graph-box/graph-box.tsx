@@ -20,7 +20,7 @@ import {
     ChartDataMultipleFileds,
 } from '@/components/interface/chart-data';
 import { GraphDataHttpRequestService } from '@/services/data-http-request-service';
-
+import useGlobalDataStore from '@/stores/global-data-store';
 interface GraphBoxProps {
     content: GraphBoxContent;
     chartSize?: ChartSize;
@@ -37,14 +37,37 @@ const GraphBox: React.FC<GraphBoxProps> = ({ content, chartSize }) => {
         chartSize ? chartSize : ChartSize.MEDIUM,
     );
 
-    function filterNewData(dataField: AlbumDataFields, entry: ChartData) {
+    const { filterStudyData, filterIndexeAData, filterIndexeBData } =
+        useGlobalDataStore((state: any) => ({
+            filterStudyData: state.filterStudyData,
+            filterIndexeAData: state.filterIndexeAData,
+            filterIndexeBData: state.filterIndexeBData,
+        }));
+
+    function filterNewData(dataField: any, entry: ChartData) {
         const currentFilter = getFilter(dataField);
+
         if (currentFilter === entry.name) {
             setFilter(dataField, 'toutes');
         } else {
             setFilter(dataField, entry.name);
         }
+        console.log(matchStage);
         setFrozen(true);
+
+        switch (content.dataOrigin) {
+            case DataBaseOrigin.INDEX_VOLETA:
+                filterIndexeAData();
+                break;
+            case DataBaseOrigin.INDEX_VOLETB:
+                filterIndexeBData();
+                break;
+
+            default:
+            case DataBaseOrigin.ALBUM_FAMILLE:
+                filterStudyData();
+                break;
+        }
     }
 
     const [chartData, setChartData] = useState<
@@ -56,6 +79,7 @@ const GraphBox: React.FC<GraphBoxProps> = ({ content, chartSize }) => {
     );
 
     useEffect(() => {
+        console.log('I am called with this match stage', matchStage);
         async function fetchMultiple(donnes: AlbumDataFields[]) {
             const result = await GraphDataHttpRequestService.getChartData(
                 donnes,
@@ -76,6 +100,7 @@ const GraphBox: React.FC<GraphBoxProps> = ({ content, chartSize }) => {
             ];
 
             setChartData(result ? result : tempResult);
+
             setLoading(false);
         }
 
@@ -105,6 +130,7 @@ const GraphBox: React.FC<GraphBoxProps> = ({ content, chartSize }) => {
                 },
             ];
             setChartData(result ?? tempResult);
+
             setLoading(false);
         }
 

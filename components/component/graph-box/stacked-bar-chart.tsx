@@ -16,6 +16,8 @@ import {
     ChartData,
     ChartDataMultipleFileds,
 } from '@/components/interface/chart-data';
+import { GraphTextService } from '@/services/translations';
+import useDataStore from '@/reducer/dataStore';
 
 interface StackedBarChartProps {
     chartContent: ChartContent;
@@ -30,7 +32,9 @@ const StackedBarChart: React.FC<StackedBarChartProps> = ({
         (ChartData | ChartDataMultipleFileds)[] | undefined
     >(undefined);
     const [stackedKeys, setStackedKey] = useState<string[]>([]);
-
+    const { lang } = useDataStore((state) => ({
+        lang: state.lang,
+    }));
     useEffect(() => {
         if (chartContent.data.length > 0) {
             // No transformation needed, we can directly use the data
@@ -46,6 +50,36 @@ const StackedBarChart: React.FC<StackedBarChartProps> = ({
             }
         }
     }, [chartData]);
+
+    const CustomTooltip = ({ active, payload }: any) => {
+        if (active && payload && payload.length) {
+            const customLabel = GraphTextService.getFieldLabel(
+                chartContent.donnees[0],
+                payload[0].payload.name,
+                lang,
+            );
+
+            return (
+                <div className="custom-tooltip bg-white p-2 shadow-lg rounded text-black max-w-[200px] text-wrap">
+                    <p className="label font-bold text-black">{customLabel}</p>
+                    {payload.map((item: any) => {
+                        const customLabel2 = GraphTextService.getFieldLabel(
+                            chartContent.donnees[1],
+                            item.name,
+                            lang,
+                        );
+                        return (
+                            <>
+                                <p className="intro text-black">{`${customLabel2} : ${item.value}`}</p>
+                            </>
+                        );
+                    })}
+                </div>
+            );
+        }
+
+        return null;
+    };
 
     return (
         <div>
@@ -66,7 +100,7 @@ const StackedBarChart: React.FC<StackedBarChartProps> = ({
                     <CartesianGrid strokeDasharray="3 3" />
                     <XAxis dataKey="name" />
                     <YAxis />
-                    <Tooltip />
+                    <Tooltip content={<CustomTooltip />} />
                     {chartSize !== ChartSize.SMALL && <Legend />}
 
                     {stackedKeys.map((key, index) => {

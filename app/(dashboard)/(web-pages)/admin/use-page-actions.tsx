@@ -25,16 +25,13 @@ export function usePageActions() {
     };
 
     const submitEditDialog = async (page: PageTabContent): Promise<boolean> => {
-        console.log('hello');
         if (page._id) {
-            console.log('fuck youuuuu');
             const response = await PageHttpRequestService.update(page);
-            console.log(response);
+
             return response;
         } else {
-            console.log('error');
             const response = await PageHttpRequestService.insert(page);
-            console.log(response);
+
             return response;
         }
         await refreshPageData();

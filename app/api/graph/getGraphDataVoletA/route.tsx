@@ -226,7 +226,7 @@ export async function GET(req: Request) {
                 { status: 400 },
             );
         }
-        console.log(filtersObj);
+
         let mongoQuery: (collection: any) => Promise<any[]>;
 
         if (donnesObj.length > 1) {

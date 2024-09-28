@@ -116,7 +116,7 @@ export default function Admin() {
         let resp = false;
         if (id) {
             resp = await PageHttpRequestService.delete(id);
-            console.log(resp);
+
         }
 
         if (resp) {
