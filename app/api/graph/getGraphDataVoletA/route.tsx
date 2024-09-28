@@ -24,12 +24,12 @@ function generateAggregationQuery(
         typeof filters[field] === 'string'
     ) {
         filters[field] = {
-            $nin: [null, NaN],
+            $nin: [null, NaN, 'NaN'],
             $in: [filters[field]],
         };
     } else {
         filters[field] = {
-            $nin: [null, NaN],
+            $nin: [null, NaN, 'NaN'],
         };
     }
 
@@ -89,13 +89,13 @@ function generateDualFieldAggregationQuery(
     ) {
         filters[field1] = {
             $exists: true,
-            $nin: [null, NaN],
+            $nin: [null, NaN, 'NaN'],
             $in: [filters[field1]],
         };
     } else {
         filters[field1] = {
             $exists: true,
-            $nin: [null, NaN],
+            $nin: [null, NaN, 'NaN'],
         };
     }
     if (
@@ -104,13 +104,13 @@ function generateDualFieldAggregationQuery(
     ) {
         filters[field2] = {
             $exists: true,
-            $nin: [null, NaN],
+            $nin: [null, NaN, 'NaN'],
             $in: [filters[field2]],
         };
     } else {
         filters[field2] = {
             $exists: true,
-            $nin: [null, NaN],
+            $nin: [null, NaN, 'NaN'],
         };
     }
     const aggregationPipeline = [
