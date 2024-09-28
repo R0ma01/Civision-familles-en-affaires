@@ -55,7 +55,7 @@ export function AdminModal({
 
     const getImageSRC = () => {
         if (!binaryString) return '';
-        return `data:image/jpeg;base64,${binaryStr}`; // Replace "jpeg" with the correct image format if necessary
+        return `data:image/jpeg;base64,${binaryString}`; // Replace "jpeg" with the correct image format if necessary
     };
 
     useEffect(() => {
@@ -236,20 +236,21 @@ export function AdminModal({
                             />
                         </div>
                     </div>
-                    <ImageUpload
-                        onImageUpload={handleImageUpload}
-                        className="absolute top-[30%] right-[18%]"
-                    />
-
-                    {binaryString && (
-                        <Image
-                            src={getImageSRC()}
-                            alt="Uploaded Image"
-                            width={200}
-                            height={200}
-                            className="m-4"
+                    <div className="flex flex-col">
+                        {binaryString && (
+                            <Image
+                                src={getImageSRC()}
+                                alt="Uploaded Image"
+                                width={200}
+                                height={200}
+                                className="m-4"
+                            />
+                        )}
+                        <ImageUpload
+                            onImageUpload={handleImageUpload}
+                            className="absolute top-[30%] right-[18%]"
                         />
-                    )}
+                    </div>
                     <EditTabContainer
                         tabs={editPage.tabs}
                         handleInputChange={handleTabChange}
