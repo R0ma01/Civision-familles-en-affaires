@@ -447,7 +447,7 @@ const Chloropleth: React.FC<ChloroplethProps> = ({
                 });
 
                 // Add mouseup listener for hover effects and filtering
-                map.on('mouseup', 'chloropleth-layer', (e: any) => {
+                map.on('click', 'chloropleth-layer', (e: any) => {
                     if (e.features.length > 0) {
                         const hoveredRegion = e.features[0].properties.region;
 
