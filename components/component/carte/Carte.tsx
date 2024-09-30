@@ -13,14 +13,15 @@ import ColorLegend from './Color-Legend';
 import { choroplethColors, clusterColors } from '@/constants/color-palet';
 import useGlobalUserStore from '@/stores/global-user-store';
 import { UserType } from '@/components/enums/user-type-enum';
-import { setDefaultHighWaterMark } from 'stream';
+
 import {
     AlbumDataFields,
     FournisseurDataFields,
     IndexeDataFieldsB,
 } from '@/components/enums/data-types-enum';
-import { GraphTextService } from '@/services/translations';
+
 import { MapRegions } from '@/components/enums/map-regions';
+import MrcGrid from './GridMrcs';
 
 export default function Carte() {
     // global variables
@@ -28,13 +29,11 @@ export default function Carte() {
     const mapRef = useRef(null);
     const map = useMapStore((state) => state.map);
     const mapType = useMapStore((state) => state.mapType);
-    const { matchStage, resetFilters, setFilter } = useGlobalFilterStore(
-        (state: any) => ({
-            matchStage: state.matchStage,
-            resetFilters: state.resetFilters,
-            setFilter: state.setFilter,
-        }),
-    );
+    const { matchStage, setFilter } = useGlobalFilterStore((state: any) => ({
+        matchStage: state.matchStage,
+        resetFilters: state.resetFilters,
+        setFilter: state.setFilter,
+    }));
 
     const {
         studyData,
@@ -175,9 +174,6 @@ export default function Carte() {
 
         // Convert the Map to an array and iterate over the entries
         Array.from(filterKeys.entries()).forEach(([key, value]) => {
-            console.log(value === region);
-            console.log(key); // The key is already available, no need to convert to array
-
             // Check if the current value matches the region
             if (value === region) {
                 filterRegion = key;
@@ -190,8 +186,6 @@ export default function Carte() {
         } else {
             setFilter(field, region);
         }
-
-        console.log(matchStage);
 
         // Handle the filtering logic based on the mapTypeInside
         switch (mapTypeInside) {
@@ -256,6 +250,7 @@ export default function Carte() {
                         className="absolute bottom-0 right-1 z-50"
                         mapType={mapType}
                     ></ColorLegend>
+                    <MrcGrid map={map}></MrcGrid>
                 </>
             )}
             {mapType == MapType.FOURNISSEURS && (
