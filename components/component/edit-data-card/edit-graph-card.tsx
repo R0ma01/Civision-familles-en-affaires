@@ -34,7 +34,7 @@ function yearDett(tabType: StudyOrigin) {
         case StudyOrigin.ALBUM_FAMILLE:
             return StudyYears.YEAR_2022;
         case StudyOrigin.INDEX_VOLETA:
-        case StudyOrigin.INDEX_VOLETb:
+        case StudyOrigin.INDEX_VOLETB:
             return StudyYears.YEAR_2023;
     }
 }
