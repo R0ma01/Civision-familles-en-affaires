@@ -272,8 +272,6 @@ function FilterItem({
                 options={['toutes', ...GraphTextService.getKeys(filterData)]}
                 dataField={filterData}
                 onChange={(value: any) => {
-                    console.log(GraphTextService.getKeys(filterData));
-                    console.log(typeof value === 'number');
                     handleChange(filterData, value);
                 }}
             />
