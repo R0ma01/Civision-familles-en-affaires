@@ -76,6 +76,7 @@ export default function RechercheAcademique() {
                 <DataCardContainer
                     cards={Array.from(cards.values())}
                     className="flex-wrap w-full z-10"
+                    year={2022}
                 />
             </div>
         </PageContentContainer>
