@@ -189,7 +189,7 @@ function Repertoire() {
                 {RepertoirePromptsTranslations.page_title[lang]}
             </h1>
             <div className="flex flex-col space-y-4">
-                <DataCard content={fetchedData.firstField} />
+                <DataCard content={fetchedData.firstField} year={2022} />
                 {/* <DataCard content={fetchedData.secondField} /> */}
                 <DataCardDiv title="Proportion d'entreprises familiales privées au Québec">
                     <div className="flex flex-row items-center justify-center">
@@ -204,7 +204,7 @@ function Repertoire() {
                         </p>
                     </div>
                 </DataCardDiv>
-                <DataCard content={fetchedData.thirdField} />
+                <DataCard content={fetchedData.thirdField} year={2022} />
             </div>
         </PageContentContainer>
     );
