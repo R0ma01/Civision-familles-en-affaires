@@ -72,7 +72,7 @@ export default function RechercheAcademique() {
                 {RecherchePromptsTranslations.page_title[lang]}
             </h1>
             <div className="flex flex-col space-y-4 w-full">
-                <DataCard content={firstItem} className="z-10" />
+                <DataCard content={firstItem} className="z-10" year={2022} />
                 <DataCardContainer
                     cards={Array.from(cards.values())}
                     className="flex-wrap w-full z-10"
