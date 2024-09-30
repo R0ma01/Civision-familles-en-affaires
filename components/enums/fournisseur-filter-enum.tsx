@@ -1,7 +1,7 @@
 export enum SecteursGeographiques {
     ABITIBI = 'Abitibi-Temiscamingue',
     BAS_ST_LAURENT = 'Bas-Saint-Laurent',
-    SAGUENEY = 'Saguenay-Lac-Saint-Jean',
+    SAGUENEY = 'Saguenay–Lac-Saint-Jean',
     CAPITALE_NATIONALE = 'Capitale-Nationale',
     MAURICIE = 'Mauricie',
     ESTRIE = 'Estrie',
@@ -9,7 +9,7 @@ export enum SecteursGeographiques {
     OUTAOUAIS = 'Outaouais',
     COTE_NORD = 'Cote-Nord',
     NORD_QUEBEC = 'Nord-du-Quebec',
-    GASPESIE = 'Gaspesie-Îles-de-la-Madeleine',
+    GASPESIE = 'Gaspesie–Îles-de-la-Madeleine',
     CHAUDIERE_APALACHE = 'Chaudiere-Appalaches',
     LAVAL = 'Laval',
     LANAUDIERE = 'Lanaudiere',

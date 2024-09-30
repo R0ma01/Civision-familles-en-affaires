@@ -35,7 +35,7 @@ export default function Carte() {
             setFilter: state.setFilter,
         }),
     );
-    const [fournisseurMapData, setFournisseurMapData] = useState<any>({});
+
     const {
         studyData,
         repertoireData,
@@ -89,7 +89,6 @@ export default function Carte() {
 
     useEffect(() => {
         async function studyFetch() {
-            console.log('I am called');
             await fetchStudyData(matchStage);
         }
         async function repertoireFetch() {
@@ -167,17 +166,6 @@ export default function Carte() {
         mapType,
         matchStage,
     ]);
-
-    useEffect(() => {
-        setFournisseurMapData(
-            convertFournisseurData(
-                fournisseurData,
-                matchStage,
-                user === UserType.ADMIN,
-            ),
-        );
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [fournisseurData]);
 
     function filter(region: any, field: any, mapTypeInside: MapType) {
         const filterKeys = MapRegions.get(mapTypeInside); // Get the map corresponding to the mapType
@@ -274,7 +262,11 @@ export default function Carte() {
                 <>
                     <Chloropleth
                         map={map}
-                        data={fournisseurMapData}
+                        data={convertFournisseurData(
+                            fournisseurData,
+                            matchStage,
+                            user === UserType.ADMIN,
+                        )}
                         dataField="count"
                         filterFunction={(region: any) => {
                             filter(
@@ -334,32 +326,42 @@ function convertFournisseurData(
     matchStage: Record<any, any>,
     admin: boolean,
 ) {
-    const regions: string[] = matchStage['secteurs_geographique']?.$in;
+    const regions: string[] = matchStage['secteurs_geographique']?.$in || [];
 
-    const secteurCount = fournisseurs.reduce(
-        (acc: any, fournisseur: Fournisseur) => {
-            if (fournisseur.visible || admin)
-                fournisseur.secteurs_geographique.forEach((secteur) => {
-                    if (!acc[secteur]) {
-                        acc[secteur] = 0;
-                    }
-                    if (
-                        !regions ||
-                        regions.findIndex((region) => region === secteur) >= 0
-                    ) {
-                        acc[secteur] += 1;
-                    }
-                });
-            return acc;
-        },
-        {},
-    );
+    const mapRegions = MapRegions.get(MapType.FOURNISSEURS);
 
+    const sectorCount: Record<string, { region: string; count: number }> = {};
+    Array.from(
+        mapRegions?.entries() || [], // Use entries() from the map
+    ).map(([key, regionName]) => {
+        sectorCount[regionName] = {
+            region: regionName,
+            count: 0, // Ensure key is treated as a string
+        };
+    });
+
+    fournisseurs.map((fournisseur) => {
+        if (fournisseur.visible || admin) {
+            fournisseur.secteurs_geographique.forEach((secteur) => {
+                const mapSecteur = mapRegions?.get(secteur);
+
+                if (mapSecteur) {
+                    if (regions.length === 0 || regions.includes(mapSecteur)) {
+                        const previousSect = sectorCount[mapSecteur];
+                        sectorCount[mapSecteur] = {
+                            region: previousSect.region,
+                            count: previousSect.count + 1,
+                        };
+                    }
+                }
+            });
+        }
+    });
+
+    const result = Object.values(sectorCount).map((entry) => {
+        return entry;
+    });
+
+    return result;
     // Convert the secteurCount object into an array of { secteur_geographique, count }
-    return Object.entries(secteurCount).map(
-        ([secteur_geographique, count]) => ({
-            region: secteur_geographique,
-            count,
-        }),
-    );
 }

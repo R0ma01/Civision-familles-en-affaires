@@ -383,7 +383,7 @@ const Chloropleth: React.FC<ChloroplethProps> = ({
         data.forEach((item: any) => {
             newRegionCounts[item.region] = item.count;
         });
-        console.log(newRegionCounts);
+
         return createRegionFeatures(newRegionCounts, quebec_regions);
     }, [data]);
 
