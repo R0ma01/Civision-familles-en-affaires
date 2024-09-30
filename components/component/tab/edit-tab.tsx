@@ -330,7 +330,7 @@ export function EditTab({
         let prevYears = [...editTabContent.years];
 
         if (prevYears.includes(year)) {
-            if (prevYears.lenght > 1) {
+            if (prevYears.length > 1) {
                 prevYears = prevYears.filter((y) => y !== year); // Remove if already selected}
             }
         } else {
