@@ -3,11 +3,13 @@ import { GraphDataHttpRequestService } from '@/services/data-http-request-servic
 import { FournisseursHttpRequestService } from '@/services/fournisseur-http-request-service';
 import { create } from 'zustand';
 import { devtools, persist } from 'zustand/middleware';
+import { StudyYears } from '@/components/enums/data-types-enum';
 
 const useGlobalDataStore = create(
     devtools(
         persist(
             (set, get) => ({
+                year: undefined,
                 studyData: [],
                 indexeAData: [],
                 indexeBData: [],
@@ -23,6 +25,10 @@ const useGlobalDataStore = create(
                 loading: false,
                 error: false,
 
+                setYear: (newYear: StudyYears) => {
+                    set({ year: newYear });
+                },
+
                 fetchStudyData: async (filters: CompanyInfo) => {
                     console.log('fetch study data');
                     if ((get() as any).studyDataFetched) return;
@@ -32,6 +38,7 @@ const useGlobalDataStore = create(
                         const responseStudy =
                             await GraphDataHttpRequestService.getAllStudyData(
                                 filters,
+                                (get() as any).year ?? StudyYears.YEAR_2022,
                             );
 
                         set({
@@ -93,6 +100,7 @@ const useGlobalDataStore = create(
                         const responseIndexe =
                             await GraphDataHttpRequestService.getAllIndexVoletAData(
                                 matchStage,
+                                (get() as any).year ?? StudyYears.YEAR_2023,
                             );
                         console.log(responseIndexe);
                         set({
@@ -115,6 +123,7 @@ const useGlobalDataStore = create(
                         const responseIndexe =
                             await GraphDataHttpRequestService.getAllIndexVoletBData(
                                 matchStage,
+                                (get() as any).year ?? StudyYears.YEAR_2022,
                             );
                         console.log(responseIndexe);
                         set({

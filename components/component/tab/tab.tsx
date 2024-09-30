@@ -5,6 +5,7 @@ import useDataStore from '@/reducer/dataStore';
 import { Language } from '@/components/enums/language';
 import { StudyYears } from '@/components/enums/data-types-enum';
 import Dropdown from '@/components/component/drop-down-menu/drop-down-menu';
+import useGlobalDataStore from '@/stores/global-data-store';
 
 interface TabProps {
     content: TabContent;
@@ -17,12 +18,22 @@ export function Tab({ content, className }: TabProps) {
         undefined,
     );
     const lang: Language = useDataStore((state) => state.lang);
+    const { setYear } = useGlobalDataStore((state: any) => ({
+        setYear: state.setYear,
+    }));
+
     useEffect(() => {
         setTabContent(content);
         if (content.years[0]) {
             setCurrentYear(content.years[0]);
+            setYear(content.years[0]);
         }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [content]);
+
+    useEffect(() => {
+        setYear(currentYear);
+    }, [currentYear, setYear]);
 
     return (
         <div

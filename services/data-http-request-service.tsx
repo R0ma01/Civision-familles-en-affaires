@@ -23,11 +23,13 @@ export const GraphDataHttpRequestService = {
 
 async function getAllStudyData(
     filters: Record<string, any>,
+    year: StudyYears,
 ): Promise<MapChloroplethePointData[]> {
     try {
         const response = await axios.get(APIPaths.MAP_GET_ALL_STUDY, {
             params: {
                 filters: JSON.stringify(filters),
+                year: year,
             },
         });
         return response.data.points;
@@ -62,11 +64,13 @@ async function getAllRepertoireData(
 
 async function getAllIndexeAData(
     filters: Record<string, any>,
+    year: StudyYears,
 ): Promise<MapChloroplethePointData[]> {
     try {
         const response = await axios.get(APIPaths.MAP_GET_ALL_INDEXEA, {
             params: {
                 filters: JSON.stringify(filters),
+                year: year,
             },
         });
 
@@ -81,11 +85,13 @@ async function getAllIndexeAData(
 }
 async function getAllIndexeBData(
     filters: Record<string, any>,
+    year: StudyYears,
 ): Promise<MapChloroplethePointData[]> {
     try {
         const response = await axios.get(APIPaths.MAP_GET_ALL_INDEXEB, {
             params: {
                 filters: JSON.stringify(filters),
+                year: year,
             },
         });
 
