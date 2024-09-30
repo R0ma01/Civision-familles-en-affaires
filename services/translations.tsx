@@ -3847,12 +3847,11 @@ function getKeys(dataField: any): (number | string)[] {
 function getKey(dataField: any, value: any): number | string | null {
     const dataLabels =
         TableauxTraductionsMainDataFields.get(dataField)?.dataLabels ?? {};
-    console.log(dataLabels);
+
     // Find the key corresponding to the value
     const foundKey = Object.keys(dataLabels).find(
         (key) => dataLabels[key][Language.FR] === value,
     );
-    console.log(foundKey);
     // Return the key if found, or null if not found
     return foundKey ?? null;
 }

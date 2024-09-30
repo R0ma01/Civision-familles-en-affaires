@@ -379,9 +379,11 @@ const Chloropleth: React.FC<ChloroplethProps> = ({
     // Memoized function to create region features based on data
     const regionFeatures = useMemo(() => {
         const newRegionCounts: Record<string, number> = newRegionCount();
+
         data.forEach((item: any) => {
             newRegionCounts[item.region] = item.count;
         });
+        console.log(newRegionCounts);
         return createRegionFeatures(newRegionCounts, quebec_regions);
     }, [data]);
 

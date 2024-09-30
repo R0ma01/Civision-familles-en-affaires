@@ -20,6 +20,7 @@ import {
     IndexeDataFieldsB,
 } from '@/components/enums/data-types-enum';
 import { GraphTextService } from '@/services/translations';
+import { MapRegions } from '@/components/enums/map-regions';
 
 export default function Carte() {
     // global variables
@@ -178,12 +179,34 @@ export default function Carte() {
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [fournisseurData]);
 
-    function filter(region: any, field: any) {
-        console.log('I am called ?');
+    function filter(region: any, field: any, mapTypeInside: MapType) {
+        const filterKeys = MapRegions.get(mapTypeInside); // Get the map corresponding to the mapType
+        if (!filterKeys) return;
 
-        setFilter(field, region);
+        let filterRegion = undefined;
+
+        // Convert the Map to an array and iterate over the entries
+        Array.from(filterKeys.entries()).forEach(([key, value]) => {
+            console.log(value === region);
+            console.log(key); // The key is already available, no need to convert to array
+
+            // Check if the current value matches the region
+            if (value === region) {
+                filterRegion = key;
+            }
+        });
+
+        // If filterRegion was set, use it; otherwise, use the original region
+        if (filterRegion !== undefined) {
+            setFilter(field, filterRegion);
+        } else {
+            setFilter(field, region);
+        }
+
         console.log(matchStage);
-        switch (mapType) {
+
+        // Handle the filtering logic based on the mapTypeInside
+        switch (mapTypeInside) {
             case MapType.REPERTOIRE:
                 filterRepertoireData();
                 break;
@@ -215,11 +238,10 @@ export default function Carte() {
                         dataField="count"
                         filterFunction={(region: any) => {
                             filter(
-                                GraphTextService.getKey(
-                                    AlbumDataFields.COORDONNES_REGION,
-                                    region,
-                                ),
+                                region,
+
                                 AlbumDataFields.COORDONNES_REGION,
+                                mapType,
                             );
                         }}
                     ></Chloropleth>
@@ -258,6 +280,7 @@ export default function Carte() {
                             filter(
                                 region,
                                 FournisseurDataFields.SECTEURS_GEOGRAPHIQUES,
+                                mapType,
                             );
                         }}
                     ></Chloropleth>
@@ -275,13 +298,7 @@ export default function Carte() {
                         data={indexeAData}
                         dataField="count"
                         filterFunction={(region: any) => {
-                            filter(
-                                GraphTextService.getKey(
-                                    IndexeDataFieldsB.Q0QC,
-                                    region,
-                                ),
-                                IndexeDataFieldsB.Q0QC,
-                            );
+                            filter(region, IndexeDataFieldsB.Q0QC, mapType);
                         }}
                     ></Chloropleth>
                     <ColorLegend
@@ -298,13 +315,7 @@ export default function Carte() {
                         data={indexeBData}
                         dataField="count"
                         filterFunction={(region: any) => {
-                            filter(
-                                GraphTextService.getKey(
-                                    IndexeDataFieldsB.Q0QC,
-                                    region,
-                                ),
-                                IndexeDataFieldsB.Q0QC,
-                            );
+                            filter(region, IndexeDataFieldsB.Q0QC, mapType);
                         }}
                     ></Chloropleth>
                     <ColorLegend

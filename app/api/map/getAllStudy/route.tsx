@@ -1,6 +1,8 @@
 import { NextResponse } from 'next/server';
 import { connectToDatabaseStudy } from '@/utils/mongodb';
 import { MongoDBPaths } from '@/components/enums/mongodb-paths-enum';
+import { MapRegions } from '@/components/enums/map-regions';
+import { MapType } from '@/components/enums/map-type-enum';
 
 // Define interfaces for the aggregation results
 interface AggregationResult {
@@ -69,10 +71,31 @@ export async function GET(req: Request) {
             );
         }
 
-        return NextResponse.json({
+        const regionCountsMap = new Map<string, number>(
+            aggregationResult.reduce<[string, number][]>((acc, item) => {
+                if (item.region) {
+                    acc.push([item.region.toString(), item.count]);
+                }
+                return acc;
+            }, []),
+        );
+
+        const result = Array.from(
+            MapRegions.get(MapType.PAGE_INFORMATION_ALBUM)?.entries() || [], // Use entries() from the map
+        ).map(([key, regionName]) => ({
+            region: regionName,
+            count: regionCountsMap.get(key.toString()) || 0, // Ensure key is treated as a string
+        }));
+
+        const response = NextResponse.json({
             message: 'Regions counted successfully',
-            points: aggregationResult,
+            points: result,
         });
+
+        // Add Cache-Control headers to prevent caching
+        response.headers.set('Cache-Control', 'no-store, max-age=0');
+
+        return response;
     } catch (e: any) {
         console.error(e.message);
 

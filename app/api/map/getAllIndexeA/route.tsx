@@ -7,6 +7,8 @@ import {
     StudyYears,
 } from '@/components/enums/data-types-enum';
 import { Language } from '@/components/enums/language';
+import { MapType } from '@/components/enums/map-type-enum';
+import { MapRegions } from '@/components/enums/map-regions';
 // Define interfaces for the aggregation results
 interface AggregationResult {
     name: string;
@@ -79,25 +81,26 @@ export async function GET(req: Request) {
                 { status: 404 },
             );
         }
-
-        const resultat: { region: string; count: number }[] = [];
-
-        aggregationResult.map((result) => {
-            if (result.region) {
-                const label = GraphTextService.getFieldLabel(
-                    IndexeDataFieldsA.Q0QC,
-                    result.region,
-                    Language.FR,
-                );
-                if (label) {
-                    resultat.push({ region: label, count: result.count });
+        const regionCountsMap = new Map<string, number>(
+            aggregationResult.reduce<[string, number][]>((acc, item) => {
+                if (item.region) {
+                    acc.push([item.region.toString(), item.count]);
                 }
-            }
-        });
+                return acc;
+            }, []),
+        );
+
+        const result = Array.from(
+            MapRegions.get(MapType.PAGE_INFORMATION_INDEX_VOLETA)?.entries() ||
+                [], // Use entries() from the map
+        ).map(([key, regionName]) => ({
+            region: regionName,
+            count: regionCountsMap.get(key.toString()) || 0, // Ensure key is treated as a string
+        }));
 
         const response = NextResponse.json({
-            message: 'Regions found successfully',
-            points: resultat,
+            message: 'Regions counted successfully',
+            points: result,
         });
 
         // Add Cache-Control headers to prevent caching
