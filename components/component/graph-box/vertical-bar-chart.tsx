@@ -42,8 +42,6 @@ const VerticalBarChart: React.FC<VerticalBarChartProps> = ({
         lang: state.lang,
     }));
 
-
-
     // Calculate dynamic width based on the number of data points
     const calculateWidth = () => {
         const dataLength = chartContent.data.length;
@@ -96,7 +94,7 @@ const VerticalBarChart: React.FC<VerticalBarChartProps> = ({
                             GraphTextService.getFieldLabel(
                                 chartContent.donnees[0],
                                 value,
-                                language,
+                                lang,
                             ).toString()
                         }
                     />

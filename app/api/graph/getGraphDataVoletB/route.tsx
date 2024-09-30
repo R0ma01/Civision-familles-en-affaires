@@ -6,7 +6,10 @@ import {
 import { MongoDBPaths } from '@/components/enums/mongodb-paths-enum';
 
 import { GraphTextService } from '@/services/translations';
-import { IndexeDataFieldsB } from '@/components/enums/data-types-enum';
+import {
+    IndexeDataFieldsB,
+    StudyYears,
+} from '@/components/enums/data-types-enum';
 
 // Define interfaces for the aggregation results
 interface AggregationResult {
@@ -239,18 +242,30 @@ function generateDualFieldAggregationQuery(
 
 export async function GET(req: Request) {
     try {
-        const db = (await connectToDatabaseIndexe()).db;
-        const collection = db.collection(MongoDBPaths.VOLETB_2022);
         const url = new URL(req.url!);
         let donnes = url.searchParams.get('donnes');
         let filters = url.searchParams.get('filters');
 
-        if (!donnes || !filters) {
+        let year = url.searchParams.get('year');
+        if (!filters || !donnes || !year) {
             return NextResponse.json(
-                { error: 'Missing donnes or filter parameter' },
+                { error: 'Missing filters parameter' },
                 { status: 400 },
             );
         }
+        let dbString = '';
+        switch (year) {
+            case StudyYears.YEAR_2022.toString():
+                dbString = MongoDBPaths.VOLETB_2022;
+                break;
+
+            default:
+                dbString = MongoDBPaths.VOLETB_2022;
+                break;
+        }
+
+        const db = (await connectToDatabaseIndexe()).db;
+        const collection = db.collection(dbString);
 
         const donnesObj: IndexeDataFieldsB[] = JSON.parse(donnes);
         const filtersObj: Record<string, any> = JSON.parse(filters);

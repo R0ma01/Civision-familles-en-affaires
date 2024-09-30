@@ -4,7 +4,7 @@ import { Tab } from './tab';
 import { tabColors } from '@/constants/color-palet';
 import { TableauxTraductionsTabs } from '@/services/translations';
 import useDataStore from '@/reducer/dataStore';
-import { DataBaseOrigin } from '@/components/enums/data-types-enum';
+import { StudyOrigin } from '@/components/enums/data-types-enum';
 import { Language } from '@/components/enums/language';
 import useGlobalFilterStore from '@/stores/global-filter-store';
 import { html_object_constants } from '@/constants/constants';
@@ -12,7 +12,7 @@ import { html_object_constants } from '@/constants/constants';
 interface TabProps {
     tabs: TabContent[];
     className?: string;
-    setMap?: (dataType: DataBaseOrigin) => void;
+    setMap?: (dataType: StudyOrigin) => void;
 }
 
 export function TabContainer({

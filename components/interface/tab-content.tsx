@@ -1,11 +1,14 @@
-import { DataBaseOrigin } from '../enums/data-types-enum';
+import { StudyOrigin, StudyYears } from '../enums/data-types-enum';
 import { Traductions } from '../enums/language';
 import DataCardContent from './data-card-content';
 
 export interface TabContent {
-    tabType: DataBaseOrigin;
+    tabType: StudyOrigin;
+    visible: boolean;
+    years: StudyYears[];
     description: Traductions;
     cards: DataCardContent[];
-    visible: boolean;
 }
 //some compoennt
+
+export interface YearTab {}

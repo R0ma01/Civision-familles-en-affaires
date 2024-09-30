@@ -14,7 +14,7 @@ import { TableauxTraductionsTabs } from '@/services/translations';
 import useDataStore from '@/reducer/dataStore';
 import { Language } from '@/components/enums/language';
 import Dropdown from '../drop-down-menu/drop-down-menu';
-import { DataBaseOrigin } from '@/components/enums/data-types-enum';
+import { StudyOrigin } from '@/components/enums/data-types-enum';
 import Button from '../buttons/button';
 import { ButtonType } from '@/components/enums/button-type-enum';
 
@@ -93,8 +93,8 @@ export function EditTabContainer({
                                 <Dropdown
                                     onChange={handleTabTypeChange}
                                     inputValue={tab.tabType}
-                                    options={Object.values(DataBaseOrigin)}
-                                    displayValue={(value: DataBaseOrigin) => {
+                                    options={Object.values(StudyOrigin)}
+                                    displayValue={(value: StudyOrigin) => {
                                         const tabTitle =
                                             TableauxTraductionsTabs.get(value);
                                         const title = tabTitle

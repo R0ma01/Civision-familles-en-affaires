@@ -15,15 +15,29 @@ import { GraphBoxType } from '@/components/enums/graph-box-enum';
 import { DataCardType } from '@/components/enums/data-card-type-enum';
 import {
     AlbumDataFields,
-    DataBaseOrigin,
+    StudyOrigin,
     IndexeDataFieldsA,
     IndexeDataFieldsB,
+    StudyYears,
 } from '@/components/enums/data-types-enum';
 import { Language, Traductions } from '@/components/enums/language';
+import useDataStore from '@/reducer/dataStore';
+import { AdminPromptsTranslations } from '@/constants/translations/page-prompts';
 interface TabProps {
     content: TabContent;
     className?: string;
     handleInputChange?: any;
+}
+
+function years(tabType: StudyOrigin) {
+    switch (tabType) {
+        case StudyOrigin.ALBUM_FAMILLE:
+            return [StudyYears.YEAR_2022];
+        case StudyOrigin.INDEX_VOLETA:
+            return [StudyYears.YEAR_2023];
+        case StudyOrigin.INDEX_VOLETB:
+            return [StudyYears.YEAR_2023];
+    }
 }
 
 function dataType(length: number) {
@@ -138,7 +152,6 @@ export function EditTab({
 
         handleInputChange(updatedTab);
         setEditTabContent(updatedTab);
-        //setEditPage({ ...editPage, cards: updatedCards });
     };
 
     const handleGraphOrderChange = (cardIndex: number, newOrder: any[]) => {
@@ -156,7 +169,6 @@ export function EditTab({
         };
         handleInputChange(updatedTab);
         setEditTabContent(updatedTab);
-        // setEditPage({ ...editPage, cards: updatedCards });
     };
 
     function handleGraphDelete(e: any, cardIndex: number, graphIndex: number) {
@@ -189,13 +201,13 @@ export function EditTab({
         let updatedGraphData = [...updatedCards[cardIndex].graphData];
         let mockGraphValue;
         switch (updatedTab.tabType) {
-            case DataBaseOrigin.ALBUM_FAMILLE: {
+            case StudyOrigin.ALBUM_FAMILLE: {
                 mockGraphValue = AlbumDataFields.ANNEE_FONDATION;
             }
-            case DataBaseOrigin.INDEX_VOLETA: {
+            case StudyOrigin.INDEX_VOLETA: {
                 mockGraphValue = IndexeDataFieldsA.GENRE;
             }
-            case DataBaseOrigin.INDEX_VOLETB: {
+            case StudyOrigin.INDEX_VOLETB: {
                 mockGraphValue = IndexeDataFieldsB.GENRE;
             }
         }
@@ -275,13 +287,7 @@ export function EditTab({
         };
         handleInputChange(updatedTab);
         setEditTabContent(updatedTab);
-        //setEditPage({ ...editPage, cards: updatedCards });
     }
-
-    // const handleSubmit = (e: React.FormEvent) => {
-    //     e.preventDefault();
-    //     submitDialog(editPage);
-    // };
 
     const onDragEnd = (result: DropResult) => {
         let updatedTab = { ...editTabContent };
@@ -316,35 +322,92 @@ export function EditTab({
         setEditTabContent(updatedTab);
     };
 
+    useEffect(() => {
+        setEditTabContent(content);
+    }, [content]);
+
+    const handleYearChange = (year: number) => {
+        let prevYears = [...editTabContent.years];
+
+        if (prevYears.includes(year)) {
+            if (prevYears.lenght > 1) {
+                prevYears = prevYears.filter((y) => y !== year); // Remove if already selected}
+            }
+        } else {
+            prevYears = [...prevYears, year];
+        } // Add if not selected
+
+        const editTab = { ...editTabContent };
+        editTab['years'] = prevYears;
+
+        setEditTabContent(editTab);
+    };
+
+    const { lang } = useDataStore((state) => ({
+        lang: state.lang,
+    }));
+
     return (
         <div
             className={`p-4 space-y-6 rounded-lg shadow-sm transition-all duration-300 ${className} max-w-[600px]`}
         >
-            <div className="flex flex-row items-center">
-                <label className="text-black dark:text-white text-xs">
-                    {Language.FR}
-                </label>
-                <input
-                    placeholder="description"
-                    type="text"
-                    name="description"
-                    value={editTabContent.description[Language.FR]}
-                    onChange={(e) => handleTextInputChange(e, Language.FR)} // Uncomment and implement this function
-                    className="rounded-md text-md m-2 tracking-wide text-black shadow-sm mb-2 p-1 dark:text-white bg-transparent focus:outline-none focus:ring-2 focus:ring-blue-500 w-full"
-                />
-            </div>
-            <div className="flex flex-row items-center">
-                <label className="text-black dark:text-white text-xs">
-                    {Language.EN}
-                </label>
-                <input
-                    type="text"
-                    placeholder="description"
-                    name="description"
-                    value={editTabContent.description[Language.EN]}
-                    onChange={(e) => handleTextInputChange(e, Language.EN)} // Uncomment and implement this function
-                    className="rounded-md text-md m-2 tracking-wide text-black shadow-sm mb-2 p-1 dark:text-white bg-transparent focus:outline-none focus:ring-2 focus:ring-blue-500 w-full"
-                />
+            <div className="flex flex-row gap-2 w-full text-balck dark:text-white h-32">
+                <div className="w-[70%]">
+                    <div className="flex flex-row items-center">
+                        <label className="text-black dark:text-white text-xs">
+                            {Language.FR}
+                        </label>
+                        <input
+                            placeholder="description"
+                            type="text"
+                            name="description"
+                            value={editTabContent.description[Language.FR]}
+                            onChange={(e) =>
+                                handleTextInputChange(e, Language.FR)
+                            } // Uncomment and implement this function
+                            className="rounded-md text-md m-2 tracking-wide text-black shadow-sm mb-2 p-1 dark:text-white bg-transparent focus:outline-none focus:ring-2 focus:ring-blue-500 w-full"
+                        />
+                    </div>
+                    <div className="flex flex-row items-center">
+                        <label className="text-black dark:text-white text-xs">
+                            {Language.EN}
+                        </label>
+                        <input
+                            type="text"
+                            placeholder="description"
+                            name="description"
+                            value={editTabContent.description[Language.EN]}
+                            onChange={(e) =>
+                                handleTextInputChange(e, Language.EN)
+                            } // Uncomment and implement this function
+                            className="rounded-md text-md m-2 tracking-wide text-black shadow-sm mb-2 p-1 dark:text-white bg-transparent focus:outline-none focus:ring-2 focus:ring-blue-500 w-full"
+                        />
+                    </div>
+                </div>
+                {/* Checkbox Section */}
+                <div className="w-[30%]">
+                    <h3 className="text-sm font-semibold">
+                        {AdminPromptsTranslations.years[lang]}
+                    </h3>
+                    <div className="flex flex-col overflow-y-auto max-h-32">
+                        {years(editTabContent.tabType).map((year) => (
+                            <label
+                                key={year}
+                                className="flex items-center text-xs"
+                            >
+                                <input
+                                    type="checkbox"
+                                    checked={editTabContent.years.includes(
+                                        year,
+                                    )}
+                                    onChange={() => handleYearChange(year)}
+                                    className="mr-2"
+                                />
+                                {year}
+                            </label>
+                        ))}
+                    </div>
+                </div>
             </div>
             {/* Render Data Cards */}
             <div className="flex flex-col items-center">

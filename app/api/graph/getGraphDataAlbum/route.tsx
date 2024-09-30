@@ -3,7 +3,10 @@ import { connectToDatabaseStudy } from '@/utils/mongodb';
 import { MongoDBPaths } from '@/components/enums/mongodb-paths-enum';
 
 import { GraphTextService } from '@/services/translations';
-import { AlbumDataFields } from '@/components/enums/data-types-enum';
+import {
+    AlbumDataFields,
+    StudyYears,
+} from '@/components/enums/data-types-enum';
 
 // Define interfaces for the aggregation results
 interface AggregationResult {
@@ -219,18 +222,30 @@ function unclusterResultArrays(
 
 export async function GET(req: Request) {
     try {
-        const db = (await connectToDatabaseStudy()).db;
-        const collection = db.collection(MongoDBPaths.COLLECTION_DATA);
         const url = new URL(req.url!);
         let donnes = url.searchParams.get('donnes');
         let filters = url.searchParams.get('filters');
+        let year = url.searchParams.get('year');
 
-        if (!donnes || !filters) {
+        if (!donnes || !filters || !year) {
             return NextResponse.json(
                 { error: 'Missing donnes or filter parameter' },
                 { status: 400 },
             );
         }
+        let dbString = '';
+        switch (year) {
+            case StudyYears.YEAR_2022.toString():
+                dbString = MongoDBPaths.COLLECTION_DATA;
+                break;
+
+            default:
+                dbString = MongoDBPaths.COLLECTION_DATA;
+                break;
+        }
+
+        const db = (await connectToDatabaseStudy()).db;
+        const collection = db.collection(dbString);
 
         const donnesObj: AlbumDataFields[] = JSON.parse(donnes);
         const filtersObj: Record<string, any> = JSON.parse(filters);

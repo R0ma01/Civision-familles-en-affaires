@@ -51,6 +51,10 @@ export const AdminPromptsTranslations: PromptsTranslations = {
         FR: 'Pages indisponibles',
         EN: 'No pages available',
     },
+    years: {
+        FR: 'Années visées',
+        EN: 'Select years',
+    },
 };
 
 export const ThematiquePromptsTranslations: PromptsTranslations = {

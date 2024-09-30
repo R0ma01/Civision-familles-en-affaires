@@ -172,8 +172,13 @@ export enum RepertoireDataFields {
     REGION = 'REGIO',
 }
 
-export enum DataBaseOrigin {
+export enum StudyOrigin {
     ALBUM_FAMILLE = 'Album_Famille',
     INDEX_VOLETA = 'Index_VoletA',
     INDEX_VOLETB = 'Index_VoletB',
+}
+
+export enum StudyYears {
+    YEAR_2022 = 2022,
+    YEAR_2023 = 2023,
 }

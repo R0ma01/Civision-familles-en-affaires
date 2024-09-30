@@ -6,7 +6,7 @@ import {
 } from '@/components/enums/data-types-enum';
 import { GraphBoxType } from '@/components/enums/graph-box-enum';
 import { Language } from '@/components/enums/language';
-import { DataBaseOrigin } from '@/components/enums/data-types-enum';
+import { StudyOrigin } from '@/components/enums/data-types-enum';
 import {
     SecteursGeographiques,
     ServiceOffert,
@@ -3883,7 +3883,7 @@ interface TabsProps {
 }
 const keyValuePairsTabs: [string, TabsProps][] = [
     [
-        DataBaseOrigin.ALBUM_FAMILLE,
+        StudyOrigin.ALBUM_FAMILLE,
         {
             titre: {
                 FR: 'Album de Familles',
@@ -3897,7 +3897,7 @@ const keyValuePairsTabs: [string, TabsProps][] = [
     ],
 
     [
-        DataBaseOrigin.INDEX_VOLETA,
+        StudyOrigin.INDEX_VOLETA,
         {
             titre: {
                 FR: 'Indice Entrep., Volet A',
@@ -3910,7 +3910,7 @@ const keyValuePairsTabs: [string, TabsProps][] = [
         },
     ],
     [
-        DataBaseOrigin.INDEX_VOLETB,
+        StudyOrigin.INDEX_VOLETB,
         {
             titre: {
                 FR: 'Indice Entrep., Volet B',

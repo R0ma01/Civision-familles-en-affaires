@@ -13,7 +13,7 @@ import {
 import { ButtonType } from '@/components/enums/button-type-enum';
 import Button from '@/components/component/buttons/button';
 import DataCardContent from '@/components/interface/data-card-content';
-import { DataBaseOrigin } from '@/components/enums/data-types-enum';
+import { StudyOrigin, StudyYears } from '@/components/enums/data-types-enum';
 import { Language } from '@/components/enums/language';
 
 interface EditDataCardProps {
@@ -31,7 +31,7 @@ interface EditDataCardProps {
     handleGraphAdd: (e: any, cardIndex: number) => void;
     handleSectionDelete: (e: any, cardIndex: number) => void;
     handleGraphOrderChange: (cardIndex: number, newOrder: any[]) => void;
-    tabType: DataBaseOrigin;
+    tabType: StudyOrigin;
 }
 
 const EditDataCard: React.FC<EditDataCardProps> = ({

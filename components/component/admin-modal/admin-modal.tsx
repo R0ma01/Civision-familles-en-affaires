@@ -4,7 +4,7 @@ import Button from '../buttons/button';
 import { useEffect, useRef, useState } from 'react';
 import { EditTabContainer } from '../tab/edit-tab-container';
 import { TabContent } from '@/components/interface/tab-content';
-import { DataBaseOrigin } from '@/components/enums/data-types-enum';
+import { StudyOrigin, StudyYears } from '@/components/enums/data-types-enum';
 import Image from 'next/image';
 import { SharedPromptsTranslations } from '@/constants/translations/page-prompts';
 import { Language } from '@/components/enums/language';
@@ -127,7 +127,8 @@ export function AdminModal({
         const updatedPage = { ...editPage };
         let updatedTabs = [...updatedPage.tabs];
         updatedTabs.push({
-            tabType: DataBaseOrigin.INDEX_VOLETA,
+            tabType: StudyOrigin.INDEX_VOLETA,
+            years: [StudyYears.YEAR_2023],
             description: { FR: '', EN: '' },
             cards: [],
             visible: false,

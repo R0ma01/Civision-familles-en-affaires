@@ -9,30 +9,41 @@ import { ChartSize } from '@/components/enums/chart-size-enum';
 import GraphBoxContent from '@/components/interface/graph-box-content';
 import {
     AlbumDataFields,
-    DataBaseOrigin,
+    StudyOrigin,
     IndexeDataFieldsA,
     IndexeDataFieldsB,
+    StudyYears,
 } from '@/components/enums/data-types-enum';
-function options(tabType: DataBaseOrigin) {
+function options(tabType: StudyOrigin) {
     switch (tabType) {
-        case DataBaseOrigin.ALBUM_FAMILLE: {
+        case StudyOrigin.ALBUM_FAMILLE: {
             return Object.values(AlbumDataFields);
         }
-        case DataBaseOrigin.INDEX_VOLETA: {
+        case StudyOrigin.INDEX_VOLETA: {
             return Object.values(IndexeDataFieldsA);
         }
-        case DataBaseOrigin.INDEX_VOLETB: {
+        case StudyOrigin.INDEX_VOLETB: {
             return Object.values(IndexeDataFieldsB);
         }
     }
     return [];
 }
 
+function yearDett(tabType: StudyOrigin) {
+    switch (tabType) {
+        case StudyOrigin.ALBUM_FAMILLE:
+            return StudyYears.YEAR_2022;
+        case StudyOrigin.INDEX_VOLETA:
+        case StudyOrigin.INDEX_VOLETb:
+            return StudyYears.YEAR_2023;
+    }
+}
+
 interface GraphCardProps {
     graph: GraphBoxContent;
     graphIndex: number;
     cardIndex: number;
-    tabType: DataBaseOrigin;
+    tabType: StudyOrigin;
     handleGraphDataChange: (
         cardIndex: number,
         graphIndex: number,
@@ -120,7 +131,11 @@ const EditGraphCard: React.FC<GraphCardProps> = ({
                     </div>
                 </div>
                 <div className="w-full flex justify-center items-center">
-                    <GraphBox content={graph} chartSize={ChartSize.SMALL} />
+                    <GraphBox
+                        content={graph}
+                        chartSize={ChartSize.SMALL}
+                        year={yearDett(tabType)}
+                    />
                 </div>
             </div>
         </div>

@@ -11,7 +11,7 @@ import { Language } from '@/components/enums/language';
 import { SharedPromptsTranslations } from '@/constants/translations/page-prompts';
 import useDataStore from '@/reducer/dataStore';
 import useGlobalFilterStore from '@/stores/global-filter-store';
-import { DataBaseOrigin } from '@/components/enums/data-types-enum';
+import { StudyOrigin } from '@/components/enums/data-types-enum';
 import useGlobalDataStore from '@/stores/global-data-store';
 import useGlobalUserStore from '@/stores/global-user-store';
 import InformationPageTutorial from '@/components/component/tutorials/information-page-tutorial';
@@ -82,13 +82,13 @@ function PageContentComponent() {
         }
     }, [page, pagesData, _id]);
 
-    function setMap(dataOrigin: DataBaseOrigin) {
+    function setMap(dataOrigin: StudyOrigin) {
         switch (dataOrigin) {
-            case DataBaseOrigin.INDEX_VOLETA:
+            case StudyOrigin.INDEX_VOLETA:
                 filterIndexeAData();
                 setMapStyle(MapType.PAGE_INFORMATION_INDEX_VOLETA);
                 break;
-            case DataBaseOrigin.INDEX_VOLETB:
+            case StudyOrigin.INDEX_VOLETB:
                 filterIndexeBData();
                 setMapStyle(MapType.PAGE_INFORMATION_INDEX_VOLETB);
                 break;

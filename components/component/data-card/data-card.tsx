@@ -9,16 +9,19 @@ import StaticDropdown from '../drop-down-menu/chercheur-drop-down';
 import { UserType } from '@/components/enums/user-type-enum';
 import useDataStore from '@/reducer/dataStore';
 import { Language } from '@/components/enums/language';
+import { StudyYears } from '@/components/enums/data-types-enum';
 
 interface DataCardProps {
     className?: string;
     content: DataCardContent;
+    year: StudyYears;
     admin?: boolean;
 }
 
 const DataCard: React.FC<DataCardProps> = ({
     content,
     className,
+    year,
     admin = false,
 }) => {
     const [isCollapsed, setIsCollapsed] = useState(false);
@@ -83,7 +86,7 @@ const DataCard: React.FC<DataCardProps> = ({
                     <DescriptionComponent>
                         {content.description[lang]}
                     </DescriptionComponent>
-                    <GraphBox content={content.graphData[0]} />
+                    <GraphBox content={content.graphData[0]} year={year} />
                 </DataCardDiv>
             );
 
@@ -94,7 +97,7 @@ const DataCard: React.FC<DataCardProps> = ({
                         {content.description[lang]}
                     </DescriptionComponent>
                     {content.graphData?.map((graph, index) => (
-                        <GraphBox key={index} content={graph} />
+                        <GraphBox key={index} content={graph} year={year} />
                     ))}
                 </DataCardDiv>
             );
@@ -113,7 +116,7 @@ const DataCard: React.FC<DataCardProps> = ({
             return (
                 <DataCardDiv title={content.title[lang]}>
                     {content.graphData !== undefined && (
-                        <GraphBox content={content.graphData[0]} />
+                        <GraphBox content={content.graphData[0]} year={year} />
                     )}
                 </DataCardDiv>
             );

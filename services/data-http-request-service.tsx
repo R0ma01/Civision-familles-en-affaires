@@ -1,4 +1,4 @@
-import { DataBaseOrigin } from '@/components/enums/data-types-enum';
+import { StudyOrigin, StudyYears } from '@/components/enums/data-types-enum';
 import { APIPaths } from '@/components/enums/page-api-paths-enum';
 import {
     ChartData,
@@ -102,23 +102,26 @@ async function getAllIndexeBData(
 async function getChartData(
     donnes: any[],
     filters: Record<string, any>,
-    dataOrigin: DataBaseOrigin,
+    dataOrigin: StudyOrigin,
+    year: StudyYears,
 ): Promise<ChartData[] | ChartDataMultipleFileds[]> {
     try {
         let response = { data: { chartData: [] } };
 
-        if (dataOrigin === DataBaseOrigin.INDEX_VOLETA) {
+        if (dataOrigin === StudyOrigin.INDEX_VOLETA) {
             response = await axios.get(APIPaths.GRAPH_GET_DATA_VOLETA, {
                 params: {
                     donnes: JSON.stringify(donnes),
                     filters: JSON.stringify(filters),
+                    year: year,
                 },
             });
-        } else if (dataOrigin === DataBaseOrigin.INDEX_VOLETB) {
+        } else if (dataOrigin === StudyOrigin.INDEX_VOLETB) {
             response = await axios.get(APIPaths.GRAPH_GET_DATA_VOLETB, {
                 params: {
                     donnes: JSON.stringify(donnes),
                     filters: JSON.stringify(filters),
+                    year: year,
                 },
             });
         } else {
@@ -126,6 +129,7 @@ async function getChartData(
                 params: {
                     donnes: JSON.stringify(donnes),
                     filters: JSON.stringify(filters),
+                    year: year,
                 },
             });
         }

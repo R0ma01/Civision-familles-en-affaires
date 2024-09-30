@@ -2,7 +2,10 @@ import { NextResponse } from 'next/server';
 import { connectToDatabaseIndexe } from '@/utils/mongodb';
 import { MongoDBPaths } from '@/components/enums/mongodb-paths-enum';
 import { GraphTextService } from '@/services/translations';
-import { IndexeDataFieldsA } from '@/components/enums/data-types-enum';
+import {
+    IndexeDataFieldsA,
+    StudyYears,
+} from '@/components/enums/data-types-enum';
 import { Language } from '@/components/enums/language';
 // Define interfaces for the aggregation results
 interface AggregationResult {
@@ -13,20 +16,29 @@ export const revalidate = 0;
 export const dynamic = 'force-dynamic';
 export async function GET(req: Request) {
     try {
-        const db = (await connectToDatabaseIndexe()).db;
-        const collection = db.collection(MongoDBPaths.VOLETA_2022);
-
         // Parse request parameters
         const url = new URL(req.url!);
         let filters = url.searchParams.get('filters');
-
-        if (!filters) {
+        let year = url.searchParams.get('year');
+        if (!filters || !year) {
             return NextResponse.json(
                 { error: 'Missing filters parameter' },
                 { status: 400 },
             );
         }
+        let dbString = '';
+        switch (year) {
+            case StudyYears.YEAR_2022.toString():
+                dbString = MongoDBPaths.VOLETA_2022;
+                break;
 
+            default:
+                dbString = MongoDBPaths.VOLETA_2022;
+                break;
+        }
+
+        const db = (await connectToDatabaseIndexe()).db;
+        const collection = db.collection(dbString);
         const filtersObj: Record<string, any> = JSON.parse(filters);
 
         if (!filtersObj) {

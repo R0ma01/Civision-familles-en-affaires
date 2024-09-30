@@ -10,10 +10,7 @@ import StackedBarChart from './stacked-bar-chart';
 import DoubleHorizontalChart from './double-horizontal-chart';
 import { ChartContent } from '@/components/interface/chart-content';
 import { ChartSize } from '@/components/enums/chart-size-enum';
-import {
-    DataBaseOrigin,
-    AlbumDataFields,
-} from '@/components/enums/data-types-enum';
+import { StudyOrigin, StudyYears } from '@/components/enums/data-types-enum';
 import useGlobalFilterStore from '@/stores/global-filter-store';
 import {
     ChartData,
@@ -23,10 +20,11 @@ import { GraphDataHttpRequestService } from '@/services/data-http-request-servic
 import useGlobalDataStore from '@/stores/global-data-store';
 interface GraphBoxProps {
     content: GraphBoxContent;
+    year: StudyYears;
     chartSize?: ChartSize;
 }
 
-const GraphBox: React.FC<GraphBoxProps> = ({ content, chartSize }) => {
+const GraphBox: React.FC<GraphBoxProps> = ({ content, chartSize, year }) => {
     const [chartContent, setChartContent] = useState<ChartContent | null>(null);
     const matchStage = useGlobalFilterStore((state) => state.matchStage);
     const setFilter = useGlobalFilterStore((state) => state.setFilter);
@@ -52,19 +50,18 @@ const GraphBox: React.FC<GraphBoxProps> = ({ content, chartSize }) => {
         } else {
             setFilter(dataField, entry.name);
         }
-        console.log(matchStage);
         setFrozen(true);
 
         switch (content.dataOrigin) {
-            case DataBaseOrigin.INDEX_VOLETA:
+            case StudyOrigin.INDEX_VOLETA:
                 filterIndexeAData();
                 break;
-            case DataBaseOrigin.INDEX_VOLETB:
+            case StudyOrigin.INDEX_VOLETB:
                 filterIndexeBData();
                 break;
 
             default:
-            case DataBaseOrigin.ALBUM_FAMILLE:
+            case StudyOrigin.ALBUM_FAMILLE:
                 filterStudyData();
                 break;
         }
@@ -79,12 +76,12 @@ const GraphBox: React.FC<GraphBoxProps> = ({ content, chartSize }) => {
     );
 
     useEffect(() => {
-        console.log('I am called with this match stage', matchStage);
-        async function fetchMultiple(donnes: AlbumDataFields[]) {
+        async function fetchMultiple(donnes: any[]) {
             const result = await GraphDataHttpRequestService.getChartData(
                 donnes,
                 matchStage,
-                content.dataOrigin ?? DataBaseOrigin.ALBUM_FAMILLE,
+                content.dataOrigin ?? StudyOrigin.ALBUM_FAMILLE,
+                year,
             );
             const tempResult: ChartDataMultipleFileds[] = [
                 {
@@ -108,7 +105,8 @@ const GraphBox: React.FC<GraphBoxProps> = ({ content, chartSize }) => {
             const result = await GraphDataHttpRequestService.getChartData(
                 donnes,
                 matchStage,
-                content.dataOrigin ?? DataBaseOrigin.ALBUM_FAMILLE,
+                content.dataOrigin ?? StudyOrigin.ALBUM_FAMILLE,
+                year,
             );
 
             // const nanResult = result.findIndex(
