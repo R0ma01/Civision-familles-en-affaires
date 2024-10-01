@@ -1,5 +1,6 @@
 import { useEffect, useRef } from 'react';
 import geoJsonData from '@/geojson/quebec_regions_mrcs.json';
+//import qcMrcs from '@/geojson/qc_mrcs2.geojson';
 
 interface ChloroplethProps {
     map: any;
@@ -30,33 +31,58 @@ const MrcGrid: React.FC<ChloroplethProps> = ({ map }) => {
                         'line-width': 0.5,
                     },
                 });
+                map.addLayer({
+                    id: 'mrc-fill',
+                    type: 'fill', // Use 'line' to display outlines
+                    source: 'gridMrc-source',
+                    paint: {
+                        'fill-color': 'rgba(0, 0, 0, 0)', // White outlines
+                    },
+                });
+
+                map.addLayer({
+                    id: 'region-outline',
+                    type: 'line',
+                    source: 'gridMrc-source',
+
+                    paint: {
+                        'line-color': [
+                            'case',
+                            [
+                                '==',
+                                ['get', 'MRS_NM_MRC'],
+                                hoveredRegionIdRef.current,
+                            ],
+                            '#FFCC00', // Highlight color on hover
+                            'rgba(0, 0, 0, 0)', // Transparent when not hovered
+                        ],
+                        'line-width': 3, // Width of the outline
+                    },
+                });
 
                 // Add click event listener for mrc outlines
-                map.on('click', 'mrc-outlines', (e: any) => {
+                map.on('click', 'mrc-fill', (e: any) => {
                     if (e.features.length > 0) {
-                        const clickedRegionId = e.features[0].properties.region; // Ensure this matches your GeoJSON property
-
+                        console.log(e);
+                        console.log(e.features);
+                        const clickedRegionId =
+                            e.features[0].properties.MRS_NM_MRC; // Ensure this matches your GeoJSON property
+                        console.log(clickedRegionId);
                         // Remove existing highlight if any
                         hoveredRegionIdRef.current = clickedRegionId;
+                        map.setPaintProperty('region-outline', 'line-color', [
+                            'case',
+                            [
+                                '==',
+                                ['get', 'MRS_NM_MRC'],
+                                hoveredRegionIdRef.current,
+                            ],
+                            '#FFCC00', // Highlight color on hover
+                            'rgba(0, 0, 0, 0)', // Transparent when not hovered
+                        ]);
 
                         // Create an outline layer for the clicked region
-                        map.addLayer(
-                            {
-                                id: 'region-outline',
-                                type: 'line',
-                                source: 'gridMrc-source',
-                                filter: [
-                                    '==',
-                                    ['get', 'region'],
-                                    clickedRegionId,
-                                ],
-                                paint: {
-                                    'line-color': '#FFCC00', // Highlight color
-                                    'line-width': 3, // Width of the outline
-                                },
-                            },
-                            'mrc-outlines',
-                        ); // Position this layer above the mrc-outlines layer
+                        // Position this layer above the mrc-outlines layer
                     }
                 });
             } else {
