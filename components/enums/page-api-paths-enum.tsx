@@ -19,4 +19,5 @@ export enum APIPaths {
     GRAPH_GET_DATA_VOLETB = '/api/graph/getGraphDataVoletB',
     MAP_GET_ENTREPRISE = '/api/map/getEntreprise',
     SHEETS_GET_DATA = '/api/sheets/getData',
+    LENGTH_REPERTOIRE = '/api/repertoire/getLength',
 }

@@ -6,6 +6,7 @@ import {
     VisibleSVG,
     ZoomInSVG,
     ZoomOutSVG,
+    LegendSVG,
 } from '@/components/component/svg-icons/svg-icons';
 import Dropdown from '@/components/component/drop-down-menu/drop-down-menu';
 
@@ -26,6 +27,7 @@ import { Language } from '@/components/enums/language';
 import useDataStore from '@/reducer/dataStore';
 import { SharedPromptsTranslations } from '@/constants/translations/page-prompts';
 import { GraphTextService } from '@/services/translations';
+import { LanguageToggle } from '@/components/component/language-toggle/language-toggle';
 
 const filterConfigurations = {
     [MapType.REPERTOIRE]: {
@@ -171,73 +173,61 @@ const FilterMenu: React.FC<FilterMenuProps> = ({
     };
 
     return (
-        <div className="relative z-20 h-[300px]">
-            <Button
-                id={html_object_constants.toggle_filter_tab_id}
-                buttonType={ButtonType.ICON}
-                onClick={toggleTab}
-                scaleOnHover={false}
-                className={`fixed top-1/4 transform -translate-y-[130px] bg-[#f5ebe0] bg-opacity-75 right-0 p-2 rounded-l-md rounded-r-none ${
-                    isOpen ? '-translate-x-64' : 'block'
-                } transition-transform duration-300 ease-in-out`}
-            >
-                <FilterSVG className="w-10 h-10" />
-            </Button>
-            <Button
-                id={html_object_constants.zoom_in_tab_id}
-                buttonType={ButtonType.ICON}
-                onClick={zoomIn}
-                scaleOnHover={false}
-                className={`fixed top-1/4 transform -translate-y-[65px] bg-[#f5ebe0] bg-opacity-75 right-0 p-2 rounded-l-md rounded-r-none ${
-                    isOpen ? '-translate-x-64' : 'block'
-                } transition-transform duration-300 ease-in-out`}
-            >
-                <ZoomInSVG />
-            </Button>
-            <Button
-                id={html_object_constants.zoom_out_tab_id}
-                buttonType={ButtonType.ICON}
-                onClick={zoomOut}
-                scaleOnHover={false}
-                className={`fixed top-1/4 transform -translate-y-[15px] bg-[#f5ebe0] bg-opacity-75 right-0 p-2 rounded-l-md rounded-r-none ${
-                    isOpen ? '-translate-x-64' : 'block'
-                } transition-transform duration-300 ease-in-out`}
-            >
-                <ZoomOutSVG />
-            </Button>
-            <Button
-                id={html_object_constants.hide_content_tab_id}
-                buttonType={ButtonType.ICON}
-                onClick={toggleVisibility}
-                scaleOnHover={false}
-                className={`fixed top-1/4 transform translate-y-[35px] bg-[#f5ebe0] bg-opacity-75 right-0 p-2 rounded-l-md rounded-r-none ${
-                    isOpen ? '-translate-x-64' : 'block'
-                } transition-transform duration-300 ease-in-out`}
-            >
-                {visible && <VisibleSVG className="fill-gray-500" />}
-                {!visible && <InvisibleSVG className="fill-gray-500" />}
-            </Button>
+        <>
+            <div className="z-20 h-[300px] w-[200px] bg-white flex flex-col items-center gap-4">
+                <Button
+                    id={html_object_constants.toggle_filter_tab_id}
+                    buttonType={ButtonType.ICON}
+                    onClick={toggleTab}
+                    scaleOnHover={false}
+                    className={`bg-[#f5ebe0] bg-opacity-75 right-0 p-2 rounded-l-md rounded-r-none ${
+                        isOpen ? '-translate-x-64' : 'block'
+                    } transition-transform duration-300 ease-in-out`}
+                >
+                    <FilterSVG className="w-10 h-10" />
+                </Button>
+                <LanguageToggle className=""></LanguageToggle>
 
-            <div
-                className={`fixed top-10 right-0 h-[350px] w-64 bg-[#f5ebe0] bg-opacity-75 p-4 transform ${isOpen ? 'translate-x-0' : 'translate-x-full'} transition-transform duration-300 ease-in-out`}
-            >
-                <h2 className="text-2xl font-bold">
-                    {SharedPromptsTranslations.filters[lang]}
-                </h2>
-                <div className="mt-2 flex border-b dark:border-white border-black">
-                    {Object.keys(filterConfigurations[mapType]).map((tab) => (
-                        <button
-                            key={tab}
-                            className={`flex-1 text-center py-2 ${selectedTab === tab ? 'border-b-2 dark:border-white border-black dark:text-white text-black' : 'text-gray-500'}`}
-                            onClick={() => setSelectedTab(tab)}
-                        >
-                            {SharedPromptsTranslations[`${tab}_filters`][lang]}
-                        </button>
-                    ))}
+                <Button
+                    id={html_object_constants.hide_content_tab_id}
+                    buttonType={ButtonType.ICON}
+                    onClick={toggleVisibility}
+                    scaleOnHover={false}
+                    className={`bg-[#f5ebe0] bg-opacity-75 right-0 p-2 rounded-l-md rounded-r-none ${
+                        isOpen ? '-translate-x-64' : 'block'
+                    } transition-transform duration-300 ease-in-out`}
+                >
+                    {visible && <VisibleSVG className="fill-gray-500" />}
+                    {!visible && <InvisibleSVG className="fill-gray-500" />}
+                </Button>
+
+                <div
+                    className={`fixed top-10 right-0 h-[350px] w-64 bg-[#f5ebe0] bg-opacity-75 p-4 transform ${isOpen ? 'translate-x-0' : 'translate-x-full'} transition-transform duration-300 ease-in-out`}
+                >
+                    <h2 className="text-2xl font-bold">
+                        {SharedPromptsTranslations.filters[lang]}
+                    </h2>
+                    <div className="mt-2 flex border-b dark:border-white border-black">
+                        {Object.keys(filterConfigurations[mapType]).map(
+                            (tab) => (
+                                <button
+                                    key={tab}
+                                    className={`flex-1 text-center py-2 ${selectedTab === tab ? 'border-b-2 dark:border-white border-black dark:text-white text-black' : 'text-gray-500'}`}
+                                    onClick={() => setSelectedTab(tab)}
+                                >
+                                    {
+                                        SharedPromptsTranslations[
+                                            `${tab}_filters`
+                                        ][lang]
+                                    }
+                                </button>
+                            ),
+                        )}
+                    </div>
+                    {renderFilters()}
                 </div>
-                {renderFilters()}
             </div>
-        </div>
+        </>
     );
 };
 

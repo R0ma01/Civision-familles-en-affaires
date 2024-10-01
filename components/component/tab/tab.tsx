@@ -41,22 +41,20 @@ export function Tab({ content, className }: TabProps) {
         >
             {currentYear && (
                 <>
-                    <Dropdown
-                        inputValue={currentYear}
-                        options={tabContent.years}
-                        dataField={'none'}
-                        onChange={(value: any) => {
-                            setCurrentYear(value);
-                        }}
-                    />
-                </>
-            )}
-            {currentYear && (
-                <>
-                    <p className="text-base text-gray-600 dark:text-gray-300">
-                        {tabContent.description[lang]}
-                    </p>
-
+                    <div className="flex flex-row w-full justify-between">
+                        <p className="text-base text-gray-600 dark:text-gray-300 w-[60%]">
+                            {tabContent.description[lang]}
+                        </p>
+                        <Dropdown
+                            inputValue={currentYear}
+                            options={tabContent.years}
+                            dataField={'none'}
+                            onChange={(value: any) => {
+                                setCurrentYear(value);
+                            }}
+                            className="w-[40%]"
+                        />
+                    </div>
                     {/* Render Data Cards */}
                     <div className="grid gap-4">
                         {tabContent.cards.map((card, idx) => (

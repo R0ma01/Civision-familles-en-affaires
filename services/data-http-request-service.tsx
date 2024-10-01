@@ -19,6 +19,7 @@ export const GraphDataHttpRequestService = {
     getAllIndexVoletBData: getAllIndexeBData,
     getChartData: getChartData,
     getEntrepriseInformation: getEntrepriseInformation,
+    getLengthRepertoireData: getLengthRepertoireData,
 };
 
 async function getAllStudyData(
@@ -60,6 +61,20 @@ async function getAllRepertoireData(
         );
     }
     return [];
+}
+
+async function getLengthRepertoireData(): Promise<number> {
+    try {
+        const response = await axios.get(APIPaths.LENGTH_REPERTOIRE);
+
+        return response.data.length;
+    } catch (error: any) {
+        console.error(
+            'Error fetching points:',
+            error.response?.data?.error || error.message,
+        );
+    }
+    return 0;
 }
 
 async function getAllIndexeAData(

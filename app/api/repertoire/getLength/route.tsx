@@ -1,32 +1,25 @@
 import { NextResponse } from 'next/server';
-import { connectToDatabaseStudy } from '@/utils/mongodb';
+import { connectToDatabaseRepertoire } from '@/utils/mongodb';
 import { MongoDBPaths } from '@/components/enums/mongodb-paths-enum';
-
-export const revalidate = 0;
-export const dynamic = 'force-dynamic';
 
 export async function GET() {
     try {
-        const db = (await connectToDatabaseStudy()).db;
-        const collection = db.collection(MongoDBPaths.COLLECTION_PAGES_TABS);
+        const db = (await connectToDatabaseRepertoire()).db;
+        const collection = db.collection(MongoDBPaths.REGISTRE_QC);
 
-        const result = await collection.find({}).toArray();
+        // Get the documents and count them
 
-        if (!result) {
-            return NextResponse.json(
-                { error: 'Document not found' },
-                { status: 404 },
-            );
-        }
+        const count = await collection.countDocuments({
+            ENT_FAM: { $exists: true },
+        });
 
         // Create the response
         const response = NextResponse.json({
             message: 'Documents found successfully',
-            pages: result,
+            length: count, // Use the count of documents here
         });
 
         // Add Cache-Control headers to prevent caching
-        response.headers.set('Cache-Control', 'no-store, max-age=0');
 
         return response;
     } catch (e: any) {
@@ -37,7 +30,6 @@ export async function GET() {
             { error: e.message },
             { status: 500 },
         );
-        errorResponse.headers.set('Cache-Control', 'no-store, max-age=0');
 
         return errorResponse;
     }

@@ -3,6 +3,7 @@ import { TableauxTraductionsMainDataFields } from '@/services/translations';
 import { value_constants } from '@/constants/constants';
 import { Language } from '@/components/enums/language';
 import useDataStore from '@/reducer/dataStore';
+import { DropDownType } from '@/components/interface/drop-down-type';
 
 interface DropdownProps {
     inputValue?: any;
@@ -13,9 +14,11 @@ interface DropdownProps {
     displayValue?: (value: any, lang: Language, field?: any) => string; // Function to display the value
     className?: string;
     style?: any;
+    dropType?: DropDownType;
 }
 
 const Dropdown = ({
+    dropType = DropDownType.NORMAL,
     inputValue,
     options,
     color = false,

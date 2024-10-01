@@ -106,10 +106,6 @@ function Fournisseurs() {
                 filterMenu={true}
                 className="overflow-auto pb-10 pl-[30px]"
             >
-                <h1 className="text-2xl tracking-wide text-black dark:text-white z-10 mt-12 mb-2 cursor-default">
-                    {FournisseurPromptsTranslations.page_title[lang]}
-                </h1>
-
                 <ListeFournisseurs
                     admin={user === UserType.ADMIN}
                     openEditDialog={openEditDialog}

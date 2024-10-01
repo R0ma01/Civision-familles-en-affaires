@@ -30,6 +30,7 @@ export default function Carte() {
     const mapRef = useRef(null);
     const map = useMapStore((state) => state.map);
     const mapType = useMapStore((state) => state.mapType);
+
     const { matchStage, setFilter } = useGlobalFilterStore((state: any) => ({
         matchStage: state.matchStage,
         resetFilters: state.resetFilters,
@@ -228,6 +229,7 @@ export default function Carte() {
                             );
                         }}
                     ></Chloropleth>
+
                     <ColorLegend
                         gradientValues={choroplethColors}
                         className="absolute bottom-0 right-1 z-50"
@@ -246,11 +248,13 @@ export default function Carte() {
                         data={repertoireData}
                         map={map}
                     ></ClusterCloud>
+
                     <ColorLegend
                         gradientValues={clusterColors}
                         className="absolute bottom-0 right-1 z-50"
                         mapType={mapType}
                     ></ColorLegend>
+
                     <MrcGrid
                         map={map}
                         filterFunction={(mrc_id: number) => {
@@ -281,6 +285,7 @@ export default function Carte() {
                             );
                         }}
                     ></Chloropleth>
+
                     <ColorLegend
                         gradientValues={choroplethColors}
                         className="absolute bottom-0 right-1 z-50"
@@ -298,6 +303,7 @@ export default function Carte() {
                             filter(region, IndexeDataFieldsB.Q0QC, mapType);
                         }}
                     ></Chloropleth>
+
                     <ColorLegend
                         gradientValues={choroplethColors}
                         className="absolute bottom-0 right-1 z-50"
@@ -315,6 +321,7 @@ export default function Carte() {
                             filter(region, IndexeDataFieldsB.Q0QC, mapType);
                         }}
                     ></Chloropleth>
+
                     <ColorLegend
                         gradientValues={choroplethColors}
                         className="absolute bottom-0 right-1 z-50"

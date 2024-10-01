@@ -1,5 +1,6 @@
 import { MapType } from '@/components/enums/map-type-enum';
 import { useEffect, useState } from 'react';
+import useMapStore from '@/stores/global-map-store';
 
 interface LegendProps {
     gradientValues: (string | number)[];
@@ -14,7 +15,7 @@ const ColorLegend = ({
 }: LegendProps) => {
     const [colors, setColors] = useState<string[]>([]);
     const [values, setValues] = useState<number[]>([]); // should be numbers instead of strings
-
+    const legend = useMapStore((state) => state.legend);
     useEffect(() => {
         // Extract values and colors alternately from the gradientValues array
         const extractedColors: string[] = [];
@@ -49,27 +50,34 @@ const ColorLegend = ({
         return mapType !== MapType.REPERTOIRE ? 'w-6' : 'w-10';
     }
 
-    return (
-        <div className={`legend-container flex ${className} w-fit h-hit`}>
-            {colors.map((color, index) => (
-                <div key={index} className={`flex flex-col ${blockWidth()}`}>
-                    <div className="text-xs font-light dark:text-white text-center">
-                        {values[index]}
-                        {lastNumber(index)}
+    if (legend) {
+        return (
+            <div className={`legend-container flex ${className} w-fit h-hit`}>
+                {colors.map((color, index) => (
+                    <div
+                        key={index}
+                        className={`flex flex-col ${blockWidth()}`}
+                    >
+                        <div className="text-xs font-light dark:text-white text-center">
+                            {values[index]}
+                            {lastNumber(index)}
+                        </div>
+                        <div className="w-6 h-6 bg-light-map-green dark:bg-dark-map-gray">
+                            <div
+                                className={`${blockWidth()} h-6`}
+                                style={{
+                                    backgroundColor: color,
+                                    opacity: opacity(),
+                                }}
+                            ></div>
+                        </div>
                     </div>
-                    <div className="w-6 h-6 bg-light-map-green dark:bg-dark-map-gray">
-                        <div
-                            className={`${blockWidth()} h-6`}
-                            style={{
-                                backgroundColor: color,
-                                opacity: opacity(),
-                            }}
-                        ></div>
-                    </div>
-                </div>
-            ))}
-        </div>
-    );
+                ))}
+            </div>
+        );
+    } else {
+        return <div></div>;
+    }
 };
 
 export default ColorLegend;

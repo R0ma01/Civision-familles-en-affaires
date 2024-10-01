@@ -1,5 +1,6 @@
 import React from 'react';
-import FilterMenu from '../filter-menu/filter-menu';
+import FilterMenu from '@/components/component/menus/filter-menu';
+import MapMenu from '@/components/component/menus/map-menu';
 
 type PageContentContainerProps = {
     children: React.ReactNode;
@@ -31,9 +32,12 @@ const PageContentContainer: React.FC<PageContentContainerProps> = ({
             )}
 
             {filterMenu ? (
-                <FilterMenu
-                    toggleContentVisibility={toggleVisibility}
-                ></FilterMenu>
+                <>
+                    <FilterMenu
+                        toggleContentVisibility={toggleVisibility}
+                    ></FilterMenu>
+                    <MapMenu></MapMenu>
+                </>
             ) : (
                 ''
             )}

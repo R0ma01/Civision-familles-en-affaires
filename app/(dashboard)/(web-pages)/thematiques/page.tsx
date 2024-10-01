@@ -57,6 +57,7 @@ export default function Thematiques() {
                 tour.start();
             }
         }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
     useEffect(() => {
@@ -98,9 +99,6 @@ export default function Thematiques() {
         );
     return (
         <PageContentContainer className="h-screen overflow-y-auto relative flex items-center w-screen">
-            <h1 className="text-2xl font-semibold tracking-wide text-black dark:text-white z-10 mt-10 mb-5 cursor-default">
-                {ThematiquePromptsTranslations.page_title[lang]}
-            </h1>
             {!pageLoading ? (
                 <div className="justify-center flex flex-wrap w-[80%]">
                     {pages.length > 0 ? (

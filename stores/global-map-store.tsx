@@ -13,6 +13,8 @@ interface GlobalMapStoreProps {
     setMapStyle: (type: MapType) => void;
     point: any;
     setMapPoint: (point: MapClusterPointData) => void;
+    legend: boolean;
+    toggleLegend: () => void;
 }
 
 const useMapStore = create<GlobalMapStoreProps>((set) => ({
@@ -52,6 +54,10 @@ const useMapStore = create<GlobalMapStoreProps>((set) => ({
         };
 
         set({ point: newJSONPoint });
+    },
+    legend: false,
+    toggleLegend: () => {
+        set((state) => ({ legend: !state.legend }));
     },
 }));
 

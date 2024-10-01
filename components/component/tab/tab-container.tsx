@@ -54,7 +54,7 @@ export function TabContainer({
         <div className="w-fit z-10">
             {/* Tab Headers */}
             <div
-                className={`flex flex-wrap items-center justify-start space-x-2 mb-4 border-b border-black dark:border-white ${className}`}
+                className={`flex flex-wrap items-center justify-start space-x-2 mb-4 ${className}`}
             >
                 {containerContent &&
                     containerContent.map((tab, index) => {
@@ -74,14 +74,9 @@ export function TabContainer({
                                     id={`${html_object_constants.tab_notch_id}-${index}`}
                                     key={`${tab.tabType}-${index}`} // Unique key
                                     onClick={() => setSelectedTab(index)} // Set the active tab
-                                    className={`dark:text-white hover:bg-gray-700 dark:hover:bg-gray-300 text-black bg-opacity-75 cursor-pointer border-black dark:border-white md:text-xs lg:tx-sm px-4 py-2 transition-all duration-200 rounded-t-xl border-b-0 ${className}`}
-                                    style={{
-                                        backgroundColor: isActive
-                                            ? '#3b82f6'
-                                            : color,
-                                    }}
+                                    className={`hover:bg-gray-700 dark:hover:bg-gray-300 text-black cursor-pointer md:text-xs lg:tx-sm px-4 py-2 transition-all duration-200 rounded-lg ${isActive ? 'bg-logo-dark-blue text-white' : 'bg-white text-logo-dark-blue bg-opacity-65'} ${className}`}
                                 >
-                                    <p>{title}</p>
+                                    <p>{title.toUpperCase()}</p>
                                 </div>
                             );
                         }

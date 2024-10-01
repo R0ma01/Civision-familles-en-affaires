@@ -68,9 +68,6 @@ export default function RechercheAcademique() {
             className="overflow-y-auto pb-10 pl-[30px] w-full"
             filterMenu={true}
         >
-            <h1 className="text-5xl tracking-wide text-black dark:text-white z-10 mt-12 mb-10 cursor-default">
-                {RecherchePromptsTranslations.page_title[lang]}
-            </h1>
             <div className="flex flex-col space-y-4 w-full">
                 <DataCard content={firstItem} className="z-10" year={2022} />
                 <DataCardContainer

@@ -116,7 +116,6 @@ export default function Admin() {
         let resp = false;
         if (id) {
             resp = await PageHttpRequestService.delete(id);
-
         }
 
         if (resp) {
@@ -143,9 +142,6 @@ export default function Admin() {
 
     return (
         <PageContentContainer className="h-screen overflow-y-auto relative flex items-center w-[100%]">
-            <h1 className="text-2xl font-semibold tracking-wide text-black dark:text-white z-10 mt-10 mb-5 cursor-default">
-                {AdminPromptsTranslations.page_title[lang]}
-            </h1>
             <div className="justify-center flex flex-col w-[80%] items-center">
                 <div className="justify-center flex flex-wrap">
                     {pages

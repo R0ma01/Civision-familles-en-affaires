@@ -16,6 +16,11 @@ import useGlobalDataStore from '@/stores/global-data-store';
 import useGlobalUserStore from '@/stores/global-user-store';
 import InformationPageTutorial from '@/components/component/tutorials/information-page-tutorial';
 import { TutorialPages, UserType } from '@/components/enums/user-type-enum';
+import Button from '@/components/component/buttons/button';
+import { ButtonType } from '@/components/enums/button-type-enum';
+import { BackArrowSVG } from '@/components/component/svg-icons/svg-icons';
+import { PagePaths } from '@/components/enums/page-paths-enum';
+import Link from 'next/link';
 
 function PageContentComponent() {
     const { resetFilters } = useGlobalFilterStore((state) => ({
@@ -115,9 +120,22 @@ function PageContentComponent() {
                 className="overflow-auto pb-10 pl-[30px]"
                 filterMenu={true}
             >
-                <h1 className="text-2xl tracking-wide text-black dark:text-white z-10 mt-12 mb-2 cursor-default">
-                    {page?.title[lang]}
-                </h1>
+                <div className="flex flex-row mt-4 mb-4 w-full gap-4 items-center">
+                    <Button
+                        buttonType={ButtonType.ICON}
+                        className="w-12 h-10 bg-logo-dark-blue shadow-lg items-center justify-center flex rounded-full"
+                        onClick={(e) => {
+                            e.stopPropagation();
+                        }}
+                    >
+                        <Link href={PagePaths.THEMATIQUES}>
+                            <BackArrowSVG></BackArrowSVG>
+                        </Link>
+                    </Button>
+                    <h1 className="text-2xl tracking-wide text-logo-dark-blue dark:text-white z-10 cursor-default">
+                        {page?.title[lang].toUpperCase()}
+                    </h1>
+                </div>
 
                 {page && (
                     <TabContainer

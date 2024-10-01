@@ -33,9 +33,9 @@ const DataCard: React.FC<DataCardProps> = ({
     }> = ({ children, title }) => {
         return (
             <div
-                className={`w-[500px] bg-[#f5ebe0] dark:bg-[#363636] dark:bg-opacity-50 dark:text-white backdrop-filter
-                     backdrop-blur bg-opacity-50 saturate-100 backdrop-contrast-100 rounded-xl shadow-3xl py-8 px-8 pointer-events-auto
-                     flex flex-col items-center h-auto space-y-1  ${className}`}
+                className={`w-[550px] bg-[#f5ebe0] dark:bg-[#363636] dark:bg-opacity-50 dark:text-white backdrop-filter
+                     backdrop-blur bg-opacity-50 saturate-100 backdrop-contrast-100 rounded-xl shadow-3xl py-2 pointer-events-auto
+                     flex flex-col items-center h-auto space-y-1 ${className}`}
             >
                 <button
                     onClick={() => setIsCollapsed((prev) => !prev)}
@@ -52,7 +52,7 @@ const DataCard: React.FC<DataCardProps> = ({
                     )}
                 </button>
                 <span
-                    className={`text-md dark:font-semi-bold text-md text-center w-[80%]`}
+                    className={`text-md font-bold text-md text-center w-[80%]`}
                 >
                     {title}
                 </span>
@@ -83,31 +83,28 @@ const DataCard: React.FC<DataCardProps> = ({
         case DataCardType.SIMPLE_GRAPH:
             return (
                 <DataCardDiv title={content.title[lang]}>
+                    <GraphBox content={content.graphData[0]} year={year} />
                     <DescriptionComponent>
                         {content.description[lang]}
                     </DescriptionComponent>
-                    <GraphBox content={content.graphData[0]} year={year} />
                 </DataCardDiv>
             );
 
         case DataCardType.MULTIPLE_GRAPH:
             return (
                 <DataCardDiv title={content.title[lang]}>
-                    <DescriptionComponent>
-                        {content.description[lang]}
-                    </DescriptionComponent>
                     {content.graphData?.map((graph, index) => (
                         <GraphBox key={index} content={graph} year={year} />
                     ))}
+                    <DescriptionComponent>
+                        {content.description[lang]}
+                    </DescriptionComponent>
                 </DataCardDiv>
             );
 
         case DataCardType.SEARCH:
             return (
-                <DataCardDiv title={content.title[lang]}>
-                    <DescriptionComponent>
-                        {content.description[lang]}
-                    </DescriptionComponent>
+                <DataCardDiv title={''}>
                     <SearchBox />
                 </DataCardDiv>
             );

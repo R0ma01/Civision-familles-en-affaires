@@ -76,25 +76,21 @@ export const RepertoirePromptsTranslations: PromptsTranslations = {
         FR: 'Liste des entreprises familiales recensées au Québec',
         EN: 'List of all the family companies in Quebec',
     },
-    page_title: {
-        FR: 'Répertoire',
-        EN: 'Repertory',
+    div1_sentence: {
+        FR: 'NOMBRE ENTREPRISES FAMILIALES',
+        EN: 'NUMBER OF FAMILY COMPANIES',
     },
-    data_card1_title: {
-        FR: 'Entreprises Familiales',
-        EN: 'Family Companies',
+    div1_descriptive: {
+        FR: 'En 2023',
+        EN: 'In 2023',
     },
-    data_card1_description: {
-        FR: "représente le nombre d'entreprises familiales au Québec en 2023.",
-        EN: 'represents the number of family owned companies in Quebec in 2023.',
+    div2_sentence: {
+        FR: 'TAUX ENTREPRISES FAMILIALES',
+        EN: 'FAMILY BUSINESS RATES',
     },
-    data_card2_title: {
-        FR: 'Proportion Privé',
-        EN: 'Private Proportion',
-    },
-    data_card2_description: {
-        FR: 'des entreprises privées sont des entreprises familiales.',
-        EN: 'of the private companies are family owned.',
+    div2_descriptive: {
+        FR: 'Employant 6,9 millions de personnes en 2023',
+        EN: 'Employing 6.9 million people in 2023',
     },
     data_card3_title: {
         FR: 'Rechercher une Entreprise',
