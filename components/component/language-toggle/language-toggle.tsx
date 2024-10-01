@@ -40,8 +40,6 @@ export function LanguageToggle({ className }: LanguageToggleProps) {
                         </option>
                     );
                 })}
-                {/* <option value={Language.FR}>Français</option>
-                <option value={Language.EN}>English</option> */}
             </select>
         </div>
     );

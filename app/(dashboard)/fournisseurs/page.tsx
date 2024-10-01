@@ -104,7 +104,7 @@ function Fournisseurs() {
         <>
             <PageContentContainer
                 filterMenu={true}
-                className="overflow-auto pb-10 pl-[30px]"
+                className="overflow-auto pb-10 pl-[30px] pt-10"
             >
                 <ListeFournisseurs
                     admin={user === UserType.ADMIN}

@@ -167,11 +167,6 @@ export function AdminModal({
             <div
                 ref={dialogRef}
                 className="bg-white dark:bg-[#262626] p-2 rounded-lg shadow-2xl w-[95%] h-[95%] relative"
-                style={{
-                    backgroundImage: `url(${isDarkMode ? '/images/carte_admin.png' : '/images/carte_admin_light.png'})`,
-                    backgroundSize: 'cover',
-                    backgroundPosition: 'center',
-                }}
             >
                 <form className="w-full h-full flex flex-col overflow-auto">
                     <div className="flex flex-col w-full">

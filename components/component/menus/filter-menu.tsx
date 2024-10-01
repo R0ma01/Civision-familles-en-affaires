@@ -169,7 +169,7 @@ const FilterMenu: React.FC<FilterMenuProps> = ({
                     scaleOnHover={false}
                     className={`p-1 hover:scale-110 hover:bg-custom-grey group`}
                 >
-                    <FilterSVG className="group-hover:fill-black" />
+                    <FilterSVG className="group-hover:fill-black fill-logo-dark-blue" />
                 </Button>
                 <div className="h-[1px] w-7 bg-black"></div>
                 <LanguageToggle className=""></LanguageToggle>
