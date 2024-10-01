@@ -25,7 +25,7 @@ const PageContentContainer: React.FC<PageContentContainerProps> = ({
             {isContentVisible && (
                 <div
                     id="page-content-container"
-                    className={`scroll-hide overflow-auto ml-[40px] h-screen flex flex-col justify-start ${className}`}
+                    className={`scroll-hide overflow-auto ml-[40px] h-screen flex flex-col justify-start ${className} realtive`}
                 >
                     {children}
                 </div>
@@ -35,8 +35,9 @@ const PageContentContainer: React.FC<PageContentContainerProps> = ({
                 <>
                     <FilterMenu
                         toggleContentVisibility={toggleVisibility}
+                        className="fixed top-10 right-2"
                     ></FilterMenu>
-                    <MapMenu></MapMenu>
+                    <MapMenu className="fixed bottom-10 right-2"></MapMenu>
                 </>
             ) : (
                 ''

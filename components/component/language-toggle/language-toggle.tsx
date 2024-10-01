@@ -27,14 +27,14 @@ export function LanguageToggle({ className }: LanguageToggleProps) {
             <select
                 value={language}
                 onChange={handleLanguageChange}
-                className="bg-custom-grey bg-opacity-75 text-icon-gray px-1 py-1 rounded transition cursor-pointer text-xs border-none outline-none"
+                className="bg-white bg-opacity-75 text-black px-1 py-1 rounded transition cursor-pointer text-xs border-none outline-none"
             >
                 {Object.keys(Language).map((item, index) => {
                     return (
                         <option
                             key={index}
                             value={item}
-                            className="text-xs hover:bg-gray-800 text-icon-gray bg-custom-grey bg-opacity-75"
+                            className="text-xs hover:bg-gray-800 text-black bg-white bg-opacity-75"
                         >
                             {item}
                         </option>

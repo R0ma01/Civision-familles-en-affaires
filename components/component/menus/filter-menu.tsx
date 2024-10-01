@@ -4,9 +4,6 @@ import {
     FilterSVG,
     InvisibleSVG,
     VisibleSVG,
-    ZoomInSVG,
-    ZoomOutSVG,
-    LegendSVG,
 } from '@/components/component/svg-icons/svg-icons';
 import Dropdown from '@/components/component/drop-down-menu/drop-down-menu';
 
@@ -71,10 +68,11 @@ const filterConfigurations = {
 
 interface FilterMenuProps {
     toggleContentVisibility?: () => void;
-    fournisseurMenu?: boolean;
+    className?: string;
 }
 const FilterMenu: React.FC<FilterMenuProps> = ({
     toggleContentVisibility = () => {},
+    className = '',
 }) => {
     const lang: Language = useDataStore((state) => state.lang);
     const [isOpen, setIsOpen] = useState<boolean>(false);
@@ -88,22 +86,9 @@ const FilterMenu: React.FC<FilterMenuProps> = ({
         }),
     );
 
-    const { mapType, map } = useMapStore((state) => ({
+    const { mapType } = useMapStore((state) => ({
         mapType: state.mapType,
-        map: state.map,
     }));
-
-    const zoomIn = () => {
-        if (map) {
-            map.zoomIn();
-        }
-    };
-
-    const zoomOut = () => {
-        if (map) {
-            map.zoomOut();
-        }
-    };
 
     const {
         filterStudyData,
@@ -174,58 +159,55 @@ const FilterMenu: React.FC<FilterMenuProps> = ({
 
     return (
         <>
-            <div className="z-20 h-[300px] w-[200px] bg-white flex flex-col items-center gap-4">
+            <div
+                className={`z-20 w-fit h-fit pt-4 pb-4 pl-2 pr-2 bg-white flex flex-col items-center gap-4 rounded-full ${className} transition-transform duration-300 ease-in-out ${!isOpen ? 'translate-x-0' : '-translate-x-64'}`}
+            >
                 <Button
                     id={html_object_constants.toggle_filter_tab_id}
                     buttonType={ButtonType.ICON}
                     onClick={toggleTab}
                     scaleOnHover={false}
-                    className={`bg-[#f5ebe0] bg-opacity-75 right-0 p-2 rounded-l-md rounded-r-none ${
-                        isOpen ? '-translate-x-64' : 'block'
-                    } transition-transform duration-300 ease-in-out`}
+                    className={`p-1 hover:scale-110 hover:bg-custom-grey group`}
                 >
-                    <FilterSVG className="w-10 h-10" />
+                    <FilterSVG className="group-hover:fill-black" />
                 </Button>
+                <div className="h-[1px] w-7 bg-black"></div>
                 <LanguageToggle className=""></LanguageToggle>
+                <div className="h-[1px] w-7 bg-black"></div>
 
                 <Button
                     id={html_object_constants.hide_content_tab_id}
                     buttonType={ButtonType.ICON}
                     onClick={toggleVisibility}
                     scaleOnHover={false}
-                    className={`bg-[#f5ebe0] bg-opacity-75 right-0 p-2 rounded-l-md rounded-r-none ${
-                        isOpen ? '-translate-x-64' : 'block'
-                    } transition-transform duration-300 ease-in-out`}
+                    className={`p-1 hover:scale-110 hover:bg-custom-grey group`}
                 >
-                    {visible && <VisibleSVG className="fill-gray-500" />}
-                    {!visible && <InvisibleSVG className="fill-gray-500" />}
+                    {visible && (
+                        <VisibleSVG className="group-hover:fill-black fill-gray-500" />
+                    )}
+                    {!visible && (
+                        <InvisibleSVG className="group-hover:fill-black fill-gray-500" />
+                    )}
                 </Button>
-
-                <div
-                    className={`fixed top-10 right-0 h-[350px] w-64 bg-[#f5ebe0] bg-opacity-75 p-4 transform ${isOpen ? 'translate-x-0' : 'translate-x-full'} transition-transform duration-300 ease-in-out`}
-                >
-                    <h2 className="text-2xl font-bold">
-                        {SharedPromptsTranslations.filters[lang]}
-                    </h2>
-                    <div className="mt-2 flex border-b dark:border-white border-black">
-                        {Object.keys(filterConfigurations[mapType]).map(
-                            (tab) => (
-                                <button
-                                    key={tab}
-                                    className={`flex-1 text-center py-2 ${selectedTab === tab ? 'border-b-2 dark:border-white border-black dark:text-white text-black' : 'text-gray-500'}`}
-                                    onClick={() => setSelectedTab(tab)}
-                                >
-                                    {
-                                        SharedPromptsTranslations[
-                                            `${tab}_filters`
-                                        ][lang]
-                                    }
-                                </button>
-                            ),
-                        )}
-                    </div>
-                    {renderFilters()}
+            </div>
+            <div
+                className={`fixed top-10 right-0 h-[350px] w-64 bg-[#f5ebe0] bg-opacity-75 p-4 transform ${isOpen ? 'translate-x-0' : 'translate-x-64'} transition-transform duration-300 ease-in-out`}
+            >
+                <h2 className="text-2xl font-bold">
+                    {SharedPromptsTranslations.filters[lang]}
+                </h2>
+                <div className="mt-2 flex border-b dark:border-white border-black">
+                    {Object.keys(filterConfigurations[mapType]).map((tab) => (
+                        <button
+                            key={tab}
+                            className={`flex-1 text-center py-2 ${selectedTab === tab ? 'border-b-2 dark:border-white border-black dark:text-white text-black' : 'text-gray-500'}`}
+                            onClick={() => setSelectedTab(tab)}
+                        >
+                            {SharedPromptsTranslations[`${tab}_filters`][lang]}
+                        </button>
+                    ))}
                 </div>
+                {renderFilters()}
             </div>
         </>
     );

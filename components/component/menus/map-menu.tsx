@@ -12,13 +12,14 @@ import { MapType } from '@/components/enums/map-type-enum';
 import { Language } from '@/components/enums/language';
 import useDataStore from '@/reducer/dataStore';
 
-const MapMenu: React.FC = () => {
-    const lang: Language = useDataStore((state) => state.lang);
-
-    const { map, legend, toggleLegend } = useMapStore((state) => ({
+interface MapManuProps {
+    className?: string;
+}
+const MapMenu: React.FC<MapManuProps> = ({ className }) => {
+    const { map, toggleLegend, legend } = useMapStore((state) => ({
         map: state.map,
-        toggleLegend: state.toggleLegend,
         legend: state.legend,
+        toggleLegend: state.toggleLegend,
     }));
 
     const zoomIn = () => {
@@ -35,7 +36,9 @@ const MapMenu: React.FC = () => {
 
     return (
         <>
-            <div className="z-20 h-[300px] w-[200px] bg-white flex flex-col items-center gap-4">
+            <div
+                className={`z-20 w-fit h-fit pt-4 pb-4 pl-2 pr-2 bg-white flex flex-col items-center gap-4 rounded-full ${className}`}
+            >
                 <Button
                     id={html_object_constants.zoom_in_tab_id}
                     buttonType={ButtonType.ICON}
@@ -44,10 +47,11 @@ const MapMenu: React.FC = () => {
                         zoomIn();
                     }}
                     scaleOnHover={false}
-                    className={`bg-[#f5ebe0] bg-opacity-75 right-0 p-2 rounded-md`}
+                    className={`p-1 hover:scale-110 hover:bg-custom-grey group`}
                 >
-                    <ZoomInSVG />
+                    <ZoomInSVG className="group-hover:fill-black" />
                 </Button>
+                <div className="h-[1px] w-7 bg-black"></div>
                 <Button
                     id={html_object_constants.zoom_out_tab_id}
                     buttonType={ButtonType.ICON}
@@ -56,10 +60,11 @@ const MapMenu: React.FC = () => {
                         zoomOut();
                     }}
                     scaleOnHover={false}
-                    className={`bg-[#f5ebe0] bg-opacity-75 right-0 p-2 rounded-md`}
+                    className={`p-1 hover:scale-110 group hover:bg-custom-grey`}
                 >
-                    <ZoomOutSVG />
+                    <ZoomOutSVG className="group-hover:fill-black" />
                 </Button>
+                <div className="h-[1px] w-7 bg-black"></div>
                 <Button
                     id={html_object_constants.zoom_out_tab_id}
                     buttonType={ButtonType.ICON}
@@ -68,9 +73,9 @@ const MapMenu: React.FC = () => {
                         toggleLegend();
                     }}
                     scaleOnHover={false}
-                    className={`bg-[#f5ebe0] bg-opacity-75 right-0 p-2 rounded-md`}
+                    className={`p-1 hover:scale-110 hover:bg-custom-grey group ${legend ? 'bg-logo-dark-blue' : ''}`}
                 >
-                    <LegendSVG />
+                    <LegendSVG className="group-hover:fill-black" />
                 </Button>
             </div>
         </>
