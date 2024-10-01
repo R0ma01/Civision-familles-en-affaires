@@ -18,6 +18,7 @@ import {
     AlbumDataFields,
     FournisseurDataFields,
     IndexeDataFieldsB,
+    RepertoireDataFields,
 } from '@/components/enums/data-types-enum';
 
 import { MapRegions } from '@/components/enums/map-regions';
@@ -250,7 +251,16 @@ export default function Carte() {
                         className="absolute bottom-0 right-1 z-50"
                         mapType={mapType}
                     ></ColorLegend>
-                    <MrcGrid map={map}></MrcGrid>
+                    <MrcGrid
+                        map={map}
+                        filterFunction={(mrc_id: number) => {
+                            if (mrc_id !== 0) {
+                                setFilter(RepertoireDataFields.MRC_IDU, mrc_id);
+                            }
+
+                            filterRepertoireData();
+                        }}
+                    ></MrcGrid>
                 </>
             )}
             {mapType == MapType.FOURNISSEURS && (

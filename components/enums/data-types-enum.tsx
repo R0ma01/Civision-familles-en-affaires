@@ -169,7 +169,7 @@ export enum FournisseurDataFields {
 
 export enum RepertoireDataFields {
     NB_EMPLO = 'NB_EMPLO',
-    REGION = 'REGIO',
+    MRC_IDU = 'MRC_IDU',
 }
 
 export enum StudyOrigin {
