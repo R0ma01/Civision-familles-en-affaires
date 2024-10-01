@@ -39,7 +39,10 @@ const MapMenu: React.FC = () => {
                 <Button
                     id={html_object_constants.zoom_in_tab_id}
                     buttonType={ButtonType.ICON}
-                    onClick={zoomIn}
+                    onClick={(e) => {
+                        e.stopPropagation();
+                        zoomIn();
+                    }}
                     scaleOnHover={false}
                     className={`bg-[#f5ebe0] bg-opacity-75 right-0 p-2 rounded-md`}
                 >
@@ -48,7 +51,10 @@ const MapMenu: React.FC = () => {
                 <Button
                     id={html_object_constants.zoom_out_tab_id}
                     buttonType={ButtonType.ICON}
-                    onClick={zoomOut}
+                    onClick={(e) => {
+                        e.stopPropagation();
+                        zoomOut();
+                    }}
                     scaleOnHover={false}
                     className={`bg-[#f5ebe0] bg-opacity-75 right-0 p-2 rounded-md`}
                 >
@@ -57,7 +63,10 @@ const MapMenu: React.FC = () => {
                 <Button
                     id={html_object_constants.zoom_out_tab_id}
                     buttonType={ButtonType.ICON}
-                    onClick={toggleLegend}
+                    onClick={(e) => {
+                        e.stopPropagation();
+                        toggleLegend();
+                    }}
                     scaleOnHover={false}
                     className={`bg-[#f5ebe0] bg-opacity-75 right-0 p-2 rounded-md`}
                 >
