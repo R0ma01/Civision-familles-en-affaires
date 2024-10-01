@@ -13,7 +13,6 @@ async function getAllData(
     filters: Record<string, any>,
 ): Promise<Fournisseur[]> {
     try {
-        console.log(filters);
         const response = await axios.get(APIPaths.FOURNISSEURS_GET_ALL, {
             params: {
                 filters: JSON.stringify(filters),
