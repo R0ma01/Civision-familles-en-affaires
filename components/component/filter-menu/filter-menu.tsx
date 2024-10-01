@@ -29,7 +29,7 @@ import { GraphTextService } from '@/services/translations';
 
 const filterConfigurations = {
     [MapType.REPERTOIRE]: {
-        general: [RepertoireDataFields.NB_EMPLO, RepertoireDataFields.REGION],
+        general: [RepertoireDataFields.NB_EMPLO],
     },
     [MapType.PAGE_INFORMATION_ALBUM]: {
         general: [
