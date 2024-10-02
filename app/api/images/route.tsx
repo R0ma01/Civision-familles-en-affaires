@@ -1,9 +1,8 @@
-import { NextApiRequest } from 'next';
 import { NextResponse } from 'next/server';
 import fs from 'fs';
 import path from 'path';
 
-export async function GET(req: NextApiRequest) {
+export async function GET() {
     const directoryPath = path.join(
         process.cwd(),
         'public',
