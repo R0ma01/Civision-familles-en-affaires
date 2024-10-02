@@ -6,6 +6,7 @@ import {
 } from '@/components/interface/chercheur-drop-down-content';
 import { AlbumDataFields } from '@/components/enums/data-types-enum';
 import { GraphBoxType } from '@/components/enums/graph-box-enum';
+import { CloseArrowSVG, OpenArrowSVG } from '../svg-icons/svg-icons';
 
 // Static dropdown structure
 const dropdownStructure: ChercheurDropdownSection[] = [
@@ -248,9 +249,15 @@ const StaticDropdown: React.FC<StaticDropdownProps> = ({
                         >
                             {item.label}
                             <span className="text-gray-500">
-                                {expandedSections.includes(item.label)
-                                    ? '▼'
-                                    : '▲'}
+                                {expandedSections.includes(item.label) ? (
+                                    <div className="w-fit h-fit p-1">
+                                        <OpenArrowSVG></OpenArrowSVG>
+                                    </div>
+                                ) : (
+                                    <div className="w-fit h-fit p-1 ">
+                                        <CloseArrowSVG></CloseArrowSVG>
+                                    </div>
+                                )}
                             </span>
                         </button>
                         {expandedSections.includes(item.label) && (
@@ -278,7 +285,7 @@ const StaticDropdown: React.FC<StaticDropdownProps> = ({
     };
 
     return (
-        <div className="w-[500px] h-[340px] flex items-center justify-center px-4">
+        <div className="w-[500px] h-[405px] flex items-center justify-center px-4">
             <div className="w-[480px] h-80 overflow-y-auto px-4">
                 {renderItems(dropdownStructure)}
             </div>

@@ -211,7 +211,7 @@ export const FilterSVG = ({ className }: { className?: string }) => {
             width="24px"
             fill="#5f6368"
         >
-            <path d="M440-120v-240h80v80h320v80H520v80h-80Zm-320-80v-80h240v80H120Zm160-160v-80H120v-80h160v-80h80v240h-80Zm160-80v-80h400v80H440Zm160-160v-240h80v80h160v80H680v80h-80Zm-480-80v-80h400v80H120Z" />
+            <path d="M440-160q-17 0-28.5-11.5T400-200v-240L168-736q-15-20-4.5-42t36.5-22h560q26 0 36.5 22t-4.5 42L560-440v240q0 17-11.5 28.5T520-160h-80Zm40-308 198-252H282l198 252Zm0 0Z" />
         </svg>
     );
 };
@@ -227,9 +227,9 @@ export const ZoomInSVG = ({ className }: { className?: string }) => {
             fill="#5f6368"
         >
             <path
-                d="M784-120 532-372q-30 24-69 38t-83 14q-109 0-184.5-75.5T120-580q0-109 75.5-184.5T380-840q109 0 184.5 75.5T640-580q0 44-14 83t-38 69l252 252-56
-             56ZM380-400q75 0 127.5-52.5T560-580q0-75-52.5-127.5T380-760q-75 0-127.5 52.5T200-580q0 75 52.5 
-             127.5T380-400Zm-40-60v-80h-80v-80h80v-80h80v80h80v80h-80v80h-80Z"
+                d="M440-280h80v-160h160v-80H520v-160h-80v160H280v80h160v160Zm40 200q-83 0-156-31.5T197-197q-54-54-85.5-127T80-480q0-83
+                  31.5-156T197-763q54-54 127-85.5T480-880q83 0 156 31.5T763-763q54 54 85.5 127T880-480q0 83-31.5 156T763-197q-54 54-127 
+                  85.5T480-80Zm0-80q134 0 227-93t93-227q0-134-93-227t-227-93q-134 0-227 93t-93 227q0 134 93 227t227 93Zm0-320Z"
             />
         </svg>
     );
@@ -246,8 +246,10 @@ export const ZoomOutSVG = ({ className }: { className?: string }) => {
             fill="#5f6368"
         >
             <path
-                d="M784-120 532-372q-30 24-69 38t-83 14q-109 0-184.5-75.5T120-580q0-109 75.5-184.5T380-840q109 0 184.5 75.5T640-580q0
-             44-14 83t-38 69l252 252-56 56ZM380-400q75 0 127.5-52.5T560-580q0-75-52.5-127.5T380-760q-75 0-127.5 52.5T200-580q0 75 52.5 127.5T380-400ZM280-540v-80h200v80H280Z"
+                d="M280-520v80h400v-80H280Zm200 440q-83 0-156-31.5T197-197q-54-54-85.5-127T80-480q0-83 
+               31.5-156T197-763q54-54 127-85.5T480-880q83 0 156 31.5T763-763q54 54 85.5 127T880-480q0 83-31.5 
+               156T763-197q-54 54-127 85.5T480-80Zm0-80q134 0 227-93t93-227q0-134-93-227t-227-93q-134 0-227 93t-93 
+               227q0 134 93 227t227 93Zm0-320Z"
             />
         </svg>
     );
@@ -441,7 +443,52 @@ export const LegendSVG = ({ className }: { className?: string }) => {
             width="24px"
             fill="#5f6368"
         >
-            <path d="M120-120v-80h120v80H120Zm0-160v-80h320v80H120Zm0-160v-80h720v80H120Zm0-160v-80h320v80H120Zm0-160v-80h120v80H120Zm200 640v-80h120v80H320Zm0-640v-80h120v80H320Zm200 640v-80h120v80H520Zm0-160v-80h320v80H520Zm0-320v-80h320v80H520Zm0-160v-80h120v80H520Zm200 640v-80h120v80H720Zm0-640v-80h120v80H720Z" />
+            {/* Circle with line */}
+            <circle cx="160" cy="-780" r="80" fill="#5f6368" />
+            <path d="M255 -760 h460 v-40 H300 v40 Z" />{' '}
+            {/* Line shortened by 5px on both ends */}
+            {/* Larger Triangle with line */}
+            <path d="M100 -520 L160 -620 L220 -520 Z" fill="#5f6368" />{' '}
+            {/* Larger triangle */}
+            <path d="M255 -560 h460 v-40 H300 v40 Z" />{' '}
+            {/* Line shortened by 5px on both ends */}
+            {/* Square with dashed line (moved down by 5px) */}
+            <rect x="120" y="-420" width="130" height="130" fill="#5f6368" />
+            <path
+                d="M255 -340 h460 v-40 H300 v40 Z"
+                strokeDasharray="10,10"
+            />{' '}
+            {/* Line moved down 5px, shortened by 5px on both ends */}
+        </svg>
+    );
+};
+
+export const OpenArrowSVG = ({ className }: { className?: string }) => {
+    return (
+        <svg
+            xmlns="http://www.w3.org/2000/svg"
+            className={className}
+            height="24px"
+            viewBox="0 -960 960 960"
+            width="24px"
+            fill="#e8eaed"
+        >
+            <path d="M480-344 240-584l56-56 184 184 184-184 56 56-240 240Z" />
+        </svg>
+    );
+};
+
+export const CloseArrowSVG = ({ className }: { className?: string }) => {
+    return (
+        <svg
+            className={className}
+            xmlns="http://www.w3.org/2000/svg"
+            height="24px"
+            viewBox="0 -960 960 960"
+            width="24px"
+            fill="#e8eaed"
+        >
+            <path d="M480-528 296-344l-56-56 240-240 240 240-56 56-184-184Z" />
         </svg>
     );
 };

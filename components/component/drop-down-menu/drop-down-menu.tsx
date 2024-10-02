@@ -104,7 +104,7 @@ const Dropdown = ({
                 onClick={toggleDropdown}
                 className={`flex items-center justify-between ${color ? 'w-10' : 'w-48'} px-2 py-1 bg-gray-100 border max-h-8 h-8 
                 border-gray-300 rounded-lg hover:bg-gray-200 focus:outline-none focus:ring-2
-                 focus:ring-blue-500 focus:ring-opacity-50 text-xs dark:bg-gray-700 dark:text-white dark:hover:bg-black ${className} shadow-sm`}
+                 focus:ring-blue-500 focus:ring-opacity-50 text-xs ${className} shadow-sm`}
                 style={style}
             >
                 {!color && (

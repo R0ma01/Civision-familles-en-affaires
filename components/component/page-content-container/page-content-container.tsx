@@ -35,7 +35,7 @@ const PageContentContainer: React.FC<PageContentContainerProps> = ({
                 <>
                     <FilterMenu
                         toggleContentVisibility={toggleVisibility}
-                        className="fixed top-10 right-2"
+                        className="fixed top-5 right-2"
                     ></FilterMenu>
                     <MapMenu className="fixed bottom-10 right-2"></MapMenu>
                 </>

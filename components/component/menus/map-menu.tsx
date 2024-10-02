@@ -37,7 +37,7 @@ const MapMenu: React.FC<MapManuProps> = ({ className }) => {
     return (
         <>
             <div
-                className={`z-20 w-fit h-fit pt-4 pb-4 pl-2 pr-2 bg-white flex flex-col items-center gap-4 rounded-full ${className}`}
+                className={`z-20 w-fit h-fit pt-1 pb-1 pl-!/2 pr-1/2 bg-white flex flex-col items-center rounded-lg ${className}`}
             >
                 <Button
                     id={html_object_constants.zoom_in_tab_id}
@@ -47,11 +47,11 @@ const MapMenu: React.FC<MapManuProps> = ({ className }) => {
                         zoomIn();
                     }}
                     scaleOnHover={false}
-                    className={`p-1 hover:scale-110 hover:bg-custom-grey group`}
+                    className={`p-1 hover:scale-110 group`}
                 >
                     <ZoomInSVG className="group-hover:fill-black" />
                 </Button>
-                <div className="h-[1px] w-7 bg-black"></div>
+
                 <Button
                     id={html_object_constants.zoom_out_tab_id}
                     buttonType={ButtonType.ICON}
@@ -60,11 +60,10 @@ const MapMenu: React.FC<MapManuProps> = ({ className }) => {
                         zoomOut();
                     }}
                     scaleOnHover={false}
-                    className={`p-1 hover:scale-110 group hover:bg-custom-grey`}
+                    className={`p-1 hover:scale-110 group`}
                 >
                     <ZoomOutSVG className="group-hover:fill-black" />
                 </Button>
-                <div className="h-[1px] w-7 bg-black"></div>
                 <Button
                     id={html_object_constants.zoom_out_tab_id}
                     buttonType={ButtonType.ICON}
@@ -73,7 +72,7 @@ const MapMenu: React.FC<MapManuProps> = ({ className }) => {
                         toggleLegend();
                     }}
                     scaleOnHover={false}
-                    className={`p-1 hover:scale-110 hover:bg-custom-grey group ${legend ? 'bg-logo-dark-blue' : ''}`}
+                    className={`p-1 pl-2 hover:scale-110 group ${legend ? 'bg-logo-dark-blue' : ''}`}
                 >
                     <LegendSVG className="group-hover:fill-black" />
                 </Button>

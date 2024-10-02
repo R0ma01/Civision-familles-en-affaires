@@ -74,7 +74,7 @@ export function TabContainer({
                                     id={`${html_object_constants.tab_notch_id}-${index}`}
                                     key={`${tab.tabType}-${index}`} // Unique key
                                     onClick={() => setSelectedTab(index)} // Set the active tab
-                                    className={`hover:bg-gray-700 dark:hover:bg-gray-300 text-black cursor-pointer md:text-xs lg:tx-sm px-4 py-2 transition-all duration-200 rounded-lg ${isActive ? 'bg-logo-dark-blue text-white' : 'bg-white text-logo-dark-blue bg-opacity-65'} ${className}`}
+                                    className={`text-black cursor-pointer hover:bg-logo-dark-blue hover:text-white md:text-xs lg:tx-sm px-4 py-2 transition-all duration-200 rounded-lg ${isActive ? 'bg-logo-dark-blue text-white ' : 'bg-white text-logo-dark-blue bg-opacity-65'} ${className}`}
                                 >
                                     <p>{title.toUpperCase()}</p>
                                 </div>

@@ -68,10 +68,9 @@ export default function RechercheAcademique() {
             className="overflow-y-auto pb-10 pl-[30px] w-full"
             filterMenu={true}
         >
-            <div className="flex flex-col space-y-4 w-full">
-                <DataCard content={firstItem} className="z-10" year={2022} />
+            <div className="flex flex-col gap-4 w-full mt-12">
                 <DataCardContainer
-                    cards={Array.from(cards.values())}
+                    cards={[firstItem, ...Array.from(cards.values())]}
                     className="flex-wrap w-full z-10"
                     year={2022}
                 />

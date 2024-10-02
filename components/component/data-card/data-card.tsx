@@ -10,6 +10,7 @@ import { UserType } from '@/components/enums/user-type-enum';
 import useDataStore from '@/reducer/dataStore';
 import { Language } from '@/components/enums/language';
 import { StudyYears } from '@/components/enums/data-types-enum';
+import { CloseArrowSVG, OpenArrowSVG } from '../svg-icons/svg-icons';
 
 interface DataCardProps {
     className?: string;
@@ -35,20 +36,20 @@ const DataCard: React.FC<DataCardProps> = ({
             <div
                 className={`w-[550px] bg-[#f5ebe0] dark:bg-[#363636] dark:bg-opacity-50 dark:text-white backdrop-filter
                      backdrop-blur bg-opacity-50 saturate-100 backdrop-contrast-100 rounded-xl shadow-3xl py-2 pointer-events-auto
-                     flex flex-col items-center h-auto space-y-1 ${className}`}
+                     flex flex-col items-center h-auto space-y-1 ${className} min-h-12`}
             >
                 <button
                     onClick={() => setIsCollapsed((prev) => !prev)}
                     className="absolute top-2 right-2 z-20"
                 >
                     {isCollapsed ? (
-                        <span className="text-lg text-black dark:text-white">
-                            &#9650;
-                        </span>
+                        <div className="w-fit h-fit p-1 bg-logo-dark-blue rounded-lg">
+                            <CloseArrowSVG></CloseArrowSVG>
+                        </div>
                     ) : (
-                        <span className="text-lg text-black dark:text-white">
-                            &#9660;
-                        </span>
+                        <div className="w-fit h-fit p-1 bg-logo-dark-blue rounded-lg">
+                            <OpenArrowSVG></OpenArrowSVG>
+                        </div>
                     )}
                 </button>
                 <span

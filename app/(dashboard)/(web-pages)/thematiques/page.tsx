@@ -100,7 +100,7 @@ export default function Thematiques() {
     return (
         <PageContentContainer className="h-screen overflow-y-auto relative flex items-center w-screen">
             {!pageLoading ? (
-                <div className="justify-center flex flex-wrap w-[80%]">
+                <div className="justify-center flex flex-wrap w-[80%] mt-8">
                     {pages.length > 0 ? (
                         pages.map(
                             (card, index) =>

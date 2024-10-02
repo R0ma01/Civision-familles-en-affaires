@@ -13,6 +13,7 @@ import ColorLegend from './Color-Legend';
 import { choroplethColors, clusterColors } from '@/constants/color-palet';
 import useGlobalUserStore from '@/stores/global-user-store';
 import { UserType } from '@/components/enums/user-type-enum';
+import RegionGrid from '@/components/component/carte/GridRegions';
 
 import {
     AlbumDataFields,
@@ -254,6 +255,19 @@ export default function Carte() {
                         className="absolute bottom-0 right-1 z-50"
                         mapType={mapType}
                     ></ColorLegend>
+                    <RegionGrid
+                        map={map}
+                        filterFunction={(mrc_id: number) => {
+                            if (mrc_id !== 0) {
+                                setFilter(
+                                    RepertoireDataFields.REG_IDU,
+                                    mrc_id.toString(),
+                                );
+                            }
+
+                            filterRepertoireData();
+                        }}
+                    ></RegionGrid>
 
                     <MrcGrid
                         map={map}

@@ -144,9 +144,9 @@ export default function Admin() {
         <PageContentContainer className="h-screen overflow-y-auto relative flex items-center w-[100%]">
             <div className="justify-center flex flex-col w-[80%] items-center relative">
                 {loading ? (
-                    <div className="loader-circle absolute top-[35vh] w-fit"></div>
+                    <div className="loader-circle absolute top-[35vh] left-[45vw] w-fit"></div>
                 ) : (
-                    <div className="justify-center flex flex-wrap">
+                    <div className="justify-center flex flex-wrap mt-8">
                         {pages
                             ? pages.map(
                                   (page: PageTabContent, index: number) => (

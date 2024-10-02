@@ -160,16 +160,16 @@ const FilterMenu: React.FC<FilterMenuProps> = ({
     return (
         <>
             <div
-                className={`z-20 w-fit h-fit pt-4 pb-4 pl-2 pr-2 bg-white flex flex-col items-center gap-4 rounded-full ${className} transition-transform duration-300 ease-in-out ${!isOpen ? 'translate-x-0' : '-translate-x-64'}`}
+                className={`z-20 w-fit h-fit pt-4 pb-4 pl-2 pr-2 bg-white flex flex-col items-center gap-4 rounded-lg ${className} transition-transform duration-300 ease-in-out ${!isOpen ? 'translate-x-0' : '-translate-x-64'}`}
             >
                 <Button
                     id={html_object_constants.toggle_filter_tab_id}
                     buttonType={ButtonType.ICON}
                     onClick={toggleTab}
                     scaleOnHover={false}
-                    className={`p-1 hover:scale-110 hover:bg-custom-grey group`}
+                    className={`p-1 hover:scale-110 group`}
                 >
-                    <FilterSVG className="group-hover:fill-black fill-logo-dark-blue" />
+                    <FilterSVG className="group-hover:fill-black" />
                 </Button>
                 <div className="h-[1px] w-7 bg-black"></div>
                 <LanguageToggle className=""></LanguageToggle>
@@ -180,7 +180,7 @@ const FilterMenu: React.FC<FilterMenuProps> = ({
                     buttonType={ButtonType.ICON}
                     onClick={toggleVisibility}
                     scaleOnHover={false}
-                    className={`p-1 hover:scale-110 hover:bg-custom-grey group`}
+                    className={`p-1 hover:scale-110 group`}
                 >
                     {visible && (
                         <VisibleSVG className="group-hover:fill-black fill-gray-500" />
@@ -191,7 +191,7 @@ const FilterMenu: React.FC<FilterMenuProps> = ({
                 </Button>
             </div>
             <div
-                className={`fixed top-10 right-0 h-[350px] w-64 bg-[#f5ebe0] bg-opacity-75 p-4 transform ${isOpen ? 'translate-x-0' : 'translate-x-64'} transition-transform duration-300 ease-in-out`}
+                className={`fixed top-5  right-0 h-[350px] w-64 bg-white p-4 transform ${isOpen ? 'translate-x-0' : 'translate-x-64'} transition-transform duration-300 ease-in-out`}
             >
                 <h2 className="text-2xl font-bold">
                     {SharedPromptsTranslations.filters[lang]}
@@ -200,7 +200,7 @@ const FilterMenu: React.FC<FilterMenuProps> = ({
                     {Object.keys(filterConfigurations[mapType]).map((tab) => (
                         <button
                             key={tab}
-                            className={`flex-1 text-center py-2 ${selectedTab === tab ? 'border-b-2 dark:border-white border-black dark:text-white text-black' : 'text-gray-500'}`}
+                            className={`flex-1 text-center py-2 ${selectedTab === tab ? 'border-b-2 border-black text-black' : 'text-gray-500'}`}
                             onClick={() => setSelectedTab(tab)}
                         >
                             {SharedPromptsTranslations[`${tab}_filters`][lang]}

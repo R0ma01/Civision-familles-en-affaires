@@ -85,16 +85,16 @@ export const RepertoirePromptsTranslations: PromptsTranslations = {
         EN: 'NUMBER OF FAMILY COMPANIES',
     },
     div1_descriptive: {
-        FR: 'En 2023',
-        EN: 'In 2023',
+        FR: 'en 2023 au Québec',
+        EN: 'in 2023 in Quebec',
     },
     div2_sentence: {
         FR: 'TAUX ENTREPRISES FAMILIALES',
         EN: 'FAMILY BUSINESS RATES',
     },
     div2_descriptive: {
-        FR: 'Employant 6,9 millions de personnes en 2023',
-        EN: 'Employing 6.9 million people in 2023',
+        FR: 'en 2023 au Canada',
+        EN: 'in 2023 in Canada',
     },
     data_card3_title: {
         FR: 'Rechercher une Entreprise',
