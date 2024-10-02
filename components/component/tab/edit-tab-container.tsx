@@ -134,7 +134,7 @@ export function EditTabContainer({
                     onClick={handleTabAdd}
                     className={`bg-opacity-75 cursor-pointer transition-all duration-200 rounded-t-xl ${className} ml-2`}
                 >
-                    <AddCircleSVG className="h-6 dark:fill-custom-grey fill-white" />
+                    <AddCircleSVG className="h-6 dark:fill-custom-grey fill-black" />
                 </Button>{' '}
             </div>
 
