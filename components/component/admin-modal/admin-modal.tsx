@@ -9,6 +9,7 @@ import Image from 'next/image';
 import { SharedPromptsTranslations } from '@/constants/translations/page-prompts';
 import { Language } from '@/components/enums/language';
 import useDataStore from '@/reducer/dataStore';
+import ImageDropdown from '../drop-down-menu/image-drop-down';
 
 interface AdminModalProps {
     page: PageTabContent;
@@ -28,34 +29,6 @@ export function AdminModal({
     const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const { name, value } = e.target;
         setEditPage((prev) => (prev ? { ...prev, [name]: value } : prev));
-    };
-
-    // useEffect(() => {
-    //     if (binaryString) {
-    //         setEditPage((prev) =>
-    //             prev ? { ...prev, ['backgroundImage']: binaryString } : prev,
-    //         );
-    //     }
-    // }, [binaryString]);
-
-    const handleImageUpload = (file: File | null) => {
-        if (!file) {
-            setBinaryString(null);
-            return;
-        }
-        const reader = new FileReader();
-        reader.onloadend = () => {
-            // Get binary string (Base64 encoded)
-            const base64Data = reader.result as string;
-            const binaryData = base64Data.split(',')[1]; // Get the binary part from data URL
-            setBinaryString(binaryData);
-        };
-        reader.readAsDataURL(file);
-    };
-
-    const getImageSRC = () => {
-        if (!binaryString) return '';
-        return `data:image/jpeg;base64,${binaryString}`; // Replace "jpeg" with the correct image format if necessary
     };
 
     useEffect(() => {
@@ -99,6 +72,17 @@ export function AdminModal({
 
         setEditPage(updatedPage);
     };
+
+    const handleImageInputChange = (image: string) => {
+        const updatedPage = { ...editPage };
+
+        if (image) {
+            updatedPage.backgroundImage = image;
+        }
+
+        setEditPage(updatedPage);
+    };
+
     function handleTabChange(index: number, tab: TabContent | undefined) {
         const updatedPage = { ...editPage };
         let updatedTabs = [...updatedPage.tabs];
@@ -234,15 +218,9 @@ export function AdminModal({
                         </div>
                     </div>
                     <div className="flex flex-col items-baseline">
-                        {binaryString !== '' && (
-                            <Image
-                                src={getImageSRC()}
-                                alt="Uploaded Image"
-                                width={200}
-                                height={200}
-                            />
-                        )}
-                        <ImageUpload onImageUpload={handleImageUpload} />
+                        <ImageDropdown
+                            handleImageChange={handleImageInputChange}
+                        />
                     </div>
                     <EditTabContainer
                         tabs={editPage.tabs}
@@ -269,34 +247,3 @@ export function AdminModal({
         </div>
     );
 }
-
-interface ImageUploadProps {
-    onImageUpload: (file: File | null) => void;
-    className?: string;
-}
-
-export const ImageUpload: React.FC<ImageUploadProps> = ({
-    onImageUpload,
-    className,
-}) => {
-    const [selectedImage, setSelectedImage] = useState<File | null>(null);
-
-    const handleImageChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-        const file = event.target.files?.[0] || null;
-        setSelectedImage(file);
-        onImageUpload(file); // Pass the file back to parent component
-    };
-
-    return (
-        <div
-            className={`image-upload-container ${className} flex flex-col items-center`}
-        >
-            <input
-                type="file"
-                accept="image/*"
-                onChange={handleImageChange}
-                className="mb-4 mt-2"
-            />
-        </div>
-    );
-};

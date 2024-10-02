@@ -2,8 +2,6 @@
 import DataCard from '@/components/component/data-card/data-card';
 import PageContentContainer from '@/components/component/page-content-container/page-content-container';
 import { DataCardType } from '@/components/enums/data-card-type-enum';
-import { GraphBoxType } from '@/components/enums/graph-box-enum';
-import { AlbumDataFields } from '@/components/enums/data-types-enum';
 import RepertoirePageTutorial from '@/components/component/tutorials/repertoire-page-tutorial';
 import useMapStore from '@/stores/global-map-store';
 import { MapType } from '@/components/enums/map-type-enum';
@@ -11,7 +9,6 @@ import { useEffect, useState } from 'react';
 import { Language } from '@/components/enums/language';
 import { RepertoirePromptsTranslations } from '@/constants/translations/page-prompts';
 import useDataStore from '@/reducer/dataStore';
-import useGlobalDataStore from '@/stores/global-data-store';
 import useGlobalUserStore from '@/stores/global-user-store';
 import { TutorialPages, UserType } from '@/components/enums/user-type-enum';
 import {
@@ -87,7 +84,6 @@ function Repertoire() {
         }
 
         if (!loading && !nombreEntreprises) {
-            console.log('hi');
             setLoading(true);
             fetchNombreEntreprises();
         }

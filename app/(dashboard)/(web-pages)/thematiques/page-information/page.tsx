@@ -129,7 +129,7 @@ function PageContentComponent() {
                         }}
                     >
                         <Link href={PagePaths.THEMATIQUES}>
-                            <BackArrowSVG></BackArrowSVG>
+                            <BackArrowSVG className="fill-white"></BackArrowSVG>
                         </Link>
                     </Button>
                     <h1 className="text-2xl tracking-wide text-logo-dark-blue dark:text-white z-10 cursor-default">
