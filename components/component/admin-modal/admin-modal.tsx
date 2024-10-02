@@ -22,7 +22,7 @@ export function AdminModal({
 }: AdminModalProps) {
     const dialogRef = useRef<HTMLDivElement>(null);
     const [editPage, setEditPage] = useState<PageTabContent>(page);
-    const lang = useDataStore((state) => state.lang);
+    const lang: Language = useDataStore((state) => state.lang);
     const [langEdit, setLang] = useState<Language>(Language.FR);
 
     useEffect(() => {
@@ -208,8 +208,8 @@ export function AdminModal({
 }
 
 interface LanguageEditToggleProps {
-    handleLanguageChange: (language: string) => void;
-    language: string;
+    handleLanguageChange: (language: Language) => void;
+    language: Language;
     className?: string;
 }
 
@@ -245,7 +245,7 @@ function LanguageEditToggle({
                         } transition-colors duration-300`}
                         onClick={() => {
                             setActiveIndex(index); // Update the active index
-                            handleLanguageChange(lang as Language); // Trigger language change on click
+                            handleLanguageChange(lang); // Trigger language change on click
                         }}
                     >
                         <p>{lang}</p>
