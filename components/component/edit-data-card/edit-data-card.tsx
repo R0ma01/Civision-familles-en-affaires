@@ -32,6 +32,7 @@ interface EditDataCardProps {
     handleSectionDelete: (e: any, cardIndex: number) => void;
     handleGraphOrderChange: (cardIndex: number, newOrder: any[]) => void;
     tabType: StudyOrigin;
+    langEdit: Language;
 }
 
 const EditDataCard: React.FC<EditDataCardProps> = ({
@@ -44,6 +45,7 @@ const EditDataCard: React.FC<EditDataCardProps> = ({
     handleSectionDelete,
     handleGraphOrderChange,
     tabType,
+    langEdit,
 }) => {
     const onDragEnd = (result: DropResult) => {
         const { destination, source } = result;
@@ -84,40 +86,23 @@ const EditDataCard: React.FC<EditDataCardProps> = ({
             <form className="space-y-2">
                 <div>
                     <Button
-                        buttonType={ButtonType.ICON}
                         onClick={(e) => {
                             handleSectionDelete(e, cardIndex);
                         }}
-                        className="absolute right-1 top-1 hover:scale-125"
+                        buttonType={ButtonType.ICON_ROUNDED}
+                        className="absolute -top-2 -right-2 hover:scale-125 bg-red-500 border-red-500"
                     >
-                        <TrashSVG className="fill-red-600"></TrashSVG>
+                        <TrashSVG className="fill-white w-4 h-4"></TrashSVG>
                     </Button>
+
                     <div className="flex flex-row items-center">
-                        <label className="text-black dark:text-white text-xs">
-                            {Language.FR}
-                        </label>
                         <input
                             type="text"
-                            value={card.title[Language.FR]}
+                            value={card.title[langEdit]}
                             placeholder="titre"
                             name="title"
                             onChange={(e) =>
-                                handleTextInputChange(e, Language.FR, cardIndex)
-                            }
-                            className="ml-8 w-[70%] rounded-md text-sm m-2 tracking-wide text-black shadow-sm mb-2 p-1 dark:text-white bg-transparent focus:outline-none focus:ring-2 focus:ring-blue-500"
-                        />
-                    </div>
-                    <div className="flex flex-row items-center">
-                        <label className="text-black dark:text-white text-xs">
-                            {Language.EN}
-                        </label>
-                        <input
-                            type="text"
-                            value={card.title[Language.EN]}
-                            placeholder="title"
-                            name="title"
-                            onChange={(e) =>
-                                handleTextInputChange(e, Language.EN, cardIndex)
+                                handleTextInputChange(e, langEdit, cardIndex)
                             }
                             className="ml-8 w-[70%] rounded-md text-sm m-2 tracking-wide text-black shadow-sm mb-2 p-1 dark:text-white bg-transparent focus:outline-none focus:ring-2 focus:ring-blue-500"
                         />
@@ -126,31 +111,13 @@ const EditDataCard: React.FC<EditDataCardProps> = ({
 
                 <div>
                     <div className="flex flex-row items-center">
-                        <label className="text-black dark:text-white text-xs">
-                            {Language.FR}
-                        </label>
                         <input
                             type="text"
-                            value={card.description[Language.FR]}
+                            value={card.description[langEdit]}
                             placeholder="description"
                             name="description"
                             onChange={(e) =>
-                                handleTextInputChange(e, Language.FR, cardIndex)
-                            }
-                            className="ml-8 w-[70%] rounded-md text-xs tracking-wide text-black shadow-sm mb-2 p-1 dark:text-white bg-transparent focus:outline-none focus:ring-2 focus:ring-blue-500"
-                        />
-                    </div>
-                    <div className="flex flex-row items-center">
-                        <label className="text-black dark:text-white text-xs">
-                            {Language.EN}
-                        </label>
-                        <input
-                            type="text"
-                            value={card.description[Language.EN]}
-                            placeholder="description"
-                            name="description"
-                            onChange={(e) =>
-                                handleTextInputChange(e, Language.EN, cardIndex)
+                                handleTextInputChange(e, langEdit, cardIndex)
                             }
                             className="ml-8 w-[70%] rounded-md text-xs tracking-wide text-black shadow-sm mb-2 p-1 dark:text-white bg-transparent focus:outline-none focus:ring-2 focus:ring-blue-500"
                         />

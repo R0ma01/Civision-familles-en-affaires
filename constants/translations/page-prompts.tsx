@@ -29,6 +29,10 @@ export const SharedPromptsTranslations: PromptsTranslations = {
         FR: 'Confirmer',
         EN: 'Confirm',
     },
+    image: {
+        FR: 'Sélectionner une image',
+        EN: 'Select an image',
+    },
     filters: { FR: 'Filtres', EN: 'Filters' },
     general_filters: { FR: 'Général', EN: 'General' },
     advanced_filters: { FR: 'Avancé', EN: 'Advanced' },

@@ -68,14 +68,15 @@ const EditGraphCard: React.FC<GraphCardProps> = ({
                 Graph {graphIndex + 1}
             </p>
             <Button
-                buttonType={ButtonType.ICON}
-                onClick={(e: any) =>
-                    handleGraphDelete(e, cardIndex, graphIndex)
-                }
-                className="absolute right-1 top-1 hover:scale-125"
+                onClick={(e) => {
+                    handleGraphDelete(e, cardIndex, graphIndex);
+                }}
+                buttonType={ButtonType.ICON_ROUNDED}
+                className="absolute -top-2 -right-2 hover:scale-125 bg-red-500 border-red-500"
             >
-                <TrashSVG className="fill-red-600" />
+                <TrashSVG className="fill-white w-4 h-4"></TrashSVG>
             </Button>
+
             <div className="flex flex-col md:flex-row items-center space-y-4 md:space-y-0 justify-center space-x-2">
                 <div className="flex flex-col w-full space-y-4 justify-center items-center">
                     <div>

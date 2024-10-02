@@ -108,7 +108,7 @@ const Dropdown = ({
                 style={style}
             >
                 {!color && (
-                    <span className="overflow-hidden w-40 max-h-8">
+                    <span className="overflow-hidden w-40 max-h-8 text-black">
                         {displayValue(
                             selectedValue ??
                                 value_constants.all_values_string_filter,

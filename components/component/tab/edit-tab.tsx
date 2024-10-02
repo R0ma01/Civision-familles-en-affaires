@@ -27,6 +27,7 @@ interface TabProps {
     content: TabContent;
     className?: string;
     handleInputChange?: any;
+    langEdit: Language;
 }
 
 function years(tabType: StudyOrigin) {
@@ -54,6 +55,7 @@ function dataType(length: number) {
 export function EditTab({
     content,
     className,
+    langEdit,
     handleInputChange = () => {},
 }: TabProps) {
     const [editTabContent, setEditTabContent] = useState<TabContent>(content);
@@ -349,43 +351,23 @@ export function EditTab({
 
     return (
         <div
-            className={`p-4 space-y-6 rounded-lg shadow-sm transition-all duration-300 ${className} max-w-[600px]`}
+            className={`p-4 space-y-6 rounded-lg shadow-sm transition-all duration-300 ${className}`}
         >
-            <div className="flex flex-row gap-2 w-full text-balck dark:text-white h-32">
-                <div className="w-[70%]">
+            <div className="flex flex-row gap-2 w-full text-balck dark:text-white">
+                <div className="">
                     <div className="flex flex-row items-center">
-                        <label className="text-black dark:text-white text-xs">
-                            {Language.FR}
-                        </label>
                         <input
                             placeholder="description"
                             type="text"
                             name="description"
-                            value={editTabContent.description[Language.FR]}
-                            onChange={(e) =>
-                                handleTextInputChange(e, Language.FR)
-                            } // Uncomment and implement this function
-                            className="rounded-md text-md m-2 tracking-wide text-black shadow-sm mb-2 p-1 dark:text-white bg-transparent focus:outline-none focus:ring-2 focus:ring-blue-500 w-full"
-                        />
-                    </div>
-                    <div className="flex flex-row items-center">
-                        <label className="text-black dark:text-white text-xs">
-                            {Language.EN}
-                        </label>
-                        <input
-                            type="text"
-                            placeholder="description"
-                            name="description"
-                            value={editTabContent.description[Language.EN]}
-                            onChange={(e) =>
-                                handleTextInputChange(e, Language.EN)
-                            } // Uncomment and implement this function
+                            value={editTabContent.description[langEdit]}
+                            onChange={(e) => handleTextInputChange(e, langEdit)} // Uncomment and implement this function
                             className="rounded-md text-md m-2 tracking-wide text-black shadow-sm mb-2 p-1 dark:text-white bg-transparent focus:outline-none focus:ring-2 focus:ring-blue-500 w-full"
                         />
                     </div>
                 </div>
                 {/* Checkbox Section */}
-                <div className="w-[30%]">
+                <div className="">
                     <h3 className="text-sm font-semibold">
                         {AdminPromptsTranslations.years[lang]}
                     </h3>
@@ -410,14 +392,14 @@ export function EditTab({
                 </div>
             </div>
             {/* Render Data Cards */}
-            <div className="flex flex-col items-center">
+            <div className="flex flex-row items-center w-full">
                 <DragDropContext onDragEnd={onDragEnd}>
                     <Droppable droppableId="dataCards">
                         {(provided) => (
                             <div
                                 {...provided.droppableProps}
                                 ref={provided.innerRef}
-                                className="flex flex-col items-center"
+                                className="flex flex-row overflow-auto items-center w-full"
                             >
                                 {editTabContent.cards.map((card, index) => (
                                     <Draggable
@@ -430,10 +412,11 @@ export function EditTab({
                                                 ref={provided.innerRef}
                                                 {...provided.draggableProps}
                                                 {...provided.dragHandleProps}
-                                                className="m-2 w-[90%] flex flex-col justify-center items-center"
+                                                className="m-2 flex flex-col justify-center items-center"
                                             >
                                                 <EditDataCard
                                                     key={index}
+                                                    langEdit={langEdit}
                                                     card={card}
                                                     cardIndex={index}
                                                     handleCardChange={
@@ -471,7 +454,7 @@ export function EditTab({
                 <Button
                     onClick={handleSectionAdd}
                     buttonType={ButtonType.ICON}
-                    className="w-[90%] m-[5%] mt-6 mb-8 flex justify-center items-center"
+                    className="m-1 flex justify-center items-center"
                 >
                     <AddCircleSVG className="fill-black dark:fill-white"></AddCircleSVG>
                 </Button>

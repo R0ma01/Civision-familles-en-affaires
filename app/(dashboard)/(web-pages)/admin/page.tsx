@@ -142,24 +142,35 @@ export default function Admin() {
 
     return (
         <PageContentContainer className="h-screen overflow-y-auto relative flex items-center w-[100%]">
-            <div className="justify-center flex flex-col w-[80%] items-center">
-                <div className="justify-center flex flex-wrap">
-                    {pages
-                        ? pages.map((page: PageTabContent, index: number) => (
-                              <ThemeCard
-                                  index={`${html_object_constants.theme_card_id}-${index}`}
-                                  key={index} // Ensure unique key
-                                  page={page}
-                                  admin={user === UserType.ADMIN} // Correct comparison with user
-                                  onClickEdit={() => openEditDialog(page)} // Pass page data to openEditDialog
-                                  onClickDelete={() => openDeleteDialog(page)}
-                                  onClickVisible={async () =>
-                                      togglePageVisibility(page._id)
-                                  }
-                              />
-                          ))
-                        : AdminPromptsTranslations.unavailable[lang]}
-                </div>
+            <div className="justify-center flex flex-col w-[80%] items-center relative">
+                {loading ? (
+                    <div className="loader-circle absolute top-[35vh] w-fit"></div>
+                ) : (
+                    <div className="justify-center flex flex-wrap">
+                        {pages
+                            ? pages.map(
+                                  (page: PageTabContent, index: number) => (
+                                      <ThemeCard
+                                          index={`${html_object_constants.theme_card_id}-${index}`}
+                                          key={index} // Ensure unique key
+                                          page={page}
+                                          admin={user === UserType.ADMIN} // Correct comparison with user
+                                          onClickEdit={() =>
+                                              openEditDialog(page)
+                                          } // Pass page data to openEditDialog
+                                          onClickDelete={() =>
+                                              openDeleteDialog(page)
+                                          }
+                                          onClickVisible={async () =>
+                                              togglePageVisibility(page._id)
+                                          }
+                                      />
+                                  ),
+                              )
+                            : AdminPromptsTranslations.unavailable[lang]}
+                    </div>
+                )}
+
                 <Button
                     buttonType={ButtonType.ICON}
                     onClick={() => openEditDialog(newPage)}
