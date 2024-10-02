@@ -245,7 +245,7 @@ function LanguageEditToggle({
                         } transition-colors duration-300`}
                         onClick={() => {
                             setActiveIndex(index); // Update the active index
-                            handleLanguageChange(lang); // Trigger language change on click
+                            handleLanguageChange(lang as Language); // Trigger language change on click
                         }}
                     >
                         <p>{lang}</p>
