@@ -117,12 +117,12 @@ function Fournisseurs() {
                     buttonType={ButtonType.CONFIRM}
                     onClick={() =>
                         window.open(
-                            'https://forms.gle/VtgaNgAnswbNTUHT8',
+                            'https://forms.gle/x1rgzmTpfrT49LMG9',
                             '_blank',
                         )
                     }
                     className="m-3 self-center"
-                    title="redirect:https://forms.gle/VtgaNgAnswbNTUHT8"
+                    title="redirect:https://forms.gle/x1rgzmTpfrT49LMG9"
                 >
                     Inscrivez-vous sur la liste
                 </Button>
