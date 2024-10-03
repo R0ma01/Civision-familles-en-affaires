@@ -93,9 +93,7 @@ const Dropdown = ({
 
     useEffect(() => {
         setSelectedValue(inputValue);
-        setDisplayText(
-            setDisplayText(displayValue(inputValue), lang, dataField),
-        );
+        setDisplayText(displayValue(inputValue, lang, dataField));
     }, [inputValue]);
 
     const toggleDropdown = (e: React.MouseEvent) => {
