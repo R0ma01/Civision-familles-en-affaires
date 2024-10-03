@@ -71,7 +71,8 @@ const EditGraphCard: React.FC<GraphCardProps> = ({
                 buttonType={ButtonType.ICON_ROUNDED}
                 className="absolute -top-2 -right-2 hover:scale-125 bg-logo-dark-blue"
             >
-                <TrashSVG className="fill-white w-4 h-4"></TrashSVG>
+                {/* <TrashSVG className="fill-white w-4 h-4"></TrashSVG> */}
+                <p className="text-white text-sm px-1">X</p>
             </Button>
 
             <div className="flex flex-col md:flex-row items-center space-y-4 md:space-y-0 justify-center space-x-2">

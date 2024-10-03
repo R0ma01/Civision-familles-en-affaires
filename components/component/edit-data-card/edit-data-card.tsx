@@ -92,7 +92,9 @@ const EditDataCard: React.FC<EditDataCardProps> = ({
                         buttonType={ButtonType.ICON_ROUNDED}
                         className="absolute -top-2 -right-2 hover:scale-125 bg-logo-dark-blue border-white"
                     >
-                        <TrashSVG className="fill-white w-4 h-4"></TrashSVG>
+                        <p className="text-white text-sm px-1">X</p>
+
+                        {/* <TrashSVG className="fill-white w-4 h-4"></TrashSVG> */}
                     </Button>
 
                     <div className="flex flex-row items-center">

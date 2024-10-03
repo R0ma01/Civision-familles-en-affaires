@@ -127,6 +127,55 @@ export function AdminModal({
         setEditPage(updatedPage);
     }
 
+    enum Sides {
+        Left = 'left',
+        Right = 'right',
+    }
+
+    function handleTabMove(
+        index: number,
+        side: Sides,
+        setActiveIndex: (index: number) => void,
+        activeIndex: number,
+    ) {
+        let updatedEditPage = { ...editPage };
+        const newTabs = [...updatedEditPage.tabs];
+        let currentTab = { ...newTabs[index] };
+
+        switch (side) {
+            case Sides.Left:
+                if (index > 0) {
+                    let replacementTab: TabContent = {
+                        ...newTabs[index - 1],
+                    };
+                    newTabs[index] = { ...replacementTab };
+                    newTabs[index - 1] = { ...currentTab };
+                    if (activeIndex === index) {
+                        setActiveIndex(index - 1);
+                    } else if (activeIndex === index - 1) {
+                        setActiveIndex(index);
+                    }
+                }
+                break;
+            case Sides.Right:
+                if (index < newTabs.length - 1) {
+                    let replacementTab: TabContent = { ...newTabs[index + 1] };
+                    newTabs[index] = { ...replacementTab };
+                    newTabs[index + 1] = { ...currentTab };
+                    if (activeIndex === index) {
+                        setActiveIndex(index + 1);
+                    } else if (activeIndex === index + 1) {
+                        setActiveIndex(index);
+                    }
+                }
+                break;
+        }
+
+        updatedEditPage.tabs = newTabs;
+
+        setEditPage(updatedEditPage);
+    }
+
     return (
         <div className="fixed z-40 h-[100%] backdrop-blur-md flex items-center justify-center w-full overflow-hidden">
             <div
@@ -166,6 +215,7 @@ export function AdminModal({
                         handleInputChange={handleTabChange}
                         handleTabAdd={handleTabAdd}
                         handleTabDelete={handleTabDelete}
+                        handleTabMove={handleTabMove}
                         langEdit={langEdit}
                     ></EditTabContainer>
                 </form>

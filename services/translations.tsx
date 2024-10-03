@@ -3899,8 +3899,8 @@ const keyValuePairsTabs: [string, TabsProps][] = [
         StudyOrigin.INDEX_VOLETA,
         {
             titre: {
-                FR: 'Intensions',
-                EN: 'Intentions',
+                FR: 'Intentions',
+                EN: 'Intensions',
             },
             acronym: {
                 FR: 'I',

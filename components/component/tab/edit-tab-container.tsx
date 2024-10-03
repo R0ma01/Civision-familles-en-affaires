@@ -25,6 +25,12 @@ interface TabProps {
     handleInputChange: (index: number, tab: TabContent) => void;
     handleTabAdd: (e: any) => void;
     handleTabDelete: (index: number) => void;
+    handleTabMove: (
+        index: number,
+        side: any,
+        setActiveIndex: any,
+        activeIndex: number,
+    ) => void;
     langEdit: Language;
 }
 
@@ -34,6 +40,7 @@ export function EditTabContainer({
     handleInputChange,
     handleTabAdd,
     handleTabDelete,
+    handleTabMove,
     langEdit,
 }: TabProps) {
     const [selectedTabIndex, setSelectedTabIndex] = useState<number>(0);
@@ -46,7 +53,10 @@ export function EditTabContainer({
     }, [tabs, selectedTabIndex]);
 
     const selectedTab = tabs[selectedTabIndex] || tabs[0];
-
+    enum Sides {
+        Left = 'left',
+        Right = 'right',
+    }
     return (
         <div className="w-fit z-10 flex flex-col max-w-[100%]">
             {/* Tab Headers */}
@@ -123,7 +133,17 @@ export function EditTabContainer({
                                     )}
                                 </Button> */}
                                 {index !== 0 && (
-                                    <div>
+                                    <div
+                                        onClick={(e) => {
+                                            e.stopPropagation();
+                                            handleTabMove(
+                                                index,
+                                                Sides.Left,
+                                                setSelectedTabIndex,
+                                                selectedTabIndex,
+                                            );
+                                        }}
+                                    >
                                         <LeftArrowSVG
                                             className={`${isActive ? 'fill-white' : 'fill-black'} hover:scale-125`}
                                         ></LeftArrowSVG>
@@ -131,11 +151,22 @@ export function EditTabContainer({
                                 )}
                                 <p
                                     className={`hover:scale-125 ${isActive ? 'text-white' : 'text-black'} font-bold`}
+                                    onClick={deleteTab}
                                 >
                                     X
                                 </p>
                                 {tabs.length !== index + 1 && (
-                                    <div>
+                                    <div
+                                        onClick={(e) => {
+                                            e.stopPropagation();
+                                            handleTabMove(
+                                                index,
+                                                Sides.Right,
+                                                setSelectedTabIndex,
+                                                selectedTabIndex,
+                                            );
+                                        }}
+                                    >
                                         <RightArrowSVG
                                             className={`${isActive ? 'fill-white' : 'fill-black'} hover:scale-125`}
                                         ></RightArrowSVG>
