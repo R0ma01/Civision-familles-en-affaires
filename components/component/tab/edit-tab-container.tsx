@@ -104,6 +104,10 @@ export function EditTabContainer({
                                     onChange={handleTabTypeChange}
                                     inputValue={tab.tabType}
                                     options={Object.values(StudyOrigin)}
+                                    onMenuClick={(e) => {
+                                        if (selectedTabIndex !== index)
+                                            setSelectedTabIndex(index);
+                                    }}
                                     displayValue={(value: StudyOrigin) => {
                                         const tabTitle =
                                             TableauxTraductionsTabs.get(value);
@@ -121,17 +125,6 @@ export function EditTabContainer({
                                     className={`border-none shadow-none z-20 bg-opacity-0`}
                                 />
 
-                                {/* <Button
-                                    onClick={togglevisibility}
-                                    buttonType={ButtonType.ICON_ROUNDED}
-                                    className="absolute -bottom-3 -right-2 hover:scale-125 bg-gray-500 border-gray-500"
-                                >
-                                    {tab.visible ? (
-                                        <VisibleSVG className="fill-white w-4 h-4"></VisibleSVG>
-                                    ) : (
-                                        <InvisibleSVG className="fill-white w-4 h-4"></InvisibleSVG>
-                                    )}
-                                </Button> */}
                                 {index !== 0 && (
                                     <div
                                         onClick={(e) => {
@@ -198,4 +191,18 @@ export function EditTabContainer({
             )}
         </div>
     );
+}
+
+{
+    /* <Button
+                                        onClick={togglevisibility}
+                                        buttonType={ButtonType.ICON_ROUNDED}
+                                        className="absolute -bottom-3 -right-2 hover:scale-125 bg-gray-500 border-gray-500"
+                                    >
+                                        {tab.visible ? (
+                                            <VisibleSVG className="fill-white w-4 h-4"></VisibleSVG>
+                                        ) : (
+                                            <InvisibleSVG className="fill-white w-4 h-4"></InvisibleSVG>
+                                        )}
+                                    </Button> */
 }

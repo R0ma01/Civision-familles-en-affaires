@@ -12,6 +12,7 @@ interface DropdownProps {
     color?: boolean;
     onChange?: (value: any) => void;
     displayValue?: (value: any, lang: Language, field?: any) => string; // Function to display the value
+    onMenuClick?: (value: any) => void;
     className?: string;
     style?: any;
     dropType?: DropDownType;
@@ -24,6 +25,7 @@ const Dropdown = ({
     color = false,
     dataField = undefined,
     onChange = () => {},
+    onMenuClick = (e) => {},
     displayValue = (
         value: string | number, // Assuming value is either a string or a number
         lang: Language = Language.FR, // Default language is French
@@ -101,7 +103,11 @@ const Dropdown = ({
         <div className="relative inline-block text-left">
             <button
                 ref={buttonRef}
-                onClick={toggleDropdown}
+                onClick={(e) => {
+                    e.preventDefault();
+                    onMenuClick(e);
+                    toggleDropdown(e);
+                }}
                 className={`flex items-center justify-between ${color ? 'w-10' : 'w-48'} px-2 py-1 bg-gray-100 border max-h-8 h-8 
                 border-gray-300 rounded-lg hover:bg-gray-200 focus:outline-none focus:ring-2
                  focus:ring-blue-500 focus:ring-opacity-50 text-xs ${className} shadow-sm`}
