@@ -3150,18 +3150,18 @@ const keyValuePairs: [string, dataInformations][] = [
             },
         },
     ],
-    [
-        IndexeDataFieldsA.TYPETYPE2,
-        {
-            label: {
-                FR: "Le répondant à l'intention d'entreprendre",
-                EN: 'The respondent intends to become an entrepreneur',
-            },
-            dataLabels: {
-                ...non0oui1,
-            },
-        },
-    ],
+    // [
+    //     IndexeDataFieldsA.TYPETYPE2,
+    //     {
+    //         label: {
+    //             FR: "Le répondant à l'intention d'entreprendre",
+    //             EN: 'The respondent intends to become an entrepreneur',
+    //         },
+    //         dataLabels: {
+    //             ...non0oui1,
+    //         },
+    //     },
+    // ],
     [
         IndexeDataFieldsA.QE1x,
         {
@@ -3193,8 +3193,8 @@ const keyValuePairs: [string, dataInformations][] = [
         IndexeDataFieldsA.QE1Cx,
         {
             label: {
-                FR: "Intention de création d'entreprise",
-                EN: 'Company creation intentions',
+                FR: 'Intention dentreprendre équipe',
+                EN: '',
             },
             dataLabels: {
                 1: {
@@ -3217,8 +3217,8 @@ const keyValuePairs: [string, dataInformations][] = [
         IndexeDataFieldsA.QE3,
         {
             label: {
-                FR: 'Délais pour créer ou reprendre une entreprise',
-                EN: 'Timeline for Starting or Acquiring a Business',
+                FR: 'Délais création / reprise',
+                EN: '',
             },
             dataLabels: {
                 0: {
@@ -3899,8 +3899,8 @@ const keyValuePairsTabs: [string, TabsProps][] = [
         StudyOrigin.INDEX_VOLETA,
         {
             titre: {
-                FR: 'Intentions',
-                EN: 'Intensions',
+                FR: 'IÉQ: Intentions',
+                EN: 'IÉQ: Intensions',
             },
             acronym: {
                 FR: 'I',
@@ -3912,12 +3912,12 @@ const keyValuePairsTabs: [string, TabsProps][] = [
         StudyOrigin.INDEX_VOLETB,
         {
             titre: {
-                FR: 'Reprise',
-                EN: 'Take Over',
+                FR: 'IÉQ: Entrepreneur Familial',
+                EN: 'IÉQ: Family Entrepreneur',
             },
             acronym: {
-                FR: 'R',
-                EN: 'TO',
+                FR: 'EF',
+                EN: 'FE',
             },
         },
     ],

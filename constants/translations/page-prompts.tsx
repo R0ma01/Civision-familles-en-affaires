@@ -9,6 +9,10 @@ export const SharedPromptsTranslations: PromptsTranslations = {
         FR: 'Chargement ...',
         EN: 'Loading ...',
     },
+    all: {
+        FR: 'Toutes',
+        EN: 'All',
+    },
     error: {
         FR: 'Erreur: ',
         EN: 'Error: ',

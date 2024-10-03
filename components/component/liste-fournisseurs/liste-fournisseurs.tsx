@@ -66,9 +66,9 @@ export default function ListeFournisseurs({
     const [searchString, setSearchString] = useState<string>('');
     const [searchSecteur, setSearchSecteur] = useState<
         SecteursGeographiques | string
-    >('Toutes');
+    >(SharedPromptsTranslations.all[lang]);
     const [searchService, setSearchService] = useState<ServiceOffert | string>(
-        'Toutes',
+        SharedPromptsTranslations.all[lang],
     );
 
     function sortAlphabetically(compagnies: Fournisseur[]): Fournisseur[] {
@@ -211,14 +211,14 @@ export default function ListeFournisseurs({
                             </p>
                             <Dropdown
                                 options={[
-                                    'Toutes',
+                                    SharedPromptsTranslations.all[lang],
                                     ...Object.values(SecteursGeographiques),
                                 ]}
                                 inputValue={searchSecteur}
                                 onChange={(value: any) =>
                                     setSearchSecteur(value)
                                 }
-                                className="hover:border-logo-turquoise focus:ring-2"
+                                className="hover:border-logo-turquoise text-black"
                             />
                         </div>
                         <div className="flex flex-col">
@@ -227,13 +227,14 @@ export default function ListeFournisseurs({
                             </p>
                             <Dropdown
                                 options={[
-                                    'Toutes',
+                                    SharedPromptsTranslations.all[lang],
                                     ...Object.values(ServiceOffert),
                                 ]}
                                 inputValue={searchService}
                                 onChange={(value: any) =>
                                     setSearchService(value)
                                 }
+                                className="hover:border-logo-turquoise text-black"
                             />
                         </div>
                     </div>

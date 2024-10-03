@@ -13,7 +13,8 @@ export const html_object_constants = {
 };
 
 export const value_constants = {
-    all_values_string_filter: 'toutes',
+    toutes_values_string_filter: 'Toutes',
+    all_values_string_filter: 'All',
     all_values_number_filter: '-1',
     all_values_else_filter: null,
 };

@@ -14,8 +14,10 @@ import {
     FournisseurPromptsTranslations,
     SharedPromptsTranslations,
 } from '@/constants/translations/page-prompts';
-import { AddCircleSVG } from '../svg-icons/svg-icons';
+
+import DropdownSelect from '@/components/component/drop-down-menu/drop-down-menu-selected-field';
 import { Language } from '@/components/enums/language';
+import { TableauxTraductionsMainDataFields } from '@/services/translations';
 
 interface EditFournisseurDialogProps {
     closeDialog: (e: any) => void;
@@ -46,37 +48,27 @@ export function EditFournisseurDialog({
     const secteurButtonRef = useRef<HTMLButtonElement>(null);
     const serviceButtonRef = useRef<HTMLButtonElement>(null);
 
-    const addSecteur = (secteur: string) => {
-        if (!secteursOptions.includes(secteur as SecteursGeographiques)) {
-            setSecteursOptions([
-                ...secteursOptions,
-                secteur as SecteursGeographiques,
-            ]);
+    const handleServiceEdit = (service: ServiceOffert) => {
+        if (!servicesOptions.includes(service)) {
+            setServicesOptions([...servicesOptions, service]);
+        } else {
+            const newOptions: ServiceOffert[] = servicesOptions.filter(
+                (serv) => serv !== service,
+            );
+
+            setServicesOptions(newOptions);
         }
-        setSecteurDropdownVisible(false); // Close the dropdown after selection
     };
+    const handleSecteurEdit = (secteur: SecteursGeographiques) => {
+        if (!secteursOptions.includes(secteur)) {
+            setSecteursOptions([...secteursOptions, secteur]);
+        } else {
+            const newOptions: SecteursGeographiques[] = secteursOptions.filter(
+                (serv) => serv !== secteur,
+            );
 
-    const addAllSecteur = () => {
-        setSecteursOptions(Object.values(SecteursGeographiques));
-    };
-
-    const removeSecteur = (secteur: string) => {
-        setSecteursOptions(secteursOptions.filter((s) => s !== secteur));
-    };
-
-    const addService = (service: string) => {
-        if (!servicesOptions.includes(service as ServiceOffert)) {
-            setServicesOptions([...servicesOptions, service as ServiceOffert]);
+            setSecteursOptions(newOptions);
         }
-        setServiceDropdownVisible(false); // Close the dropdown after selection
-    };
-
-    const removeService = (service: string) => {
-        setServicesOptions(servicesOptions.filter((s) => s !== service));
-    };
-
-    const handleButtonClick = (e: React.MouseEvent<HTMLButtonElement>) => {
-        e.stopPropagation();
     };
 
     useEffect(() => {
@@ -139,7 +131,8 @@ export function EditFournisseurDialog({
     };
 
     function handleSubmit(values: any) {
-        const fournisseurData = {
+        const fournisseurData: Fournisseur = {
+            _id: fournisseur._id,
             contact: {
                 lastName: values.lastName,
                 firstName: values.firstName,
@@ -147,21 +140,49 @@ export function EditFournisseurDialog({
                 cellPhone: values.telephone,
                 company: values.compagnie,
                 title: values.titre,
-                linkedin: values.profil_linkedin,
+                linkedIn: values.profil_linkedin,
             },
             secteurs_geographique: secteursOptions,
             services_offerts: servicesOptions,
             visible: values.visible,
         };
 
-        submitDialog(fournisseurData as unknown as Fournisseur);
+        submitDialog(fournisseurData);
+    }
+
+    function displayValue(
+        value: string | number, // Assuming value is either a string or a number
+        lang: Language = Language.FR, // Default language is French
+        field?: string, // field can be undefined, hence using `?`
+    ) {
+        // If field is provided
+        if (field) {
+            const fieldData = TableauxTraductionsMainDataFields.get(field);
+
+            // Check if field exists in the map and if dataLabels exist for the given value and language
+            if (fieldData?.dataLabels?.[value]?.[lang]) {
+                return fieldData.dataLabels[value][lang];
+            }
+        } else {
+            const fieldData = TableauxTraductionsMainDataFields.get(
+                value.toString(),
+            );
+
+            // Check if field exists in the map and if dataLabels exist for the given value and language
+            if (fieldData?.label) {
+                return fieldData.label[lang];
+            }
+        }
+
+        // Return the value as a string if no translation is found or if no field is provided
+        return value.toString();
     }
 
     return (
-        <div className="fixed z-40 h-[100%] left-[40px] backdrop-blur-md flex items-center justify-center w-screen overflow-hidden">
+        <div className="fixed z-40 h-screen left-[40px] top-0 backdrop-blur-md flex items-center justify-center w-screen overflow-hidden">
             <div
                 ref={dialogRef}
-                className="bg-white dark:bg-[#262626] p-2 rounded-lg shadow-2xl w-[80%] h-[95%] relative space-y-8 flex flex-row justify-evenly items-center"
+                className="bg-white dark:bg-[#262626] p-6 rounded-lg shadow-2xl w-[80%] h-fit relative space-y-8 flex flex-row justify-evenly"
             >
                 <Formik
                     initialValues={initialFournisseurValues}
@@ -174,7 +195,7 @@ export function EditFournisseurDialog({
                             <div className="flex gap-4 w-full">
                                 <Field
                                     name="firstName"
-                                    className="input-field w-full p-2 dark:text-white border border-gray-300 dark:border-gray-700 rounded-md focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400 focus:outline-none"
+                                    className="input-field w-full p-2 dark:bg-gray-500 dark:text-white border border-gray-300 dark:border-gray-700 rounded-md focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400 focus:outline-none"
                                     placeholder={
                                         FournisseurPromptsTranslations.prenom[
                                             lang
@@ -183,7 +204,7 @@ export function EditFournisseurDialog({
                                 />
                                 <Field
                                     name="lastName"
-                                    className="input-field w-full p-2 border dark:text-white border-gray-300 dark:border-gray-700 rounded-md focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400 focus:outline-none"
+                                    className="input-field w-full p-2 dark:bg-gray-500 border dark:text-white border-gray-300 dark:border-gray-700 rounded-md focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400 focus:outline-none"
                                     placeholder={
                                         FournisseurPromptsTranslations.nom[lang]
                                     }
@@ -192,7 +213,7 @@ export function EditFournisseurDialog({
                             <div className="flex gap-4 w-full">
                                 <Field
                                     name="compagnie"
-                                    className="input-field w-full p-2 border dark:text-white border-gray-300 dark:border-gray-700 rounded-md focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400 focus:outline-none"
+                                    className="input-field w-full p-2 dark:bg-gray-500 border dark:text-white border-gray-300 dark:border-gray-700 rounded-md focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400 focus:outline-none"
                                     placeholder={
                                         FournisseurPromptsTranslations
                                             .entreprise[lang]
@@ -200,7 +221,7 @@ export function EditFournisseurDialog({
                                 />
                                 <Field
                                     name="titre"
-                                    className="input-field w-full p-2 border dark:text-white border-gray-300 dark:border-gray-700 rounded-md focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400 focus:outline-none"
+                                    className="input-field w-full p-2 dark:bg-gray-500 border dark:text-white border-gray-300 dark:border-gray-700 rounded-md focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400 focus:outline-none"
                                     placeholder={
                                         FournisseurPromptsTranslations.titre[
                                             lang
@@ -212,7 +233,7 @@ export function EditFournisseurDialog({
                             <div className="flex gap-4 w-full">
                                 <Field
                                     name="courriel"
-                                    className="w-[50%] input-field p-2 border dark:text-white border-gray-300 dark:border-gray-700 rounded-md focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400 focus:outline-none"
+                                    className="w-[50%] input-field dark:bg-gray-500 p-2 border dark:text-white border-gray-300 dark:border-gray-700 rounded-md focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400 focus:outline-none"
                                     placeholder="Courriel"
                                     type={
                                         FournisseurPromptsTranslations.courriel[
@@ -222,7 +243,7 @@ export function EditFournisseurDialog({
                                 />
                                 <Field
                                     name="telephone"
-                                    className="input-field w-[50%] p-2 border dark:text-white border-gray-300 dark:border-gray-700 rounded-md focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400 focus:outline-none"
+                                    className="input-field dark:bg-gray-500 w-[50%] p-2 border dark:text-white border-gray-300 dark:border-gray-700 rounded-md focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400 focus:outline-none"
                                     placeholder={
                                         FournisseurPromptsTranslations
                                             .telephone[lang]
@@ -230,149 +251,77 @@ export function EditFournisseurDialog({
                                     type="tel"
                                 />
                             </div>
-
-                            {/* Secteurs Geographiques */}
-                            <div className="w-[100%] flex flex-row">
-                                <div className="mb-4 w-[50%] flex flex-col items-center">
-                                    <label className="block text-sm font-medium dark:text-gray-300 text-gray-800 mb-1">
-                                        {FournisseurPromptsTranslations.region[
-                                            lang
-                                        ].toString()}
-                                    </label>
-                                    <div className="flex flex-col items-center">
-                                        <div className="flex flex-wrap gap-2 items-center h-[200px] max-h-[200px] overflow-y-auto">
-                                            {secteursOptions.map((secteur) => (
-                                                <div
-                                                    key={secteur}
-                                                    className="bg-gray-200 dark:bg-gray-700 rounded-md p-2 flex items-center space-x-2"
-                                                >
-                                                    <span className="text-sm dark:text-custom-grey">
-                                                        {secteur}
-                                                    </span>
-                                                    <button
-                                                        type="button"
-                                                        className="text-red-600 dark:text-red-400 hover:text-red-800 dark:hover:text-red-500"
+                            <div className="w-[100%] flex flex-row gap-4">
+                                <div
+                                    className={`mt-1 p-1 bg-white border border-gray-300 dark:bg-gray-700 rounded-lg 
+                        shadow-lg z-10 w-full`}
+                                >
+                                    <ul className="max-h-60 rounded-lg overflow-y-auto dark:bg-gray-700">
+                                        {Object.values(
+                                            SecteursGeographiques,
+                                        ).map(
+                                            (option: SecteursGeographiques) => {
+                                                const isSelected =
+                                                    secteursOptions.includes(
+                                                        option,
+                                                    );
+                                                return (
+                                                    <li
+                                                        key={
+                                                            option as unknown as string
+                                                        }
+                                                        className={`w-fit m-1 h-fit hover:border-2 cursor-pointer transition-colors ${isSelected ? 'text-teal-300' : 'text-black dark:text-white'}`}
                                                         onClick={() =>
-                                                            removeSecteur(
-                                                                secteur,
+                                                            handleSecteurEdit(
+                                                                option,
                                                             )
                                                         }
                                                     >
-                                                        &times;
-                                                    </button>
-                                                </div>
-                                            ))}
-                                        </div>
-                                        <div className="flex flex-row">
-                                            <div className="relative">
-                                                <button
-                                                    ref={secteurButtonRef}
-                                                    type="button"
-                                                    className="text-white p-2 rounded-md hover:bg-blue-700 w-fit mt-2"
-                                                    onClick={(e: any) => {
-                                                        handleButtonClick(e);
-                                                        setSecteurDropdownVisible(
-                                                            (prev) => !prev,
-                                                        );
-                                                    }}
-                                                >
-                                                    <AddCircleSVG className="dark:fill-white"></AddCircleSVG>
-                                                </button>
-                                                {isSecteurDropdownVisible && (
-                                                    <DropDownSelector
-                                                        ref={secteurDropdownRef}
-                                                        values={Object.values(
-                                                            SecteursGeographiques,
-                                                        ).filter(
-                                                            (secteur: string) =>
-                                                                !secteursOptions.includes(
-                                                                    secteur as SecteursGeographiques,
-                                                                ),
+                                                        {displayValue(
+                                                            option,
+                                                            lang,
                                                         )}
-                                                        select={addSecteur}
-                                                    />
-                                                )}
-                                            </div>
-                                            <button
-                                                type="button"
-                                                className="bg-blue-600 text-white p-2 rounded-md hover:bg-blue-700 w-fit mt-2 text-xs"
-                                                onClick={(e: any) => {
-                                                    handleButtonClick(e);
-                                                    addAllSecteur();
-                                                }}
-                                            >
-                                                {
-                                                    FournisseurPromptsTranslations
-                                                        .toutes_regions[lang]
-                                                }
-                                            </button>
-                                        </div>
-                                    </div>
+                                                    </li>
+                                                );
+                                            },
+                                        )}
+                                    </ul>
                                 </div>
-
-                                {/* Services Offerts */}
-                                <div className="mb-4 w-[50%] flex flex-col items-center">
-                                    <label className="block text-sm font-medium dark:text-gray-300 text-gray-800 mb-1">
-                                        {FournisseurPromptsTranslations.service[
-                                            lang
-                                        ].toString()}
-                                    </label>
-                                    <div className="flex flex-col items-center space-y-2">
-                                        <div className="flex flex-wrap gap-2 items-center h-[200px] max-h-[200px] overflow-y-auto">
-                                            {servicesOptions.map((service) => (
-                                                <div
-                                                    key={service}
-                                                    className="bg-gray-200 dark:bg-gray-700 rounded-md p-2 flex items-center space-x-2"
-                                                >
-                                                    <span className="text-sm dark:text-custom-grey">
-                                                        {service}
-                                                    </span>
-                                                    <button
-                                                        type="button"
-                                                        className="text-red-600 dark:text-red-400 hover:text-red-800 dark:hover:text-red-500"
-                                                        onClick={() => {
-                                                            removeService(
-                                                                service,
-                                                            );
-                                                        }}
-                                                    >
-                                                        &times;
-                                                    </button>
-                                                </div>
-                                            ))}
-                                        </div>
-                                        <div className="relative">
-                                            <button
-                                                ref={serviceButtonRef}
-                                                type="button"
-                                                className="text-white p-2 rounded-md hover:bg-blue-700 w-fit"
-                                                onClick={(e: any) => {
-                                                    handleButtonClick(e);
-                                                    setServiceDropdownVisible(
-                                                        (prev) => !prev,
+                                <div
+                                    className={`mt-1 p-1 bg-white border border-gray-300 dark:bg-gray-700 rounded-lg 
+                        shadow-lg z-10 w-full`}
+                                >
+                                    <ul className="max-h-60 rounded-lg overflow-y-auto dark:bg-gray-700">
+                                        {Object.values(ServiceOffert).map(
+                                            (option: ServiceOffert) => {
+                                                const isSelected =
+                                                    servicesOptions.includes(
+                                                        option,
                                                     );
-                                                }}
-                                            >
-                                                <AddCircleSVG className="dark:fill-white"></AddCircleSVG>
-                                            </button>
-                                            {isServiceDropdownVisible && (
-                                                <DropDownSelector
-                                                    ref={serviceDropdownRef}
-                                                    values={Object.values(
-                                                        ServiceOffert,
-                                                    ).filter(
-                                                        (service: string) =>
-                                                            !servicesOptions.includes(
-                                                                service as ServiceOffert,
-                                                            ),
-                                                    )}
-                                                    select={addService}
-                                                />
-                                            )}
-                                        </div>
-                                    </div>
+                                                return (
+                                                    <li
+                                                        key={
+                                                            option as unknown as string
+                                                        }
+                                                        className={`w-fit m-1 h-fit hover:border-2 cursor-pointer transition-colors ${isSelected ? 'text-teal-300' : 'text-black dark:text-white'}`}
+                                                        onClick={() =>
+                                                            handleServiceEdit(
+                                                                option,
+                                                            )
+                                                        }
+                                                    >
+                                                        {displayValue(
+                                                            option,
+                                                            lang,
+                                                        )}
+                                                    </li>
+                                                );
+                                            },
+                                        )}
+                                    </ul>
                                 </div>
                             </div>
+
                             <div className="flex justify-evenly flex-row w-[50%]">
                                 <Button
                                     onClick={closeDialog}

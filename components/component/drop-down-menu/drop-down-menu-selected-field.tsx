@@ -3,31 +3,22 @@ import { TableauxTraductionsMainDataFields } from '@/services/translations';
 import { value_constants } from '@/constants/constants';
 import { Language } from '@/components/enums/language';
 import useDataStore from '@/reducer/dataStore';
-import { DropDownType } from '@/components/interface/drop-down-type';
-
-import {
-    SharedPromptsTranslations,
-    FournisseurPromptsTranslations,
-} from '@/constants/translations/page-prompts';
 
 interface DropdownProps {
+    title: string;
     inputValue?: any;
     options: any;
     dataField?: any;
-    color?: boolean;
     onChange?: (value: any) => void;
     displayValue?: (value: any, lang: Language, field?: any) => string; // Function to display the value
     onMenuClick?: (value: any) => void;
     className?: string;
-    style?: any;
-    dropType?: DropDownType;
 }
 
-const Dropdown = ({
-    dropType = DropDownType.NORMAL,
+const DropdownSelect = ({
+    title,
     inputValue,
     options,
-    color = false,
     dataField = undefined,
     onChange = () => {},
     onMenuClick = (e) => {},
@@ -59,33 +50,9 @@ const Dropdown = ({
         return value.toString();
     },
     className = '',
-    style = {},
 }: DropdownProps) => {
-    const [selectedValue, setSelectedValue] = useState<any | undefined>(
-        inputValue,
-    );
-
+    const [selectedValue, setSelectedValue] = useState<any[]>([...inputValue]);
     const lang: Language = useDataStore((state) => state.lang);
-    const [displayText, setDisplayText] = useState<string>('');
-
-    useEffect(() => {
-        if (inputValue) {
-            setDisplayText(displayValue(inputValue, lang, dataField));
-        } else {
-            setDisplayText(SharedPromptsTranslations.all[lang]);
-        }
-    }, []);
-
-    useEffect(() => {
-        if (
-            selectedValue === value_constants.toutes_values_string_filter ||
-            selectedValue === value_constants.all_values_string_filter
-        ) {
-            setSelectedValue(SharedPromptsTranslations.all[lang]);
-        } else {
-            setDisplayText(displayValue(inputValue, lang, dataField)); // This line is incorrect.
-        }
-    }, [lang]);
 
     const [dropdownOpen, setDropdownOpen] = useState(false);
     const dropdownRef = useRef<HTMLDivElement>(null);
@@ -93,9 +60,6 @@ const Dropdown = ({
 
     useEffect(() => {
         setSelectedValue(inputValue);
-        setDisplayText(
-            setDisplayText(displayValue(inputValue), lang, dataField),
-        );
     }, [inputValue]);
 
     const toggleDropdown = (e: React.MouseEvent) => {
@@ -105,9 +69,7 @@ const Dropdown = ({
     };
 
     const handleSelection = (value: any) => {
-        setSelectedValue(value);
         onChange(value);
-        setDropdownOpen(false);
     };
 
     useEffect(() => {
@@ -137,22 +99,12 @@ const Dropdown = ({
                     onMenuClick(e);
                     toggleDropdown(e);
                 }}
-                className={`flex items-center justify-between ${color ? 'w-10' : 'w-48'} px-2 py-1 bg-gray-100 border max-h-8 h-8 
+                className={`flex items-center justify-between w-48 px-2 py-1 bg-gray-100 border max-h-8 h-8 
                 border-gray-300 rounded-lg hover:bg-gray-200 focus:outline-none focus:ring-2
                  focus:ring-blue-500 focus:ring-opacity-50 text-xs ${className} shadow-sm`}
-                style={style}
             >
-                {!color && (
-                    <span className="overflow-hidden w-40 max-h-8">
-                        {displayText}
-                    </span>
-                )}
-                {color && (
-                    <div
-                        className="w-4 pl-1 h-3 hover:border-2 hover:border-black cursor-pointer transition-colors"
-                        style={{ backgroundColor: selectedValue }}
-                    ></div>
-                )}
+                <span className="overflow-hidden w-40 max-h-8">{title}</span>
+
                 <svg
                     className={`w-4 h-4 transition-transform ${dropdownOpen ? 'rotate-180' : 'rotate-0'}`}
                     xmlns="http://www.w3.org/2000/svg"
@@ -171,32 +123,21 @@ const Dropdown = ({
             {dropdownOpen && (
                 <div
                     ref={dropdownRef}
-                    className={`absolute mt-1 p-1 bg-white border border-gray-300 dark:bg-gray-700 rounded-lg shadow-lg z-10  ${color ? 'w-10' : 'w-52'}`}
+                    className={`absolute mt-1 p-1 bg-white border border-gray-300 dark:bg-gray-700 rounded-lg 
+                        shadow-lg z-10 w-52`}
                 >
-                    <ul className="max-h-64 rounded-lg overflow-y-auto dark:bg-gray-700">
+                    <ul className="max-h-60 rounded-lg overflow-y-auto dark:bg-gray-700">
                         {options.map((option: any) => {
-                            if (!color) {
-                                return (
-                                    <li
-                                        key={option as unknown as string}
-                                        className="w-48 pl-1 text-gray-700 hover:bg-gray-100 cursor-pointer transition-colors text-wrap text-xs dark:text-white dark:hover:bg-black"
-                                        onClick={() => handleSelection(option)}
-                                    >
-                                        {displayValue(option, lang, dataField)}
-                                    </li>
-                                );
-                            } else {
-                                return (
-                                    <li
-                                        key={option as unknown as string}
-                                        className="w-4 m-1 h-3 hover:border-2 hover:border-black cursor-pointer transition-colors"
-                                        style={{ backgroundColor: option }}
-                                        onClick={() => handleSelection(option)}
-                                    >
-                                        {' '}
-                                    </li>
-                                );
-                            }
+                            const isSelected = selectedValue.includes(option);
+                            return (
+                                <li
+                                    key={option as unknown as string}
+                                    className={`w-52 m-1 h-fit hover:border-2 cursor-pointer transition-colors ${isSelected ? 'text-teal-300' : 'text-black dark:text-white'}`}
+                                    onClick={() => handleSelection(option)}
+                                >
+                                    {displayValue(option, lang, dataField)}
+                                </li>
+                            );
                         })}
                     </ul>
                 </div>
@@ -205,4 +146,4 @@ const Dropdown = ({
     );
 };
 
-export default Dropdown;
+export default DropdownSelect;

@@ -16,6 +16,7 @@ const useGlobalFilterStore = create<GlobalState>((set, get) => ({
 
         if (
             newValue === value_constants.all_values_string_filter ||
+            newValue === value_constants.toutes_values_string_filter ||
             newValue === value_constants.all_values_number_filter ||
             newValue === value_constants.all_values_else_filter
         ) {
