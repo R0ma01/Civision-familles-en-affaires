@@ -22,7 +22,7 @@ const dettermineColor = (buttonType: ButtonType, pending: boolean): string => {
         case ButtonType.ICON:
             return 'bg-none border-none';
         case ButtonType.ICON_ROUNDED:
-            return 'border rounded-full p-1';
+            return 'border rounded-lg p-1';
         case ButtonType.LOADING:
             return 'bg-gray-400 border-gray-400 cursor-not-allowed py-2 px-4 ';
         default:

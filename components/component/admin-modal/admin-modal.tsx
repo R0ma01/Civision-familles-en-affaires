@@ -127,43 +127,37 @@ export function AdminModal({
         setEditPage(updatedPage);
     }
 
-    const [isDarkMode, setIsDarkMode] = useState(false);
-    useEffect(() => {
-        const darkModeQuery = window.matchMedia('(prefers-color-scheme: dark)');
-        setIsDarkMode(darkModeQuery.matches);
-
-        const handleDarkModeChange = (e: any) => setIsDarkMode(e.matches);
-        darkModeQuery.addEventListener('change', handleDarkModeChange);
-
-        return () =>
-            darkModeQuery.removeEventListener('change', handleDarkModeChange);
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, []);
-
     return (
         <div className="fixed z-40 h-[100%] backdrop-blur-md flex items-center justify-center w-full overflow-hidden">
             <div
                 ref={dialogRef}
-                className="bg-white dark:bg-[#262626] rounded-lg shadow-2xl w-[95%] h-[95%] relative overflow-hidden"
+                className="bg-[#DFDFDF] dark:bg-[#262626] rounded-lg shadow-2xl w-[95%] h-[95%] relative p-2 overflow-hidden"
             >
+                <LanguageEditToggle
+                    handleLanguageChange={(lang: Language) => {
+                        setLang(lang);
+                    }}
+                    language={Language.FR}
+                    className="ml-2 mb-1"
+                ></LanguageEditToggle>
                 <form className="w-full h-full flex flex-col overflow-auto">
-                    <div className="flex-col flex w-[80%] mb-3">
+                    <div className="flex-col flex w-[80%] mb-3 m-1 ml-2 gap-1">
                         <input
                             type="text"
                             placeholder="titre"
                             name="title"
                             value={editPage.title[langEdit]}
                             onChange={(e) => handleTextInputChange(e, langEdit)} // Uncomment and implement this function
-                            className="rounded-md text-2xl tracking-wide w-[80%] text-black shadow-sm p-1 dark:text-white bg-transparent focus:outline-none focus:ring-2 focus:ring-blue-500"
+                            className="rounded-md border border-logo-dark-blue dark:border-white  text-lg tracking-wide w-full text-black shadow-sm p-1 dark:text-white bg-transparent focus:outline-none focus:ring-2 focus:ring-blue-500"
                         />
-
                         <input
                             placeholder="description"
                             type="text"
                             name="description"
                             value={editPage.description[langEdit]}
                             onChange={(e) => handleTextInputChange(e, langEdit)}
-                            className="rounded-md text-md tracking-wide w-[60%] text-black shadow-sm p-1 dark:text-white bg-transparent focus:outline-none focus:ring-2 focus:ring-blue-500"
+                            className="rounded-md text-md border border-logo-dark-blue dark:border-white tracking-wide w-full text-black 
+                            shadow-sm p-1 dark:text-white bg-transparent focus:outline-none focus:ring-2 focus:ring-blue-500"
                         />
                     </div>
 
@@ -178,30 +172,24 @@ export function AdminModal({
                 <ImageDropdown
                     handleImageChange={handleImageInputChange}
                     selectedImage={editPage.backgroundImage}
-                    className="absolute top-28 right-2 z-10"
+                    className="absolute top-14 right-10 z-10"
                 />
                 <Button
-                    buttonType={ButtonType.CANCEL}
+                    buttonType={ButtonType.ICON_ROUNDED}
                     onClick={closeDialog}
-                    className="absolute top-1 right-2"
+                    className="absolute top-2 right-2 border bg-logo-dark-blue px-3"
                 >
                     X
                 </Button>
                 <Button
                     onClick={handleSubmit}
-                    buttonType={ButtonType.CONFIRM}
-                    className="absolute top-1 right-14"
+                    buttonType={ButtonType.ICON_ROUNDED}
+                    className="absolute top-2 right-12 border-logo-dark-blue bg-white text-black"
                 >
-                    {SharedPromptsTranslations.save[lang]}
+                    <p className="text-black">
+                        {SharedPromptsTranslations.save[lang]}
+                    </p>
                 </Button>
-
-                <LanguageEditToggle
-                    handleLanguageChange={(lang: Language) => {
-                        setLang(lang);
-                    }}
-                    language={Language.FR}
-                    className="absolute top-14 right-3"
-                ></LanguageEditToggle>
             </div>
         </div>
     );
@@ -231,16 +219,16 @@ function LanguageEditToggle({
 
     return (
         <div
-            className={`flex flex-row bg-logo-dark-blue rounded-xl space-x-1 w-fit h-10 items-center ${className}`}
+            className={`flex flex-row bg-logo-dark-blue rounded-xl space-x-1 w-fit h-8 items-center ${className}`}
         >
             {languages.map((lang, index) => {
                 const isActive = index === activeIndex;
                 return (
                     <div
                         key={index}
-                        className={`cursor-pointer w-10 h-10 rounded-xl flex items-center justify-center ${
+                        className={`cursor-pointer w-8 h-8 rounded-xl flex items-center justify-center ${
                             isActive
-                                ? 'bg-white text-black scale-110 font-bold'
+                                ? 'bg-white text-black scale-110 font-bold shadow-xl border-black border'
                                 : 'bg-logo-dark-blue text-white'
                         } transition-colors duration-300`}
                         onClick={() => {

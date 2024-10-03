@@ -351,23 +351,22 @@ export function EditTab({
 
     return (
         <div
-            className={`p-4 space-y-6 rounded-lg shadow-sm transition-all duration-300 ${className}`}
+            className={`ml-0 space-y-6 rounded-lg shadow-sm transition-all duration-300 ${className}`}
         >
             <div className="flex flex-row gap-2 w-full text-balck dark:text-white">
-                <div className="">
-                    <div className="flex flex-row items-center">
-                        <input
-                            placeholder="description"
-                            type="text"
-                            name="description"
-                            value={editTabContent.description[langEdit]}
-                            onChange={(e) => handleTextInputChange(e, langEdit)} // Uncomment and implement this function
-                            className="rounded-md text-md m-2 tracking-wide text-black shadow-sm mb-2 p-1 dark:text-white bg-transparent focus:outline-none focus:ring-2 focus:ring-blue-500 w-full"
-                        />
-                    </div>
-                </div>
+                <input
+                    placeholder="description"
+                    type="text"
+                    name="description"
+                    value={editTabContent.description[langEdit]}
+                    onChange={(e) => handleTextInputChange(e, langEdit)} // Uncomment and implement this function
+                    className="rounded-md border border-logo-dark-blue dark:border-white w-[80%] text-md 
+                    tracking-wide text-black shadow-sm mt-2 ml-2 p-1 dark:text-white bg-transparent focus:outline-none 
+                    focus:ring-2 focus:ring-blue-500"
+                />
+
                 {/* Checkbox Section */}
-                <div className="">
+                <div className="w-40">
                     <h3 className="text-sm font-semibold">
                         {AdminPromptsTranslations.years[lang]}
                     </h3>
@@ -412,7 +411,7 @@ export function EditTab({
                                                 ref={provided.innerRef}
                                                 {...provided.draggableProps}
                                                 {...provided.dragHandleProps}
-                                                className="m-2 flex flex-col justify-center items-center"
+                                                className="m-3 flex flex-col justify-center items-center"
                                             >
                                                 <EditDataCard
                                                     key={index}

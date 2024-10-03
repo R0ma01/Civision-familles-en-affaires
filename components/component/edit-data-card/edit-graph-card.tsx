@@ -63,16 +63,13 @@ const EditGraphCard: React.FC<GraphCardProps> = ({
     handleGraphDelete,
 }) => {
     return (
-        <div className="bg-gray-100 dark:bg-gray-900 p-4 rounded-lg shadow-md relative w-fit h-[200px]">
-            <p className="text-sm font-normal text-gray-800 dark:text-white mb-1">
-                Graph {graphIndex + 1}
-            </p>
+        <div className="bg-[#CFCFCF] dark:bg-gray-900 p-4 rounded-lg shadow-md relative w-fit h-[200px] border border-logo-dark-blue">
             <Button
                 onClick={(e) => {
                     handleGraphDelete(e, cardIndex, graphIndex);
                 }}
                 buttonType={ButtonType.ICON_ROUNDED}
-                className="absolute -top-2 -right-2 hover:scale-125 bg-red-500 border-red-500"
+                className="absolute -top-2 -right-2 hover:scale-125 bg-logo-dark-blue"
             >
                 <TrashSVG className="fill-white w-4 h-4"></TrashSVG>
             </Button>

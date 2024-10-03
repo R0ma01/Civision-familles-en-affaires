@@ -82,7 +82,7 @@ const EditDataCard: React.FC<EditDataCardProps> = ({
     };
 
     return (
-        <div className="mb-8 p-2 bg-custom-turquoise bg-opacity-50 bg-[#f5ebe0] dark:bg-[#363636] dark:bg-opacity-50 rounded-xl shadow-lg w-[500px] relative">
+        <div className="mb-8 p-2 bg-custom-turquoise bg-none border border-logo-dark-blue dark:border-white rounded-xl shadow-xl w-[500px] relative">
             <form className="space-y-2">
                 <div>
                     <Button
@@ -90,7 +90,7 @@ const EditDataCard: React.FC<EditDataCardProps> = ({
                             handleSectionDelete(e, cardIndex);
                         }}
                         buttonType={ButtonType.ICON_ROUNDED}
-                        className="absolute -top-2 -right-2 hover:scale-125 bg-red-500 border-red-500"
+                        className="absolute -top-2 -right-2 hover:scale-125 bg-logo-dark-blue border-white"
                     >
                         <TrashSVG className="fill-white w-4 h-4"></TrashSVG>
                     </Button>
@@ -104,7 +104,7 @@ const EditDataCard: React.FC<EditDataCardProps> = ({
                             onChange={(e) =>
                                 handleTextInputChange(e, langEdit, cardIndex)
                             }
-                            className="ml-8 w-[70%] rounded-md text-sm m-2 tracking-wide text-black shadow-sm mb-2 p-1 dark:text-white bg-transparent focus:outline-none focus:ring-2 focus:ring-blue-500"
+                            className="ml-8 w-[70%] border dark:border-white  border-logo-dark-blue rounded-md text-sm m-2 tracking-wide text-black shadow-sm mb-2 p-1 dark:text-white bg-transparent focus:outline-none focus:ring-2 focus:ring-blue-500"
                         />
                     </div>
                 </div>
@@ -119,7 +119,7 @@ const EditDataCard: React.FC<EditDataCardProps> = ({
                             onChange={(e) =>
                                 handleTextInputChange(e, langEdit, cardIndex)
                             }
-                            className="ml-8 w-[70%] rounded-md text-xs tracking-wide text-black shadow-sm mb-2 p-1 dark:text-white bg-transparent focus:outline-none focus:ring-2 focus:ring-blue-500"
+                            className="ml-8 w-[70%] rounded-md dark:border-white  border border-logo-dark-blue text-xs tracking-wide text-black shadow-sm mb-2 p-1 dark:text-white bg-transparent focus:outline-none focus:ring-2 focus:ring-blue-500"
                         />
                     </div>
                 </div>

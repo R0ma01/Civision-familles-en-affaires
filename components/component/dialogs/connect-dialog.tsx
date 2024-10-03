@@ -116,11 +116,11 @@ const ConnectDialog: React.FC<ConnectDialogProps> = ({
                 )}
             </Formik>
             <div className="mt-4 text-center">
-                <p className="text-black">
+                <p className="text-black dark:text-gray-500">
                     Vous êtes nouveau ?
                     <Link
                         href="/signup"
-                        className="mt-1 text-sm font-medium text-blue-500 underline hover:no-underline ml-2"
+                        className="mt-1 text-sm dark:text-gray-500 font-medium text-blue-500 underline hover:no-underline ml-2"
                     >
                         Inscrivez-vous!
                     </Link>

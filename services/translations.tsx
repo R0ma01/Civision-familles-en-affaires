@@ -3899,12 +3899,12 @@ const keyValuePairsTabs: [string, TabsProps][] = [
         StudyOrigin.INDEX_VOLETA,
         {
             titre: {
-                FR: 'Indice Entrep., Volet A',
-                EN: 'Entrep. Index, Section A',
+                FR: 'Intensions',
+                EN: 'Intentions',
             },
             acronym: {
-                FR: 'IEVA',
-                EN: 'EISA',
+                FR: 'I',
+                EN: 'I',
             },
         },
     ],
@@ -3912,12 +3912,12 @@ const keyValuePairsTabs: [string, TabsProps][] = [
         StudyOrigin.INDEX_VOLETB,
         {
             titre: {
-                FR: 'Indice Entrep., Volet B',
-                EN: 'Entrep. Index, Section B',
+                FR: 'Reprise',
+                EN: 'Take Over',
             },
             acronym: {
-                FR: 'IEVB',
-                EN: 'EISB',
+                FR: 'R',
+                EN: 'TO',
             },
         },
     ],

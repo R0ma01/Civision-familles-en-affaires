@@ -3,6 +3,7 @@ import axios from 'axios';
 import useDataStore from '@/reducer/dataStore';
 import { Language } from '@/components/enums/language';
 import { SharedPromptsTranslations } from '@/constants/translations/page-prompts';
+import { CloseArrowSVG, OpenArrowSVG } from '../svg-icons/svg-icons';
 
 interface ImageDropDownProps {
     handleImageChange: (imagePath: string) => void;
@@ -48,7 +49,7 @@ const ImageDropdown = ({
                     e.preventDefault();
                     setIsOpen(!isOpen);
                 }}
-                className="mb-4 p-3 border rounded bg-gray-200 flex flex-row items-center"
+                className="mb-4 p-3 rounded bg-[#DFDFDF] dark:bg-dark-map-gray border border-logo-dark-blue flex flex-row items-center"
             >
                 {selectedImage !== '' ? (
                     <div className="flex items-center">
@@ -64,24 +65,23 @@ const ImageDropdown = ({
                 {isOpen ? (
                     <div>
                         {/* Content to show when dropdown is open */}
-                        <p>▼</p>
+                        <CloseArrowSVG className="fill-logo-dark-blue dark:fill-white"></CloseArrowSVG>
                     </div>
                 ) : (
                     <div>
-                        {/* Content to show when dropdown is closed */}
-                        <p>▲</p>
+                        <OpenArrowSVG className="fill-logo-dark-blue dark:fill-white"></OpenArrowSVG>
                     </div>
                 )}
             </button>
             {isOpen && (
-                <ul className="absolute top-28 w-32 border rounded bg-white shadow-md max-h-64 overflow-y-auto z-30">
+                <ul className="absolute top-28 w-36 rounded gap-1 bg-[#DFDFDF] dark:bg-dark-map-gray shadow-md max-h-64 overflow-y-auto z-30 flex flex-col items-center">
                     {images.length > 0 &&
                         images.map((image, index) => {
                             if (selectedImage !== image) {
                                 return (
                                     <li
                                         key={index}
-                                        className="flex items-center p-2 cursor-pointer hover:bg-gray-200"
+                                        className="flex flex-col items-center cursor-pointer hover:bg-gray-400 w-full"
                                         onClick={() => handleSelectImage(image)}
                                     >
                                         <img
