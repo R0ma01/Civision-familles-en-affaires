@@ -148,17 +148,8 @@ export default function Carte() {
         ) {
             indexeBFetch();
         }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [
-        studyData,
-        repertoireData,
-        fournisseurData,
-        indexeAData,
-        indexeBData,
-        fetchStudyData,
-        fetchRepertoireData,
-        fetchFournisseurData,
-        fetchIndexeAData,
-        fetchIndexeBData,
         studyDataFetched,
         loading,
         fournisseurDataFetched,
@@ -255,9 +246,11 @@ export default function Carte() {
                         className="absolute bottom-0 right-1 z-50"
                         mapType={mapType}
                     ></ColorLegend>
-                    {/* <RegionGrid
+                    <RegionGrid
                         map={map}
                         filterFunction={(mrc_id: number) => {
+                            console.log(mrc_id);
+                            console.log('hello');
                             if (mrc_id !== 0) {
                                 setFilter(
                                     RepertoireDataFields.REG_IDU,
@@ -267,9 +260,9 @@ export default function Carte() {
 
                             filterRepertoireData();
                         }}
-                    ></RegionGrid> */}
+                    ></RegionGrid>
 
-                    <MrcGrid
+                    {/* <MrcGrid
                         map={map}
                         filterFunction={(mrc_id: number) => {
                             if (mrc_id !== 0) {
@@ -278,7 +271,7 @@ export default function Carte() {
 
                             filterRepertoireData();
                         }}
-                    ></MrcGrid>
+                    ></MrcGrid> */}
                 </>
             )}
             {mapType == MapType.FOURNISSEURS && (

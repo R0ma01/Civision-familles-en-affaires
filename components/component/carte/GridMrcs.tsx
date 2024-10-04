@@ -1,6 +1,7 @@
 import { useEffect, useRef } from 'react';
 
 import qcMrcs from '@/geojson/qc_mrcs2.json';
+import useGlobalFilterStore from '@/stores/global-filter-store';
 
 interface ChloroplethProps {
     map: any;
@@ -9,6 +10,34 @@ interface ChloroplethProps {
 
 const MrcGrid: React.FC<ChloroplethProps> = ({ map, filterFunction }) => {
     const hoveredRegionIdRef = useRef<number[]>([]); // Array of highlighted region IDs
+    const matchStage = useGlobalFilterStore((state) => state.matchStage);
+    useEffect(() => {
+        if (!map) return;
+        const newFilters: number[] = [];
+        const mrc_match = matchStage['MRC_IDU'];
+        if (mrc_match) {
+            if (mrc_match.$in) {
+                mrc_match.$in.forEach((value: number) => {
+                    newFilters.push(value);
+                });
+            }
+        }
+
+        hoveredRegionIdRef.current = newFilters;
+        if (map.getLayer('mrc-outline'))
+            map.setPaintProperty('mrc-outline', 'line-color', [
+                'case',
+                [
+                    'in',
+                    ['get', 'DRIDU'],
+                    ['literal', hoveredRegionIdRef.current],
+                ],
+                '#FFCC00', // Highlight color for selected regions
+                'rgba(0, 0, 0, 0)', // Transparent for unselected regions
+            ]);
+
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [matchStage, map]);
 
     useEffect(() => {
         if (!map) return;
@@ -43,7 +72,7 @@ const MrcGrid: React.FC<ChloroplethProps> = ({ map, filterFunction }) => {
                 });
 
                 map.addLayer({
-                    id: 'region-outline',
+                    id: 'mrc-outline',
                     type: 'line',
                     source: 'gridMrc-source',
                     paint: {
@@ -80,18 +109,6 @@ const MrcGrid: React.FC<ChloroplethProps> = ({ map, filterFunction }) => {
                                 clickedRegionId,
                             ];
                         }
-
-                        // Update the line color to reflect the selected regions
-                        map.setPaintProperty('region-outline', 'line-color', [
-                            'case',
-                            [
-                                'in',
-                                ['get', 'DRIDU'],
-                                ['literal', hoveredRegionIdRef.current],
-                            ],
-                            '#FFCC00', // Highlight color for selected regions
-                            'rgba(0, 0, 0, 0)', // Transparent for unselected regions
-                        ]);
 
                         filterFunction(clickedRegionId ?? 0);
                     }

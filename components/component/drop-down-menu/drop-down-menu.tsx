@@ -4,6 +4,10 @@ import { value_constants } from '@/constants/constants';
 import { Language } from '@/components/enums/language';
 import useDataStore from '@/reducer/dataStore';
 import { DropDownType } from '@/components/interface/drop-down-type';
+import {
+    CloseArrowSVG,
+    OpenArrowSVG,
+} from '@/components/component/svg-icons/svg-icons';
 
 import {
     SharedPromptsTranslations,
@@ -151,20 +155,15 @@ const Dropdown = ({
                         style={{ backgroundColor: selectedValue }}
                     ></div>
                 )}
-                <svg
-                    className={`w-4 h-4 transition-transform ${dropdownOpen ? 'rotate-180' : 'rotate-0'}`}
-                    xmlns="http://www.w3.org/2000/svg"
-                    fill="none"
-                    viewBox="0 0 24 24"
-                    stroke="currentColor"
-                >
-                    <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        strokeWidth="2"
-                        d="M19 9l-7 7-7-7"
-                    />
-                </svg>
+                {dropdownOpen ? (
+                    <div className="w-fit h-fit p-1">
+                        <OpenArrowSVG className="fill-black w-4 h-4"></OpenArrowSVG>
+                    </div>
+                ) : (
+                    <div className="w-fit h-fit p-1 ">
+                        <CloseArrowSVG className="fill-black w-4 h-4"></CloseArrowSVG>
+                    </div>
+                )}
             </button>
             {dropdownOpen && (
                 <div

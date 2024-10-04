@@ -1,8 +1,12 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { TableauxTraductionsMainDataFields } from '@/services/translations';
-import { value_constants } from '@/constants/constants';
+
 import { Language } from '@/components/enums/language';
 import useDataStore from '@/reducer/dataStore';
+import {
+    CloseArrowSVG,
+    OpenArrowSVG,
+} from '@/components/component/svg-icons/svg-icons';
 
 interface DropdownProps {
     title: string;
@@ -104,35 +108,29 @@ const DropdownSelect = ({
                  focus:ring-blue-500 focus:ring-opacity-50 text-xs ${className} shadow-sm`}
             >
                 <span className="overflow-hidden w-40 max-h-8">{title}</span>
-
-                <svg
-                    className={`w-4 h-4 transition-transform ${dropdownOpen ? 'rotate-180' : 'rotate-0'}`}
-                    xmlns="http://www.w3.org/2000/svg"
-                    fill="none"
-                    viewBox="0 0 24 24"
-                    stroke="currentColor"
-                >
-                    <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        strokeWidth="2"
-                        d="M19 9l-7 7-7-7"
-                    />
-                </svg>
+                {dropdownOpen ? (
+                    <div className="w-fit h-fit p-1">
+                        <OpenArrowSVG className="fill-black w-4 h-4"></OpenArrowSVG>
+                    </div>
+                ) : (
+                    <div className="w-fit h-fit p-1 ">
+                        <CloseArrowSVG className="fill-black w-4 h-4"></CloseArrowSVG>
+                    </div>
+                )}
             </button>
             {dropdownOpen && (
                 <div
                     ref={dropdownRef}
-                    className={`absolute mt-1 p-1 bg-white border border-gray-300 dark:bg-gray-700 rounded-lg 
-                        shadow-lg z-10 w-52`}
+                    className={`absolute mt-1 p-1 bg-white border border-gray-300 rounded-lg 
+                        shadow-lg z-10 w-48`}
                 >
-                    <ul className="max-h-60 rounded-lg overflow-y-auto dark:bg-gray-700">
+                    <ul className="max-h-60 rounded-lg overflow-y-aut">
                         {options.map((option: any) => {
                             const isSelected = selectedValue.includes(option);
                             return (
                                 <li
                                     key={option as unknown as string}
-                                    className={`w-52 m-1 h-fit hover:border-2 cursor-pointer transition-colors ${isSelected ? 'text-teal-300' : 'text-black dark:text-white'}`}
+                                    className={`text-xs text-wrap w-48 m-1 h-fit hover:border-2 cursor-pointer transition-colors ${isSelected ? 'text-teal-300' : 'text-black'}`}
                                     onClick={() => handleSelection(option)}
                                 >
                                     {displayValue(option, lang, dataField)}

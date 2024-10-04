@@ -26,6 +26,7 @@ import { SharedPromptsTranslations } from '@/constants/translations/page-prompts
 import { GraphTextService } from '@/services/translations';
 import { LanguageToggle } from '@/components/component/language-toggle/language-toggle';
 import { FilterList } from './filter-list';
+import DropdownSelect from '@/components/component/drop-down-menu/drop-down-menu-selected-field';
 
 const filterConfigurations = {
     [MapType.REPERTOIRE]: {
@@ -144,7 +145,7 @@ const FilterMenu: React.FC<FilterMenuProps> = ({
         if (!filters) return null;
 
         return (
-            <div className="mt-2 flex flex-col">
+            <div className="mt-2 flex flex-col gap-2 items-center">
                 {filters[selectedTab]?.map((filter: any, index: number) => (
                     <FilterItem
                         key={index}
@@ -244,23 +245,21 @@ function FilterItem({
         SharedPromptsTranslations.error[lang];
 
     return (
-        <div>
-            <label>{labelTitle}</label>
-            <Dropdown
-                inputValue={
-                    matchStage[filterData]
-                        ? matchStage[filterData]['$in'][0]
-                        : SharedPromptsTranslations.all[lang]
-                }
-                options={[
-                    SharedPromptsTranslations.all[lang],
-                    ...GraphTextService.getKeys(filterData),
-                ]}
-                dataField={filterData}
-                onChange={(value: any) => {
-                    handleChange(filterData, value);
-                }}
-            />
-        </div>
+        <DropdownSelect
+            title={labelTitle}
+            inputValue={
+                matchStage[filterData]
+                    ? matchStage[filterData]['$in']
+                    : [SharedPromptsTranslations.all[lang]]
+            }
+            options={[
+                SharedPromptsTranslations.all[lang],
+                ...GraphTextService.getKeys(filterData),
+            ]}
+            dataField={filterData}
+            onChange={(value: any) => {
+                handleChange(filterData, value);
+            }}
+        />
     );
 }

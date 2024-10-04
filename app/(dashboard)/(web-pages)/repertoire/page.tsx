@@ -15,22 +15,18 @@ import {
     UpArrowSVG,
     FactorySVG,
 } from '@/components/component/svg-icons/svg-icons';
-import Image from 'next/image';
-import flag_quebec from '@/public/images/flag-quebec.png';
-import flag_canada from '@/public/images/flag-canada.png';
 import { GraphDataHttpRequestService } from '@/services/data-http-request-service';
 
 const DataCardDiv: React.FC<{
     children: React.ReactNode;
 }> = ({ children }) => {
-    const [isCollapsed, setIsCollapsed] = useState(false);
     return (
         <div
             className={`w-[270px] h-[100px] bg-[#f5ebe0] dark:bg-[#363636] dark:bg-opacity-50 dark:text-white backdrop-filter
                  backdrop-blur bg-opacity-50 saturate-100 backdrop-contrast-100 rounded-xl shadow-3xl pointer-events-auto
                  flex flex-col items-center`}
         >
-            {!isCollapsed && children}
+            {children}
         </div>
     );
 };

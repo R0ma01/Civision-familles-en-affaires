@@ -6,7 +6,10 @@ import {
 } from '@/components/interface/chercheur-drop-down-content';
 import { AlbumDataFields } from '@/components/enums/data-types-enum';
 import { GraphBoxType } from '@/components/enums/graph-box-enum';
-import { CloseArrowSVG, OpenArrowSVG } from '../svg-icons/svg-icons';
+import {
+    CloseArrowSVG,
+    OpenArrowSVG,
+} from '@/components/component/svg-icons/svg-icons';
 
 // Static dropdown structure
 const dropdownStructure: ChercheurDropdownSection[] = [
