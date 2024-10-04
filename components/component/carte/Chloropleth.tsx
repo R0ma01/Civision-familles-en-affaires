@@ -42,7 +42,7 @@ const Chloropleth: React.FC<ChloroplethProps> = ({
     useEffect(() => {
         if (!map) return;
 
-        const mapEntries = MapRegions.get(mapType)?.entries();
+        const mapEntries = Array.from(MapRegions.get(mapType)?.entries() || []);
         console.log(mapEntries);
         const newFilters: string[] = [];
         const mrc_match = matchStage[AlbumDataFields.COORDONNES_REGION];
