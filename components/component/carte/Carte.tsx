@@ -212,6 +212,8 @@ export default function Carte() {
                 <>
                     <Chloropleth
                         map={map}
+                        mapType={MapType.PAGE_INFORMATION_ALBUM}
+                        regionField={AlbumDataFields.COORDONNES_REGION}
                         data={studyData}
                         dataField="count"
                         filterFunction={(region: any) => {
@@ -281,6 +283,10 @@ export default function Carte() {
                 <>
                     <Chloropleth
                         map={map}
+                        mapType={MapType.FOURNISSEURS}
+                        regionField={
+                            FournisseurDataFields.SECTEURS_GEOGRAPHIQUES
+                        }
                         data={convertFournisseurData(
                             fournisseurData,
                             matchStage,
@@ -308,6 +314,8 @@ export default function Carte() {
                     <Chloropleth
                         map={map}
                         data={indexeAData}
+                        mapType={MapType.PAGE_INFORMATION_INDEX_VOLETA}
+                        regionField={IndexeDataFieldsB.Q0QC}
                         dataField="count"
                         filterFunction={(region: any) => {
                             filter(region, IndexeDataFieldsB.Q0QC, mapType);
@@ -326,6 +334,8 @@ export default function Carte() {
                     <Chloropleth
                         map={map}
                         data={indexeBData}
+                        mapType={MapType.PAGE_INFORMATION_INDEX_VOLETB}
+                        regionField={IndexeDataFieldsB.Q0QC}
                         dataField="count"
                         filterFunction={(region: any) => {
                             filter(region, IndexeDataFieldsB.Q0QC, mapType);
