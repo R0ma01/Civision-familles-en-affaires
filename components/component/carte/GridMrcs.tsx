@@ -8,7 +8,7 @@ interface ChloroplethProps {
 }
 
 const MrcGrid: React.FC<ChloroplethProps> = ({ map, filterFunction }) => {
-    const hoveredRegionIdRef = useRef<number | null>(null);
+    const hoveredRegionIdRef = useRef<number[]>([]); // Array of highlighted region IDs
 
     useEffect(() => {
         if (!map) return;
@@ -32,12 +32,13 @@ const MrcGrid: React.FC<ChloroplethProps> = ({ map, filterFunction }) => {
                         'line-width': 0.5,
                     },
                 });
+
                 map.addLayer({
                     id: 'mrc-fill',
                     type: 'fill', // Use 'line' to display outlines
                     source: 'gridMrc-source',
                     paint: {
-                        'fill-color': 'rgba(0, 0, 0, 0)', // White outlines
+                        'fill-color': 'rgba(0, 0, 0, 0)', // Transparent fill
                     },
                 });
 
@@ -45,38 +46,54 @@ const MrcGrid: React.FC<ChloroplethProps> = ({ map, filterFunction }) => {
                     id: 'region-outline',
                     type: 'line',
                     source: 'gridMrc-source',
-
                     paint: {
                         'line-color': [
                             'case',
                             [
-                                '==',
+                                'in',
                                 ['get', 'DRIDU'],
-                                hoveredRegionIdRef.current,
+                                ['literal', hoveredRegionIdRef.current],
                             ],
-                            '#FFCC00', // Highlight color on hover
+                            '#FFCC00', // Highlight color for hovered regions
                             'rgba(0, 0, 0, 0)', // Transparent when not hovered
                         ],
                         'line-width': 3, // Width of the outline
                     },
                 });
 
-                // Add click event listener for mrc outlines
+                // Add click event listener for mrc-fill
                 map.on('click', 'mrc-fill', (e: any) => {
                     if (e.features.length > 0) {
-                        const clickedRegionId = e.features[0].properties.DRIDU; // Ensure this matches your GeoJSON property
+                        const clickedRegionId = e.features[0].properties.DRIDU;
 
-                        // Remove existing highlight if any
-                        hoveredRegionIdRef.current = clickedRegionId;
+                        // Toggle clicked region in the hoveredRegionIdRef array
+                        if (
+                            hoveredRegionIdRef.current.includes(clickedRegionId)
+                        ) {
+                            hoveredRegionIdRef.current =
+                                hoveredRegionIdRef.current.filter(
+                                    (id) => id !== clickedRegionId,
+                                );
+                        } else {
+                            hoveredRegionIdRef.current = [
+                                ...hoveredRegionIdRef.current,
+                                clickedRegionId,
+                            ];
+                        }
+
+                        // Update the line color to reflect the selected regions
                         map.setPaintProperty('region-outline', 'line-color', [
                             'case',
-                            ['==', ['get', 'DRIDU'], clickedRegionId],
-                            '#FFCC00', // Highlight color on hover
-                            'rgba(0, 0, 0, 0)', // Transparent when not hovered
+                            [
+                                'in',
+                                ['get', 'DRIDU'],
+                                ['literal', hoveredRegionIdRef.current],
+                            ],
+                            '#FFCC00', // Highlight color for selected regions
+                            'rgba(0, 0, 0, 0)', // Transparent for unselected regions
                         ]);
-                        filterFunction(hoveredRegionIdRef.current ?? 0);
-                        // Create an outline layer for the clicked region
-                        // Position this layer above the mrc-outlines layer
+
+                        filterFunction(clickedRegionId ?? 0);
                     }
                 });
             } else {
@@ -94,6 +111,7 @@ const MrcGrid: React.FC<ChloroplethProps> = ({ map, filterFunction }) => {
         return () => {
             map.off('load', handleMapLoad);
         };
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [map]);
 
     return null;

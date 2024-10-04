@@ -38,6 +38,8 @@ export const SharedPromptsTranslations: PromptsTranslations = {
         EN: 'Select an image',
     },
     filters: { FR: 'Filtres', EN: 'Filters' },
+    applied_filters: { FR: 'Filtres Appliqués', EN: 'Applied Filters' },
+    reset_filters: { FR: 'Réinitialiser', EN: 'Reset' },
     general_filters: { FR: 'Général', EN: 'General' },
     advanced_filters: { FR: 'Avancé', EN: 'Advanced' },
 };

@@ -26,7 +26,7 @@ const dettermineColor = (buttonType: ButtonType, pending: boolean): string => {
         case ButtonType.LOADING:
             return 'bg-gray-400 border-gray-400 cursor-not-allowed py-2 px-4 ';
         default:
-            return 'bg-logo-light-blue hover:bg-logo-dark-blue py-2 px-4 ';
+            return 'bg-logo-dark-blue py-2 px-4 ';
     }
 };
 

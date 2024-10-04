@@ -25,6 +25,7 @@ import useDataStore from '@/reducer/dataStore';
 import { SharedPromptsTranslations } from '@/constants/translations/page-prompts';
 import { GraphTextService } from '@/services/translations';
 import { LanguageToggle } from '@/components/component/language-toggle/language-toggle';
+import { FilterList } from './filter-list';
 
 const filterConfigurations = {
     [MapType.REPERTOIRE]: {
@@ -191,23 +192,33 @@ const FilterMenu: React.FC<FilterMenuProps> = ({
                 </Button>
             </div>
             <div
-                className={`fixed top-5  right-0 h-[350px] w-64 bg-white p-4 transform ${isOpen ? 'translate-x-0' : 'translate-x-64'} transition-transform duration-300 ease-in-out`}
+                className={`fixed top-5 right-0 h-fit w-64 bg-white p-4 transform ${isOpen ? 'translate-x-0' : 'translate-x-64'} transition-transform duration-300 ease-in-out`}
             >
-                <h2 className="text-2xl font-bold">
-                    {SharedPromptsTranslations.filters[lang]}
-                </h2>
-                <div className="mt-2 flex border-b dark:border-white border-black">
-                    {Object.keys(filterConfigurations[mapType]).map((tab) => (
-                        <button
-                            key={tab}
-                            className={`flex-1 text-center py-2 ${selectedTab === tab ? 'border-b-2 border-black text-black' : 'text-gray-500'}`}
-                            onClick={() => setSelectedTab(tab)}
-                        >
-                            {SharedPromptsTranslations[`${tab}_filters`][lang]}
-                        </button>
-                    ))}
+                <div className="relative">
+                    <h2 className="text-2xl font-bold">
+                        {SharedPromptsTranslations.filters[lang]}
+                    </h2>
+                    <div className="mt-2 flex border-b border-black">
+                        {Object.keys(filterConfigurations[mapType]).map(
+                            (tab) => (
+                                <button
+                                    key={tab}
+                                    className={`flex-1 text-center py-2 ${selectedTab === tab ? 'border-b-2 border-black text-black' : 'text-gray-500'}`}
+                                    onClick={() => setSelectedTab(tab)}
+                                >
+                                    {
+                                        SharedPromptsTranslations[
+                                            `${tab}_filters`
+                                        ][lang]
+                                    }
+                                </button>
+                            ),
+                        )}
+                    </div>
+                    {renderFilters()}
+
+                    <FilterList className=""></FilterList>
                 </div>
-                {renderFilters()}
             </div>
         </>
     );
@@ -239,9 +250,12 @@ function FilterItem({
                 inputValue={
                     matchStage[filterData]
                         ? matchStage[filterData]['$in'][0]
-                        : value_constants.all_values_string_filter
+                        : SharedPromptsTranslations.all[lang]
                 }
-                options={['toutes', ...GraphTextService.getKeys(filterData)]}
+                options={[
+                    SharedPromptsTranslations.all[lang],
+                    ...GraphTextService.getKeys(filterData),
+                ]}
                 dataField={filterData}
                 onChange={(value: any) => {
                     handleChange(filterData, value);

@@ -18,6 +18,9 @@ import {
 } from '@/components/interface/chart-data';
 import { GraphDataHttpRequestService } from '@/services/data-http-request-service';
 import useGlobalDataStore from '@/stores/global-data-store';
+import useDataStore from '@/reducer/dataStore';
+import { SharedPromptsTranslations } from '@/constants/translations/page-prompts';
+
 interface GraphBoxProps {
     content: GraphBoxContent;
     year: StudyYears;
@@ -34,7 +37,7 @@ const GraphBox: React.FC<GraphBoxProps> = ({ content, chartSize, year }) => {
     const [size, setChartSize] = useState<ChartSize>(
         chartSize ? chartSize : ChartSize.MEDIUM,
     );
-
+    const lang = useDataStore((state) => state.lang);
     const { filterStudyData, filterIndexeAData, filterIndexeBData } =
         useGlobalDataStore((state: any) => ({
             filterStudyData: state.filterStudyData,
@@ -46,7 +49,7 @@ const GraphBox: React.FC<GraphBoxProps> = ({ content, chartSize, year }) => {
         const currentFilter = getFilter(dataField);
 
         if (currentFilter === entry.name) {
-            setFilter(dataField, 'toutes');
+            setFilter(dataField, SharedPromptsTranslations.all[lang]);
         } else {
             setFilter(dataField, entry.name);
         }

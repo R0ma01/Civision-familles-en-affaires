@@ -255,7 +255,7 @@ export default function Carte() {
                         className="absolute bottom-0 right-1 z-50"
                         mapType={mapType}
                     ></ColorLegend>
-                    <RegionGrid
+                    {/* <RegionGrid
                         map={map}
                         filterFunction={(mrc_id: number) => {
                             if (mrc_id !== 0) {
@@ -267,7 +267,7 @@ export default function Carte() {
 
                             filterRepertoireData();
                         }}
-                    ></RegionGrid>
+                    ></RegionGrid> */}
 
                     <MrcGrid
                         map={map}
