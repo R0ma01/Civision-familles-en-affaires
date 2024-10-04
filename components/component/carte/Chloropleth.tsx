@@ -43,7 +43,7 @@ const Chloropleth: React.FC<ChloroplethProps> = ({
         if (!map) return;
 
         const mapEntries = Array.from(MapRegions.get(mapType)?.entries() || []);
-        console.log(mapEntries);
+
         const newFilters: string[] = [];
         const mrc_match = matchStage[AlbumDataFields.COORDONNES_REGION];
         if (mrc_match?.$in) {
@@ -52,7 +52,7 @@ const Chloropleth: React.FC<ChloroplethProps> = ({
                     const foundRegion = mapEntries.find(
                         (reg) => reg[0] === region,
                     );
-                    console.log(foundRegion);
+
                     if (foundRegion) {
                         newFilters.push(foundRegion[1].toString()); // Safely push the first element
                     }
