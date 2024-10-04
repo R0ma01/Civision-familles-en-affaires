@@ -47,16 +47,7 @@ export function FilterList({ className = '' }: FilterListProps) {
 
     const [visible, setVisible] = useState<boolean>(true);
 
-    const toggleTab = () => {
-        setIsOpen(!isOpen);
-    };
-
-    const toggleVisibility = () => {
-        setVisible(!visible);
-        toggleContentVisibility();
-    };
-
-    async function handleChange(field: any, newFieldValue: any) {
+    async function handleChange() {
         switch (mapType) {
             case MapType.REPERTOIRE:
                 filterRepertoireData();
