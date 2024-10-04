@@ -140,10 +140,8 @@ const MrcGrid: React.FC<ChloroplethProps> = ({
 
         if (map.isStyleLoaded()) {
             handleMapLoad();
-            setLoaded(false);
         } else {
             map.on('load', handleMapLoad);
-            setLoaded(false);
         }
 
         return () => {

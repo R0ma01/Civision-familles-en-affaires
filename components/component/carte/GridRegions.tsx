@@ -131,16 +131,16 @@ const RegionGrid: React.FC<ChloroplethProps> = ({
                 }
             }
             // Remove layers and sources if mapGrid is true (conditional rendering)
-            if (mapGrid && loaded) {
-                if (map.getLayer('region-outline'))
-                    map.removeLayer('region-outline');
-                if (map.getLayer('region-fill')) map.removeLayer('region-fill');
-                if (map.getLayer('regions-outlines'))
-                    map.removeLayer('regions-outlines');
-                if (map.getSource('gridRegion-source'))
-                    map.removeSource('gridRegion-source');
-                setLoaded(false);
-            }
+            // if (mapGrid && loaded) {
+            //     if (map.getLayer('region-outline'))
+            //         map.removeLayer('region-outline');
+            //     if (map.getLayer('region-fill')) map.removeLayer('region-fill');
+            //     if (map.getLayer('regions-outlines'))
+            //         map.removeLayer('regions-outlines');
+            //     if (map.getSource('gridRegion-source'))
+            //         map.removeSource('gridRegion-source');
+            //     setLoaded(false);
+            // }
         };
 
         if (map.isStyleLoaded()) {
