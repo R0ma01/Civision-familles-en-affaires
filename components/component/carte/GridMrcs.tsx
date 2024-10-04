@@ -148,7 +148,6 @@ const MrcGrid: React.FC<ChloroplethProps> = ({
 
         return () => {
             // Cleanup layers and sources when component is unmounted or dependencies change
-            map.off('load', handleMapLoad);
             if (loaded && !mapGrid) {
                 ['mrc-outline', 'mrc-fill', 'mrc-outlines'].forEach((layer) => {
                     if (map.getLayer(layer)) map.removeLayer(layer);
