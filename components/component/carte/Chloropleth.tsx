@@ -26,6 +26,7 @@ const Chloropleth: React.FC<ChloroplethProps> = ({
 }) => {
     const [hoveredRegionIds, setHoveredRegionIds] = useState<string[]>([]); // Store region IDs in state
     const matchStage = useGlobalFilterStore((state) => state.matchStage);
+    const [loaded, setLoaded] = useState<boolean>(false);
 
     // Memoized function to create region features based on data
     const regionFeatures = useMemo(() => {
@@ -37,42 +38,6 @@ const Chloropleth: React.FC<ChloroplethProps> = ({
 
         return createRegionFeatures(newRegionCounts, quebec_regions);
     }, [data]);
-
-    // Update hoveredRegionIds based on matchStage
-    useEffect(() => {
-        if (!map) return;
-
-        const mapEntries = Array.from(MapRegions.get(mapType)?.entries() || []);
-
-        const newFilters: string[] = [];
-        const mrc_match = matchStage[AlbumDataFields.COORDONNES_REGION];
-        if (mrc_match?.$in) {
-            mrc_match.$in.map((region: string) => {
-                if (mapEntries) {
-                    const foundRegion = mapEntries.find(
-                        (reg) => reg[0] === region,
-                    );
-
-                    if (foundRegion) {
-                        newFilters.push(foundRegion[1].toString()); // Safely push the first element
-                    }
-                }
-            });
-        }
-
-        setHoveredRegionIds(newFilters); // Update the state instead of ref
-
-        // Update hover layer to highlight selected regions
-        if (map.getLayer('chloropleth-hover-layer')) {
-            map.setPaintProperty('chloropleth-hover-layer', 'line-color', [
-                'case',
-                ['in', ['get', 'region'], ['literal', newFilters]],
-                '#FFCC00', // Highlight color for selected regions
-                'rgba(0, 0, 0, 0)', // Transparent for unselected regions
-            ]);
-        }
-        //eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [matchStage, map]);
 
     // Handle map loading and setting up layers
     useEffect(() => {
@@ -147,6 +112,7 @@ const Chloropleth: React.FC<ChloroplethProps> = ({
                     }
                 });
             }
+            setLoaded(true);
         };
 
         if (map.isStyleLoaded()) {
@@ -158,9 +124,45 @@ const Chloropleth: React.FC<ChloroplethProps> = ({
         return () => {
             if (map) {
                 map.off('load', handleMapLoad);
+                setLoaded(false);
             }
         };
     }, [map, regionFeatures, dataField, hoveredRegionIds, filterFunction]);
+
+    useEffect(() => {
+        if (!map || !loaded) return;
+
+        const mapEntries = Array.from(MapRegions.get(mapType)?.entries() || []);
+        const newFilters: string[] = [];
+        const mrc_match = matchStage[AlbumDataFields.COORDONNES_REGION];
+
+        if (mrc_match?.$in) {
+            mrc_match.$in.forEach((region: string) => {
+                const foundRegion = mapEntries.find((reg) => reg[0] === region);
+                if (foundRegion) {
+                    newFilters.push(foundRegion[1].toString());
+                }
+            });
+        }
+
+        setHoveredRegionIds(newFilters); // Update the state instead of ref
+
+        // Safely check if the hover layer exists before updating it
+        if (map) {
+            map.setPaintProperty('chloropleth-hover-layer', 'line-color', [
+                'case',
+                ['in', ['get', 'region'], ['literal', newFilters]],
+                '#FFCC00', // Highlight color for selected regions
+                'rgba(0, 0, 0, 0)', // Transparent for unselected regions
+            ]);
+        } else {
+            console.warn(
+                "Layer 'chloropleth-hover-layer' not found on the map.",
+            );
+        }
+
+        //eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [matchStage, map]);
 
     return null;
 };
@@ -186,9 +188,8 @@ function createRegionFeatures(
 
 function newRegionCount() {
     const regions = GraphTextService.getKeys(AlbumDataFields.COORDONNES_REGION);
-
     const newRegionCounts: Record<string, number> = {};
-    regions?.forEach((region) => (newRegionCounts[region] = 0));
 
+    regions?.forEach((region) => (newRegionCounts[region] = 0));
     return newRegionCounts;
 }

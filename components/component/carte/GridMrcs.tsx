@@ -1,7 +1,7 @@
-import { useEffect, useRef } from 'react';
-
+import { useEffect, useRef, useState } from 'react';
 import qcMrcs from '@/geojson/qc_mrcs2.json';
 import useGlobalFilterStore from '@/stores/global-filter-store';
+import { FlakesTexture } from 'three/examples/jsm/Addons.js';
 
 interface ChloroplethProps {
     map: any;
@@ -16,20 +16,10 @@ const MrcGrid: React.FC<ChloroplethProps> = ({
 }) => {
     const hoveredRegionIdRef = useRef<number[]>([]); // Array of highlighted region IDs
     const matchStage = useGlobalFilterStore((state) => state.matchStage);
-    useEffect(() => {
-        if (!map) return;
-        const newFilters: number[] = [];
-        const mrc_match = matchStage['MRC_IDU'];
-        if (mrc_match) {
-            if (mrc_match.$in) {
-                mrc_match.$in.forEach((value: number) => {
-                    newFilters.push(value);
-                });
-            }
-        }
+    const [loaded, setLoaded] = useState<boolean>(false);
 
-        hoveredRegionIdRef.current = newFilters;
-        if (map.getLayer('mrc-outline'))
+    const updateRegionOutlines = () => {
+        if (map && map.getLayer('mrc-outline')) {
             map.setPaintProperty('mrc-outline', 'line-color', [
                 'case',
                 [
@@ -40,40 +30,50 @@ const MrcGrid: React.FC<ChloroplethProps> = ({
                 '#FFCC00', // Highlight color for selected regions
                 'rgba(0, 0, 0, 0)', // Transparent for unselected regions
             ]);
+        }
+    };
 
-        // eslint-disable-next-line react-hooks/exhaustive-deps
+    // Effect to handle region filtering when `matchStage` changes
+    useEffect(() => {
+        if (!map || !loaded) return;
+        const newFilters: number[] = [];
+        const mrc_match = matchStage['MRC_IDU'];
+        if (mrc_match?.['$in']) {
+            mrc_match.$in.forEach((value: number) => newFilters.push(value));
+        }
+
+        hoveredRegionIdRef.current = newFilters;
+        updateRegionOutlines();
     }, [matchStage, map]);
 
+    // Effect to handle grid creation/removal based on `mapGrid`
     useEffect(() => {
         if (!map) return;
 
         const handleMapLoad = () => {
-            // Check if the source already exists
-            if (mapGrid) {
+            if (!mapGrid) {
                 if (!map.getSource('gridMrc-source')) {
-                    // Add GeoJSON source
                     map.addSource('gridMrc-source', {
                         type: 'geojson',
                         data: qcMrcs,
                     });
 
-                    // Add a line layer to show MRC outlines
                     map.addLayer({
                         id: 'mrc-outlines',
-                        type: 'line', // Use 'line' to display outlines
+                        type: 'line',
                         source: 'gridMrc-source',
                         paint: {
-                            'line-color': '#FFF', // White outlines
+                            'line-color': '#FFF',
                             'line-width': 0.5,
                         },
                     });
 
                     map.addLayer({
                         id: 'mrc-fill',
-                        type: 'fill', // Use 'line' to display outlines
+                        type: 'fill',
                         source: 'gridMrc-source',
                         paint: {
-                            'fill-color': 'rgba(0, 0, 0, 0)', // Transparent fill
+                            'fill-color': 'rgba(0, 0, 0, 0)',
                         },
                     });
 
@@ -89,14 +89,13 @@ const MrcGrid: React.FC<ChloroplethProps> = ({
                                     ['get', 'DRIDU'],
                                     ['literal', hoveredRegionIdRef.current],
                                 ],
-                                '#FFCC00', // Highlight color for hovered regions
-                                'rgba(0, 0, 0, 0)', // Transparent when not hovered
+                                '#FFCC00',
+                                'rgba(0, 0, 0, 0)',
                             ],
-                            'line-width': 3, // Width of the outline
+                            'line-width': 3,
                         },
                     });
 
-                    // Add click event listener for mrc-fill
                     map.on('click', 'mrc-fill', (e: any) => {
                         if (e.features.length > 0) {
                             const clickedRegionId =
@@ -113,44 +112,52 @@ const MrcGrid: React.FC<ChloroplethProps> = ({
                                         (id) => id !== clickedRegionId,
                                     );
                             } else {
-                                hoveredRegionIdRef.current = [
-                                    ...hoveredRegionIdRef.current,
+                                hoveredRegionIdRef.current.push(
                                     clickedRegionId,
-                                ];
+                                );
                             }
 
+                            updateRegionOutlines();
                             filterFunction(clickedRegionId ?? 0);
                         }
                     });
-                } else {
-                    // Update the existing source if it already exists
-                    (map.getSource('gridMrc-source') as any).setData(qcMrcs);
                 }
+                setLoaded(true);
             } else {
-                if (map.getLayer('mrc-outline')) map.removeLayer('mrc-outline');
-                if (map.getLayer('mrc-fill')) map.removeLayer('mrc-fill');
-                if (map.getLayer('mrc-outlines'))
-                    map.removeLayer('mrc-outlines');
-                if (map.getSource('gridMrc-source'))
-                    map.removeSource('gridMrc-source');
+                // Remove layers/sources when `mapGrid` is false
+                if (!mapGrid) {
+                    ['mrc-outline', 'mrc-fill', 'mrc-outlines'].forEach(
+                        (layer) => {
+                            if (map.getLayer(layer)) map.removeLayer(layer);
+                        },
+                    );
+                    if (map.getSource('gridMrc-source'))
+                        map.removeSource('gridMrc-source');
+                }
+                setLoaded(true);
             }
         };
 
         if (map.isStyleLoaded()) {
             handleMapLoad();
+            setLoaded(false);
         } else {
             map.on('load', handleMapLoad);
+            setLoaded(false);
         }
 
         return () => {
+            // Cleanup layers and sources when component is unmounted or dependencies change
             map.off('load', handleMapLoad);
-            if (map.getLayer('mrc-outline')) map.removeLayer('mrc-outline');
-            if (map.getLayer('mrc-fill')) map.removeLayer('mrc-fill');
-            if (map.getLayer('mrc-outlines')) map.removeLayer('mrc-outlines');
-            if (map.getSource('gridMrc-source'))
-                map.removeSource('gridMrc-source');
+            if (loaded && !mapGrid) {
+                ['mrc-outline', 'mrc-fill', 'mrc-outlines'].forEach((layer) => {
+                    if (map.getLayer(layer)) map.removeLayer(layer);
+                });
+                if (map.getSource('gridMrc-source'))
+                    map.removeSource('gridMrc-source');
+            }
+            setLoaded(false);
         };
-
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [map, mapGrid]);
 
