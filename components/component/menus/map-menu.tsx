@@ -9,18 +9,23 @@ import { ButtonType } from '@/components/enums/button-type-enum';
 import useMapStore from '@/stores/global-map-store';
 import { html_object_constants } from '@/constants/constants';
 import { MapType } from '@/components/enums/map-type-enum';
-import { Language } from '@/components/enums/language';
-import useDataStore from '@/reducer/dataStore';
+import useGlobalFilterStore from '@/stores/global-filter-store';
 
 interface MapManuProps {
     className?: string;
 }
 const MapMenu: React.FC<MapManuProps> = ({ className }) => {
-    const { map, toggleLegend, legend } = useMapStore((state) => ({
-        map: state.map,
-        legend: state.legend,
-        toggleLegend: state.toggleLegend,
-    }));
+    const { map, toggleLegend, legend, mapGrid, toggleMapGrid, mapType } =
+        useMapStore((state) => ({
+            map: state.map,
+            legend: state.legend,
+            toggleLegend: state.toggleLegend,
+            mapGrid: state.mapGrid,
+            toggleMapGrid: state.toggleMapGrid,
+            mapType: state.mapType,
+        }));
+
+    const resetFilters = useGlobalFilterStore((state) => state.resetFilters);
 
     const zoomIn = () => {
         if (map) {
@@ -76,6 +81,25 @@ const MapMenu: React.FC<MapManuProps> = ({ className }) => {
                 >
                     <LegendSVG className="group-hover:fill-black" />
                 </Button>
+                {mapType === MapType.REPERTOIRE && (
+                    <Button
+                        id={html_object_constants.zoom_out_tab_id}
+                        buttonType={ButtonType.ICON}
+                        onClick={(e) => {
+                            e.stopPropagation();
+                            toggleMapGrid();
+                            resetFilters();
+                        }}
+                        scaleOnHover={false}
+                        className={`p-1 hover:scale-110 group ${mapGrid ? 'bg-logo-dark-blue' : ''}`}
+                    >
+                        <p
+                            className={`text-black text-[8px] text-center ${mapGrid ? 'text-white' : ''}`}
+                        >
+                            {mapGrid ? 'MRC' : 'REG'}
+                        </p>
+                    </Button>
+                )}
             </div>
         </>
     );

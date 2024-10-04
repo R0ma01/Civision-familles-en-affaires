@@ -31,6 +31,7 @@ export default function Carte() {
     const mapRef = useRef(null);
     const map = useMapStore((state) => state.map);
     const mapType = useMapStore((state) => state.mapType);
+    const mapGrid = useMapStore((state) => state.mapGrid);
 
     const { matchStage, setFilter } = useGlobalFilterStore((state: any) => ({
         matchStage: state.matchStage,
@@ -87,6 +88,7 @@ export default function Carte() {
     useEffect(() => {
         // update map reference
         mapRef.current = map;
+        console.log(map);
     }, [map]);
 
     useEffect(() => {
@@ -246,11 +248,11 @@ export default function Carte() {
                         className="absolute bottom-0 right-1 z-50"
                         mapType={mapType}
                     ></ColorLegend>
+
                     <RegionGrid
                         map={map}
+                        mapGrid={mapGrid}
                         filterFunction={(mrc_id: number) => {
-                            console.log(mrc_id);
-                            console.log('hello');
                             if (mrc_id !== 0) {
                                 setFilter(
                                     RepertoireDataFields.REG_IDU,
@@ -262,8 +264,9 @@ export default function Carte() {
                         }}
                     ></RegionGrid>
 
-                    {/* <MrcGrid
+                    <MrcGrid
                         map={map}
+                        mapGrid={mapGrid}
                         filterFunction={(mrc_id: number) => {
                             if (mrc_id !== 0) {
                                 setFilter(RepertoireDataFields.MRC_IDU, mrc_id);
@@ -271,7 +274,7 @@ export default function Carte() {
 
                             filterRepertoireData();
                         }}
-                    ></MrcGrid> */}
+                    ></MrcGrid>
                 </>
             )}
             {mapType == MapType.FOURNISSEURS && (

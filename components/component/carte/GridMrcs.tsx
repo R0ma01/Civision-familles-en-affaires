@@ -5,10 +5,15 @@ import useGlobalFilterStore from '@/stores/global-filter-store';
 
 interface ChloroplethProps {
     map: any;
+    mapGrid: boolean;
     filterFunction: (mrc_idu: number) => void;
 }
 
-const MrcGrid: React.FC<ChloroplethProps> = ({ map, filterFunction }) => {
+const MrcGrid: React.FC<ChloroplethProps> = ({
+    map,
+    mapGrid,
+    filterFunction,
+}) => {
     const hoveredRegionIdRef = useRef<number[]>([]); // Array of highlighted region IDs
     const matchStage = useGlobalFilterStore((state) => state.matchStage);
     useEffect(() => {
@@ -44,78 +49,90 @@ const MrcGrid: React.FC<ChloroplethProps> = ({ map, filterFunction }) => {
 
         const handleMapLoad = () => {
             // Check if the source already exists
-            if (!map.getSource('gridMrc-source')) {
-                // Add GeoJSON source
-                map.addSource('gridMrc-source', {
-                    type: 'geojson',
-                    data: qcMrcs,
-                });
+            if (mapGrid) {
+                if (!map.getSource('gridMrc-source')) {
+                    // Add GeoJSON source
+                    map.addSource('gridMrc-source', {
+                        type: 'geojson',
+                        data: qcMrcs,
+                    });
 
-                // Add a line layer to show MRC outlines
-                map.addLayer({
-                    id: 'mrc-outlines',
-                    type: 'line', // Use 'line' to display outlines
-                    source: 'gridMrc-source',
-                    paint: {
-                        'line-color': '#FFF', // White outlines
-                        'line-width': 0.5,
-                    },
-                });
+                    // Add a line layer to show MRC outlines
+                    map.addLayer({
+                        id: 'mrc-outlines',
+                        type: 'line', // Use 'line' to display outlines
+                        source: 'gridMrc-source',
+                        paint: {
+                            'line-color': '#FFF', // White outlines
+                            'line-width': 0.5,
+                        },
+                    });
 
-                map.addLayer({
-                    id: 'mrc-fill',
-                    type: 'fill', // Use 'line' to display outlines
-                    source: 'gridMrc-source',
-                    paint: {
-                        'fill-color': 'rgba(0, 0, 0, 0)', // Transparent fill
-                    },
-                });
+                    map.addLayer({
+                        id: 'mrc-fill',
+                        type: 'fill', // Use 'line' to display outlines
+                        source: 'gridMrc-source',
+                        paint: {
+                            'fill-color': 'rgba(0, 0, 0, 0)', // Transparent fill
+                        },
+                    });
 
-                map.addLayer({
-                    id: 'mrc-outline',
-                    type: 'line',
-                    source: 'gridMrc-source',
-                    paint: {
-                        'line-color': [
-                            'case',
-                            [
-                                'in',
-                                ['get', 'DRIDU'],
-                                ['literal', hoveredRegionIdRef.current],
+                    map.addLayer({
+                        id: 'mrc-outline',
+                        type: 'line',
+                        source: 'gridMrc-source',
+                        paint: {
+                            'line-color': [
+                                'case',
+                                [
+                                    'in',
+                                    ['get', 'DRIDU'],
+                                    ['literal', hoveredRegionIdRef.current],
+                                ],
+                                '#FFCC00', // Highlight color for hovered regions
+                                'rgba(0, 0, 0, 0)', // Transparent when not hovered
                             ],
-                            '#FFCC00', // Highlight color for hovered regions
-                            'rgba(0, 0, 0, 0)', // Transparent when not hovered
-                        ],
-                        'line-width': 3, // Width of the outline
-                    },
-                });
+                            'line-width': 3, // Width of the outline
+                        },
+                    });
 
-                // Add click event listener for mrc-fill
-                map.on('click', 'mrc-fill', (e: any) => {
-                    if (e.features.length > 0) {
-                        const clickedRegionId = e.features[0].properties.DRIDU;
+                    // Add click event listener for mrc-fill
+                    map.on('click', 'mrc-fill', (e: any) => {
+                        if (e.features.length > 0) {
+                            const clickedRegionId =
+                                e.features[0].properties.DRIDU;
 
-                        // Toggle clicked region in the hoveredRegionIdRef array
-                        if (
-                            hoveredRegionIdRef.current.includes(clickedRegionId)
-                        ) {
-                            hoveredRegionIdRef.current =
-                                hoveredRegionIdRef.current.filter(
-                                    (id) => id !== clickedRegionId,
-                                );
-                        } else {
-                            hoveredRegionIdRef.current = [
-                                ...hoveredRegionIdRef.current,
-                                clickedRegionId,
-                            ];
+                            // Toggle clicked region in the hoveredRegionIdRef array
+                            if (
+                                hoveredRegionIdRef.current.includes(
+                                    clickedRegionId,
+                                )
+                            ) {
+                                hoveredRegionIdRef.current =
+                                    hoveredRegionIdRef.current.filter(
+                                        (id) => id !== clickedRegionId,
+                                    );
+                            } else {
+                                hoveredRegionIdRef.current = [
+                                    ...hoveredRegionIdRef.current,
+                                    clickedRegionId,
+                                ];
+                            }
+
+                            filterFunction(clickedRegionId ?? 0);
                         }
-
-                        filterFunction(clickedRegionId ?? 0);
-                    }
-                });
+                    });
+                } else {
+                    // Update the existing source if it already exists
+                    (map.getSource('gridMrc-source') as any).setData(qcMrcs);
+                }
             } else {
-                // Update the existing source if it already exists
-                (map.getSource('gridMrc-source') as any).setData(qcMrcs);
+                if (map.getLayer('mrc-outline')) map.removeLayer('mrc-outline');
+                if (map.getLayer('mrc-fill')) map.removeLayer('mrc-fill');
+                if (map.getLayer('mrc-outlines'))
+                    map.removeLayer('mrc-outlines');
+                if (map.getSource('gridMrc-source'))
+                    map.removeSource('gridMrc-source');
             }
         };
 
@@ -127,9 +144,15 @@ const MrcGrid: React.FC<ChloroplethProps> = ({ map, filterFunction }) => {
 
         return () => {
             map.off('load', handleMapLoad);
+            if (map.getLayer('mrc-outline')) map.removeLayer('mrc-outline');
+            if (map.getLayer('mrc-fill')) map.removeLayer('mrc-fill');
+            if (map.getLayer('mrc-outlines')) map.removeLayer('mrc-outlines');
+            if (map.getSource('gridMrc-source'))
+                map.removeSource('gridMrc-source');
         };
+
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [map]);
+    }, [map, mapGrid]);
 
     return null;
 };
