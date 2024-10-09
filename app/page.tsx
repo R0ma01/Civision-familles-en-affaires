@@ -107,21 +107,29 @@ const LandingPage = () => {
                         <Image
                             src="/images/fea-full-logo.png"
                             alt="logo-FEA"
+                            width={150} // Set appropriate width
+                            height={48} // Set appropriate height
                             className="w-auto h-12"
                         />
                         <Image
                             src="/images/Logos-civision.png"
                             alt="logo-Civision"
+                            width={150} // Set appropriate width
+                            height={48} // Set appropriate height
                             className="w-auto h-12"
                         />
                         <Image
                             src="/images/logo-meie.jpg"
                             className="w-auto h-12"
+                            width={150} // Set appropriate width
+                            height={48} // Set appropriate height
                             alt="logo-MEIE"
                         />
                         <Image
                             src="/images/la_sphere.png"
                             className="w-auto h-12"
+                            width={150} // Set appropriate width
+                            height={48} // Set appropriate height
                             alt="logo-laSphere"
                         />
                     </div>

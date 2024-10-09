@@ -10,6 +10,7 @@ import { RelaodArrowSVG } from '@/components/component/svg-icons/svg-icons';
 import useGlobalDataStore from '@/stores/global-data-store';
 import useGlobalMapStore from '@/stores/global-map-store';
 import { MapType } from '@/components/enums/map-type-enum';
+import { getKeyForRangeFilterValue } from './filter-functions';
 
 interface FilterItemContent {
     filter: string;
@@ -73,10 +74,25 @@ export function FilterList({ className = '' }: FilterListProps) {
 
     useEffect(() => {
         const newFilters: FilterItemContent[] = [];
+
         Object.entries(matchStage).map((entry: any) => {
-            (entry[1] as any).$in.forEach((value: any) => {
-                newFilters.push({ filter: entry[0], value: value });
-            });
+            if (entry[0] !== '$or')
+                (entry[1] as any).$in.forEach((value: any) => {
+                    newFilters.push({ filter: entry[0], value: value });
+                });
+            else {
+                entry[1].forEach((val: any) => {
+                    const valeur = getKeyForRangeFilterValue(
+                        Object.keys(val)[0],
+                        Object.values(val)[0],
+                    );
+
+                    newFilters.push({
+                        filter: Object.keys(val)[0],
+                        value: valeur,
+                    });
+                });
+            }
         });
 
         setFilters(newFilters);

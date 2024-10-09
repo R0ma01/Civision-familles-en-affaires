@@ -216,7 +216,7 @@ const FilterMenu: React.FC<FilterMenuProps> = ({
                         )}
                     </div>
                     {renderFilters()}
-                    {/* <FilterList className=""></FilterList> */}
+                    <FilterList className=""></FilterList>
                 </div>
             </div>
         </>

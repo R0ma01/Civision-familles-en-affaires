@@ -422,45 +422,6 @@ function numberData(
     return returnMap;
 }
 
-// function generateMatchStage(filters: CompanyInfo, fields: string[]): any {
-//     const matchStage: any = {};
-
-//     for (const [key, value] of Object.entries(filters)) {
-//         if (value === 'toutes' || value === null || value === -1) continue;
-
-//         if (typeof value === 'object' && value !== null) {
-//             for (const [nestedKey, nestedValue] of Object.entries(value)) {
-//                 if (
-//                     nestedValue !== 'toutes' &&
-//                     nestedValue !== null &&
-//                     nestedValue !== -1
-//                 ) {
-//                     matchStage[`${key}.${nestedKey}`] = nestedValue;
-//                 }
-//             }
-//         } else {
-//             matchStage[key] = value;
-//         }
-//     }
-
-//     fields.map((field) => {
-//         if (matchStage[field]) {
-//             matchStage[field] = {
-//                 $exists: true,
-//                 $nin: [null, NaN],
-//                 $in: [matchStage[field]],
-//             };
-//         } else {
-//             matchStage[field] = {
-//                 $exists: true,
-//                 $nin: [null, NaN],
-//             };
-//         }
-//     });
-
-//     return matchStage;
-// }
-
 function dualDataFormatting(
     result: any[],
     field1: string,
