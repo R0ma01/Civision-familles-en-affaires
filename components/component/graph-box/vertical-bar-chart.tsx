@@ -82,12 +82,16 @@ const VerticalBarChart: React.FC<VerticalBarChartProps> = ({
 
     return (
         <div className="dark:text-white text-wrap">
-            <ResponsiveContainer width={calculateWidth()} height={size}>
+            <ResponsiveContainer
+                width={calculateWidth()}
+                height={size - 20}
+                className="flex justify-center items-center"
+            >
                 <BarChart data={chartData}>
                     <XAxis
                         dataKey="name"
                         type="category"
-                        height={xAxisHeight}
+                        height={50}
                         fontSize={size === ChartSize.SMALL ? 6 : 10}
                         stroke="currentColor"
                         tickFormatter={(value: any, index: number) =>
@@ -111,7 +115,9 @@ const VerticalBarChart: React.FC<VerticalBarChartProps> = ({
                                 ? 10
                                 : size === ChartSize.MEDIUM
                                   ? 15
-                                  : 20
+                                  : chartData && chartData.length > 8
+                                    ? Math.round(size - 100 / chartData?.length)
+                                    : 20
                         }
                     >
                         {chartData &&
