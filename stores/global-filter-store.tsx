@@ -1,5 +1,8 @@
 import { create } from 'zustand';
 import { value_constants } from '@/constants/constants';
+import { GraphTextService } from '@/services/translations';
+import { AlbumDataFields } from '@/components/enums/data-types-enum';
+import { handleRangeFilter } from '@/components/component/menus/filter-functions';
 
 interface GlobalState {
     matchStage: Record<string, any>;
@@ -12,9 +15,10 @@ interface GlobalState {
 const useGlobalFilterStore = create<GlobalState>((set, get) => ({
     matchStage: {},
 
-    setFilter: (filterPath, newValue) => {
+    setFilter: (filterPath: any, newValue: number | string) => {
         const previousFilter: Record<string, any> = { ...get().matchStage };
 
+        // Remove filter if newValue represents 'all values'
         if (
             newValue.toString().toUpperCase() ===
                 value_constants.all_values_string_filter
@@ -27,10 +31,27 @@ const useGlobalFilterStore = create<GlobalState>((set, get) => ({
             newValue === value_constants.all_values_number_filter ||
             newValue === value_constants.all_values_else_filter
         ) {
-            if (previousFilter[filterPath]) {
-                delete previousFilter[filterPath];
+            if (previousFilter.$or) {
+                delete previousFilter.$or;
             }
+        } else if (
+            filterPath === AlbumDataFields.ANNEE_FONDATION ||
+            filterPath === AlbumDataFields.REPONDANT_ANNEE_NAISSANCE ||
+            filterPath ===
+                AlbumDataFields.GOUVERNANCE_CONSEIL_CONSULTATIF_POURCENTAGE_FEMMES ||
+            filterPath === AlbumDataFields.REPONDANT_ANNEE_TRAVAILLEES ||
+            filterPath === AlbumDataFields.ACTIONNAIRES_NOMBRE
+        ) {
+            // Use the extracted handleRangeFilter function
+            const possibleValues = GraphTextService.getKeys(filterPath);
+            handleRangeFilter(
+                filterPath,
+                newValue,
+                previousFilter,
+                possibleValues,
+            );
         } else {
+            // Existing logic for handling other filters using $in
             const newContent = previousFilter[filterPath];
             if (newContent) {
                 if (newContent.$in.includes(newValue)) {

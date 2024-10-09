@@ -306,7 +306,6 @@ export async function GET(req: Request) {
         const result = await mongoQuery(collection);
 
         if (!result || result.length === 0) {
-            console.log('hello');
             return NextResponse.json(
                 { error: 'Data field not found' },
                 { status: 404 },
@@ -336,8 +335,6 @@ function dualDataFormatting(
             returnMap.set(`${value1}-${value2}`, { count: 0 });
         });
     });
-
-    console.log('string - string');
 
     result.map((item: any) => {
         returnMap.set(

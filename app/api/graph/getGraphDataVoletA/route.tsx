@@ -116,9 +116,6 @@ function generateDualFieldAggregationQuery(
     const aggregationPipeline = [
         {
             $match: {
-                // ...generateMatchStage(filters, [field1, field2]),
-                // [field1]: { $exists: true, $ne: null },
-                // [field2]: { $exists: true, $ne: null },
                 ...filters,
             },
         },
@@ -285,8 +282,6 @@ function dualDataFormatting(
             returnMap.set(`${value1}-${value2}`, { count: 0 });
         });
     });
-
-    console.log('string - string');
 
     result.map((item: any) => {
         returnMap.set(
