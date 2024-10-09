@@ -7,6 +7,7 @@ import {
     CloseArrowSVG,
     OpenArrowSVG,
 } from '@/components/component/svg-icons/svg-icons';
+import { getKeyForRangeFilterValue } from '../menus/filter-functions';
 
 interface DropdownProps {
     title: string;
@@ -55,7 +56,7 @@ const DropdownSelect = ({
     },
     className = '',
 }: DropdownProps) => {
-    //const [selectedValue, setSelectedValue] = useState<any[]>([...inputValue]);
+    const [selectedValue, setSelectedValue] = useState<any[]>([...inputValue]);
     const lang: Language = useDataStore((state) => state.lang);
 
     const [dropdownOpen, setDropdownOpen] = useState(false);
@@ -63,8 +64,7 @@ const DropdownSelect = ({
     const buttonRef = useRef<HTMLButtonElement>(null);
 
     useEffect(() => {
-        //setSelectedValue(inputValue);
-        console.log(inputValue);
+        setSelectedValue(inputValue);
     }, [inputValue]);
 
     const toggleDropdown = (e: React.MouseEvent) => {
@@ -123,15 +123,15 @@ const DropdownSelect = ({
                 <div
                     ref={dropdownRef}
                     className={`absolute mt-1 p-1 bg-white border border-gray-300 rounded-lg 
-                        shadow-lg z-10 w-48`}
+                        shadow-lg z-10 w-48 flex flex-col items-center`}
                 >
-                    <ul className="max-h-60 rounded-lg overflow-y-aut">
+                    <ul className="max-h-60 rounded-lg overflow-y-aut m-1">
                         {options.map((option: any) => {
-                            const isSelected = false; //selectedValue.includes(option);
+                            const isSelected = selectedValue.includes(option);
                             return (
                                 <li
                                     key={option as unknown as string}
-                                    className={`text-xs text-wrap w-48 m-1 h-fit hover:border-2 cursor-pointer transition-colors ${isSelected ? 'text-teal-300' : 'text-black'}`}
+                                    className={`text-xs text-wrap pl-1 w-44 h-fit hover:bg-logo-dark-blue hover:bg-opacity-15 cursor-pointer ${isSelected ? 'text-logo-dark-blue font-bold bg-logo-dark-blue bg-opacity-15' : 'text-black'}`}
                                     onClick={() => handleSelection(option)}
                                 >
                                     {displayValue(option, lang, dataField)}

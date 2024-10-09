@@ -26,6 +26,7 @@ import { GraphTextService } from '@/services/translations';
 import { LanguageToggle } from '@/components/component/language-toggle/language-toggle';
 import { FilterList } from './filter-list';
 import DropdownSelect from '@/components/component/drop-down-menu/drop-down-menu-selected-field';
+import { getKeyForRangeFilterValue } from './filter-functions';
 
 const filterConfigurations = {
     [MapType.REPERTOIRE]: {
@@ -192,7 +193,7 @@ const FilterMenu: React.FC<FilterMenuProps> = ({
                 </Button>
             </div>
             <div
-                className={`fixed top-5 right-0 h-fit w-64 bg-white p-4 transform ${isOpen ? 'translate-x-0' : 'translate-x-64'} transition-transform duration-300 ease-in-out`}
+                className={`fixed top-5 right-0 h-fit w-64 bg-white p-4 transform ${isOpen ? 'translate-x-0' : 'translate-x-64'} transition-transform duration-300 ease-in-out z-20`}
             >
                 <div className="relative">
                     <h2 className="text-2xl font-bold">
@@ -241,15 +242,54 @@ function FilterItem({
     const labelTitle =
         GraphTextService.getLabel(filterData, lang) ||
         SharedPromptsTranslations.error[lang];
+    const [inputValue, setInputValue] = useState<any>([
+        value_constants.all_values_string_filter.toString(),
+    ]);
+    useEffect(() => {
+        if (
+            filterData === AlbumDataFields.ANNEE_FONDATION ||
+            filterData === AlbumDataFields.REPONDANT_ANNEE_NAISSANCE ||
+            filterData ===
+                AlbumDataFields.GOUVERNANCE_CONSEIL_CONSULTATIF_POURCENTAGE_FEMMES ||
+            filterData === AlbumDataFields.REPONDANT_ANNEE_TRAVAILLEES ||
+            filterData === AlbumDataFields.ACTIONNAIRES_NOMBRE
+        ) {
+            const rangeValues = matchStage['$or'];
+            const newValues = [];
+            if (rangeValues) {
+                rangeValues.forEach((entry: any) => {
+                    const object = Object.entries(entry);
+
+                    if (object[0][0] === filterData) {
+                        const newVal = getKeyForRangeFilterValue(
+                            object[0][0],
+                            object[0][1],
+                        );
+                        if (newVal) {
+                            newValues.push(newVal);
+                        }
+                    }
+                });
+            }
+            if (newValues.length === 0) {
+                newValues.push(SharedPromptsTranslations.all[lang]);
+            }
+            setInputValue(newValues);
+        } else {
+            setInputValue(
+                matchStage[filterData]
+                    ? matchStage[filterData]['$in']
+                    : [SharedPromptsTranslations.all[lang]],
+            );
+        }
+
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [matchStage]);
 
     return (
         <DropdownSelect
             title={labelTitle}
-            inputValue={
-                matchStage[filterData]
-                    ? matchStage[filterData]['$in']
-                    : [SharedPromptsTranslations.all[lang]]
-            }
+            inputValue={inputValue}
             options={[
                 SharedPromptsTranslations.all[lang],
                 ...GraphTextService.getKeys(filterData),

@@ -32,7 +32,9 @@ const useGlobalFilterStore = create<GlobalState>((set, get) => ({
             newValue === value_constants.all_values_else_filter
         ) {
             if (previousFilter.$or) {
-                delete previousFilter.$or;
+                delete previousFilter.$or; //FIX ME
+            } else if (previousFilter[filterPath]) {
+                delete previousFilter[filterPath];
             }
         } else if (
             filterPath === AlbumDataFields.ANNEE_FONDATION ||
