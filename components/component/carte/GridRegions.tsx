@@ -120,7 +120,7 @@ const RegionGrid: React.FC<ChloroplethProps> = ({
                             }
 
                             // Update the line color to reflect the selected regions
-
+                            console.log(clickedRegionId);
                             filterFunction(clickedRegionId ?? 0);
                         }
                     });

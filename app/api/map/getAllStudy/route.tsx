@@ -3,6 +3,7 @@ import { connectToDatabaseStudy } from '@/utils/mongodb';
 import { MongoDBPaths } from '@/components/enums/mongodb-paths-enum';
 import { MapRegions } from '@/components/enums/map-regions';
 import { MapType } from '@/components/enums/map-type-enum';
+import { AlbumDataFields } from '@/components/enums/data-types-enum';
 
 // Define interfaces for the aggregation results
 interface AggregationResult {
@@ -34,12 +35,33 @@ export async function GET(req: Request) {
                 { status: 400 },
             );
         }
-
+        console.log(filtersObj);
         const matchStage: any = { ...filtersObj };
 
+        Object.entries(matchStage).forEach((entry: [string, any]) => {
+            if (entry[0] === AlbumDataFields.COORDONNES_REGION) {
+                console.log(entry[1]);
+                const newIn = [...entry[1]['$in']]; // Ensure entry[1] is an array
+
+                const addRegions = Object.entries(addedRegions);
+
+                entry[1]['$in'].forEach((region: any) => {
+                    const foundRegion = addRegions.find((a) => a[1] === region);
+                    if (foundRegion) {
+                        const reg = parseInt(foundRegion[0]);
+                        newIn.push(reg);
+                    }
+                });
+
+                console.log(newIn);
+                matchStage[entry[0]]['$in'] = [...newIn];
+            }
+        });
+        console.log(matchStage);
+
         // Add conditions for fields to exist
-        matchStage['NEQ'] = { $exists: true };
-        matchStage['coordonnees.longitude'] = { $exists: true };
+        // matchStage['NEQ'] = { $exists: true };
+        // matchStage['coordonnees.longitude'] = { $exists: true };
 
         const aggregationPipeline = [
             {
@@ -63,7 +85,7 @@ export async function GET(req: Request) {
         const aggregationResult = await collection
             .aggregate(aggregationPipeline)
             .toArray();
-
+        console.log(aggregationResult);
         if (!aggregationResult || aggregationResult.length === 0) {
             return NextResponse.json(
                 { error: 'No regions found' },
@@ -71,14 +93,29 @@ export async function GET(req: Request) {
             );
         }
 
-        const regionCountsMap = new Map<string, number>(
-            aggregationResult.reduce<[string, number][]>((acc, item) => {
-                if (item.region) {
-                    acc.push([item.region.toString(), item.count]);
+        const regionCountsMap = new Map();
+        aggregationResult.forEach((item: any) => {
+            if (item.region) {
+                if (
+                    Object.keys(addedRegions).includes(item.region.toString())
+                ) {
+                    const val =
+                        regionCountsMap.get(addedRegions[item.region]) ?? 0;
+                    regionCountsMap.set(
+                        addedRegions[item.region],
+                        val + item.count,
+                    );
+                } else {
+                    const val =
+                        regionCountsMap.get(item.region.toString()) ?? 0;
+                    regionCountsMap.set(
+                        item.region.toString(),
+                        val + item.count,
+                    );
                 }
-                return acc;
-            }, []),
-        );
+            }
+        });
+        console.log(regionCountsMap);
 
         const result = Array.from(
             MapRegions.get(MapType.PAGE_INFORMATION_ALBUM)?.entries() || [], // Use entries() from the map
@@ -102,3 +139,23 @@ export async function GET(req: Request) {
         return NextResponse.json({ error: e.message }, { status: 500 });
     }
 }
+
+const addedRegions: Record<number, string> = {
+    1: 'Bas-Saint-Laurent',
+    2: 'Saguenay--Lac-Saint-Jean',
+    3: 'Capitale-Nationale',
+    4: 'Mauricie',
+    5: 'Estrie',
+    6: 'Montreal',
+    7: 'Outaouais',
+    8: 'Abitibi-Temiscamingue',
+    9: 'Cote-Nord',
+    10: 'Nord-du-Quebec',
+    11: 'Gaspesie--Îles-de-la-Madeleine',
+    12: 'Chaudiere-Appalaches',
+    13: 'Laval',
+    14: 'Lanaudiere',
+    15: 'Laurentides',
+    16: 'Monteregie',
+    17: 'Centre-du-Quebec',
+};

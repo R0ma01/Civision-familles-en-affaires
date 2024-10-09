@@ -56,16 +56,11 @@ const DropdownSelect = ({
     },
     className = '',
 }: DropdownProps) => {
-    const [selectedValue, setSelectedValue] = useState<any[]>([...inputValue]);
     const lang: Language = useDataStore((state) => state.lang);
 
     const [dropdownOpen, setDropdownOpen] = useState(false);
     const dropdownRef = useRef<HTMLDivElement>(null);
     const buttonRef = useRef<HTMLButtonElement>(null);
-
-    useEffect(() => {
-        setSelectedValue(inputValue);
-    }, [inputValue]);
 
     const toggleDropdown = (e: React.MouseEvent) => {
         e.preventDefault();
@@ -127,7 +122,7 @@ const DropdownSelect = ({
                 >
                     <ul className="max-h-60 rounded-lg overflow-y-aut m-1">
                         {options.map((option: any) => {
-                            const isSelected = selectedValue.includes(option);
+                            const isSelected = inputValue.includes(option);
                             return (
                                 <li
                                     key={option as unknown as string}

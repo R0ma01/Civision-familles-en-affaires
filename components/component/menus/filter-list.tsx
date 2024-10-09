@@ -108,9 +108,11 @@ export function FilterList({ className = '' }: FilterListProps) {
         // If field is provided
         if (field) {
             const fieldData = TableauxTraductionsMainDataFields.get(field);
+            console.log(fieldData);
 
             // Check if field exists in the map and if dataLabels exist for the given value and language
             if (fieldData?.dataLabels?.[value]?.[lang]) {
+                console.log(fieldData.dataLabels[value][lang]);
                 return fieldData.dataLabels[value][lang];
             }
         } else {
@@ -134,10 +136,12 @@ export function FilterList({ className = '' }: FilterListProps) {
     function FilterItem({ filter }: FilterItemProps) {
         return (
             <div
-                className={`flex flex-row w-fit border bg-custom-grey border-logo-dark-blue px-1
+                className={`flex flex-row w-fit border bg-custom-grey border-logo-dark-blue p-1
              rounded-lg bg-opacity-45 justify-center items-center gap-1 ${className}`}
             >
-                <p>{displayValue(filter.value, lang, filter.filter)}</p>
+                <p className="text-xs">
+                    {displayValue(filter.value, lang, filter.filter)}
+                </p>
                 <div
                     onClick={(e) => {
                         e.preventDefault();
@@ -145,7 +149,9 @@ export function FilterList({ className = '' }: FilterListProps) {
                     }}
                     className="hover:scale-125 bg-logo-dark-blue h-fit w-fit border-white cursor-pointer rounded-full flex items-center justify-center"
                 >
-                    <p className="text-white text-[6px] px-[5px] py-[3px]">X</p>
+                    <p className="text-white text-center text-[6px] pt-[4px] pb-[3px] px-[4px]">
+                        X
+                    </p>
                 </div>
             </div>
         );
