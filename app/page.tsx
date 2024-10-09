@@ -106,21 +106,23 @@ const LandingPage = () => {
                     <div className="absolute w-screen flex-row justify-evenly bottom-4 lg:flex md:flex hidden">
                         <Image
                             src="/images/fea-full-logo.png"
-                            width={210}
-                            height={100}
                             alt="logo-FEA"
+                            className="w-auto h-12"
                         />
                         <Image
                             src="/images/Logos-civision.png"
-                            width={200}
-                            height={100}
-                            alt="logo-FEA"
+                            alt="logo-Civision"
+                            className="w-auto h-12"
                         />
                         <Image
                             src="/images/logo-meie.jpg"
-                            width={150}
-                            height={100}
-                            alt="logo-FEA"
+                            className="w-auto h-12"
+                            alt="logo-MEIE"
+                        />
+                        <Image
+                            src="/images/la_sphere.png"
+                            className="w-auto h-12"
+                            alt="logo-laSphere"
                         />
                     </div>
                 </div>
