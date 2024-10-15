@@ -6,7 +6,6 @@ import axios from 'axios';
 import DisconnectDialogProps from '@/components/interface/auth/disconnect-confirmation-dialog';
 import Modal from '@/components/component/modal/modal';
 import useGlobalUserStore from '@/stores/global-user-store';
-import { UserType } from '@/components/enums/user-type-enum';
 import {
     SharedPromptsTranslations,
     ConnexionDialogPromptsTranslations,
@@ -18,22 +17,22 @@ const DisconnectDialog: React.FC<DisconnectDialogProps> = ({ closeDialog }) => {
     const router = useRouter();
     const lang: Language = useDataStore((state) => state.lang);
 
-    const { setUser, setLoginTutorials } = useGlobalUserStore((state: any) => ({
-        setUser: state.setUser,
-        setLoginTutorials: state.setLoginTutorials,
-    }));
+    const { setLoginTutorials, setUserToken } = useGlobalUserStore(
+        (state: any) => ({
+            setLoginTutorials: state.setLoginTutorials,
+            setUserToken: state.setUserToken,
+        }),
+    );
 
     function clearCookies() {
-        localStorage.removeItem('token');
-        localStorage.removeItem('adminToken');
+        setUserToken('token', undefined);
+        setUserToken('adminToken', undefined);
     }
 
     function clearZustandStore() {
         // Replace 'zustand_store_key' with the actual key used by Zustand in localStorage
-        console.log('i am called');
         localStorage.removeItem('global-data-store');
-        localStorage.removeItem('global-page-store');
-        localStorage.removeItem('global-user-store');
+        //localStorage.removeItem('global-page-store');
     }
 
     useEffect(() => {
@@ -59,7 +58,6 @@ const DisconnectDialog: React.FC<DisconnectDialogProps> = ({ closeDialog }) => {
                 clearCookies();
                 clearZustandStore();
                 router.push(PagePaths.HOME);
-                setUser(UserType.VISITOR);
                 setLoginTutorials([]);
 
                 closeDialog();

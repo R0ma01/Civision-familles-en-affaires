@@ -1,5 +1,5 @@
 'use client';
-import React, { useEffect, useState, Suspense } from 'react';
+import React, { useEffect, useState, Suspense, useCallback } from 'react';
 import { useSearchParams } from 'next/navigation';
 import PageContentContainer from '@/components/component/page-content-container/page-content-container';
 import useGlobalPageStore from '@/stores/global-page-store';
@@ -46,9 +46,8 @@ function PageContentComponent() {
         },
     );
 
-    const { user, tutorials, updateCompletedTutorials } = useGlobalUserStore(
+    const { tutorials, updateCompletedTutorials } = useGlobalUserStore(
         (state: any) => ({
-            user: state.user,
             tutorials: state.tutorials,
             updateCompletedTutorials: state.updateCompletedTutorials,
         }),
@@ -60,8 +59,24 @@ function PageContentComponent() {
         updateCompletedTutorials(newTuts);
     }
 
+    const { checkToken, setUserToken } = useGlobalUserStore((state: any) => ({
+        checkToken: state.checkToken,
+        setUserToken: state.setUserToken,
+    }));
+    const [user, setUser] = useState<UserType>(UserType.VISITOR);
+
     useEffect(() => {
-        if (user !== UserType.VISITOR) {
+        async function check() {
+            const newUser = await checkToken();
+            setUser(newUser);
+        }
+
+        check();
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [setUserToken]);
+
+    useEffect(() => {
+        if (user !== UserType.VISITOR && user) {
             if (!tutorials[TutorialPages.PAGE_INFORMATION]) {
                 const tour = InformationPageTutorial(onComplete);
                 tour.start();

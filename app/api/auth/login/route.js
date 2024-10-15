@@ -43,7 +43,7 @@ export async function POST(req) {
             {
                 message: t.loginSuccess,
                 token: token,
-                admin: user._id == ADMIN_ID,
+                adminToken: adminToken,
                 tutorials: user.tutorials,
             },
             { status: 200 },

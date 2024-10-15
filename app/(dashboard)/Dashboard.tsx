@@ -1,18 +1,30 @@
 'use client';
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import Carte from '@/components/component/carte/Carte';
 import Sidebar from '@/components/component/sidebar/sidebar';
 import MobileWarningPopup from '@/components/component/mobile-popup/mobile-popup';
+import PageContentContainer from '@/components/component/page-content-container/page-content-container';
 import useGlobalUserStore from '@/stores/global-user-store';
+import { UserType } from '@/components/enums/user-type-enum';
 
 interface DashboardProps {
     children: any;
 }
 
+function clearCookies() {
+    localStorage.removeItem('token');
+    localStorage.removeItem('adminToken');
+}
+
+function clearZustandStore() {
+    // Replace 'zustand_store_key' with the actual key used by Zustand in localStorage
+    localStorage.removeItem('global-data-store');
+    //localStorage.removeItem('global-page-store');
+    localStorage.removeItem('global-user-store');
+}
+
 const Dashboard = ({ children }: DashboardProps) => {
-    const { setUser } = useGlobalUserStore((state: any) => ({
-        setUser: state.setUser,
-    }));
+    // Function to check if the token exists
 
     useEffect(() => {
         const handleBeforeUnload = async (event: BeforeUnloadEvent) => {
@@ -38,7 +50,7 @@ const Dashboard = ({ children }: DashboardProps) => {
             window.removeEventListener('beforeunload', handleBeforeUnload);
             window.removeEventListener('load', handleLoad);
         };
-    }, [setUser]);
+    }, []);
 
     return (
         <>
@@ -50,7 +62,6 @@ const Dashboard = ({ children }: DashboardProps) => {
                             <Carte />
                         </div>
                         <div className="flex h-full absolute top-0">
-                            <Sidebar />
                             {children}
                         </div>
                     </div>
@@ -63,14 +74,3 @@ const Dashboard = ({ children }: DashboardProps) => {
 export default Dashboard;
 
 // Helper to clear cookies
-function clearCookies() {
-    localStorage.removeItem('token');
-    localStorage.removeItem('adminToken');
-}
-
-function clearZustandStore() {
-    // Replace 'zustand_store_key' with the actual key used by Zustand in localStorage
-    localStorage.removeItem('global-data-store');
-    //localStorage.removeItem('global-page-store');
-    localStorage.removeItem('global-user-store');
-}

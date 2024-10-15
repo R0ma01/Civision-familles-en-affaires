@@ -20,7 +20,6 @@ import { Language } from '@/components/enums/language';
 import Modal from '@/components/component/modal/modal';
 
 import useGlobalUserStore from '@/stores/global-user-store';
-//import { useGlobalUserStore } from '@/stores/global-user-store';
 
 const ConnectDialog: React.FC<ConnectDialogProps> = ({
     onForgotPasswordClick,
@@ -29,10 +28,12 @@ const ConnectDialog: React.FC<ConnectDialogProps> = ({
     const { lang } = useDataStore();
     const t = authTranslations[lang as Language];
     const router = useRouter();
-    const { setLoginTutorials, setUser } = useGlobalUserStore((state: any) => ({
-        setLoginTutorials: state.setLoginTutorials,
-        setUser: state.setUser,
-    }));
+    const { setLoginTutorials, setUserToken } = useGlobalUserStore(
+        (state: any) => ({
+            setLoginTutorials: state.setLoginTutorials,
+            setUserToken: state.setUserToken,
+        }),
+    );
 
     useEffect(() => {
         const handleEsc = (event: any) => {
@@ -46,6 +47,11 @@ const ConnectDialog: React.FC<ConnectDialogProps> = ({
             window.removeEventListener('keydown', handleEsc);
         };
     }, [router]);
+
+    const handleSettingUser = (tokenId: string, tokenValue: any) => {
+        console.log('heyyyy');
+        setUserToken(tokenId, tokenValue);
+    };
 
     const handleSubmit = async (
         values: FormValues,
@@ -61,7 +67,7 @@ const ConnectDialog: React.FC<ConnectDialogProps> = ({
             resetForm,
             PagePaths.THEMATIQUES,
             router,
-            setUser, // Pass the setUser function
+            handleSettingUser,
             setLoginTutorials,
         );
     };

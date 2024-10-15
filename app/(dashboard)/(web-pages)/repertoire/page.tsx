@@ -5,7 +5,7 @@ import { DataCardType } from '@/components/enums/data-card-type-enum';
 import RepertoirePageTutorial from '@/components/component/tutorials/repertoire-page-tutorial';
 import useMapStore from '@/stores/global-map-store';
 import { MapType } from '@/components/enums/map-type-enum';
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useCallback } from 'react';
 import { Language } from '@/components/enums/language';
 import { RepertoirePromptsTranslations } from '@/constants/translations/page-prompts';
 import useDataStore from '@/reducer/dataStore';
@@ -39,13 +39,27 @@ function Repertoire() {
         mapType: state.mapType,
     }));
 
-    const { user, tutorials, updateCompletedTutorials } = useGlobalUserStore(
+    const { tutorials, updateCompletedTutorials } = useGlobalUserStore(
         (state: any) => ({
-            user: state.user,
             tutorials: state.tutorials,
             updateCompletedTutorials: state.updateCompletedTutorials,
         }),
     );
+    const { checkToken, setUserToken } = useGlobalUserStore((state: any) => ({
+        checkToken: state.checkToken,
+        setUserToken: state.setUserToken,
+    }));
+    const [user, setUser] = useState<UserType>(UserType.VISITOR);
+
+    useEffect(() => {
+        async function check() {
+            const newUser = await checkToken();
+            setUser(newUser);
+        }
+
+        check();
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [setUserToken]);
 
     function onComplete() {
         const newTuts = [...tutorials];
@@ -54,7 +68,7 @@ function Repertoire() {
     }
 
     useEffect(() => {
-        if (user !== UserType.VISITOR) {
+        if (user !== UserType.VISITOR && user) {
             if (!tutorials[TutorialPages.REPERTOIRE]) {
                 const tour = RepertoirePageTutorial(onComplete);
                 tour.start();

@@ -10,6 +10,8 @@ export enum APIPaths {
     MAP_GET_ALL_INDEXEA = '/api/map/getAllIndexeA',
     MAP_GET_ALL_INDEXEB = '/api/map/getAllIndexeB',
     USER_UPDATE_TUTORIALS = '/api/user/updateTutorials',
+    USER_CHECK_ADMIN = '/api/auth/admin-check',
+    USER_CHECK_CONNECT = '/api/auth/user-check',
     FOURNISSEURS_GET_ALL = '/api/fournisseurs/getAll',
     FOURNISSEURS_ADD_ONE = '/api/fournisseurs/add',
     FOURNISSEURS_UPDATE_ONE = '/api/fournisseurs/update',

@@ -21,7 +21,7 @@ const submitForm = async (
     resetForm: ResetFormFunction | null,
     redirectPath: string | null = null,
     router: Router,
-    setUser: (userType: UserType) => void, // New argument for setting user type
+    setUserToken: (tokenId: string, tokenValue: any) => void,
     setTutorials?: (tutorials: boolean[]) => void,
 ): Promise<void> => {
     try {
@@ -35,11 +35,8 @@ const submitForm = async (
 
         if (status === 200) {
             if (route === 'login') {
-                localStorage.setItem('token', data.token || '');
-                localStorage.setItem('adminToken', data.adminToken || '');
-
-                const userType = data.admin ? UserType.ADMIN : UserType.USER;
-                setUser(userType); // Set the user type
+                setUserToken('token', data.token || '');
+                setUserToken('adminToken', data.adminToken || '');
 
                 if (setTutorials && data.tutorials) {
                     setTutorials(data.tutorials);

@@ -45,9 +45,6 @@ export async function decodeToken(token) {
 
 export async function verifyAdminToken(token) {
     try {
-        console.log(
-            'AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA',
-        );
         console.log(token);
         const secret = new TextEncoder().encode(process.env.JWT_SECRET_ADMIN);
         const { payload } = await jwtVerify(token, secret);

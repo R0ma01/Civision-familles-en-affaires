@@ -1,6 +1,7 @@
 import React from 'react';
 import FilterMenu from '@/components/component/menus/filter-menu';
 import MapMenu from '@/components/component/menus/map-menu';
+import Sidebar from '../sidebar/sidebar';
 
 type PageContentContainerProps = {
     children: React.ReactNode;
@@ -22,6 +23,7 @@ const PageContentContainer: React.FC<PageContentContainerProps> = ({
 
     return (
         <>
+            <Sidebar />
             {isContentVisible && (
                 <div
                     id="page-content-container"

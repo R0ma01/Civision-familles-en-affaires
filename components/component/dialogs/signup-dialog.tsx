@@ -26,8 +26,8 @@ const SignupDialog: React.FC = () => {
     const { signupValidationSchema } = authValidationSchemas();
     const { lang } = useDataStore();
     const t = authTranslations[lang as Language];
-    const { setUser } = useGlobalUserStore((state: any) => ({
-        setUser: state.setUser,
+    const { setUserToken } = useGlobalUserStore((state: any) => ({
+        setUserToken: state.setUser,
     }));
 
     const router = useRouter();
@@ -56,7 +56,7 @@ const SignupDialog: React.FC = () => {
             resetForm,
             null,
             router,
-            setUser,
+            setUserToken,
         );
     };
 

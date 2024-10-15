@@ -62,13 +62,28 @@ function Fournisseurs() {
         filterFournisseurData: state.filterFournisseurData,
     }));
 
-    const { user, tutorials, updateCompletedTutorials } = useGlobalUserStore(
+    const { tutorials, updateCompletedTutorials } = useGlobalUserStore(
         (state: any) => ({
-            user: state.user,
             tutorials: state.tutorials,
             updateCompletedTutorials: state.updateCompletedTutorials,
         }),
     );
+
+    const { checkToken, setUserToken } = useGlobalUserStore((state: any) => ({
+        checkToken: state.checkToken,
+        setUserToken: state.setUserToken,
+    }));
+    const [user, setUser] = useState<UserType>(UserType.VISITOR);
+
+    useEffect(() => {
+        async function check() {
+            const newUser = await checkToken();
+            setUser(newUser);
+        }
+
+        check();
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [setUserToken]);
 
     function onComplete() {
         const newTuts = [...tutorials];
@@ -76,7 +91,7 @@ function Fournisseurs() {
         updateCompletedTutorials(newTuts);
     }
     useEffect(() => {
-        if (user !== UserType.VISITOR) {
+        if (user !== UserType.VISITOR && user) {
             if (!tutorials[TutorialPages.FOURNISSEUR]) {
                 const tour = FournisseurPageTutorial(onComplete);
                 tour.start();

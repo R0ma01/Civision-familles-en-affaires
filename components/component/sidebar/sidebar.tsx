@@ -2,7 +2,7 @@
 import Image from 'next/image';
 import Link from 'next/link';
 import { PagePaths } from '@/components/enums/page-paths-enum';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { UserType } from '@/components/enums/user-type-enum';
 import DisconnectDialog from '@/components/component/dialogs/disconnect-confirmation-dialog';
 import SideBarItem from './SidebarItem';
@@ -22,9 +22,9 @@ import {
     ChercheurSVG,
     FournisseurSVG,
 } from '@/components/component/svg-icons/svg-icons';
+import useGlobalUserStore from '@/stores/global-user-store';
 
 //import { useUser } from '@/context/user-context'; // Adjust the path as necessary
-import useGlobalUserStore from '@/stores/global-user-store';
 
 enum hoverColor {
     green = 'green',
@@ -34,12 +34,35 @@ enum hoverColor {
 }
 
 const Sidebar: React.FC = () => {
+    console.log('i am reloaded');
     const lang: Language = useDataStore((state) => state.lang);
-
-    const { user, setUser } = useGlobalUserStore((state: any) => ({
-        user: state.user,
-        setUser: state.setUser,
+    const { checkToken, setUserToken } = useGlobalUserStore((state: any) => ({
+        checkToken: state.checkToken,
+        setUserToken: state.setUserToken,
     }));
+
+    const [user, setUser] = useState<UserType>(UserType.VISITOR);
+
+    useEffect(() => {
+        async function check() {
+            const newUser = await checkToken();
+
+            setUser(newUser);
+        }
+
+        check();
+    }, []); // Empty dependency array ensures it runs on every reload
+
+    useEffect(() => {
+        async function check() {
+            const newUser = await checkToken();
+            setUser(newUser);
+        }
+
+        check();
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [setUserToken]);
+
     const [isDisconnectDialogOpen, setIsDisconnectDialogOpen] = useState(false);
 
     const openDisconnectDialog = (e: any) => {
@@ -47,7 +70,6 @@ const Sidebar: React.FC = () => {
         setIsDisconnectDialogOpen(true);
     };
     const closeDisconnectDialog = () => {
-        setUser(UserType.VISITOR);
         setIsDisconnectDialogOpen(false);
     };
 
