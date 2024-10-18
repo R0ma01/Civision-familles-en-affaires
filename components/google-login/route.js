@@ -4,11 +4,16 @@
 import { signIn, auth } from '@/auth';
 
 export default async function googleSignIn() {
-    console.log('hello');
-    const something = await signIn('google');
-    console.log(something);
-    console.log('signed in ish');
-    const session = await auth();
-    console.log(session);
-    return session;
+    try {
+        console.log('Starting Google Sign-In...');
+        const response = await signIn('google');
+        console.log('Sign-In response:', response);
+        console.log('Signed in (ish)');
+
+        const session = await auth();
+        console.log('Session:', session);
+        return session;
+    } catch (error) {
+        console.error('Error during sign-in:', error);
+    }
 }
