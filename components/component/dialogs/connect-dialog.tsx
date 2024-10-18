@@ -20,6 +20,7 @@ import {
 import { Language } from '@/components/enums/language';
 import Modal from '@/components/component/modal/modal';
 import googleSignIn from '@/components/google-login/route';
+import something from '@/components/google-login/session';
 
 import useGlobalUserStore from '@/stores/global-user-store';
 
@@ -38,16 +39,10 @@ const ConnectDialog: React.FC<ConnectDialogProps> = ({
     );
 
     useEffect(() => {
-        async function something() {
-            try {
-                const session = await auth();
-                console.log('Session:', session);
-            } catch (e) {
-                console.error(e);
-            }
+        async function someFunc() {
+            await something();
         }
-
-        something();
+        someFunc();
     }, [googleSignIn]);
 
     useEffect(() => {
