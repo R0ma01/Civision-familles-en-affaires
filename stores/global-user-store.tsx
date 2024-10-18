@@ -16,30 +16,19 @@ const useGlobalUserStore = create(
             (set) => ({
                 checkToken: async () => {
                     console.log('Checking token validity...');
-                    console.log(localStorage.getItem('token'));
                     // Call the server to check connection and admin status asynchronously
                     const isConnected =
                         await UserHttpRequestService.checkConnect();
                     const isAdmin = await UserHttpRequestService.checkAdmin();
 
-                    console.log(
-                        'Admin status:',
-                        isAdmin,
-                        'Connection status:',
-                        isConnected,
-                    );
-
                     // Set the user type based on server response
                     if (isConnected) {
                         if (isAdmin) {
-                            console.log('admin');
                             return UserType.ADMIN; // Set user as Admin
                         } else {
-                            console.log('pleb');
                             return UserType.USER; // Set user as regular User
                         }
                     } else {
-                        console.log('peasant');
                         return UserType.VISITOR; // Set user as Visitor if not connected
                     }
                 },

@@ -88,7 +88,7 @@ export default function Carte() {
     useEffect(() => {
         // update map reference
         mapRef.current = map;
-        console.log(map);
+    
     }, [map]);
 
     useEffect(() => {

@@ -108,11 +108,9 @@ export function FilterList({ className = '' }: FilterListProps) {
         // If field is provided
         if (field) {
             const fieldData = TableauxTraductionsMainDataFields.get(field);
-            console.log(fieldData);
 
             // Check if field exists in the map and if dataLabels exist for the given value and language
             if (fieldData?.dataLabels?.[value]?.[lang]) {
-                console.log(fieldData.dataLabels[value][lang]);
                 return fieldData.dataLabels[value][lang];
             }
         } else {

@@ -25,7 +25,6 @@ async function insertPage(pageData: any): Promise<boolean> {
 }
 
 async function updatePage(pageData: PageTabContent): Promise<boolean> {
-    console.log('update page');
     try {
         const response = await axios.patch(APIPaths.PAGE_UPDATE, pageData);
 

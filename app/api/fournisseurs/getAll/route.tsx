@@ -39,7 +39,7 @@ export async function GET(req: Request) {
                 { status: 404 },
             );
         }
-        console.log(result);
+
         const response = NextResponse.json({
             message: 'Documents found successfully',
             pages: result,

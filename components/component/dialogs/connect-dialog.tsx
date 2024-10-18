@@ -149,14 +149,12 @@ const ConnectDialog: React.FC<ConnectDialogProps> = ({
                         const sess = await sessionFetch();
                         if (sess) {
                             setUserToken('token', sess.token);
-                            console.log(localStorage.getItem('token'));
+
                             setUserToken(
                                 'adminToken',
                                 sess.adminToken ? sess.adminToken : '',
                             );
-                            console.log(localStorage.getItem('token'));
-                            console.log(localStorage.getItem('adminToken'));
-                            console.log(sess.tutorials);
+
                             setLoginTutorials(sess.tutorials);
                             router.push('/thematiques');
                         }

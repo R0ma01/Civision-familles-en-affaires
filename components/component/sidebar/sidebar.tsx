@@ -34,7 +34,6 @@ enum hoverColor {
 }
 
 const Sidebar: React.FC = () => {
-    console.log('i am reloaded');
     const lang: Language = useDataStore((state) => state.lang);
     const { checkToken, setUserToken } = useGlobalUserStore((state: any) => ({
         checkToken: state.checkToken,

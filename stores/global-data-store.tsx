@@ -102,7 +102,6 @@ const useGlobalDataStore = create(
                                 matchStage,
                                 (get() as any).year ?? StudyYears.YEAR_2023,
                             );
-                        console.log(responseIndexe);
                         set({
                             indexeAData: responseIndexe,
                             loading: false,
@@ -125,7 +124,7 @@ const useGlobalDataStore = create(
                                 matchStage,
                                 (get() as any).year ?? StudyYears.YEAR_2022,
                             );
-                        console.log(responseIndexe);
+
                         set({
                             indexeBData: responseIndexe,
                             loading: false,

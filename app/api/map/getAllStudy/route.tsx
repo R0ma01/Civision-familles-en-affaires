@@ -35,12 +35,11 @@ export async function GET(req: Request) {
                 { status: 400 },
             );
         }
-        console.log(filtersObj);
+
         const matchStage: any = { ...filtersObj };
 
         Object.entries(matchStage).forEach((entry: [string, any]) => {
             if (entry[0] === AlbumDataFields.COORDONNES_REGION) {
-                console.log(entry[1]);
                 const newIn = [...entry[1]['$in']]; // Ensure entry[1] is an array
 
                 const addRegions = Object.entries(addedRegions);
@@ -53,11 +52,9 @@ export async function GET(req: Request) {
                     }
                 });
 
-                console.log(newIn);
                 matchStage[entry[0]]['$in'] = [...newIn];
             }
         });
-        console.log(matchStage);
 
         // Add conditions for fields to exist
         // matchStage['NEQ'] = { $exists: true };
@@ -85,7 +82,7 @@ export async function GET(req: Request) {
         const aggregationResult = await collection
             .aggregate(aggregationPipeline)
             .toArray();
-        console.log(aggregationResult);
+
         if (!aggregationResult || aggregationResult.length === 0) {
             return NextResponse.json(
                 { error: 'No regions found' },
@@ -115,7 +112,7 @@ export async function GET(req: Request) {
                 }
             }
         });
-        console.log(regionCountsMap);
+  
 
         const result = Array.from(
             MapRegions.get(MapType.PAGE_INFORMATION_ALBUM)?.entries() || [], // Use entries() from the map
