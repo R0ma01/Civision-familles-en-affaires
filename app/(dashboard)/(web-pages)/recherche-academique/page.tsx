@@ -27,8 +27,9 @@ export default function RechercheAcademique() {
         mapType: state.mapType,
     }));
 
-    const { checkToken } = useGlobalUserStore((state: any) => ({
+    const { checkToken, setUserToken } = useGlobalUserStore((state: any) => ({
         checkToken: state.checkToken,
+        setUserToken: state.setUserToken,
     }));
     const [user, setUser] = useState<UserType>(UserType.VISITOR);
 
