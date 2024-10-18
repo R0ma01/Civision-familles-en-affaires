@@ -148,7 +148,7 @@ const ConnectDialog: React.FC<ConnectDialogProps> = ({
                         await googleSignIn(); // call the server action
                         const sess = await something();
                         if (sess) {
-                            console.log(sess);
+                            console.log(sess.token);
                             setUserToken('token', sess.token);
 
                             setUserToken('adminToken', sess.adminToken);
