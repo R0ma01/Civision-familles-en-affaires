@@ -20,7 +20,7 @@ import {
 import { Language } from '@/components/enums/language';
 import Modal from '@/components/component/modal/modal';
 import googleSignIn from '@/components/google-login/route';
-import something from '@/components/google-login/session';
+import sessionFetch from '@/components/google-login/session';
 
 const ConnectDialog: React.FC<ConnectDialogProps> = ({
     onForgotPasswordClick,
@@ -146,7 +146,7 @@ const ConnectDialog: React.FC<ConnectDialogProps> = ({
                     onSubmit={async (e) => {
                         e.preventDefault();
                         await googleSignIn(); // call the server action
-                        const sess = await something();
+                        const sess = await sessionFetch();
                         if (sess) {
                             setUserToken('token', sess.token);
                             console.log(localStorage.getItem('token'));
@@ -156,7 +156,7 @@ const ConnectDialog: React.FC<ConnectDialogProps> = ({
                             );
                             console.log(localStorage.getItem('token'));
                             console.log(localStorage.getItem('adminToken'));
-
+                            setLoginTutorials(sess.tutorials);
                             router.push('/thematiques');
                         }
                     }}

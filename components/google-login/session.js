@@ -4,7 +4,7 @@ import { closeDatabase, connectToDatabase } from '@/utils/auth-mongoDB-utils';
 import { generateAdminToken, generateToken } from '@/utils/token-utils';
 
 const { ADMIN_ID } = process.env;
-export default async function something() {
+export default async function sessionFetch() {
     try {
         const session = await auth();
 
@@ -35,7 +35,7 @@ export default async function something() {
                         '24h',
                     );
                 }
-                return { token, adminToken };
+                return { token, adminToken, tutorials: user.tutorials };
             }
         }
     } catch (e) {

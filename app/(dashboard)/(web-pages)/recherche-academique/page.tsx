@@ -12,16 +12,53 @@ import { MapType } from '@/components/enums/map-type-enum';
 import { Language } from '@/components/enums/language';
 import { RecherchePromptsTranslations } from '@/constants/translations/page-prompts';
 import useDataStore from '@/reducer/dataStore';
+import { PagePaths } from '@/components/enums/page-paths-enum';
+import { useRouter } from 'next/navigation';
+import useGlobalUserStore from '@/stores/global-user-store';
+import { UserType } from '@/components/enums/user-type-enum';
 
 export default function RechercheAcademique() {
     const lang: Language = useDataStore((state) => state.lang);
-
+    const router = useRouter();
     const [cards, setCards] = useState<Map<string, DataCardContent>>(new Map());
 
     const { mapType, setMapStyle } = useMapStore((state) => ({
         setMapStyle: state.setMapStyle,
         mapType: state.mapType,
     }));
+
+    const { checkToken } = useGlobalUserStore((state: any) => ({
+        checkToken: state.checkToken,
+    }));
+    const [user, setUser] = useState<UserType>(UserType.VISITOR);
+
+    useEffect(() => {
+        async function check() {
+            const newUser = await checkToken();
+            setUser(newUser);
+            if (newUser === UserType.VISITOR || !newUser) {
+                router.push(PagePaths.LOGIN);
+            }
+        }
+
+        check();
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [setUserToken]);
+
+    useEffect(() => {
+        async function check() {
+            const newUser = await checkToken();
+
+            setUser(newUser);
+            if (newUser === UserType.VISITOR || !newUser) {
+                router.push(PagePaths.LOGIN);
+            }
+        }
+
+        check();
+
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, []);
 
     useEffect(() => {
         if (mapType !== MapType.PAGE_INFORMATION_ALBUM) {

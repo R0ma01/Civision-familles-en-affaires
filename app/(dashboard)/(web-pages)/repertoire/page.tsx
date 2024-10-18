@@ -17,7 +17,6 @@ import {
     FactorySVG,
 } from '@/components/component/svg-icons/svg-icons';
 import { GraphDataHttpRequestService } from '@/services/data-http-request-service';
-import something from '@/components/google-login/session';
 import { PagePaths } from '@/components/enums/page-paths-enum';
 
 const DataCardDiv: React.FC<{
@@ -64,16 +63,10 @@ function Repertoire() {
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [setUserToken]);
 
-    function onComplete() {
-        const newTuts = [...tutorials];
-        newTuts[TutorialPages.REPERTOIRE] = true;
-        updateCompletedTutorials(newTuts);
-    }
-
     useEffect(() => {
         async function check() {
             const newUser = await checkToken();
-            console.log(newUser);
+
             setUser(newUser);
             if (newUser !== UserType.VISITOR && newUser) {
                 if (!tutorials[TutorialPages.REPERTOIRE]) {
@@ -90,6 +83,11 @@ function Repertoire() {
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
+    function onComplete() {
+        const newTuts = [...tutorials];
+        newTuts[TutorialPages.REPERTOIRE] = true;
+        updateCompletedTutorials(newTuts);
+    }
     const [nombreEntreprises, setNombreEntreprises] = useState<number | null>(
         null,
     );
