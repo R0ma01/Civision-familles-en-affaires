@@ -149,8 +149,13 @@ const ConnectDialog: React.FC<ConnectDialogProps> = ({
                         const sess = await something();
                         if (sess) {
                             setUserToken('token', sess.token);
-
-                            setUserToken('adminToken', sess.adminToken);
+                            console.log(localStorage.getItem('token'));
+                            setUserToken(
+                                'adminToken',
+                                sess.adminToken ? sess.adminToken : '',
+                            );
+                            console.log(localStorage.getItem('token'));
+                            console.log(localStorage.getItem('adminToken'));
 
                             router.push('/thematiques');
                         }
