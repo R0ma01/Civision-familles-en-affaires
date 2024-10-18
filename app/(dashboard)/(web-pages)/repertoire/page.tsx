@@ -11,12 +11,13 @@ import { RepertoirePromptsTranslations } from '@/constants/translations/page-pro
 import useDataStore from '@/reducer/dataStore';
 import useGlobalUserStore from '@/stores/global-user-store';
 import { TutorialPages, UserType } from '@/components/enums/user-type-enum';
+import { useRouter } from 'next/navigation';
 import {
     UpArrowSVG,
     FactorySVG,
 } from '@/components/component/svg-icons/svg-icons';
 import { GraphDataHttpRequestService } from '@/services/data-http-request-service';
-import { useSession, getSession } from 'next-auth/react';
+import something from '@/components/google-login/session';
 
 const DataCardDiv: React.FC<{
     children: React.ReactNode;
@@ -34,8 +35,7 @@ const DataCardDiv: React.FC<{
 
 function Repertoire() {
     const lang: Language = useDataStore((state) => state.lang);
-    const { data: session, status } = useSession();
-
+    const router = useRouter();
     const { mapType, setMapStyle } = useMapStore((state) => ({
         setMapStyle: state.setMapStyle,
         mapType: state.mapType,
@@ -75,6 +75,8 @@ function Repertoire() {
                 const tour = RepertoirePageTutorial(onComplete);
                 tour.start();
             }
+        } else {
+            router.push(PagePaths.LOGIN);
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
