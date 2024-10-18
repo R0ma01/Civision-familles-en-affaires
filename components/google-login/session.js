@@ -9,8 +9,10 @@ export default async function something() {
         if (session) {
             console.log('hello');
             const collection = await connectToDatabase();
+            const email = session.user.email;
+            console.log(email);
             const user = await collection.findOne({
-                email: session.user.email,
+                email,
             });
             console.log(session.user);
             console.log(user);
