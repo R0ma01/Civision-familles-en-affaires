@@ -102,7 +102,7 @@ const Sidebar: React.FC = () => {
                 </Link>
 
                 <ul className="space-y-6 absolute top-[35vh]">
-                    {/* <SideBarItem
+                    <SideBarItem
                         pagePath={PagePaths.REPERTOIRE}
                         hoverColor={hoverColor.green}
                         active={user !== UserType.VISITOR}
@@ -111,7 +111,7 @@ const Sidebar: React.FC = () => {
                         <span className="ml-5 hidden group-hover:block ease-in-out duration-300 transition-all">
                             {SideBarPromptsTranslations.repertoire[lang]}
                         </span>
-                    </SideBarItem> */}
+                    </SideBarItem>
 
                     <SideBarItem
                         pagePath={PagePaths.FOURNISSEURS}
@@ -133,7 +133,7 @@ const Sidebar: React.FC = () => {
                         </span>
                     </SideBarItem>
 
-                    {/* <SideBarItem
+                    <SideBarItem
                         pagePath={PagePaths.RECHERCHE_ACADEMIQUE}
                         hoverColor={hoverColor.green}
                         active={user !== UserType.VISITOR}
@@ -142,7 +142,7 @@ const Sidebar: React.FC = () => {
                         <span className="ml-5 hidden group-hover:block ease-in-out duration-300 transition-all">
                             {SideBarPromptsTranslations.acad_search[lang]}
                         </span>
-                    </SideBarItem> */}
+                    </SideBarItem>
 
                     {user === UserType.ADMIN && (
                         <SideBarItem
