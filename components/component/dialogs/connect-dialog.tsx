@@ -39,8 +39,12 @@ const ConnectDialog: React.FC<ConnectDialogProps> = ({
 
     useEffect(() => {
         async function something() {
-            const session = await auth();
-            console.log('Session:', session);
+            try {
+                const session = await auth();
+                console.log('Session:', session);
+            } catch (e) {
+                console.error(e);
+            }
         }
 
         something();
