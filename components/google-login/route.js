@@ -7,7 +7,7 @@ import { cookies } from 'next/headers'; // Import cookies utility to set cookies
 export default async function googleSignIn() {
     console.log('Signing in with Google...');
     const something = await signIn('google'); // Handle your Google sign-in here
-
+    console.log('hello');
     if (something) {
         // If sign-in is successful, get the session details
         const session = await auth();
