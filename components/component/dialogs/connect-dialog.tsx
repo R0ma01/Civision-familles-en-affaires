@@ -152,6 +152,7 @@ const ConnectDialog: React.FC<ConnectDialogProps> = ({
                         await googleSignIn(); // call the server action
                         const sess = await something();
                         if (sess) {
+                            console.log('hello');
                             setSession(sess);
                             console.log(sess);
                         }
