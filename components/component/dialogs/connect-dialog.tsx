@@ -12,6 +12,7 @@ import FormButton from '@/components/component/auth-form/form-button';
 import submitForm from '@/utils/form-submit-utils';
 import Button from '@/components/component/buttons/button';
 import { ButtonType } from '@/components/enums/button-type-enum';
+import { auth } from '@/auth';
 import {
     ConnectDialogProps,
     FormValues,
@@ -35,6 +36,11 @@ const ConnectDialog: React.FC<ConnectDialogProps> = ({
             setUserToken: state.setUserToken,
         }),
     );
+
+    useEffect(() => {
+        const session = await auth();
+        console.log('Session:', session);
+    }, []);
 
     useEffect(() => {
         const handleEsc = (event: any) => {
