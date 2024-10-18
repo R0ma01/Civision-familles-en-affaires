@@ -6,7 +6,13 @@ export default async function something() {
         const session = await auth();
         console.log('Session:', session);
         if (session) {
-            return session;
+            const collection = await connectToDatabase();
+            const user = await collection.findOne({ email: session.email });
+            if (!user) {
+                return;
+            } else {
+                return user;
+            }
         }
     } catch (e) {
         console.error(e);

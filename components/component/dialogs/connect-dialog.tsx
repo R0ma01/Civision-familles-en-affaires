@@ -153,6 +153,7 @@ const ConnectDialog: React.FC<ConnectDialogProps> = ({
                         const sess = await something();
                         if (sess) {
                             setSession(sess);
+                            console.log(sess);
                         }
                     }}
                     className="w-full flex justify-center items-center"
