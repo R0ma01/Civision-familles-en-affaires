@@ -18,7 +18,7 @@ import {
 } from '@/components/interface/auth/connect-dialog';
 import { Language } from '@/components/enums/language';
 import Modal from '@/components/component/modal/modal';
-import { googleSignIn } from '@/app/api/auth/google-login/route';
+import { googleSignIn } from '@/components/google-login/route';
 
 import useGlobalUserStore from '@/stores/global-user-store';
 
