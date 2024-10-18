@@ -149,9 +149,9 @@ const ConnectDialog: React.FC<ConnectDialogProps> = ({
                         const sess = await something();
                         if (sess) {
                             console.log(sess);
-                            setUserToken('token', sess.token || '');
+                            setUserToken('token', sess.token);
 
-                            setUserToken('adminToken', sess.adminToken || '');
+                            setUserToken('adminToken', sess.adminToken);
 
                             //router.push('/thematiques');
                         }
