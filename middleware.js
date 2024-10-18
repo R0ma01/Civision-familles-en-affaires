@@ -22,25 +22,26 @@ export async function middleware(request) {
                     new URL(PagePaths.LOGIN, request.url),
                 );
             }
-        } else if (request.nextUrl.pathname.startsWith(PagePaths.REPERTOIRE)) {
-            const isValid = await verifyToken(token);
-            if (!isValid) {
-                console.log('Redirecting to login due to invalid token');
-                return NextResponse.redirect(
-                    new URL(PagePaths.LOGIN, request.url),
-                );
-            }
-        } else if (
-            request.nextUrl.pathname.startsWith(PagePaths.RECHERCHE_ACADEMIQUE)
-        ) {
-            const isValid = await verifyToken(token);
-            if (!isValid) {
-                console.log('Redirecting to login due to invalid token');
-                return NextResponse.redirect(
-                    new URL(PagePaths.LOGIN, request.url),
-                );
-            }
         }
+        // } else if (request.nextUrl.pathname.startsWith(PagePaths.REPERTOIRE)) {
+        //     const isValid = await verifyToken(token);
+        //     if (!isValid) {
+        //         console.log('Redirecting to login due to invalid token');
+        //         return NextResponse.redirect(
+        //             new URL(PagePaths.LOGIN, request.url),
+        //         );
+        //     }
+        // } else if (
+        //     request.nextUrl.pathname.startsWith(PagePaths.RECHERCHE_ACADEMIQUE)
+        // ) {
+        //     const isValid = await verifyToken(token);
+        //     if (!isValid) {
+        //         console.log('Redirecting to login due to invalid token');
+        //         return NextResponse.redirect(
+        //             new URL(PagePaths.LOGIN, request.url),
+        //         );
+        //     }
+        // }
     } catch (err) {
         console.log('Redirecting to login due to error:', err);
         return NextResponse.redirect(new URL(PagePaths.LOGIN, request.url));
