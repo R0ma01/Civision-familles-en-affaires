@@ -5,7 +5,6 @@ import {
 } from '@/components/interface/auth/form';
 import axios, { AxiosResponse } from 'axios';
 import { useRouter } from 'next/navigation';
-import { UserType } from '@/components/enums/user-type-enum';
 
 type Router = ReturnType<typeof useRouter>;
 

@@ -7,7 +7,7 @@ export async function middleware(request) {
     if (process.env.NODE_ENV !== 'production') {
         return NextResponse.next();
     }
-
+    console.log(localStorage.getItem('token'));
     const token = request.cookies.get('token')?.value || '';
     const adminToken = request.cookies.get('adminToken')?.value || '';
 
