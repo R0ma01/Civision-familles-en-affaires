@@ -22,8 +22,6 @@ import Modal from '@/components/component/modal/modal';
 import googleSignIn from '@/components/google-login/route';
 import something from '@/components/google-login/session';
 
-import useGlobalUserStore from '@/stores/global-user-store';
-
 const ConnectDialog: React.FC<ConnectDialogProps> = ({
     onForgotPasswordClick,
 }) => {
@@ -37,8 +35,6 @@ const ConnectDialog: React.FC<ConnectDialogProps> = ({
             setUserToken: state.setUserToken,
         }),
     );
-
-    const setUserToken = useUserStore((state) => state.setUserToken);
 
     // useEffect(() => {
     //     async function someFunc() {
