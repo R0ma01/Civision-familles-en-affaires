@@ -38,9 +38,13 @@ const ConnectDialog: React.FC<ConnectDialogProps> = ({
     );
 
     useEffect(() => {
-        const session = await auth();
-        console.log('Session:', session);
-    }, []);
+        async function something() {
+            const session = await auth();
+            console.log('Session:', session);
+        }
+
+        something();
+    }, [googleSignIn]);
 
     useEffect(() => {
         const handleEsc = (event: any) => {
