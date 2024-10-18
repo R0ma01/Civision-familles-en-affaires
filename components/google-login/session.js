@@ -19,6 +19,7 @@ export default async function something() {
             if (!user) {
                 return;
             } else {
+                console.log('USER :', user);
                 const lastLoginDate = new Date();
                 await collection.updateOne(
                     { email },
