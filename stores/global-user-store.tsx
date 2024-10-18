@@ -16,7 +16,7 @@ const useGlobalUserStore = create(
             (set) => ({
                 checkToken: async () => {
                     console.log('Checking token validity...');
-
+                    console.log(localStorage.getItem('token'));
                     // Call the server to check connection and admin status asynchronously
                     const isConnected =
                         await UserHttpRequestService.checkConnect();

@@ -45,6 +45,7 @@ const Sidebar: React.FC = () => {
 
     useEffect(() => {
         async function check() {
+            console.log(localStorage.getItem('token'));
             const newUser = await checkToken();
 
             setUser(newUser);
