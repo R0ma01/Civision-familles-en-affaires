@@ -18,6 +18,7 @@ import {
 } from '@/components/component/svg-icons/svg-icons';
 import { GraphDataHttpRequestService } from '@/services/data-http-request-service';
 import something from '@/components/google-login/session';
+import { PagePaths } from '@/components/enums/page-paths-enum';
 
 const DataCardDiv: React.FC<{
     children: React.ReactNode;
