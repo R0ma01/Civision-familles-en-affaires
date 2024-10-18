@@ -16,6 +16,7 @@ import {
     FactorySVG,
 } from '@/components/component/svg-icons/svg-icons';
 import { GraphDataHttpRequestService } from '@/services/data-http-request-service';
+import { useSession, getSession } from 'next-auth/react';
 
 const DataCardDiv: React.FC<{
     children: React.ReactNode;
@@ -33,6 +34,7 @@ const DataCardDiv: React.FC<{
 
 function Repertoire() {
     const lang: Language = useDataStore((state) => state.lang);
+    const { data: session, status } = useSession();
 
     const { mapType, setMapStyle } = useMapStore((state) => ({
         setMapStyle: state.setMapStyle,
@@ -116,6 +118,13 @@ function Repertoire() {
             graphData: [],
         },
     };
+    if (status === 'loading') {
+        return <p>Loading...</p>;
+    }
+
+    if (status === 'unauthenticated') {
+        return <p>Access Denied</p>;
+    }
     return (
         <PageContentContainer
             filterMenu={true}
