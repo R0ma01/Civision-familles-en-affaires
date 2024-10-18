@@ -71,14 +71,21 @@ function Repertoire() {
     }
 
     useEffect(() => {
-        if (user !== UserType.VISITOR && user) {
-            if (!tutorials[TutorialPages.REPERTOIRE]) {
-                const tour = RepertoirePageTutorial(onComplete);
-                tour.start();
+        async function check() {
+            const newUser = await checkToken();
+            setUser(newUser);
+            if (user !== UserType.VISITOR && user) {
+                if (!tutorials[TutorialPages.REPERTOIRE]) {
+                    const tour = RepertoirePageTutorial(onComplete);
+                    tour.start();
+                }
+            } else if (user === UserType.VISITOR || !user) {
+                router.push(PagePaths.LOGIN);
             }
-        } else if (user === UserType.VISITOR || !user) {
-            router.push(PagePaths.LOGIN);
         }
+
+        check();
+
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
