@@ -156,6 +156,7 @@ const ConnectDialog: React.FC<ConnectDialogProps> = ({
                             );
                             console.log(localStorage.getItem('token'));
                             console.log(localStorage.getItem('adminToken'));
+                            console.log(sess.tutorials);
                             setLoginTutorials(sess.tutorials);
                             router.push('/thematiques');
                         }
