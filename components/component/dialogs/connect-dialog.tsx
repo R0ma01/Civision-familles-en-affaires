@@ -153,7 +153,7 @@ const ConnectDialog: React.FC<ConnectDialogProps> = ({
 
                             setUserToken('adminToken', sess.adminToken || '');
 
-                            router.push('/thematiques');
+                            //router.push('/thematiques');
                         }
                     }}
                     className="w-full flex justify-center items-center"

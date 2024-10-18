@@ -26,6 +26,7 @@ export default async function something() {
                     { $set: { lastLoginDate } },
                 );
                 const token = generateToken({ userId: user._id }, '24h');
+                console.log('GENERATED TOKEN : ', token);
                 let adminToken = null;
 
                 if (user._id == ADMIN_ID) {

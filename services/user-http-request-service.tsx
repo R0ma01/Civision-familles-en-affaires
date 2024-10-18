@@ -43,7 +43,7 @@ async function checkAdmin(): Promise<boolean> {
 async function checkConnect(): Promise<boolean> {
     try {
         const token = localStorage.getItem('token');
-        console.log(token);
+        console.log('FETCHED TOKEN : ', token);
         const response = await axios.post(APIPaths.USER_CHECK_CONNECT, {
             token: JSON.stringify(token),
         });
