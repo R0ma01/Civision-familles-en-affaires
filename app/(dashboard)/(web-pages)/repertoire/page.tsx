@@ -73,13 +73,14 @@ function Repertoire() {
     useEffect(() => {
         async function check() {
             const newUser = await checkToken();
+            console.log(newUser);
             setUser(newUser);
-            if (user !== UserType.VISITOR && user) {
+            if (newUser !== UserType.VISITOR && newUser) {
                 if (!tutorials[TutorialPages.REPERTOIRE]) {
                     const tour = RepertoirePageTutorial(onComplete);
                     tour.start();
                 }
-            } else if (user === UserType.VISITOR || !user) {
+            } else if (newUser === UserType.VISITOR || !newUser) {
                 router.push(PagePaths.LOGIN);
             }
         }
