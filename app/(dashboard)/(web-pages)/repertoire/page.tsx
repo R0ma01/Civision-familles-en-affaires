@@ -76,7 +76,7 @@ function Repertoire() {
                 const tour = RepertoirePageTutorial(onComplete);
                 tour.start();
             }
-        } else {
+        } else if (user === UserType.VISITOR || !user) {
             router.push(PagePaths.LOGIN);
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps
