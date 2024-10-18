@@ -12,7 +12,7 @@ import FormButton from '@/components/component/auth-form/form-button';
 import submitForm from '@/utils/form-submit-utils';
 import Button from '@/components/component/buttons/button';
 import { ButtonType } from '@/components/enums/button-type-enum';
-
+import useGlobalUserStore from '@/stores/global-user-store';
 import {
     ConnectDialogProps,
     FormValues,
@@ -38,7 +38,7 @@ const ConnectDialog: React.FC<ConnectDialogProps> = ({
         }),
     );
 
-    const [session, setSession] = useState<any>(undefined);
+    const setUserToken = useUserStore((state) => state.setUserToken);
 
     // useEffect(() => {
     //     async function someFunc() {
@@ -152,9 +152,15 @@ const ConnectDialog: React.FC<ConnectDialogProps> = ({
                         await googleSignIn(); // call the server action
                         const sess = await something();
                         if (sess) {
-                            console.log('hello');
-                            setSession(sess);
                             console.log(sess);
+                            setUserToken.setItem('token', sess.token || '');
+
+                            setUserToken.setItem(
+                                'adminToken',
+                                sess.adminToken || '',
+                            );
+
+                            router.push('/thematiques');
                         }
                     }}
                     className="w-full flex justify-center items-center"
