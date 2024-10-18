@@ -8,7 +8,8 @@ export async function middleware(request) {
         return NextResponse.next();
     }
 
-    const token = request.cookies.get('token')?.value || '';
+    const token = request.cookies.get('session-token')?.value || '';
+    conosle.log(token);
     const adminToken = request.cookies.get('adminToken')?.value || '';
 
     try {
