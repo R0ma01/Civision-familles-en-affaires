@@ -1,4 +1,4 @@
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { PagePaths } from '@/components/enums/page-paths-enum';
@@ -12,7 +12,7 @@ import FormButton from '@/components/component/auth-form/form-button';
 import submitForm from '@/utils/form-submit-utils';
 import Button from '@/components/component/buttons/button';
 import { ButtonType } from '@/components/enums/button-type-enum';
-import { auth } from '@/auth';
+
 import {
     ConnectDialogProps,
     FormValues,
@@ -38,12 +38,16 @@ const ConnectDialog: React.FC<ConnectDialogProps> = ({
         }),
     );
 
-    useEffect(() => {
-        async function someFunc() {
-            await something();
-        }
-        someFunc();
-    }, [googleSignIn]);
+    const [session, setSession] = useState<any>(undefined);
+
+    // useEffect(() => {
+    //     async function someFunc() {
+    //         const session = await something();
+    //         setSession(session);
+    //     }
+    //     someFunc();
+    //     // eslint-disable-next-line react-hooks/exhaustive-deps
+    // }, [googleSignIn]);
 
     useEffect(() => {
         const handleEsc = (event: any) => {
@@ -145,8 +149,11 @@ const ConnectDialog: React.FC<ConnectDialogProps> = ({
                 <form
                     onSubmit={async (e) => {
                         e.preventDefault();
-                        const something = await googleSignIn(); // call the server action
-                        console.log(something);
+                        await googleSignIn(); // call the server action
+                        const sess = await something();
+                        if (sess) {
+                            setSession(sess);
+                        }
                     }}
                     className="w-full flex justify-center items-center"
                 >
